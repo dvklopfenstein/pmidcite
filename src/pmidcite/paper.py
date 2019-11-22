@@ -4,15 +4,16 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import sys
-from PyBiocode.Utils.module_helper import import_var
+# from pmidcite.utils_module import import_var
+from pmidcite.utils_module import load_modpy
 from pmidcite.icite import NIHiCite
 
 
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    def __init__(self, pmid, moddir, prt=sys.stdout):
-        self.moddir = moddir
+    def __init__(self, pmid, dirpy, prt=sys.stdout):
+        self.dirpy = dirpy
         self.icite = NIHiCite(self.load_pmid(pmid, prt))
         self.cited_by = self.load_pmids(self.icite.dct['cited_by'], prt)
         self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'], prt)
@@ -58,8 +59,11 @@ class NIHiCitePaper:
 
     def load_pmid(self, pmid, prt=sys.stdout):
         """Load NIH iCite data for one PMID from a Python module"""
-        modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
-        return import_var(modstr, 'ICITE', prt)
+        fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
+        mod = load_modpy(fin_py)
+        return mod.ICITE
+        ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
+        ## return import_var(modstr, 'ICITE', prt)
 
     def load_pmids(self, pmids, prt):
         """Load NIH iCite data for many PMID from a Python module"""
@@ -69,4 +73,4 @@ class NIHiCitePaper:
         return [NIHiCite(load_pmid(p, prt)) for p in pmids]
 
 
-# Copyright (C) 2019-present DV Klopfensteinr,. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
