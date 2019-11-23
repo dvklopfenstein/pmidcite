@@ -7,7 +7,7 @@ import sys
 import argparse
 import configparser
 
-from pmidcite.api import NIHiCiteAPI
+from pmidcite.icite.api import NIHiCiteAPI
 
 
 class NIHiCiteArgs:

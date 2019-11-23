@@ -10,8 +10,8 @@ import collections as cx
 import importlib.util
 import requests
 
-from pmidcite.icite import NIHiCite
-from pmidcite.paper import NIHiCitePaper
+from pmidcite.icite.icite import NIHiCite
+from pmidcite.icite.paper import NIHiCitePaper
 
 
 class NIHiCiteAPI:

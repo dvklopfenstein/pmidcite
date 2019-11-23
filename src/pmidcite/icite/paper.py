@@ -6,7 +6,7 @@ __author__ = "DV Klopfenstein"
 import sys
 # from pmidcite.utils_module import import_var
 from pmidcite.utils_module import load_modpy
-from pmidcite.icite import NIHiCite
+from pmidcite.icite.icite import NIHiCite
 
 
 class NIHiCitePaper:
