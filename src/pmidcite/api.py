@@ -11,6 +11,7 @@ import importlib.util
 import requests
 
 from pmidcite.icite import NIHiCite
+from pmidcite.paper import NIHiCitePaper
 
 
 class NIHiCiteAPI:
@@ -44,9 +45,25 @@ class NIHiCiteAPI:
 
     def __init__(self, force_dnld, dir_dnld='.', prt=sys.stdout, **kws):
         self.dnld_force = force_dnld
-        self.dnld_dir = dir_dnld
+        self.dir_dnld = dir_dnld
         self.prt = prt
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
+
+    def wr_out(self, fout_txt, pmids):
+        """Run iCite for user-provided PMIDs and write to a file"""
+        with open(fout_txt, 'w') as prt:
+            self.run_icite_pmids(pmids, prtout=prt)
+            print('  WROTE: {TXT}'.format(TXT=fout_txt))
+
+    def run_icite_pmids(self, pmids, prtout=sys.stdout):
+        """Print summary for each PMID"""
+        for pmid in pmids:
+            icites = self.run_icite(pmid)
+            print('{N} NIH iCite PMIDs related to {PMID}'.format(
+                N=len(icites), PMID=pmid))
+            paper = NIHiCitePaper(pmid, self.dir_dnld, prt=None)
+            paper.prt_summary(prtout, 'cite')
+            prtout.write('\n')
 
     def run_icite(self, pmids):
         """Load or download NIH iCite data for requested PMIDs"""
@@ -83,7 +100,7 @@ class NIHiCiteAPI:
             return []
         icites = []
         for pmid in pmids:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dnld_dir, PMID=pmid)
+            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
             icites.append(self.load_icite(file_pmid))
         return icites
 
@@ -99,7 +116,7 @@ class NIHiCiteAPI:
         """Get PMIDs that have not yet been downloaded"""
         pmids_missing = set()
         for pmid_cur in pmids_all:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dnld_dir, PMID=pmid_cur)
+            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid_cur)
             if not os.path.exists(file_pmid):
                 pmids_missing.add(pmid_cur)
         return pmids_missing
@@ -118,7 +135,7 @@ class NIHiCiteAPI:
 
     def dnld_icite_pmid(self, pmid):
         """Download NIH iCite data for requested PMIDs"""
-        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dnld_dir, PMID=pmid)
+        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
         if self.dnld_force or not os.path.exists(file_pmid):
             json_dct = self.dnld_icite(pmid)
             if json_dct is not None:
@@ -150,7 +167,7 @@ class NIHiCiteAPI:
             rsp_json = rsp.json()
             for json_dct in rsp_json['data']:
                 #print(json_dct.keys())
-                file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dnld_dir, PMID=json_dct['pmid'])
+                file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
                 lst.append(self._jsonpmid_to_obj(file_pmid, json_dct))  # NIHiCite
             return lst
         raise RuntimeError(self._err_msg(rsp))

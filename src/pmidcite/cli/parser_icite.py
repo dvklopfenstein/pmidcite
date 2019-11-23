@@ -8,7 +8,6 @@ import argparse
 import configparser
 
 from pmidcite.api import NIHiCiteAPI
-from pmidcite.paper import NIHiCitePaper
 
 
 class NIHiCiteArgs:
@@ -25,11 +24,16 @@ class NIHiCiteArgs:
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
-            default=[30022098],
             help='PubMed IDs (PMIDs)')
         parser.add_argument(
-            '-d', '--dir_pmids', default=self.cfgparser['DEFAULT']['dir_pmids'],
+            '--dir_pmid_py', default=self.cfgparser['DEFAULT']['dir_pmid_py'],
             help='Directory for PMID iCite data stored in Python modules')
+        parser.add_argument(
+            '--dir_pmid_txt', default=self.cfgparser['DEFAULT']['dir_pmid_txt'],
+            help='Directory for PMID data, including the abstract stored in a text file')
+        parser.add_argument(
+            '-o', '--outfile', default='p{PMID}.txt',
+            help='Write report to a ASCII text file')
         parser.add_argument(
             '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a file')
@@ -40,15 +44,22 @@ class NIHiCiteArgs:
         return parser
 
     @staticmethod
-    def run_icite(pmids, dir_dnld, **kws):
+    def run_icite(pmids, dir_dnld, outfile, **kws):
         """Run NIH's iCite"""
         #for pmid in args.pmids:
         api = NIHiCiteAPI(kws['force_download'], dir_dnld, prt=sys.stdout, **kws)
-        for pmid in pmids:
-            icites = api.run_icite(pmid)
-            print('{N} NIH iCite items'.format(N=len(icites)))
-            paper = NIHiCitePaper(pmid, dir_dnld, prt=None)
-            paper.prt_summary(sys.stdout, 'cite')
+        print('WWWWWWWWWWWWWWWW', kws)
+        if outfile in {'None', 'False', 'none', 'false'}:
+            api.run_icite_pmids(pmids, prtout=sys.stdout)
+        elif '{PMID}' in outfile:
+            if len(pmids) == 1:
+                fout_txt = outfile.format(PMID=pmids[0])
+                api.wr_out(fout_txt, pmids)
+            else:
+                fout_txt = 'pmidcite.txt'
+                api.wr_out(fout_txt, pmids)
+        else:
+            api.wr_out(outfile, pmids)
 
     def run(self):
         """Run the argparser"""
@@ -62,17 +73,18 @@ class NIHiCiteArgs:
         kws = {
             'force_download': args.force_download,
         }
-        self.run_icite(args.pmids, args.dir_pmids, **kws)
+        self.run_icite(args.pmids, args.dir_pmid_py, args.outfile, **kws)
 
     @staticmethod
     def _init_cfgparser():
         """Create a ConfigParser()"""
         config = configparser.ConfigParser()
         config['DEFAULT'] = {
-            'dir_pmids': '.'
+            'dir_pmid_py': '.',
+            'dir_pmid_txt': '.',
         }
-        config['PMIDs'] = {
-        }
+        # config['PMIDs'] = {
+        # }
         return config
 
     def wr_rc(self):
