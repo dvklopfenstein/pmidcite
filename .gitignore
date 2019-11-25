@@ -1,3 +1,7 @@
+#
+.eutilsrc
+*.py
+
 # Word
 ~*
 tmp*

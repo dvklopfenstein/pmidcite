@@ -15,6 +15,8 @@ class NIHiCite:
             'au[{A:02}]({author1}) {title}'
            )
 
+    associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
+
     def __init__(self, icite_dct):
         self.dct = icite_dct
 
@@ -33,6 +35,16 @@ class NIHiCite:
             author1=dct['authors'][0] if dct['authors'] else '',
             title=dct['title'],
         )
+
+    def get_assc_pmids(self, keys=None):
+        """Get PMIDs associated with the given NIH iCite data"""
+        pmids = set()
+        if keys is None:
+            keys = self.associated_pmids
+        for assc_key in keys:
+            if self.dct[assc_key]:
+                pmids.update(self.dct[assc_key])
+        return pmids
 
     def get_aart_type(self):
         """Get succinct ASCII art for concise info display"""

@@ -12,14 +12,14 @@ from pmidcite.icite.icite import NIHiCite
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    def __init__(self, pmid, dirpy, prt=sys.stdout):
+    def __init__(self, pmid, dirpy):
         self.dirpy = dirpy
-        self.icite = NIHiCite(self.load_pmid(pmid, prt))
-        self.cited_by = self.load_pmids(self.icite.dct['cited_by'], prt)
-        self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'], prt)
-        self.references = self.load_pmids(self.icite.dct['references'], prt)
+        self.icite = NIHiCite(self.load_pmid(pmid))
+        self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
+        self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'])
+        self.references = self.load_pmids(self.icite.dct['references'])
 
-    def prt_summary(self, prt=sys.stdout, sortby=None):
+    def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby=None):
         """Print summary of paper"""
         prt.write('TOP {iCite}\n'.format(iCite=str(self.icite)))
         if self.cited_by:
@@ -30,8 +30,9 @@ class NIHiCitePaper:
         if self.cited_by_clin:
             prt.write('{N} Cited by Clinical papers:\n'.format(N=len(self.cited_by_clin)))
         self.prt_list(self.cited_by_clin, 'CLI', prt, sortby)
-        prt.write('{N} References:\n'.format(N=len(self.references)))
-        self.prt_list(self.references, 'REF', prt, sortby)
+        if rpt_references:
+            prt.write('{N} References:\n'.format(N=len(self.references)))
+            self.prt_list(self.references, 'REF', prt, sortby)
 
     @staticmethod
     def sortby_year(obj):
@@ -51,13 +52,17 @@ class NIHiCitePaper:
             return self.sortby_year if sortby == 'year' else self.sortby_cite
         return sortby
 
+    def get_sorted(self, icites, sortby=None):
+        """Get citations or references, sorted"""
+        sortby = self._get_sortby(sortby)
+        return sorted(icites, key=sortby)
+
     def prt_list(self, icites, desc, prt, sortby=None):
         """Print list of NIH iCites in summary format"""
-        sortby = self._get_sortby(sortby)
-        for icite in sorted(icites, key=sortby):
+        for icite in self.get_sorted(icites, sortby):
             prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
 
-    def load_pmid(self, pmid, prt=sys.stdout):
+    def load_pmid(self, pmid):
         """Load NIH iCite data for one PMID from a Python module"""
         fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
         mod = load_modpy(fin_py)
@@ -65,12 +70,12 @@ class NIHiCitePaper:
         ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
         ## return import_var(modstr, 'ICITE', prt)
 
-    def load_pmids(self, pmids, prt):
+    def load_pmids(self, pmids):
         """Load NIH iCite data for many PMID from a Python module"""
         if not pmids:
             return []
         load_pmid = self.load_pmid
-        return [NIHiCite(load_pmid(p, prt)) for p in pmids]
+        return [NIHiCite(load_pmid(p)) for p in pmids]
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
