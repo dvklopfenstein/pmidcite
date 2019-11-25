@@ -56,7 +56,7 @@ class NIHiCiteArgs:
         print(args.pmids)
         kws = {}  # TBD
         api = NIHiCiteAPI(args.dir_pmid_py, **kws)
-        loader = NIHiCiteLoader(args.force_download, args.references, api)
+        loader = NIHiCiteLoader(args.force_download, api, args.references)
         print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
         if args.outfile in {'None', 'False', 'none', 'false'}:
             loader.run_icite_pmids(args.pmids, prtout=sys.stdout)

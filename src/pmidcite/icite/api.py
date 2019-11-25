@@ -76,14 +76,17 @@ class NIHiCiteAPI:
             if json_dct is not None:
                 return self._jsonpmid_to_obj(json_dct)
             return None
-        raise RuntimeError(self._err_msg(rsp))
+        #### raise RuntimeError(self._err_msg(rsp))
+        print(self._err_msg(rsp))
+        return None
 
     @staticmethod
     def _err_msg(rsp):
         """Get error message if an NIH iCite request failed"""
-        #print('RRRRRRRRRRRRRRRRRRRRRR', dir(rsp))
-        #print('RRRRRRRRRRRRRRRRRRRRRR', rsp.content)
-        #print('RRRRRRRRRRRRRRRRRRRRRR', rsp.json())
+        # print('RRRRRRRRRRRRRRRRRRRRRR', dir(rsp))
+        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.content)
+        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.json())
+        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.url)
         return '{CODE} {REASON}: {TEXT}'.format(
             CODE=rsp.status_code,
             REASON=rsp.reason,

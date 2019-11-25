@@ -12,16 +12,23 @@ from pmidcite.icite.icite import NIHiCite
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    def __init__(self, pmid, dirpy):
+    def __init__(self, pmid, dirpy, name=None):
         self.dirpy = dirpy
+        self.name = name
         self.icite = NIHiCite(self.load_pmid(pmid))
         self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
         self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'])
         self.references = self.load_pmids(self.icite.dct['references'])
 
+    def str_line(self):
+        """Return a string summarizing the the paper described herein"""
+        return str(self.icite)
+
     def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby=None):
         """Print summary of paper"""
-        prt.write('TOP {iCite}\n'.format(iCite=str(self.icite)))
+        if self.name:
+            prt.write('NAME: {NAME}\n'.format(NAME=self.name))
+        prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
         if self.cited_by:
             prt.write('{N} of {M} citations have citations:\n'.format(
                 N=len([1 for o in self.cited_by if o.dct['cited_by']]),

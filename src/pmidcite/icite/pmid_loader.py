@@ -17,12 +17,11 @@ from pmidcite.icite.paper import NIHiCitePaper
 class NIHiCiteLoader:
     """Manage pubs notes files"""
 
-    def __init__(self, force_dnld, rpt_references, api):
+    def __init__(self, force_dnld, api, rpt_references=False):
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
         self.dir_dnld = api.dir_dnld
         self.api = api
-        #### self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
 
     def wr_out(self, fout_txt, pmids):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -30,29 +29,51 @@ class NIHiCiteLoader:
             self.run_icite_pmids(pmids, prtout=prt)
             print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
+    def wr_name2pmid(self, fout_txt, name2pmid):
+        """Run iCite for user-provided PMIDs and write to a file"""
+        with open(fout_txt, 'w') as prt:
+            self.run_icite_name2pmid(name2pmid, prtout=prt)
+            print('  WROTE: {TXT}'.format(TXT=fout_txt))
+
+    def run_icite_name2pmid(self, name2pmid, prtout=sys.stdout):
+        """Print summary for each user-specified PMID"""
+        for name, pmid in name2pmid.items():
+            self.run_icite_pmid(pmid, name, prtout)
+
     def run_icite_pmids(self, pmids, prtout=sys.stdout):
         """Print summary for each user-specified PMID"""
         for pmid in pmids:
-            self.run_icite_pmid(pmid, prtout)
+            self.run_icite_pmid(pmid, prtout=prtout)
 
-    def run_icite_pmid(self, pmid, prtout=sys.stdout):
+    def run_icite_pmid(self, pmid_top, name=None, prtout=sys.stdout):
         """Print summary for each user-specified PMID"""
-        icites = self.run_icite(pmid)
-        print('{N} NIH iCite PMIDs related to {PMID}'.format(
-            N=len(icites), PMID=pmid))
-        paper = NIHiCitePaper(pmid, self.dir_dnld)
+        #### citedby = self.run_icite(pmid)
+        citeobj_top = self.dnld_icite_pmid(pmid_top)
+        if citeobj_top is None:
+            print('No results found: {PMID} {NAME}'.format(PMID=pmid_top, NAME=name))
+            prtout.write('No iCite results found: {PMID} {NAME}\n\n'.format(
+                PMID=pmid_top, NAME=name if name is not None else ''))
+            return
+        self.dnld_assc_pmids(citeobj_top)
+        print(str(citeobj_top))
+        paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
         paper.prt_summary(prtout, self.rpt_references, 'cite')
         prtout.write('\n')
 
-    def run_icite(self, pmids):
-        """Load or download NIH iCite data for requested PMIDs"""
-        if isinstance(pmids, int):
-            iciteobj = self.dnld_icite_pmid(pmids)
-            print(iciteobj)
-            print('FFFFFFFFFFFFFFFF')
-            print(iciteobj)
-            return self.dnld_assc_pmids(iciteobj)
-        raise RuntimeError('TBD IMPLEMENT')
+    #### def run_icite(self, pmids):
+    ####     """Load or download NIH iCite data for requested PMIDs"""
+    ####     if isinstance(pmids, int):
+    ####         iciteobj_top = self.dnld_icite_pmid(pmids)
+    ####         print(iciteobj)
+    ####         print('FFFFFFFFFFFFFFFF')
+    ####         print(iciteobj)
+    ####         return [self.dnld_assc_pmids(iciteobj_top)]
+    ####     iciteobjs = []
+    ####     for pmid in pmids:
+    ####         iciteobj_top = self.dnld_icite_pmid(pmid)
+    ####         if iciteobj_top is not None:
+    ####             iciteobjs.append(self.dnld_assc_pmids(iciteobj))
+    ####     return iciteobjs
 
     def dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""
@@ -89,10 +110,12 @@ class NIHiCiteLoader:
     @staticmethod
     def load_icite(file_pmid):
         """Load NIH iCite information from Python modules"""
-        spec = importlib.util.spec_from_file_location("module.name", file_pmid)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        return NIHiCite(mod.ICITE)
+        if os.path.exists(file_pmid):
+            spec = importlib.util.spec_from_file_location("module.name", file_pmid)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return NIHiCite(mod.ICITE)
+        return None
 
     def _get_pmids_missing(self, pmids_all):
         """Get PMIDs that have not yet been downloaded"""
