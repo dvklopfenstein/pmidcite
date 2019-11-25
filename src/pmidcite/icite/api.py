@@ -5,13 +5,13 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import sys
-import os
+#### import os
 import collections as cx
-import importlib.util
+#### import importlib.util
 import requests
 
 from pmidcite.icite.icite import NIHiCite
-from pmidcite.icite.paper import NIHiCitePaper
+#### from pmidcite.icite.paper import NIHiCitePaper
 
 
 class NIHiCiteAPI:
@@ -43,111 +43,9 @@ class NIHiCiteAPI:
     flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
     yes_no = {'Yes':True, 'No':False}
 
-    def __init__(self, force_dnld, dir_dnld='.', prt=sys.stdout, **kws):
-        self.dnld_force = force_dnld
-        self.dir_dnld = dir_dnld
-        self.prt = prt
+    def __init__(self, dirpy_dnld='.', **kws):
+        self.dir_dnld = dirpy_dnld
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
-
-    def wr_out(self, fout_txt, pmids):
-        """Run iCite for user-provided PMIDs and write to a file"""
-        with open(fout_txt, 'w') as prt:
-            self.run_icite_pmids(pmids, prtout=prt)
-            print('  WROTE: {TXT}'.format(TXT=fout_txt))
-
-    def run_icite_pmids(self, pmids, prtout=sys.stdout):
-        """Print summary for each PMID"""
-        for pmid in pmids:
-            icites = self.run_icite(pmid)
-            print('{N} NIH iCite PMIDs related to {PMID}'.format(
-                N=len(icites), PMID=pmid))
-            paper = NIHiCitePaper(pmid, self.dir_dnld, prt=None)
-            paper.prt_summary(prtout, 'cite')
-            prtout.write('\n')
-
-    def run_icite(self, pmids):
-        """Load or download NIH iCite data for requested PMIDs"""
-        if isinstance(pmids, int):
-            icite = self.dnld_icite_pmid(pmids)
-            return self.dnld_assc_pmids(icite)
-        raise RuntimeError('TBD IMPLEMENT')
-
-    def dnld_assc_pmids(self, icite):
-        """Download PMID iCite data for PMIDs associated with icite paper"""
-        pmids_assc = self._get_accs_pmids(icite)
-        ## print('AAAAAAAAAAAAAAAA')
-        if not pmids_assc:
-            return []
-        ## print('BBBBBBBBBBBBBBBB')
-        if self.dnld_force:
-            return self.dnld_icites(pmids_assc)
-        ## print('CCCCCCCCCCCCCCCC')
-        pmids_missing = self._get_pmids_missing(pmids_assc)
-        ## print('{N} PMIDs assc'.format(N=len(pmids_assc)))
-        ## print('{N} PMIDs missing'.format(N=len(pmids_missing)))
-        if pmids_missing:
-            objs_missing = self.dnld_icites(pmids_missing)
-            pmids_load = pmids_assc.difference(pmids_missing)
-            objs_dnlded = self.load_icites(pmids_load)
-            ## print('{N} PMIDs loaded'.format(N=len(pmids_load)))
-            return objs_missing + objs_dnlded
-        return self.load_icites(pmids_assc)
-        ## print('DDDDDDDDDDDDDDDD')
-
-    def load_icites(self, pmids):
-        """Load multiple NIH iCite data from Python modules"""
-        if not pmids:
-            return []
-        icites = []
-        for pmid in pmids:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
-            icites.append(self.load_icite(file_pmid))
-        return icites
-
-    @staticmethod
-    def load_icite(file_pmid):
-        """Load NIH iCite information from Python modules"""
-        spec = importlib.util.spec_from_file_location("module.name", file_pmid)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        return NIHiCite(mod.ICITE)
-
-    def _get_pmids_missing(self, pmids_all):
-        """Get PMIDs that have not yet been downloaded"""
-        pmids_missing = set()
-        for pmid_cur in pmids_all:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid_cur)
-            if not os.path.exists(file_pmid):
-                pmids_missing.add(pmid_cur)
-        return pmids_missing
-
-    @staticmethod
-    def _get_accs_pmids(icite):
-        """Get PMIDs associated with the given NIH iCite data"""
-        pmids = set()
-        if icite.dct['cited_by_clin']:
-            pmids.update(icite.dct['cited_by_clin'])
-        if icite.dct['cited_by']:
-            pmids.update(icite.dct['cited_by'])
-        if icite.dct['references']:
-            pmids.update(icite.dct['references'])
-        return pmids
-
-    def dnld_icite_pmid(self, pmid):
-        """Download NIH iCite data for requested PMIDs"""
-        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
-        if self.dnld_force or not os.path.exists(file_pmid):
-            json_dct = self.dnld_icite(pmid)
-            if json_dct is not None:
-                return self._jsonpmid_to_obj(file_pmid, json_dct)
-        return self.load_icite(file_pmid)
-
-    def _jsonpmid_to_obj(self, file_pmid, json_dct):
-        """Given a PMID json dict, return a NIHiCite object"""
-        dct = self.adjust_jsondct(json_dct)
-        #self.prt_dct(dct, self.prt)
-        self.wrpy(file_pmid, dct)
-        return NIHiCite(json_dct)
 
     def dnld_icites(self, pmids):
         """Run iCite on given PubMed IDs"""
@@ -166,9 +64,7 @@ class NIHiCiteAPI:
             lst = []
             rsp_json = rsp.json()
             for json_dct in rsp_json['data']:
-                #print(json_dct.keys())
-                file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
-                lst.append(self._jsonpmid_to_obj(file_pmid, json_dct))  # NIHiCite
+                lst.append(self._jsonpmid_to_obj(json_dct))  # NIHiCite
             return lst
         raise RuntimeError(self._err_msg(rsp))
 
@@ -176,8 +72,10 @@ class NIHiCiteAPI:
         """Run iCite on given PubMed IDs"""
         rsp = requests.get('/'.join([self.url_base, str(pmid)]))
         if rsp.status_code == 200:
-            dct = rsp.json()
-            return dct
+            json_dct = rsp.json()
+            if json_dct is not None:
+                return self._jsonpmid_to_obj(json_dct)
+            return None
         raise RuntimeError(self._err_msg(rsp))
 
     @staticmethod
@@ -192,7 +90,14 @@ class NIHiCiteAPI:
             TEXT=' '.join('{K}({V})'.format(K=k, V=v) for k, v in sorted(rsp.json().items())))
             #TEXT=rsp.text)
 
-    def adjust_jsondct(self, json_dct):
+    def _jsonpmid_to_obj(self, json_dct):
+        """Given a PMID json dict, return a NIHiCite object"""
+        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
+        adj_dct = self._adjust_jsondct(json_dct)
+        self.wrpy(file_pmid, adj_dct)
+        return NIHiCite(adj_dct)
+
+    def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
         dct = {}
         if 'authors' is not None:
