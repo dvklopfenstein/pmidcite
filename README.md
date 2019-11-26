@@ -1,6 +1,7 @@
 # PMID Cite
 [**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) literature search, from the command line, by traversing [**NIH iCite**](https://icite.od.nih.gov/) citations and references.
 
+## Why not Google Search?
 Google Scholar was found to be inappropriate as principal search system [1][2] due to:
  * The same query can produce different results at different times
  * Poor boolean search interface:
@@ -16,9 +17,9 @@ Google Scholar was found to be inappropriate as principal search system [1][2] d
    * Undocumented sort of full results, when not sorted by date
  * No bulk export for results
  * Results can only be exported into reference management software 20 at a time
- * Crawler-based search engines function differently than bibliographic databases which have a curated entries
  * Unknown size of database
  * [Google's Disclaimer](https://www.google.com/intl/en/scholar/about.html): Google does not warrant that the information is complete or accurate
+ * Crawler-based search engines function differently than bibliographic databases which have a curated entries
 
 
 ### References
