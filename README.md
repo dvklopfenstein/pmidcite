@@ -1,9 +1,5 @@
 # PMID Cite
-Literature seach, from the command line by traversing citations
+[**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) literature search, from the command line by traversing [**NIH iCite**](https://icite.od.nih.gov/) citations
 
-This library uses the National Institutes of Health (NIH)'s
-[**iCite**](https://icite.od.nih.gov/) 
-to do a literature survey on peer-reviewed research papers
-which have a PubMed ID (PMID).
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
