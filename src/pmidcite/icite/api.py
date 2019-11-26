@@ -10,7 +10,7 @@ import collections as cx
 #### import importlib.util
 import requests
 
-from pmidcite.icite.icite import NIHiCite
+from pmidcite.icite.entry import NIHiCiteEntry
 #### from pmidcite.icite.paper import NIHiCitePaper
 
 
@@ -64,7 +64,7 @@ class NIHiCiteAPI:
             lst = []
             rsp_json = rsp.json()
             for json_dct in rsp_json['data']:
-                lst.append(self._jsonpmid_to_obj(json_dct))  # NIHiCite
+                lst.append(self._jsonpmid_to_obj(json_dct))  # NIHiCiteEntry
             return lst
         raise RuntimeError(self._err_msg(rsp))
 
@@ -94,11 +94,11 @@ class NIHiCiteAPI:
             #TEXT=rsp.text)
 
     def _jsonpmid_to_obj(self, json_dct):
-        """Given a PMID json dict, return a NIHiCite object"""
+        """Given a PMID json dict, return a NIHiCiteEntry object"""
         file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
         adj_dct = self._adjust_jsondct(json_dct)
         self.wrpy(file_pmid, adj_dct)
-        return NIHiCite(adj_dct)
+        return NIHiCiteEntry(adj_dct)
 
     def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
@@ -129,7 +129,7 @@ class NIHiCiteAPI:
     @staticmethod
     def prt_dct(dct, prt=sys.stdout):
         """Print NIH iCite data as a dict"""
-        iciteobj = NIHiCite(dct)
+        iciteobj = NIHiCiteEntry(dct)
         prt.write('"""Write data downloaded for NIH iCite data"""\n\n')
         prt.write('# pylint: disable=line-too-long\n')
         prt.write('# DESC: {DESC}\n'.format(DESC=str(iciteobj)))

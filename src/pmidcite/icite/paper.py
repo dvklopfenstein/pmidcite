@@ -6,7 +6,7 @@ __author__ = "DV Klopfenstein"
 import sys
 # from pmidcite.utils_module import import_var
 from pmidcite.utils_module import load_modpy
-from pmidcite.icite.icite import NIHiCite
+from pmidcite.icite.entry import NIHiCiteEntry
 
 
 class NIHiCitePaper:
@@ -15,7 +15,7 @@ class NIHiCitePaper:
     def __init__(self, pmid, dirpy, name=None):
         self.dirpy = dirpy
         self.name = name
-        self.icite = NIHiCite(self.load_pmid(pmid))
+        self.icite = NIHiCiteEntry(self.load_pmid(pmid))
         self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
         self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'])
         self.references = self.load_pmids(self.icite.dct['references'])
@@ -82,7 +82,7 @@ class NIHiCitePaper:
         if not pmids:
             return []
         load_pmid = self.load_pmid
-        return [NIHiCite(load_pmid(p)) for p in pmids]
+        return [NIHiCiteEntry(load_pmid(p)) for p in pmids]
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

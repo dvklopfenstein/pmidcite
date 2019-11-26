@@ -10,7 +10,7 @@ import os
 import importlib.util
 #### import requests
 
-from pmidcite.icite.icite import NIHiCite
+from pmidcite.icite.entry import NIHiCiteEntry
 from pmidcite.icite.paper import NIHiCitePaper
 
 
@@ -114,7 +114,7 @@ class NIHiCiteLoader:
             spec = importlib.util.spec_from_file_location("module.name", file_pmid)
             mod = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(mod)
-            return NIHiCite(mod.ICITE)
+            return NIHiCiteEntry(mod.ICITE)
         return None
 
     def _get_pmids_missing(self, pmids_all):
