@@ -52,11 +52,11 @@ class NIHiCiteAPI:
         if not pmids:
             return []
         num_pmids = len(pmids)
-        print('{N} pmids > 1000'.format(N=num_pmids))
         if num_pmids > 1000:
+            print('{N} pmids > 1000'.format(N=num_pmids))
             pmids = sorted(p for p in pmids if isinstance(p, int))
             print(pmids)
-            print('**WARNING: USING pmids[:1000]')
+            print('**WARNING: USING pmids[:900]')
             pmids = pmids[:900]
         ## assert len(pmids) <= 1000, '{N} pmids > 1000'.format(N=len(pmids))
         cmd = '{URL}?pmids={PMIDS}'.format(URL=self.url_base, PMIDS=','.join(str(p) for p in pmids))

@@ -89,7 +89,7 @@ class NIHiCitePaper:
         for pmid in pmids:
             mod_icite = load_pmid(pmid)
             if mod_icite is not None:
-                iciteobjs.append(mod_icite)
+                iciteobjs.append(NIHiCiteEntry(mod_icite))
         return iciteobjs
 
 
