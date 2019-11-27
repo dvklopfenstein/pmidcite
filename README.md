@@ -1,5 +1,6 @@
 # PMID Cite
-[**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) literature search, from the command line, by traversing [**NIH iCite**](https://icite.od.nih.gov/) citations and references.
+Traverse [**NIH iCite**](https://icite.od.nih.gov/) citations and references and download 
+[**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) summaries from the command line.
 
 ## How about Google Search?
 Google Scholar was found to be inappropriate as principal search system [1][2] due to:
