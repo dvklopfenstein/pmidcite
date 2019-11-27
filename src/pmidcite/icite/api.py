@@ -51,7 +51,14 @@ class NIHiCiteAPI:
         """Run iCite on given PubMed IDs"""
         if not pmids:
             return []
-        assert len(pmids) <= 1000, '{N} pmids > 1000'.format(N=len(pmids))
+        num_pmids = len(pmids)
+        print('{N} pmids > 1000'.format(N=num_pmids))
+        if num_pmids > 1000:
+            pmids = sorted(p for p in pmids if isinstance(p, int))
+            print(pmids)
+            print('**WARNING: USING pmids[:1000]')
+            pmids = pmids[:900]
+        ## assert len(pmids) <= 1000, '{N} pmids > 1000'.format(N=len(pmids))
         cmd = '{URL}?pmids={PMIDS}'.format(URL=self.url_base, PMIDS=','.join(str(p) for p in pmids))
         rsp = requests.get(cmd)
         if rsp.status_code == 200:
@@ -83,14 +90,20 @@ class NIHiCiteAPI:
     @staticmethod
     def _err_msg(rsp):
         """Get error message if an NIH iCite request failed"""
-        # print('RRRRRRRRRRRRRRRRRRRRRR', dir(rsp))
-        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.content)
-        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.json())
-        # print('RRRRRRRRRRRRRRRRRRRRRR', rsp.url)
-        return '{CODE} {REASON}: {TEXT}'.format(
+        ## print('1 RRRRRRRRRRRRRRRRRRRRRR', dir(rsp))
+        ## print('2 RRRRRRRRRRRRRRRRRRRRRR', rsp.status_code)
+        ## print('3 RRRRRRRRRRRRRRRRRRRRRR', rsp.reason)
+        ## print('4 RRRRRRRRRRRRRRRRRRRRRR', rsp.content)
+        ## print('5 RRRRRRRRRRRRRRRRRRRRRR', rsp.text)
+        ## #print('3 RRRRRRRRRRRRRRRRRRRRRR', rsp.json())
+        ## print('6 RRRRRRRRRRRRRRRRRRRRRR', rsp.url)
+        ## if rsp.json() is not None:
+        ##     txt =' '.join('{K}({V})'.format(K=k, V=v) for k, v in sorted(rsp.json().items()))
+        return '{CODE} {REASON} URL[{N}]: {URL}'.format(
             CODE=rsp.status_code,
             REASON=rsp.reason,
-            TEXT=' '.join('{K}({V})'.format(K=k, V=v) for k, v in sorted(rsp.json().items())))
+            N=len(rsp.url),
+            URL=rsp.url)
             #TEXT=rsp.text)
 
     def _jsonpmid_to_obj(self, json_dct):

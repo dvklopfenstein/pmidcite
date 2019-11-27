@@ -3,6 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import os
 import sys
 # from pmidcite.utils_module import import_var
 from pmidcite.utils_module import load_modpy
@@ -72,17 +73,24 @@ class NIHiCitePaper:
     def load_pmid(self, pmid):
         """Load NIH iCite data for one PMID from a Python module"""
         fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
-        mod = load_modpy(fin_py)
-        return mod.ICITE
+        if os.path.exists(fin_py):
+            mod = load_modpy(fin_py)
+            return mod.ICITE
+        return None
         ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
         ## return import_var(modstr, 'ICITE', prt)
 
     def load_pmids(self, pmids):
         """Load NIH iCite data for many PMID from a Python module"""
+        iciteobjs = []
         if not pmids:
-            return []
+            return iciteobjs
         load_pmid = self.load_pmid
-        return [NIHiCiteEntry(load_pmid(p)) for p in pmids]
+        for pmid in pmids:
+            mod_icite = load_pmid(pmid)
+            if mod_icite is not None:
+                iciteobjs.append(mod_icite)
+        return iciteobjs
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

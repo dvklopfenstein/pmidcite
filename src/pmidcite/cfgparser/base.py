@@ -11,13 +11,22 @@ import configparser
 class CfgParserBase(object):
     """Manage a ConfigParser"""
 
-    def __init__(self, cfgfile, dfltdct):
-        self.cfgfile = cfgfile
+    def __init__(self, dfltcfgfile, dfltdct):
+        self.cfgfile = self._init_cfgfilename(dfltcfgfile)
         self.cfgparser = self._init_cfgparser(dfltdct)
 
     def rd_rc(self):
         """Read a configuration file"""
         return self.cfgparser.read(self.cfgfile)
+
+    @staticmethod
+    def _init_cfgfilename(dfltcfgfile):
+        """Get the configuration filename"""
+        if 'PMIDCITECONF' in os.environ:
+            cfgfile = os.environ['PMIDCITECONF']
+            if os.path.exists(cfgfile):
+                return cfgfile
+        return dfltcfgfile
 
     def wr_rc(self, force=False):
         """Write a sample configuration with default values set"""

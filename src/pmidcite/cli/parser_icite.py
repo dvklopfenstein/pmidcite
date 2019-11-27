@@ -52,6 +52,9 @@ class NIHiCiteArgs:
         if args.generate_rcfile:
             self.cfgparser.wr_rc()
             return
+        if not args.pmids:
+            argparser.print_help()
+            return
         print(args)
         print(args.pmids)
         kws = {}  # TBD
