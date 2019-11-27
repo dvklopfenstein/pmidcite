@@ -3,7 +3,7 @@ Traverse [**NIH iCite**](https://icite.od.nih.gov/) citations and references and
 [**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) summaries from the command line.
 
 ## How about Google Search?
-Google Scholar was found to be inappropriate as principal search system [1][2] due to:
+Google Scholar was found to be inappropriate as principal search system [1][2] for peer-reviewed research papers due to:
  * The same query can produce different results at different times
  * Poor boolean search interface:
     * Not documented
