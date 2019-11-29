@@ -108,12 +108,12 @@ class EntrezUtilities(object):
         str_ids = [str(n) for n in pmids]
         id_str = ','.join(str_ids[:step])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
-        record = self.run_eutilscmd('epost', db=database, id=id_str)
+        rsp = self.run_eutilscmd('epost', db=database, id=id_str)
         if self.log is not None:
-            self.log.write('FIRST EPOST RESULT: {}\n'.format(record))
-            self.log.write("epost querykey({:>6}) pmids={}\n".format(record['querykey'], id_str))
-        if 'webenv' in record:
-            webenv = record['webenv']
+            self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
+            self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
+        if 'webenv' in rsp:
+            webenv = rsp['webenv']
             num_ids = len(pmids)
             # Load the remainder of the UIDs using epost
             for idx in range(step, num_ids, step):
@@ -122,16 +122,16 @@ class EntrezUtilities(object):
                     end_pt = num_ids
                 #print '{:3} {:3} {:3}'.format(num_ids, idx, end_pt)
                 id_str = ','.join(str_ids[idx:end_pt])
-                record = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
-                webenv = record['webenv']
+                rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
+                webenv = rsp['webenv']
                 if self.log is not None:
                     self.log.write("epost querykey({:>6}) pmids={}\n".format(
-                        record['querykey'], id_str))
+                        rsp['querykey'], id_str))
         else:
             raise Exception("NO webenv RETURNED FROM FIRST EPOST")
         if self.log is not None:
-            self.log.write('LAST  EPOST RESULT: {}\n'.format(record))
-        return record
+            self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
+        return rsp
 
     @staticmethod
     def _return_einforesult(record):
@@ -160,7 +160,7 @@ class EntrezUtilities(object):
         print('{N} LINKED ITEMS'.format(N=len(links_all)))
         return links_all
 
-    # Code from Bio.entrez----------------------------------------------------------------
+    # ------------------------------------------------------------------------------------
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
@@ -195,20 +195,7 @@ class EntrezUtilities(object):
             traceback.print_exc()
 
     def _open_cmd(self, cgi, retmode):  # params=None, post=None, ecitmatch=False):
-        """Build the URL and open a handle to it (PRIVATE).
-
-        Open a handle to Entrez.  cgi is the URL for the cgi script to access.
-        params is a dictionary with the options to pass to it.  Does some
-        simple error checking, and will raise an IOError if it encounters one.
-
-        The argument post should be a boolean to explicitly control if an HTTP
-        POST should be used rather an HTTP GET based on the query length.
-        By default (post=None), POST is used if the URL encoded parameters would
-        be over 1000 characters long.
-
-        This function also enforces the "up to three queries per second rule"
-        to avoid abusing the NCBI servers.
-        """
+        """Create a Entrez Utilities command"""
         # TBD: Too many branches (14/12) (too-many-branches)
         # NCBI requirement: At most three queries per second if no API key is provided.
         # Equivalently, at least a third of second between queries
