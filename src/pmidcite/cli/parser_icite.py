@@ -21,6 +21,7 @@ class NIHiCiteArgs:
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         self.cfgparser.rd_rc()
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
+        print(self.cfgparser.cfgfile)
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
@@ -31,7 +32,7 @@ class NIHiCiteArgs:
             '--dir_pmid_txt', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_txt'],
             help='Directory for PMID data, including the abstract stored in a text file')
         parser.add_argument(
-            '-o', '--outfile', default='pmidcite.txt',
+            '-o', '--outfile',
             help='Write report to a ASCII text file')
         parser.add_argument(
             '-f', '--force_download', action='store_true',
@@ -39,6 +40,12 @@ class NIHiCiteArgs:
         parser.add_argument(
             '-r', '--references', action='store_true',
             help='Print references as well as citations')
+        parser.add_argument(
+            '-a', '--append', action='store_true',
+            help='Append the current iCite results to the output file, if not already present')
+        parser.add_argument(
+            '-e', '--echo', action='store_true',
+            help='Echo output to screen')
         parser.add_argument(
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
@@ -61,10 +68,15 @@ class NIHiCiteArgs:
         api = NIHiCiteAPI(args.dir_pmid_py, **kws)
         loader = NIHiCiteLoader(args.force_download, api, args.references)
         print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
-        if args.outfile in {'None', 'False', 'none', 'false'}:
+        if args.outfile is None:
             loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
         else:
-            loader.wr_out(args.outfile, args.pmids)
+            if args.echo:
+                loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
+            if args.append:
+                loader.wr_papers(args.outfile, args.pmids, 'a')
+            else:
+                loader.wr_papers(args.outfile, args.pmids, 'w')
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
