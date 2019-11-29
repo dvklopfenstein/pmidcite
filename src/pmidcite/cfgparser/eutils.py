@@ -3,6 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import os
 from pmidcite.cfgparser.base import CfgParserBase
 
 
@@ -68,5 +69,13 @@ class EUtilsCfg(CfgParserBase):
         """Get tool name"""
         return self.cfgparser['DEFAULT']['tool']
 
+    @staticmethod
+    def _init_cfgfilename(dfltcfgfile):
+        """Get the configuration filename"""
+        if 'PMIDCITECONF' in os.environ:
+            cfgfile = os.environ['PMIDCITECONF']
+            if os.path.exists(cfgfile):
+                return cfgfile
+        return dfltcfgfile
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

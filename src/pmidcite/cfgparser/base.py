@@ -22,10 +22,6 @@ class CfgParserBase(object):
     @staticmethod
     def _init_cfgfilename(dfltcfgfile):
         """Get the configuration filename"""
-        if 'PMIDCITECONF' in os.environ:
-            cfgfile = os.environ['PMIDCITECONF']
-            if os.path.exists(cfgfile):
-                return cfgfile
         return dfltcfgfile
 
     def wr_rc(self, force=False):
