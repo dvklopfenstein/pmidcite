@@ -33,5 +33,11 @@ Google Scholar was found to be inappropriate as principal search system [1][2] f
    "Google Scholar as replacement for systematic literature searches: good relative recall and precision are not enough" 
    BMC Medical Research Methodology (2013)
 
+## Links to other PubMed tools
+
+* [PubMed parser](https://github.com/titipata/pubmed_parser)
+* [pymed](https://github.com/gijswobben/pymed)    
+* [paper2remarkable](https://github.com/GjjvdBurg/paper2remarkable)
+* [pubmed-lookup](https://github.com/mfcovington/pubmed-lookup)
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
