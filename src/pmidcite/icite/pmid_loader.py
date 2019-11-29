@@ -23,11 +23,50 @@ class NIHiCiteLoader:
         self.dir_dnld = api.dir_dnld
         self.api = api
 
-    def wr_out(self, fout_txt, pmids):
+    def wr_papers(self, fout_txt, pmids, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
-        with open(fout_txt, 'w') as prt:
-            self.run_icite_pmids(pmids, prtout=prt)
-            print('  WROTE: {TXT}'.format(TXT=fout_txt))
+        pmids_new = pmids
+        if mode == 'a':
+            pmids_new = self._get_new_pmids(fout_txt, pmids)
+        if pmids_new:
+            with open(fout_txt, mode) as prt:
+                self.run_icite_pmids(pmids_new, prtout=prt)
+        print('  {WR}: {TXT}'.format(
+            WR=self._msg_wrote(mode, pmids, pmids_new), TXT=fout_txt))
+
+    @staticmethod
+    def _msg_wrote(mode, pmids_req, pmids_new):
+        """Get the 'WROTE' or 'APPENDED' message"""
+        if mode == 'w':
+            return '{N} WROTE'.format(N=len(pmids_req))
+        if mode == 'a':
+            if pmids_new:
+                return '{N} of {M} APPENDED'.format(
+                    N=len(pmids_new),
+                    M=len(pmids_req))
+            return '{N} of {M} FOUND'.format(
+                N=len(pmids_new),
+                M=len(pmids_req))
+        raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
+
+    def _get_new_pmids(self, pmidcite_txt, pmids):
+        """Get PMIDs which are not already fully analyzed in pmidcite.txt"""
+        if not os.path.exists(pmidcite_txt):
+            return pmids
+        pmids_old = self._get_old_pmids(pmidcite_txt)
+        return [p for p in pmids if p not in pmids_old]
+
+    @staticmethod
+    def _get_old_pmids(pmidcite_txt):
+        """Get PMIDs already found in pmidcite.txt"""
+        pmids = set()
+        with open(pmidcite_txt) as ifstrm:
+            for line in ifstrm:
+                if line[:4] == 'TOP ':
+                    flds = line.split()
+                    assert flds[2].isdigit(), flds
+                    pmids.add(int(flds[2]))
+        return pmids
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -55,7 +94,6 @@ class NIHiCiteLoader:
                 PMID=pmid_top, NAME=name if name is not None else ''))
             return
         self.dnld_assc_pmids(citeobj_top)
-        print(str(citeobj_top))
         paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
         paper.prt_summary(prtout, self.rpt_references, 'cite')
         prtout.write('\n')
