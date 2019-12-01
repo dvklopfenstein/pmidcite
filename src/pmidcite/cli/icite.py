@@ -35,17 +35,17 @@ class NIHiCiteArgs:
             '-o', '--outfile',
             help='Write report to a ASCII text file')
         parser.add_argument(
+            '-a', '--outfile_append',
+            help='Append current report to the user-specified file')
+        parser.add_argument(
             '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a file')
         parser.add_argument(
-            '-r', '--references', action='store_true',
-            help='Print references as well as citations')
+            '-R', '--no_references', action='store_true',
+            help='Print the list of citations, but not the list of references')
         parser.add_argument(
-            '-a', '--append', action='store_true',
-            help='Append the current iCite results to the output file, if not already present')
-        parser.add_argument(
-            '-e', '--echo', action='store_true',
-            help='Echo output to screen')
+            '-q', '--quiet', action='store_true',
+            help='Quiet mode; Do not echo the paper report to screen')
         parser.add_argument(
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
@@ -66,15 +66,15 @@ class NIHiCiteArgs:
         print(args.pmids)
         kws = {}  # TBD
         api = NIHiCiteAPI(args.dir_pmid_py, **kws)
-        loader = NIHiCiteLoader(args.force_download, api, args.references)
+        loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
         print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
-        if args.outfile is None:
+        if args.outfile is None and args.outfile_append is None:
             loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
         else:
-            if args.echo:
+            if not args.quiet:
                 loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
-            if args.append:
-                loader.wr_papers(args.outfile, args.pmids, 'a')
+            if args.outfile_append:
+                loader.wr_papers(args.outfile_append, args.pmids, 'a')
             else:
                 loader.wr_papers(args.outfile, args.pmids, 'w')
 

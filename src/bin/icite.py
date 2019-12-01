@@ -4,7 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-from pmidcite.cli.parser_icite import NIHiCiteArgs  # get_argparser
+from pmidcite.cli.icite import NIHiCiteArgs  # get_argparser
 
 
 def main():
