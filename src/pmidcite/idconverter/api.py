@@ -54,7 +54,7 @@ class IdConverterAPI:
         if not ids:
             return []
         ids = list(ids)
-        # print('PPPPPPPPPPPPPP', params)
+        print('PPPPPPPPPPPPPP', params)
         # TBD: https://stackoverflow.com/questions/1624883/alternative-way-to-split-a-list-into-groups-of-n#1625023
         cmd = self._get_cmd(ids, **params)
         print('CCCCCCCCCCCCCCCCCCCCCCC', cmd)

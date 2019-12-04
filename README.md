@@ -16,10 +16,7 @@ Google Scholar was found to be inappropriate as principal search system [1][2] f
  * There are a maximum of 1000 results:
    * Displayed in steps of 20 per page.
    * Undocumented sort of full results, when not sorted by date
- * No bulk export for results
- * Results can only be exported into reference management software 20 at a time
  * Unknown size of database
- * [Google's Disclaimer](https://www.google.com/intl/en/scholar/about.html): Google does not warrant that the information is complete or accurate
  * Crawler-based search engines function differently than bibliographic databases which have a curated entries
 
 

@@ -14,6 +14,7 @@ class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
     def __init__(self, pmid, dirpy, name=None):
+        self.pmid = pmid
         self.dirpy = dirpy
         self.name = name
         self.icite = NIHiCiteEntry(self.load_pmid(pmid))

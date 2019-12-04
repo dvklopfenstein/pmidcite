@@ -83,7 +83,8 @@ class IdConverterCLI:
         params = self._get_params(args)
         api = IdConverterAPI(args.dir_pmid_py)
         rsp = api.dnld_ids(args.IDs, **params)
-        api.prt_records(rsp, sys.stdout)
+        if rsp:
+            api.prt_records(rsp, sys.stdout)
         #### loader = NIHiCiteLoader(args.force_download, api, args.references)
         #### print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
         #### if args.outfile is None:

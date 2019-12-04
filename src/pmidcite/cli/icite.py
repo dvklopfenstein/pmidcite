@@ -68,15 +68,33 @@ class NIHiCiteArgs:
         api = NIHiCiteAPI(args.dir_pmid_py, **kws)
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
         print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
-        if args.outfile is None and args.outfile_append is None:
-            loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
+        outfile = self._get_outfile(args)
+        mode = self._get_mode(args)
+        pmid2ntpaper = loader.run_icite_pmids(args.pmids)
+        if outfile is None:
+            loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
         else:
             if not args.quiet:
-                loader.run_icite_pmids(args.pmids, prtout=sys.stdout)
-            if args.outfile_append:
-                loader.wr_papers(args.outfile_append, args.pmids, 'a')
-            else:
-                loader.wr_papers(args.outfile, args.pmids, 'w')
+                loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
+            loader.wr_papers(outfile, pmid2ntpaper, mode)
+
+    @staticmethod
+    def _get_mode(args):
+        """Given arguments, return outfile"""
+        if args.outfile is not None:
+            return 'w'
+        if args.outfile_append is not None:
+            return 'a'
+        return 'w'
+
+    @staticmethod
+    def _get_outfile(args):
+        """Given arguments, return outfile"""
+        if args.outfile is not None:
+            return args.outfile
+        if args.outfile_append is not None:
+            return args.outfile_append
+        return None
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

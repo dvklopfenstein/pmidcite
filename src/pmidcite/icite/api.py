@@ -110,7 +110,7 @@ class NIHiCiteAPI:
         """Given a PMID json dict, return a NIHiCiteEntry object"""
         file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
         adj_dct = self._adjust_jsondct(json_dct)
-        self.wrpy(file_pmid, adj_dct)
+        self._wrpy(file_pmid, adj_dct)
         return NIHiCiteEntry(adj_dct)
 
     def _adjust_jsondct(self, json_dct):
@@ -133,7 +133,7 @@ class NIHiCiteAPI:
                 lst.append((key, val))
         return cx.OrderedDict(lst)
 
-    def wrpy(self, fout_py, dct):
+    def _wrpy(self, fout_py, dct):
         """Write NIH iCite to a Python module"""
         with open(fout_py, 'w') as prt:
             self.prt_dct(dct, prt)
