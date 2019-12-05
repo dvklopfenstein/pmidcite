@@ -3,6 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import os
 import sys
 import argparse
 
@@ -38,6 +39,9 @@ class NIHiCiteArgs:
             '-a', '--outfile_append',
             help='Append current report to the user-specified file')
         parser.add_argument(
+            '-i', '--infile', nargs='*',
+            help='Read PMIDs from a file containing one PMID per line')
+        parser.add_argument(
             '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a file')
         parser.add_argument(
@@ -56,27 +60,53 @@ class NIHiCiteArgs:
         """Run the argparser"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
+        print(args)
         if args.generate_rcfile:
             self.cfgparser.wr_rc()
             return
-        if not args.pmids:
+        pmids = self._get_pmids(args)
+        if not pmids:
             argparser.print_help()
             return
-        print(args)
-        print(args.pmids)
-        kws = {}  # TBD
+        print(pmids)
+        kws = {}  # TBD NIHiCiteArgs
         api = NIHiCiteAPI(args.dir_pmid_py, **kws)
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
-        print('NIHiCiteArgs WWWWWWWWWWWWWWWW', kws)
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)
-        pmid2ntpaper = loader.run_icite_pmids(args.pmids)
+        pmid2ntpaper = loader.run_icite_pmids(pmids)
         if outfile is None:
             loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
         else:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
             loader.wr_papers(outfile, pmid2ntpaper, mode)
+
+    def _get_pmids(self, args):
+        """Get PMIDs from the command line or from a file"""
+        if not args.pmids and not args.infile:
+            return []
+        pmids = list(args.pmids)
+        for fin in args.infile:
+            if os.path.exists(fin):
+                pmids.extend(self._read_pmids(fin))
+            else:
+                print('  MISSING: {FILE}'.format(FILE=fin))
+        return pmids
+
+
+    @staticmethod
+    def _read_pmids(fin):
+        """Read PMIDs from a file. One PMID per line."""
+        pmids = []
+        with open(fin) as ifstrm:
+            for line in ifstrm:
+                line = line.strip()
+                if line.isdigit():
+                    pmids.append(int(line))
+            print('  {N} PMIDs READ: {FILE}'.format(
+                N=len(pmids), FILE=fin))
+        return pmids
 
     @staticmethod
     def _get_mode(args):
