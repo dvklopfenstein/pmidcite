@@ -87,11 +87,12 @@ class NIHiCiteArgs:
         if not args.pmids and not args.infile:
             return []
         pmids = list(args.pmids)
-        for fin in args.infile:
-            if os.path.exists(fin):
-                pmids.extend(self._read_pmids(fin))
-            else:
-                print('  MISSING: {FILE}'.format(FILE=fin))
+        if args.infile:
+            for fin in args.infile:
+                if os.path.exists(fin):
+                    pmids.extend(self._read_pmids(fin))
+                else:
+                    print('  MISSING: {FILE}'.format(FILE=fin))
         return pmids
 
 
