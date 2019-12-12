@@ -30,7 +30,7 @@ class NIHiCitePaper:
         """Print summary of paper"""
         if self.name:
             prt.write('NAME: {NAME}\n'.format(NAME=self.name))
-        prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
+        prt.write('USR {iCite}\n'.format(iCite=self.str_line()))
         if self.cited_by:
             prt.write('{N} of {M} citations have citations:\n'.format(
                 N=len([1 for o in self.cited_by if o.dct['cited_by']]),

@@ -1,5 +1,6 @@
 # PMID Cite
 Traverse [**NIH iCite**](https://icite.od.nih.gov/) citations and references and download 
+[**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) summaries from the command line
 
 ## PMID Cite feature summary
   * Traverse with *Cited by*

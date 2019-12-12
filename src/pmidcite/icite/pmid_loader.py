@@ -77,7 +77,7 @@ class NIHiCiteLoader:
         pmids = set()
         with open(pmidcite_txt) as ifstrm:
             for line in ifstrm:
-                if line[:4] == 'TOP ':
+                if line[:4] == 'USR ':
                     flds = line.split()
                     assert flds[2].isdigit(), flds
                     pmids.add(int(flds[2]))
