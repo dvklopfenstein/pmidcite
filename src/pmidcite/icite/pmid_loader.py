@@ -77,7 +77,7 @@ class NIHiCiteLoader:
         pmids = set()
         with open(pmidcite_txt) as ifstrm:
             for line in ifstrm:
-                if line[:4] == 'USR ':
+                if line[:4] == 'TOP ':
                     flds = line.split()
                     assert flds[2].isdigit(), flds
                     pmids.add(int(flds[2]))
@@ -119,7 +119,7 @@ class NIHiCiteLoader:
         paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
         return paper
 
-    def dnld_assc_pmids(self, icite):
+    def dnld_assc_pmids(self, icite, prt=sys.stdout):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
         ## print('AAAAAAAAAAAAAAAA')
@@ -127,13 +127,13 @@ class NIHiCiteLoader:
             return []
         ## print('BBBBBBBBBBBBBBBB')
         if self.dnld_force:
-            return self.api.dnld_icites(pmids_assc)
+            return self.api.dnld_icites(pmids_assc, prt)
         ## print('CCCCCCCCCCCCCCCC')
         pmids_missing = self._get_pmids_missing(pmids_assc)
         ## print('{N} PMIDs assc'.format(N=len(pmids_assc)))
         ## print('{N} PMIDs missing'.format(N=len(pmids_missing)))
         if pmids_missing:
-            objs_missing = self.api.dnld_icites(pmids_missing)
+            objs_missing = self.api.dnld_icites(pmids_missing, prt)
             pmids_load = pmids_assc.difference(pmids_missing)
             objs_dnlded = self.load_icites(pmids_load)
             ## print('{N} PMIDs loaded'.format(N=len(pmids_load)))
@@ -170,11 +170,11 @@ class NIHiCiteLoader:
                 pmids_missing.add(pmid_cur)
         return pmids_missing
 
-    def dnld_icite_pmid(self, pmid):
+    def dnld_icite_pmid(self, pmid, prt=sys.stdout):
         """Download NIH iCite data for requested PMIDs"""
         file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
         if self.dnld_force or not os.path.exists(file_pmid):
-            iciteobj = self.api.dnld_icite(pmid)
+            iciteobj = self.api.dnld_icite(pmid, prt)
             if iciteobj is not None:
                 return iciteobj
         return self.load_icite(file_pmid)  # NIHiCiteEntry
