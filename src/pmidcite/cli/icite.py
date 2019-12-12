@@ -68,9 +68,9 @@ class NIHiCiteArgs:
         if not pmids:
             argparser.print_help()
             return
-        print(pmids)
         kws = {}  # TBD NIHiCiteArgs
-        api = NIHiCiteAPI(args.dir_pmid_py, **kws)
+        log = None if args.quiet else sys.stdout
+        api = NIHiCiteAPI(args.dir_pmid_py, log, **kws)
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)

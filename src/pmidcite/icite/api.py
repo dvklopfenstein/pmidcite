@@ -43,8 +43,9 @@ class NIHiCiteAPI:
     flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
     yes_no = {'Yes':True, 'No':False}
 
-    def __init__(self, dirpy_dnld='.', **kws):
+    def __init__(self, dirpy_dnld='.', prt=sys.stdout, **kws):
         self.dir_dnld = dirpy_dnld
+        self.prt = prt
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
 
     def dnld_icites(self, pmids):
@@ -55,7 +56,7 @@ class NIHiCiteAPI:
         if num_pmids > 1000:
             print('{N} pmids > 1000'.format(N=num_pmids))
             pmids = sorted(p for p in pmids if isinstance(p, int))
-            print(pmids)
+            ## print(pmids)
             print('**WARNING: USING pmids[:900]')
             pmids = pmids[:900]
         ## assert len(pmids) <= 1000, '{N} pmids > 1000'.format(N=len(pmids))
@@ -137,7 +138,8 @@ class NIHiCiteAPI:
         """Write NIH iCite to a Python module"""
         with open(fout_py, 'w') as prt:
             self.prt_dct(dct, prt)
-            print('  WROTE: {PY}'.format(PY=fout_py))
+            if self.prt:
+                self.prt.write('  WROTE: {PY}\n'.format(PY=fout_py))
 
     @staticmethod
     def prt_dct(dct, prt=sys.stdout):
