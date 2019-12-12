@@ -1,15 +1,16 @@
 # PMID Cite
 Traverse [**NIH iCite**](https://icite.od.nih.gov/) citations and references and download 
-[**PubMed**](https://pubmed.ncbi.nlm.nih.gov/) summaries from the command line.
 
-  * Get the number of times a paper has been "*Cited by*"
-  * Traverse using "Cited by N" information
-  * Traverse using "Referenced by N" information
-  * Sort the results by year, citation count, or both
-  * See lists  of publications, including their citation count
+## PMID Cite feature summary
+  * Traverse with *Cited by*
+  * Traverse with *References*
+  * *Cited by N* information
+  * *N References* information
+  * Sort results by year
+  * Sort results by *Cited by N*
+  * Display author papers
 
- * Crawler-based search engines function differently than bibliographic databases which have a curated entries
-
+## PMID Cite feature quick start
 
 
 ## Sorting
