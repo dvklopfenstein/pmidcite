@@ -104,7 +104,8 @@ class NIHiCiteLoader:
     def run_icite_pmids(self, pmids):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         pmid_paper = []
-        for pmid in pmids:
+        for idx, pmid in enumerate(pmids):
+            print('HEY PMID:', idx, pmid)
             paper = self.run_icite_pmid(pmid)
             pmid_paper.append((pmid, paper))
         return cx.OrderedDict(pmid_paper)  # pmid2ntpaper
@@ -115,7 +116,7 @@ class NIHiCiteLoader:
         if citeobj_top is None:
             print('No results found: {PMID} {NAME}'.format(PMID=pmid_top, NAME=name))
             return None
-        self.dnld_assc_pmids(citeobj_top)
+        ## self.dnld_assc_pmids(citeobj_top)
         paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
         return paper
 

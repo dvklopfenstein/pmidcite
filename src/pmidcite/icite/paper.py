@@ -18,6 +18,7 @@ class NIHiCitePaper:
         self.dirpy = dirpy
         self.name = name
         self.icite = NIHiCiteEntry(self.load_pmid(pmid))
+        print('VVVVVVVVVVVVVVV', self.icite)
         self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
         self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'])
         self.references = self.load_pmids(self.icite.dct['references'])
@@ -39,8 +40,10 @@ class NIHiCitePaper:
         if self.cited_by_clin:
             prt.write('{N} Cited by Clinical papers:\n'.format(N=len(self.cited_by_clin)))
         self.prt_list(self.cited_by_clin, 'CLI', prt, sortby)
-        if rpt_references:
-            prt.write('{N} References:\n'.format(N=len(self.references)))
+        if rpt_references and self.references:
+            prt.write('{N} of {M} References downloaded:\n'.format(
+                N=len(self.references),
+                M=len(self.icite.dct['references'])))
             self.prt_list(self.references, 'REF', prt, sortby)
 
     @staticmethod
