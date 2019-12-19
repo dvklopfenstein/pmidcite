@@ -5,7 +5,7 @@ Prefer:
   * citation data from NIH's [**iCite**](https://icite.od.nih.gov)    
 
 rather than:
-  * Google Scholar    
+  * **Google Scholar**    
 
 if you work on the command-line and your research involves biomedical or chemical data.
 
