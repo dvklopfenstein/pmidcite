@@ -10,26 +10,38 @@ import sys
 class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    pat1 = ('{year} {pmid:8} {aart_type} {aart_animal} '
-            '{citation_count:5} {clin:2} {references:3} '
-            'au[{A:02}]({author1}) {title}'
-           )
+    pat_str = ('{year} {pmid:8} {aart_type} {aart_animal} '
+               '{citation_count:5} {clin:2} {references:3} '
+               'au[{A:02}]({author1}) {title}'
+              )
+    pat_md = ('{year}|{pmid:8}|{aart_type}|{aart_animal}|'
+              '{citation_count:>5}|{clin:>4}|{references:>4}|'
+              '{A:2}|{author1:16}|{title}'
+             )
 
     associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
 
     def __init__(self, icite_dct):
         self.dct = icite_dct
 
+    def str_md(self):
+        """Return one-line string describing NIH iCite entry"""
+        return self._str(self.pat_md)
+
     def __str__(self):
         """Return one-line string describing NIH iCite entry"""
+        return self._str(self.pat_str)
+
+    def _str(self, pat):
+        """Return one-line string describing NIH iCite entry"""
         dct = self.dct
-        return self.pat1.format(
+        return pat.format(
             pmid=dct['pmid'],
             year=dct['year'],
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_animal(),
-            clin=len(dct['cited_by_clin']),
             citation_count=dct['citation_count'],
+            clin=len(dct['cited_by_clin']),
             references=len(dct['references']),
             A=len(dct['authors']),
             author1=dct['authors'][0] if dct['authors'] else '',

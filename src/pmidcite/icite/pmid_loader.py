@@ -20,7 +20,7 @@ class NIHiCiteLoader:
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
         self.dir_dnld = api.dir_dnld
-        self.api = api
+        self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, pmid2ntpaper, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -35,16 +35,19 @@ class NIHiCiteLoader:
         print('  {WR}: {TXT}'.format(
             WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
-    def prt_papers(self, pmid2ntpaper, prt=sys.stdout):
+    def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""
         for pmid, paper in pmid2ntpaper.items():
-            self.prt_paper(pmid, paper, pmid, prt)
+            self.prt_paper(pmid, paper, pmid, prt, prt_assc_pmids)
 
-    def prt_paper(self, pmid, paper, name, prt=sys.stdout):
+    def prt_paper(self, pmid, paper, name, prt=sys.stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
-            paper.prt_summary(prt, self.rpt_references, 'cite')
-            prt.write('\n')
+            if prt_assc_pmids:
+                paper.prt_summary(prt, self.rpt_references, 'cite')
+                prt.write('\n')
+            else:
+                prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
         else:
             prt.write('No iCite results found: {PMID} {NAME}\n\n'.format(
                 PMID=pmid, NAME=name if name is not None else ''))
@@ -85,38 +88,39 @@ class NIHiCiteLoader:
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
-        name2ntpaper = self.run_icite_name2pmid(name2pmid)
+        name2ntpaper = self._run_icite_name2pmid(name2pmid)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
                     self.prt_paper(ntpaper.pmid, ntpaper.paper, name, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
-    def run_icite_name2pmid(self, name2pmid):
+    def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
-            paper = self.run_icite_pmid(pmid, name)
+            paper = self._run_icite_pmid(pmid, name, dnld_assc_pmids)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def run_icite_pmids(self, pmids):
+    def run_icite_pmids(self, pmids, dnld_assc_pmids):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         pmid_paper = []
         for idx, pmid in enumerate(pmids):
-            print('HEY PMID:', idx, pmid)
-            paper = self.run_icite_pmid(pmid)
+            ## print('HEY PMID:', idx, pmid)
+            paper = self._run_icite_pmid(pmid, '', dnld_assc_pmids)
             pmid_paper.append((pmid, paper))
         return cx.OrderedDict(pmid_paper)  # pmid2ntpaper
 
-    def run_icite_pmid(self, pmid_top, name=''):
+    def _run_icite_pmid(self, pmid_top, name, dnld_assc_pmids):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
         if citeobj_top is None:
             print('No results found: {PMID} {NAME}'.format(PMID=pmid_top, NAME=name))
             return None
-        ## self.dnld_assc_pmids(citeobj_top)
+        if dnld_assc_pmids:
+            self.dnld_assc_pmids(citeobj_top)
         paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
         return paper
 

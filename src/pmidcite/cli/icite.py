@@ -36,14 +36,20 @@ class NIHiCiteArgs:
             '-o', '--outfile',
             help='Write current citeation report to an ASCII text file')
         parser.add_argument(
+            '-s', '--succinct', action='store_true',
+            help="Print one line for each PMID provided by user. Don't add lines per cite or ref")
+        parser.add_argument(
+            '-q', '--quiet', action='store_true',
+            help='Quiet mode; Do not echo the paper report to screen')
+        parser.add_argument(
             '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
             help='Print the list of citations, but not the list of references')
         parser.add_argument(
-            '-q', '--quiet', action='store_true',
-            help='Quiet mode; Do not echo the paper report to screen')
+            '--md', action='store_true',
+            help='Print using markdown table format')
         parser.add_argument(
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
@@ -58,12 +64,15 @@ class NIHiCiteArgs:
 
     def run(self):
         """Run the argparser"""
+        # Get arguments
         argparser = self.get_argparser()
         args = argparser.parse_args()
         print(args)
+        # Print rcfile initialization file
         if args.generate_rcfile:
             self.cfgparser.wr_rc()
             return
+        # Get PMIDs
         pmids = self._get_pmids(args)
         if not pmids:
             argparser.print_help()
@@ -74,9 +83,10 @@ class NIHiCiteArgs:
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)
-        pmid2ntpaper = loader.run_icite_pmids(pmids)
+        prt_verbose = not args.succinct
+        pmid2ntpaper = loader.run_icite_pmids(pmids, prt_verbose)
         if outfile is None:
-            loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
+            loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
@@ -94,7 +104,6 @@ class NIHiCiteArgs:
                 else:
                     print('  MISSING: {FILE}'.format(FILE=fin))
         return pmids
-
 
     @staticmethod
     def _read_pmids(fin):
