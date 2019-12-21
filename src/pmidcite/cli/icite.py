@@ -27,23 +27,17 @@ class NIHiCiteArgs:
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
         parser.add_argument(
-            '--dir_pmid_py', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_py'],
-            help='Directory for PMID iCite data stored in Python modules')
-        parser.add_argument(
-            '--dir_pmid_txt', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_txt'],
-            help='Directory for PMID data, including the abstract stored in a text file')
-        parser.add_argument(
-            '-o', '--outfile',
-            help='Write report to a ASCII text file')
-        parser.add_argument(
-            '-a', '--outfile_append',
-            help='Append current report to the user-specified file')
-        parser.add_argument(
             '-i', '--infile', nargs='*',
             help='Read PMIDs from a file containing one PMID per line')
         parser.add_argument(
+            '-a', '--outfile_append',
+            help='Append current citation report to an ASCII text file. Create if needed.')
+        parser.add_argument(
+            '-o', '--outfile',
+            help='Write current citeation report to an ASCII text file')
+        parser.add_argument(
             '-f', '--force_download', action='store_true',
-            help='Download PMID iCite information to a file')
+            help='Download PMID iCite information to a Python file')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
             help='Print the list of citations, but not the list of references')
@@ -54,6 +48,12 @@ class NIHiCiteArgs:
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
                  'current configuration.')
+        parser.add_argument(
+            '--dir_pmid_py', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_py'],
+            help='Directory for PMID iCite data stored in Python modules')
+        parser.add_argument(
+            '--dir_pmid_txt', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_txt'],
+            help='Directory for PMID data, including the abstract stored in a text file')
         return parser
 
     def run(self):
