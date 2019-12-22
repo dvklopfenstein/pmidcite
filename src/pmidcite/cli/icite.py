@@ -12,7 +12,7 @@ from pmidcite.icite.pmid_loader import NIHiCiteLoader
 from pmidcite.cfg import Cfg
 
 
-class NIHiCiteArgs:
+class NIHiCiteCli:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
     def __init__(self):
@@ -22,7 +22,6 @@ class NIHiCiteArgs:
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         self.cfgparser.rd_rc()
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
-        print(self.cfgparser.cfgfile)
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
@@ -62,10 +61,9 @@ class NIHiCiteArgs:
             help='Directory for PMID data, including the abstract stored in a text file')
         return parser
 
-    def run(self):
-        """Run the argparser"""
+    def run(self, argparser):
+        """Run iCite/PubMed"""
         # Get arguments
-        argparser = self.get_argparser()
         args = argparser.parse_args()
         print(args)
         # Print rcfile initialization file
@@ -73,11 +71,11 @@ class NIHiCiteArgs:
             self.cfgparser.wr_rc()
             return
         # Get PMIDs
-        pmids = self._get_pmids(args)
+        pmids = self.get_pmids(args)
         if not pmids:
             argparser.print_help()
             return
-        kws = {}  # TBD NIHiCiteArgs
+        kws = {}  # TBD NIHiCiteCli
         log = None if args.quiet else sys.stdout
         api = NIHiCiteAPI(args.dir_pmid_py, log, **kws)
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
@@ -92,7 +90,7 @@ class NIHiCiteArgs:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
             loader.wr_papers(outfile, pmid2ntpaper, mode)
 
-    def _get_pmids(self, args):
+    def get_pmids(self, args):
         """Get PMIDs from the command line or from a file"""
         if not args.pmids and not args.infile:
             return []

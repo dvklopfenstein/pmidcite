@@ -49,6 +49,8 @@ class Cfg(object):
 
     def rd_rc(self):
         """Read a configuration file"""
+        if os.path.exists(self.cfgfile):
+            print('  READ: {CFG}'.format(CFG=self.cfgfile))
         return self.cfgparser.read(self.cfgfile)
 
     def wr_rc(self, force=False):

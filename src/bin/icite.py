@@ -4,13 +4,14 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-from pmidcite.cli.icite import NIHiCiteArgs  # get_argparser
+from pmidcite.cli.icite import NIHiCiteCli  # get_argparser
 
 
 def main():
     """Print lists of pubs in formation"""
-    argobj = NIHiCiteArgs()
-    argobj.run()
+    argobj = NIHiCiteCli()
+    parseargs = argobj.get_argparser()
+    argobj.run(parseargs)
 
 
 if __name__ == '__main__':
