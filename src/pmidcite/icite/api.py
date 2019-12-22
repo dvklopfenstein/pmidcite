@@ -78,7 +78,8 @@ class NIHiCiteAPI:
 
     def dnld_icite(self, pmid):
         """Run iCite on given PubMed IDs"""
-        rsp = requests.get('/'.join([self.url_base, str(pmid)]))
+        cmd = '/'.join([self.url_base, str(pmid)])
+        rsp = requests.get(cmd)
         if rsp.status_code == 200:
             json_dct = rsp.json()
             if json_dct is not None:

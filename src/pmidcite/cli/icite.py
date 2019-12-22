@@ -9,14 +9,14 @@ import argparse
 
 from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_loader import NIHiCiteLoader
-from pmidcite.cfgparser.icite import NIHiCiteCfg
+from pmidcite.cfg import Cfg
 
 
 class NIHiCiteArgs:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
     def __init__(self):
-        self.cfgparser = NIHiCiteCfg()
+        self.cfgparser = Cfg(chk=False)
 
     def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
@@ -55,10 +55,10 @@ class NIHiCiteArgs:
             help='Generate a sample configuration file according to the '
                  'current configuration.')
         parser.add_argument(
-            '--dir_pmid_py', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_py'],
+            '--dir_pmid_py', default=self.cfgparser.cfgparser['pmidcite']['dir_pmid_py'],
             help='Directory for PMID iCite data stored in Python modules')
         parser.add_argument(
-            '--dir_pmid_txt', default=self.cfgparser.cfgparser['DEFAULT']['dir_pmid_txt'],
+            '--dir_pubmed_txt', default=self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt'],
             help='Directory for PMID data, including the abstract stored in a text file')
         return parser
 

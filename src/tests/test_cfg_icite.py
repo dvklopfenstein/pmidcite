@@ -2,8 +2,7 @@
 """Test reading and writing configuration files"""
 
 import os
-from pmidcite.cfgparser.icite import NIHiCiteCfg
-from pmidcite.cfgparser.eutils import EUtilsCfg
+from pmidcite.cfg import Cfg
 
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../..")
 
@@ -12,29 +11,39 @@ REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../..")
 def test_cfg_icite():
     """Test writing and reading the configuration file"""
     # NIH iCite configuration file
-    obj = NIHiCiteCfg()
     file_cfg = os.path.join(REPO, 'test_icite.cfg')
-    obj.cfgfile = file_cfg
+
+    os.system('rm -f {CFG}'.format(CFG=file_cfg))
+
+    # Check that test configuration file was removed
+    obj = Cfg()
+    obj.set_cfg(file_cfg)
+    assert not obj.rd_rc()
 
     # Write configuration file
-    os.system('rm -f {CFG}'.format(CFG=file_cfg))
-    print(obj.rd_rc())
+    os.system('cat {CFG}'.format(CFG=file_cfg))
     assert obj.wr_rc()
+    os.system('cat {CFG}'.format(CFG=file_cfg))
     assert os.path.exists(file_cfg)
     assert not obj.wr_rc()
 
     # Read configuration file
     cfg = obj.rd_rc()
-    assert next(iter(cfg)) == file_cfg
+    print('cfg:', cfg)
+    assert next(iter(cfg)) == file_cfg, 'UNEXPECTED FILENAME: EXP({E}) ACT({A})'.format(
+        E=file_cfg, A=next(iter(cfg)))
 
-    assert obj.cfgparser['DEFAULT']['dir_pmid_py'] == NIHiCiteCfg.dfltdct['DEFAULT']['dir_pmid_py']
-    assert obj.cfgparser['DEFAULT']['dir_pmid_txt'] == NIHiCiteCfg.dfltdct['DEFAULT']['dir_pmid_txt']
+    assert obj.cfgparser['pmidcite']['dir_pmid_py'] == Cfg.dfltdct['pmidcite']['dir_pmid_py'], \
+        'dir_pmid_py: EXP({E}) ACT({A})'.format(
+            A=obj.cfgparser['pmidcite']['dir_pmid_py'], E=Cfg.dfltdct['pmidcite']['dir_pmid_py'])
+    assert obj.cfgparser['pmidcite']['dir_pubmed_txt'] == Cfg.dfltdct['pmidcite']['dir_pubmed_txt']
 
 def test_cfg_eutils():
     """Test writing and reading the configuration file"""
     # NIH iCite configuration file
     file_cfg = os.path.join(REPO, 'test_eutils.cfg')
-    obj = EUtilsCfg(file_cfg, chk=False)
+    obj = Cfg()
+    obj.set_cfg(file_cfg)
 
     # Write configuration file
     os.system('rm -f {CFG}'.format(CFG=file_cfg))
@@ -45,9 +54,9 @@ def test_cfg_eutils():
     # Read configuration file
     cfg = obj.rd_rc()
     assert next(iter(cfg)) == file_cfg
-    assert obj.cfgparser['DEFAULT']['email'] == EUtilsCfg.dfltdct['DEFAULT']['email']
-    assert obj.cfgparser['DEFAULT']['apikey'] == EUtilsCfg.dfltdct['DEFAULT']['apikey']
-    assert obj.cfgparser['DEFAULT']['tool'] == EUtilsCfg.dfltdct['DEFAULT']['tool']
+    assert obj.cfgparser['pmidcite']['email'] == Cfg.dfltdct['pmidcite']['email']
+    assert obj.cfgparser['pmidcite']['apikey'] == Cfg.dfltdct['pmidcite']['apikey']
+    assert obj.cfgparser['pmidcite']['tool'] == Cfg.dfltdct['pmidcite']['tool']
 
 
 if __name__ == '__main__':
