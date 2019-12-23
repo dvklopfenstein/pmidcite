@@ -53,12 +53,12 @@ class NIHiCiteCli:
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
                  'current configuration.')
-        parser.add_argument(
-            '--dir_pmid_py', default=self.cfgparser.cfgparser['pmidcite']['dir_pmid_py'],
-            help='Directory for PMID iCite data stored in Python modules')
-        parser.add_argument(
-            '--dir_pubmed_txt', default=self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt'],
-            help='Directory for PMID data, including the abstract stored in a text file')
+        #### parser.add_argument(
+        ####     '--dir_pmid_py', default=self.cfgparser.cfgparser['pmidcite']['dir_pmid_py'],
+        ####     help='Directory for PMID iCite data stored in Python modules')
+        #### parser.add_argument(
+        ####     '--dir_pubmed_txt', default=self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt'],
+        ####     help='Directory for PMID data, including the abstract stored in a text file')
         return parser
 
     def run(self, argparser):
@@ -77,7 +77,8 @@ class NIHiCiteCli:
             return
         kws = {}  # TBD NIHiCiteCli
         log = None if args.quiet else sys.stdout
-        api = NIHiCiteAPI(args.dir_pmid_py, log, **kws)
+        dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
+        api = NIHiCiteAPI(dir_pmid_py, log, **kws)
         loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)
