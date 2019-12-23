@@ -65,7 +65,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed"""
         # Get arguments
         args = argparser.parse_args()
-        print(args)
+        print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.cfgparser.wr_rc()
@@ -83,7 +83,7 @@ class NIHiCiteCli:
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)
         prt_verbose = not args.succinct
-        pmid2ntpaper = loader.run_icite_pmids(pmids, prt_verbose)
+        pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose)
         if outfile is None:
             loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:

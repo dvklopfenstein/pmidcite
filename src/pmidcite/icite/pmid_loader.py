@@ -88,7 +88,7 @@ class NIHiCiteLoader:
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
-        name2ntpaper = self._run_icite_name2pmid(name2pmid)
+        name2ntpaper = self._run_icite_name2pmid(name2pmid, dnld_assc_pmids=False)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
@@ -100,20 +100,20 @@ class NIHiCiteLoader:
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
-            paper = self._run_icite_pmid(pmid, name, dnld_assc_pmids)
+            paper = self._get_paper(pmid, name, dnld_assc_pmids)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def run_icite_pmids(self, pmids, dnld_assc_pmids):
+    def get_pmid2paper(self, pmids, dnld_assc_pmids):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         pmid_paper = []
-        for idx, pmid in enumerate(pmids):
+        for _, pmid in enumerate(pmids):
             ## print('HEY PMID:', idx, pmid)
-            paper = self._run_icite_pmid(pmid, '', dnld_assc_pmids)
+            paper = self._get_paper(pmid, '', dnld_assc_pmids)
             pmid_paper.append((pmid, paper))
         return cx.OrderedDict(pmid_paper)  # pmid2ntpaper
 
-    def _run_icite_pmid(self, pmid_top, name, dnld_assc_pmids):
+    def _get_paper(self, pmid_top, name, dnld_assc_pmids):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
         if citeobj_top is None:
