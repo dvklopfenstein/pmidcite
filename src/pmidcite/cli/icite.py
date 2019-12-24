@@ -41,6 +41,9 @@ class NIHiCiteCli:
             '-q', '--quiet', action='store_true',
             help='Quiet mode; Do not echo the paper report to screen')
         parser.add_argument(
+            '-p', '--pubmed', action='store_true',
+            help='Download PubMed entry containing title, abstract, etc.')
+        parser.add_argument(
             '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file')
         parser.add_argument(
@@ -61,7 +64,11 @@ class NIHiCiteCli:
         ####     help='Directory for PMID data, including the abstract stored in a text file')
         return parser
 
-    def run(self, argparser):
+    def cli(self, argparser):
+        """Run iCite/PubMed"""
+        pmids = self.run_icite(argparser)
+
+    def run_icite(self, argparser):
         """Run iCite/PubMed"""
         # Get arguments
         args = argparser.parse_args()
@@ -69,12 +76,12 @@ class NIHiCiteCli:
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.cfgparser.wr_rc()
-            return
-        # Get PMIDs
+            return []
+        # Get user-specified PMIDs
         pmids = self.get_pmids(args)
         if not pmids:
             argparser.print_help()
-            return
+            return pmids
         kws = {}  # TBD NIHiCiteCli
         log = None if args.quiet else sys.stdout
         dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
@@ -90,6 +97,7 @@ class NIHiCiteCli:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
             loader.wr_papers(outfile, pmid2ntpaper, mode)
+        return pmids
 
     def get_pmids(self, args):
         """Get PMIDs from the command line or from a file"""

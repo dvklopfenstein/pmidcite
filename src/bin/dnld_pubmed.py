@@ -7,7 +7,7 @@
 
 """
 
-__copyright__ = "Copyright (C) 2019-2020, DV Klopfenstein. All rights reserved."
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
 import sys
@@ -52,4 +52,4 @@ def _get_pmids():
 if __name__ == '__main__':
     main()
 
-# Copyright (C) 2019-2020, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

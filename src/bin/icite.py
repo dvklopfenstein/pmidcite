@@ -11,7 +11,7 @@ def main():
     """Print lists of pubs in formation"""
     argobj = NIHiCiteCli()
     parseargs = argobj.get_argparser()
-    argobj.run(parseargs)
+    argobj.cli(parseargs)
 
 
 if __name__ == '__main__':
