@@ -9,9 +9,7 @@ from pmidcite.cli.icite import NIHiCiteCli  # get_argparser
 
 def main():
     """Print lists of pubs in formation"""
-    argobj = NIHiCiteCli()
-    parseargs = argobj.get_argparser()
-    argobj.cli(parseargs)
+    NIHiCiteCli().cli()
 
 
 if __name__ == '__main__':

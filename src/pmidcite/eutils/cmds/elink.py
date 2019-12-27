@@ -19,7 +19,7 @@ class ELink(CommandBase):
         super(ELink, self).__init__(**kws_base)
 
     def elink(self, database_from, linkname, webenv, querykey, num_fetches):
-        """EFetch records found for PMIIDs, page by page"""
+        """EFetch records found for PMIDs, page by page"""
         ## QueryKey(     1) EFetching(database=pubmed) up to    10 records, starting at 0; ABSTRACT
         ## QueryKey(     1) EFetching(database=pubmed) up to    10 records, starting at 10; ABSTRACT
         ## msg_fmt = ('  QueryKey({:>6}) EFetching(database={}) up to {:5} records, '

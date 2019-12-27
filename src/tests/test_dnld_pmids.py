@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Test downloading PMIDs"""
 
+from pmidcite.cfg import Cfg
 from pmidcite.eutils.cmds.base import EntrezUtilities
 from tests.pmids import PMIDS
 
@@ -8,7 +9,8 @@ from tests.pmids import PMIDS
 def test_dnld_pmids():
     """Test downloading PMIDs"""
     pmids1 = PMIDS[:97]
-    eutils = EntrezUtilities()
+    cfg = Cfg()
+    eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
     rsp_epost = eutils.epost('pubmed', pmids1, step=10)
     print(rsp_epost)
     #querykey_max = rsp_epost['querykey']

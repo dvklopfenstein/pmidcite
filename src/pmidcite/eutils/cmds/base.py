@@ -34,7 +34,7 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 from urllib.error import URLError as _URLError
 from urllib.error import HTTPError as _HTTPError
-from pmidcite.cfg import Cfg
+#### from pmidcite.cfg import Cfg
 
 
 # pylint: disable=useless-object-inheritance
@@ -47,14 +47,14 @@ class EntrezUtilities(object):
     max_tries = 3
     sleep_between_tries = 15
 
-    def __init__(self, log=sys.stdout):
+    def __init__(self, email, apikey, tool, log=sys.stdout):
         # Cfg reads your email, apikey, and tool from file, .eutilsrc
         # To prevent your API key from being public,
         # don't store .eutilsrc in a public repo.
-        _cfg = Cfg()
-        self.email = _cfg.get_email()
-        self.api_key = _cfg.get_apikey()
-        self.tool = _cfg.get_tool()
+        #### _cfg = Cfg()
+        self.email = email      # _cfg.get_email()
+        self.api_key = apikey   # _cfg.get_apikey()
+        self.tool = tool        # _cfg.get_tool()
         self.previous = 0
         self.log = log
 

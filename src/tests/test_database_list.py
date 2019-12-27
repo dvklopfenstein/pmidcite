@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+"""Test retreiving the names of the Entrez databases"""
 
 import sys
+from pmidcite.cfg import Cfg
 from pmidcite.eutils.cmds.base import EntrezUtilities
 
-
+#pylint: disable=line-too-long
 def test_database_list(einfo_each_db=False):
     """Test retreiving the names of the Entrez databases"""
-    eutils = EntrezUtilities()
+    cfg = Cfg()
+    eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
     dbs = eutils.get_database_list()
 
     if einfo_each_db:
