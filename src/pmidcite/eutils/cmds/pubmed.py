@@ -14,7 +14,7 @@ from pmidcite.eutils.cmds.base import EntrezUtilities
 class PubMed(EntrezUtilities):
     """Fetch and write text"""
 
-    params = {
+    efetch_params = {
         'db': 'pubmed',
         'rettype': 'medline',
         'retmode': 'text',
@@ -28,46 +28,55 @@ class PubMed(EntrezUtilities):
         pmid_nt_list = self._get_pmid_nt_list(pmids, force_download, dir_pubmed)
         for ntd in pmid_nt_list:
             print('IIIIIIIIIIIIIIIIIIIII {PMID:12} {NT}'.format(PMID=ntd.PMID, NT=ntd))
-        self._dnld_pubmed(pmid_nt_list)
 
-    # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
-    # ----- ----------------- ------------------      ------------
-    #     5                 2                  3                 3
-    #     5                 2                  1                 5
+        # Run EPost
+        pmids = [nt.PMID for nt in pmid_nt_list]
+        epost_rsp = self.epost('pubmed', pmids, num_ids_p_epost=10)
 
-    #def _dnld_pubmed(self, pmid_nt_list, num_pmids_p_efetch=1, num_pmids_p_epost=2):
-    def _dnld_pubmed(self, pmid_nt_list, num_pmids_p_efetch=1, num_pmids_p_epost=2):
+        # Set EFetch params
+        efetch_params = dict(self.efetch_params)
+        efetch_params['webenv'] = epost_rsp['webenv']
+        efetch_params['retmax'] = 1  # num_pmids_p_efetch
+
+        # Run EFetches
+        self.dnld_pubmed(epost_rsp, efetch_params, len(pmids))
+
+    def dnld_pubmed(self, epost_rsp, efetch_params, num_pmids):
         """Download and write PubMed entries, given PMIDs and assc info"""
-        # retstart=0&retmax=1&query_key=1
-        # retstart=1&retmax=1&query_key=1
-        # retstart=0&retmax=1&query_key=2
-        # [30066183, 31196170, 30854042]
-        pmids_all = [nt.PMID for nt in pmid_nt_list]
-        num_pmids = len(pmids_all)
-        # post: {'querykey': 1, 'webenv': 'NCID_1_1510..., '}
-
-        # DEFN num_pmids_p_epost: number of PMIDs in each epost querykey
-        post = self.epost('pubmed', pmids_all, step=num_pmids_p_epost)
-        querykey_max = post['querykey']
-
-        # post = {'querykey':3, 'webenv':'NCID_1_98788585_130.14.18.97_9001_1577436192_2019651544_0MetA0_S_MegaStore'}
-        params = dict(self.params)
-        params['webenv'] = post['webenv']
-        params['retmax'] = num_pmids_p_efetch
-        num_pmids_p_epost_cur = num_pmids_p_epost
-        for querykey_cur, pmids_cur in enumerate(post['qkey2ids'], 1):
+        # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
+        # ----- ----------------- ------------------      ------------
+        #     5                 2                  3                 3
+        #     5                 2                  1                 5
+        querykey_max = epost_rsp['querykey']
+        num_pmids_p_efetch = efetch_params['retmax']
+        pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
+        pat_val = {'P':epost_rsp['num_ids_p_epost'], 'F':num_pmids_p_efetch, 'Qmax':querykey_max}
+        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
             if querykey_cur == querykey_max:
-                num_pmids_p_epost_cur = num_pmids%num_pmids_p_epost
-            print('QUERYKEY ----------- {N} PMIDs'.format(N=num_pmids), querykey_cur)
+                num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
-                print('QUERYKEY({Q}) START({S}) ----------'.format(Q=querykey_cur, S=start))
-                rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey_cur, **params)
+                rsp_dct = self.run_req(
+                    'efetch',
+                    retstart=start,
+                    query_key=querykey_cur,
+                    **efetch_params)
                 rsp_dct['data'] = rsp_dct['data'].decode('utf-8')
                 err_txt = self._chk_error_str(rsp_dct['data'])
-                if err_txt is not None:
-                    print('\nURL: {URL}\n\n**ERROR: {ERR}'.format(ERR=err_txt, URL=rsp_dct['url']))
-                    return
-                print('RRRRRRRRRRRRRRRRRRRRRRRRR', re.findall(r'(PMID-\s*\d+)', rsp_dct['data']))
+                txt = pat.format(Q=querykey_cur, S=start, **pat_val)
+                if err_txt is None:
+                    print('QQQQQQQQQQQQQQQQ', err_txt)
+                else:
+                    print('\nURL: {URL}\n{MSG}\n**ERROR: {ERR}'.format(
+                        ERR=err_txt, MSG=txt, URL=rsp_dct['url']))
+                    continue
+                print(txt, re.findall(r'(PMID-\s*\d+)', rsp_dct['data']))
+
+    @staticmethod
+    def _get_str_post_fetch(num_pmids_p_epost, num_pmids_p_efetch, querykey_cur, start):
+        """Get a string summarizing current EPost and EFetch"""
+        return 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q}) start({S})'.format(
+            P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey_cur, S=start)
+
 
     @staticmethod
     def _chk_error_str(text):

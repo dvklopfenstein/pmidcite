@@ -68,7 +68,7 @@ class EntrezUtilities(object):
         rsp_qry = self.find_ids_with_esearch('pubmed', query, retmax=500)
         if rsp_qry is None:
             return {'TEXT':None, 'RSP_QUERY': rsp_qry, 'RSP_POST':None}
-        rsp_post = self.epost('pubmed', rsp_qry['idlist'], step=10)
+        rsp_post = self.epost('pubmed', rsp_qry['idlist'], num_ids_p_epost=10)
         txt = self.run_eutilscmd(
             'efetch',
             db='pubmed',
@@ -102,14 +102,18 @@ class EntrezUtilities(object):
             return dct
         return None
 
-    def epost(self, database, pmids, step=10):
+    def epost(self, database, pmids, num_ids_p_epost=10):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
         str_ids = [str(n) for n in pmids]
-        id_str = ','.join(str_ids[:step])
+        id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        ret = {'webenv':rsp['webenv'], 'qkey2ids':[pmids[:step]]}
+        ret = {
+            'num_ids_p_epost': num_ids_p_epost,
+            'webenv': rsp['webenv'],
+            'qkey2ids': [pmids[:num_ids_p_epost]]
+        }
         if self.log is not None:
             ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
             self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
@@ -117,14 +121,14 @@ class EntrezUtilities(object):
             webenv = rsp['webenv']
             num_ids = len(pmids)
             # Load the remainder of the UIDs using epost
-            for idx in range(step, num_ids, step):
-                end_pt = idx+step
+            for idx in range(num_ids_p_epost, num_ids, num_ids_p_epost):
+                end_pt = idx+num_ids_p_epost
                 if num_ids < end_pt:
                     end_pt = num_ids
                 #print '{:3} {:3} {:3}'.format(num_ids, idx, end_pt)
                 id_str = ','.join(str_ids[idx:end_pt])
                 rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
-                ret['qkey2ids'].append(pmids[idx:idx+step])
+                ret['qkey2ids'].append(pmids[idx:idx+num_ids_p_epost])
                 webenv = rsp['webenv']
                 if self.log is not None:
                     self.log.write("epost querykey({:>6}) pmids={}\n".format(
