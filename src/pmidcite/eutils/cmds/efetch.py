@@ -28,7 +28,7 @@ class EFetch(CommandBase):
             ## msg = msg_fmt.format(querykey, database, self.batch_size, start, self.desc)
             ## sys.stdout.write(msg)
             print('SSSSSSSSSSSSSSSSSSSSSSSTART:', start)
-            txt = self.efetch_txt(start, database, webenv, querykey)
+            txt = self.efetch_txt(start, self.batch_size, database, webenv, querykey)
 
             if txt is not None:
                 try:
@@ -44,17 +44,17 @@ class EFetch(CommandBase):
             else:
                 sys.stdout.write("*FATAL: NO SOCKET HANDLE TO READ FROM\n")
 
-    def efetch_txt(self, start, database, webenv, querykey):
+    def efetch_txt(self, start, retmax, database, webenv, querykey):
         """Fetch database text"""
         try:
             # pylint: disable=bad-whitespace
             txt = self.run_eutilscmd(
                 'efetch',
                 db        = database,
-                retstart  = start,       # dflt: 1
-                retmax    = self.batch_size,  # max: 10,000
-                rettype   = self.rettype,     # Ex: medline
-                retmode   = self.retmode,     # Ex: text
+                retstart  = start,         # dflt: 1
+                retmax    = retmax,        # max: 10,000
+                rettype   = self.rettype,  # Ex: medline
+                retmode   = self.retmode,  # Ex: text
                 webenv    = webenv,
                 query_key = querykey)
             #print('FETCH:', dct)
