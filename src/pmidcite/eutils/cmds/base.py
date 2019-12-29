@@ -25,6 +25,7 @@ __author__ = 'DV Klopfenstein'
 import sys
 import traceback
 import json
+import collections as cx
 from xml.etree import ElementTree
 
 import time
@@ -34,7 +35,6 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 from urllib.error import URLError as _URLError
 from urllib.error import HTTPError as _HTTPError
-#### from pmidcite.cfg import Cfg
 
 
 # pylint: disable=useless-object-inheritance
@@ -109,8 +109,9 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:step])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
+        ret = {'webenv':rsp['webenv'], 'qkey2ids':[pmids[:step]]}
         if self.log is not None:
-            self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
+            ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
             self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
         if 'webenv' in rsp:
             webenv = rsp['webenv']
@@ -123,15 +124,18 @@ class EntrezUtilities(object):
                 #print '{:3} {:3} {:3}'.format(num_ids, idx, end_pt)
                 id_str = ','.join(str_ids[idx:end_pt])
                 rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
+                ret['qkey2ids'].append(pmids[idx:idx+step])
                 webenv = rsp['webenv']
                 if self.log is not None:
                     self.log.write("epost querykey({:>6}) pmids={}\n".format(
                         rsp['querykey'], id_str))
         else:
             raise Exception("NO webenv RETURNED FROM FIRST EPOST")
-        if self.log is not None:
-            self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
-        return rsp
+        ## if self.log is not None:
+        ##     self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
+        ret['querykey'] = rsp['querykey']
+        print(ret)
+        return ret
 
     @staticmethod
     def _return_einforesult(record):
@@ -146,7 +150,7 @@ class EntrezUtilities(object):
             ## print('RRRRRRRRRRRRRRR', len(record['einforesult']['dbinfo']))
             ## print('RRRRRRRRRRRRRRR', record)
             return record['einforesult']['dbinfo'][0]
-        raise RuntimeError('TBD IMPLEMENT _return_einforesult')
+        raise RuntimeError('IMPLEMENT _return_einforesult')
 
     @staticmethod
     def _return_linksets(record):
@@ -164,15 +168,26 @@ class EntrezUtilities(object):
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
+        rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
+        rcvd = self._extract_rsp(rsp_dct['data'], params.get('retmode'))
+        return rcvd
+
+    def _mk_cgi(self, cmd, **params):
+        """Get Fast Common Gateway Interface (fcgi) string, given E-utils command/parameters"""
         cgi = self.cgifmt.format(ECMD=cmd)
         params = self._construct_params(params)
         ## print('PARAMS', params)
         options = self._encode_options(params)
         cgi += '?' + options
+        return cgi
+
+    def run_req(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
+        """Run NCBI E-Utilities command"""
+        # params example: db retstart retmax rettype retmode webenv query_key
+        cgi = self._mk_cgi(cmd, **params)
         ## print('CGI: {CGI}\n'.format(CGI=cgi))
         try:
-            rcvd = self._open_cmd(cgi, params.get('retmode')) # post=None, ecitmatch=False):
-            return rcvd
+            return self._run_req(cgi) # post=None, ecitmatch=False):
         except json.decoder.JSONDecodeError as errobj:
             print('CGI: {CGI}\n'.format(CGI=cgi))
             print('JSONDecodeError = {ERR}'.format(ERR=str(errobj)))
@@ -194,9 +209,8 @@ class EntrezUtilities(object):
             print(errobj)
             traceback.print_exc()
 
-    def _open_cmd(self, cgi, retmode):  # params=None, post=None, ecitmatch=False):
-        """Create a Entrez Utilities command"""
-        # TBD: Too many branches (14/12) (too-many-branches)
+    def _run_req(self, cgi):  # params=None, post=None, ecitmatch=False):
+        """Get a response from running a Entrez Utilities command"""
         # NCBI requirement: At most three queries per second if no API key is provided.
         # Equivalently, at least a third of second between queries
         # Using just 0.333333334 seconds sometimes hit the NCBI rate limit,
@@ -212,7 +226,14 @@ class EntrezUtilities(object):
 
         for i in range(self.max_tries):
             try:
-                socket_handle = urlopen(cgi)
+                with urlopen(cgi) as rsp:
+                    assert rsp.status == 200, dir(rsp)
+                    return {
+                        'code': rsp.getcode(),  # code/status
+                        'msg': rsp.msg,
+                        'url': rsp.geturl(),
+                        'headers': cx.OrderedDict(rsp.getheaders()),
+                        'data': rsp.read()}
             except _URLError as exception:
                 # Reraise if the final try fails
                 if i >= self.max_tries - 1:
@@ -226,19 +247,12 @@ class EntrezUtilities(object):
                 # Treat everything else as a transient error and try again after a
                 # brief delay.
                 time.sleep(self.sleep_between_tries)
-            else:
-                break
 
-        assert socket_handle.status == 200, dir(socket_handle)
-        ## record = Entrez.read(socket_handle)
-        ## print('READDDDDDDDDDDDDDDD', dir(socket_handle))
-        ## print('READDDDDDDDDDDDDDDD', socket_handle.getheaders())
-        #### return self._binary_to_string_handle(socket_handle)
-        record = socket_handle.read()
+    def _extract_rsp(self, record, retmode):
+        """Extract the data from a response from running a Entrez Utilities command"""
         if retmode == 'json':
             try:
                 dct = json.loads(record)
-                socket_handle.close()
                 if 'esearchresult' in dct:
                     return dct['esearchresult']
                 if 'einforesult' in dct:
@@ -247,19 +261,18 @@ class EntrezUtilities(object):
                     return self._return_linksets(dct)
                 print('KEYS:', dct.keys())
                 print('DCT:', dct)
-                raise RuntimeError('UNKNOWN RESULT in _open_cmd')
+                raise RuntimeError('UNKNOWN RESULT in _run_req')
             except json.decoder.JSONDecodeError as errobj:
                 print('JSONDecodeError = {ERR}'.format(ERR=str(errobj)))
                 traceback.print_exc()
                 print('\n**FATAL JSONDecodeError:\n{RECORD}'.format(RECORD=record.decode('utf-8')))
-                print('CGI: {CGI}\n'.format(CGI=cgi))
 
         if retmode == 'text':
             ## print('RECORD:', str(record))
             return record.decode('utf-8')
 
-        print('RETMODE', retmode)
-        print('RECORD', record)
+        ## print('RETMODE', retmode)
+        ## print('RECORD', record)
 
         ## print(record)
         # <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -272,7 +285,7 @@ class EntrezUtilities(object):
         # </ePostResult>
         # Parse XML
         root = ElementTree.fromstring(record)
-        print('root.tag', root.tag)
+        ## print('root.tag', root.tag)
         assert root.tag in 'ePostResult', root.tag
         dct = {r.tag.lower():r.text for r in root}
         if 'querykey' in dct:
