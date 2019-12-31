@@ -111,13 +111,13 @@ class EntrezUtilities(object):
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
         ret = {
             'num_ids_p_epost': num_ids_p_epost,
-            'webenv': rsp['webenv'],
             'qkey2ids': [pmids[:num_ids_p_epost]]
         }
-        if self.log is not None:
-            ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
-            self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
         if 'webenv' in rsp:
+            if self.log is not None:
+                ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
+                self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
+            ret['webenv'] = rsp['webenv'],
             webenv = rsp['webenv']
             num_ids = len(pmids)
             # Load the remainder of the UIDs using epost
