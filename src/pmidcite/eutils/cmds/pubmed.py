@@ -26,19 +26,17 @@ class PubMed(EntrezUtilities):
 
     def dnld_wr1_per_pmid(self, pmids, force_download=False, dir_pubmed="."):
         """Download and write file one PubMed entry per PMID"""
+        # Get filenames to store PubMed entry information, one PMID per file
         pmid_nt_list = self._get_pmid_nt_list(pmids, force_download, dir_pubmed)
-        for ntd in pmid_nt_list:
-            print('IIIIIIIIIIIIIIIIIIIII {PMID:12} {NT}'.format(PMID=ntd.PMID, NT=ntd))
-
+        if not pmid_nt_list:
+            return
         # Run EPost
         pmids = [nt.PMID for nt in pmid_nt_list]
         epost_rsp = self.epost('pubmed', pmids, num_ids_p_epost=10)
-
         # Set EFetch params
         efetch_params = dict(self.efetch_params)
         efetch_params['webenv'] = epost_rsp['webenv']
         efetch_params['retmax'] = 1  # num_pmids_p_efetch
-
         # Run EFetches
         efetch_idxs = self._get_efetch_indices(epost_rsp, efetch_params['retmax'], len(pmids))
         self._dnld_wr1_per_pmid(efetch_idxs, efetch_params, pmid_nt_list)
@@ -53,7 +51,7 @@ class PubMed(EntrezUtilities):
                 ntd = pmid2nt[pmids_exp[0]]
                 with open(ntd.fout_pubmed, 'w') as prt:
                     prt.write(rsp_txt)
-                    print('  **{WROTE}: {TXT}'.format(
+                    print('  {WROTE}: {TXT}'.format(
                         WROTE='WROTE' if not ntd.fout_exists else 'UPDATED',
                         TXT=ntd.fout_pubmed))
 
@@ -89,7 +87,7 @@ class PubMed(EntrezUtilities):
                 ERR=err_txt, DESC=desc, URL=rsp_dct['url']))
             return None
         pmids_downloaded = [int(i) for i in re.findall(r'PMID-\s*(\d+)', rsp_txt)]
-        print(desc, pmids_downloaded, pmids_exp)
+        #print(desc, pmids_downloaded, pmids_exp)
         assert pmids_downloaded == pmids_exp, (desc, pmids_downloaded, pmids_exp)
         return rsp_txt
 
@@ -121,6 +119,8 @@ class PubMed(EntrezUtilities):
             if not fout_exists or force_download:
                 ntd = ntobj(PMID=pmid, fout_pubmed=fout_pubmed, fout_exists=fout_exists)
                 nts.append(ntd)
+            else:
+                print('**NOTE: EXISTS: {PUBMED}'.format(PUBMED=fout_pubmed))
         return nts
 
 

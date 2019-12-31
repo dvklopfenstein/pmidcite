@@ -105,20 +105,26 @@ class EntrezUtilities(object):
     def epost(self, database, pmids, num_ids_p_epost=10):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
-        str_ids = [str(n) for n in pmids]
-        id_str = ','.join(str_ids[:num_ids_p_epost])
-        # epost produces WebEnv value ($web1) and QueryKey value ($key1)
-        rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        print('EPOST', rsp)
+        if not isinstance(pmids, list):
+            raise RuntimeError('**FATAL: EPost PMIDs MUST BE IN A LIST')
+        if not pmids:
+            print('**NOTE: NO PMIDs to EPost')
+            return None
         ret = {
             'num_ids_p_epost': num_ids_p_epost,
             'qkey2ids': [pmids[:num_ids_p_epost]]
         }
+        str_ids = [str(n) for n in pmids]
+        id_str = ','.join(str_ids[:num_ids_p_epost])
+        # epost produces WebEnv value ($web1) and QueryKey value ($key1)
+        rsp = self.run_eutilscmd('epost', db=database, id=id_str)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
-                self.log.write("epost querykey({:>6}) pmids={}\n".format(rsp['querykey'], id_str))
-            ret['webenv'] = rsp['webenv'],
+                self.log.write('epost webenv: {W}\n'.format(W=rsp['webenv']))
+                self.log.write("epost querykey({Q:>6}) pmids[{N}]={Ps}\n".format(
+                    N=len(str_ids), Q=rsp['querykey'], Ps=id_str))
+            ret['webenv'] = rsp['webenv']
             webenv = rsp['webenv']
             num_ids = len(pmids)
             # Load the remainder of the UIDs using epost
@@ -132,8 +138,8 @@ class EntrezUtilities(object):
                 ret['qkey2ids'].append(pmids[idx:idx+num_ids_p_epost])
                 webenv = rsp['webenv']
                 if self.log is not None:
-                    self.log.write("epost querykey({:>6}) pmids={}\n".format(
-                        rsp['querykey'], id_str))
+                    self.log.write("epost querykey({Q:>6}) pmids[{N}]={Ps}\n".format(
+                        N=end_pt-idx, Q=rsp['querykey'], Ps=id_str))
         elif 'error' in rsp:
             raise RuntimeError('**ERROR EPost: {MSG}'.format(MSG=rsp['error']))
         else:
@@ -142,7 +148,6 @@ class EntrezUtilities(object):
         ## if self.log is not None:
         ##     self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
         ret['querykey'] = rsp['querykey']
-        print(ret)
         return ret
 
     @staticmethod
