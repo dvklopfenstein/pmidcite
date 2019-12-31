@@ -19,6 +19,7 @@ class PubMed(EntrezUtilities):
         'rettype': 'medline',
         'retmode': 'text',
     }
+    pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
 
     def __init__(self, email, apikey, tool):
         super(PubMed, self).__init__(email, apikey, tool)
@@ -39,9 +40,9 @@ class PubMed(EntrezUtilities):
         efetch_params['retmax'] = 1  # num_pmids_p_efetch
 
         # Run EFetches
-        self.dnld_pubmed(epost_rsp, efetch_params, len(pmids))
+        self._dnld_wr1_per_pmid(epost_rsp, efetch_params, pmids)
 
-    def dnld_pubmed(self, epost_rsp, efetch_params, num_pmids):
+    def _dnld_wr1_per_pmid(self, epost_rsp, efetch_params, pmids):
         """Download and write PubMed entries, given PMIDs and assc info"""
         # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
         # ----- ----------------- ------------------      ------------
@@ -49,33 +50,37 @@ class PubMed(EntrezUtilities):
         #     5                 2                  1                 5
         querykey_max = epost_rsp['querykey']
         num_pmids_p_efetch = efetch_params['retmax']
-        pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
         pat_val = {'P':epost_rsp['num_ids_p_epost'], 'F':num_pmids_p_efetch, 'Qmax':querykey_max}
+        num_pmids = len(pmids)
         for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
             if querykey_cur == querykey_max:
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
-                rsp_dct = self.run_req(
-                    'efetch',
-                    retstart=start,
-                    query_key=querykey_cur,
-                    **efetch_params)
-                rsp_dct['data'] = rsp_dct['data'].decode('utf-8')
-                err_txt = self._chk_error_str(rsp_dct['data'])
-                txt = pat.format(Q=querykey_cur, S=start, **pat_val)
-                if err_txt is None:
-                    print('QQQQQQQQQQQQQQQQ', err_txt)
-                else:
-                    print('\nURL: {URL}\n{MSG}\n**ERROR: {ERR}'.format(
-                        ERR=err_txt, MSG=txt, URL=rsp_dct['url']))
-                    continue
-                print(txt, re.findall(r'(PMID-\s*\d+)', rsp_dct['data']))
+                desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
+                pmids_exp = pmids_cur[start:start+num_pmids_p_efetch]
+                rsp_txt = self._run_efetch(start, querykey_cur, pmids_exp, desc, **efetch_params)
+                if rsp_txt is not None:
+                   pass 
+
+    def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
+        """Get text from EFetch response"""
+        rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, **params)
+        rsp_txt = rsp_dct['data'].decode('utf-8')
+        err_txt = self._chk_error_str(rsp_txt)
+        if err_txt is not None:
+            print('\nURL: {URL}\n{DESC}\n**ERROR: {ERR}'.format(
+                ERR=err_txt, DESC=desc, URL=rsp_dct['url']))
+            return None
+        pmids_downloaded = [int(i) for i in re.findall(r'PMID-\s*(\d+)', rsp_txt)]
+        print(desc, pmids_downloaded, pmids_exp)
+        assert pmids_downloaded == pmids_exp, (desc, pmids_downloaded, pmids_exp)
+        return rsp_txt
 
     @staticmethod
-    def _get_str_post_fetch(num_pmids_p_epost, num_pmids_p_efetch, querykey_cur, start):
+    def _get_str_post_fetch(num_pmids_p_epost, num_pmids_p_efetch, querykey, start):
         """Get a string summarizing current EPost and EFetch"""
         return 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q}) start({S})'.format(
-            P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey_cur, S=start)
+            P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey, S=start)
 
 
     @staticmethod
