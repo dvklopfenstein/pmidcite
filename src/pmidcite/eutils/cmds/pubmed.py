@@ -40,26 +40,24 @@ class PubMed(EntrezUtilities):
         efetch_params['retmax'] = 1  # num_pmids_p_efetch
 
         # Run EFetches
-        self._dnld_wr1_per_pmid(epost_rsp, efetch_params, pmids)
+        efetch_idxs = self._get_efetch_indices(epost_rsp, efetch_params['retmax'], len(pmids))
+        self._dnld_wr1_per_pmid(efetch_idxs, efetch_params, pmid_nt_list)
 
-    def _dnld_wr1_per_pmid(self, epost_rsp, efetch_params, pmids):
-        """Download and write PubMed entries, given PMIDs and assc info"""
-        num_pmids_p_efetch = efetch_params['retmax']
-        pat_val = {
-            'P':epost_rsp['num_ids_p_epost'],
-            'F':num_pmids_p_efetch,
-            'Qmax':epost_rsp['querykey']}
-        num_pmids = len(pmids)
-        efetch_idxs = self._get_efetch_indices(epost_rsp, num_pmids_p_efetch, num_pmids)
-        for querykey_cur, pmids_cur, start in efetch_idxs:
-            desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
-            pmids_exp = pmids_cur[start:start+num_pmids_p_efetch]
+    def _dnld_wr1_per_pmid(self, efetch_idxs, efetch_params, pmid_nt_list):
+        """Download and write one PMID PubMed entry into one text file"""
+        pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
+        for desc, start, pmids_exp, querykey_cur in efetch_idxs:
             rsp_txt = self._run_efetch(start, querykey_cur, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
-                pass
+                assert len(pmids_exp) == 1
+                ntd = pmid2nt[pmids_exp[0]]
+                with open(ntd.fout_pubmed, 'w') as prt:
+                    prt.write(rsp_txt)
+                    print('  **{WROTE}: {TXT}'.format(
+                        WROTE='WROTE' if not ntd.fout_exists else 'UPDATED',
+                        TXT=ntd.fout_pubmed))
 
-    @staticmethod
-    def _get_efetch_indices(epost_rsp, num_pmids_p_efetch, num_pmids):
+    def _get_efetch_indices(self, epost_rsp, num_pmids_p_efetch, num_pmids):
         """Get EFtech list of: querykey_cur, pmids_cur, start"""
         # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
         # ----- ----------------- ------------------      ------------
@@ -68,11 +66,17 @@ class PubMed(EntrezUtilities):
         nts = []
         querykey_max = epost_rsp['querykey']
         num_pmids_p_epost_cur = epost_rsp['num_ids_p_epost']
+        pat_val = {
+            'P':epost_rsp['num_ids_p_epost'],
+            'F':num_pmids_p_efetch,
+            'Qmax':epost_rsp['querykey']}
         for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
             if querykey_cur == querykey_max:
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
-                nts.append([querykey_cur, pmids_cur, start])
+                desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
+                pmids_exp = pmids_cur[start:start+num_pmids_p_efetch]
+                nts.append([desc, start, pmids_exp, querykey_cur])
         return nts
 
     def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
