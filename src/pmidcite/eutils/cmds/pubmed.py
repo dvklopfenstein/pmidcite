@@ -44,23 +44,36 @@ class PubMed(EntrezUtilities):
 
     def _dnld_wr1_per_pmid(self, epost_rsp, efetch_params, pmids):
         """Download and write PubMed entries, given PMIDs and assc info"""
+        num_pmids_p_efetch = efetch_params['retmax']
+        pat_val = {
+            'P':epost_rsp['num_ids_p_epost'],
+            'F':num_pmids_p_efetch,
+            'Qmax':epost_rsp['querykey']}
+        num_pmids = len(pmids)
+        efetch_idxs = self._get_efetch_indices(epost_rsp, num_pmids_p_efetch, num_pmids)
+        for querykey_cur, pmids_cur, start in efetch_idxs:
+            desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
+            pmids_exp = pmids_cur[start:start+num_pmids_p_efetch]
+            rsp_txt = self._run_efetch(start, querykey_cur, pmids_exp, desc, **efetch_params)
+            if rsp_txt is not None:
+                pass
+
+    @staticmethod
+    def _get_efetch_indices(epost_rsp, num_pmids_p_efetch, num_pmids):
+        """Get EFtech list of: querykey_cur, pmids_cur, start"""
         # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
         # ----- ----------------- ------------------      ------------
         #     5                 2                  3                 3
         #     5                 2                  1                 5
+        nts = []
         querykey_max = epost_rsp['querykey']
-        num_pmids_p_efetch = efetch_params['retmax']
-        pat_val = {'P':epost_rsp['num_ids_p_epost'], 'F':num_pmids_p_efetch, 'Qmax':querykey_max}
-        num_pmids = len(pmids)
+        num_pmids_p_epost_cur = epost_rsp['num_ids_p_epost']
         for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
             if querykey_cur == querykey_max:
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
-                desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
-                pmids_exp = pmids_cur[start:start+num_pmids_p_efetch]
-                rsp_txt = self._run_efetch(start, querykey_cur, pmids_exp, desc, **efetch_params)
-                if rsp_txt is not None:
-                   pass 
+                nts.append([querykey_cur, pmids_cur, start])
+        return nts
 
     def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
         """Get text from EFetch response"""
@@ -81,7 +94,6 @@ class PubMed(EntrezUtilities):
         """Get a string summarizing current EPost and EFetch"""
         return 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q}) start({S})'.format(
             P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey, S=start)
-
 
     @staticmethod
     def _chk_error_str(text):
