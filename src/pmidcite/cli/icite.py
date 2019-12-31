@@ -6,7 +6,6 @@ __author__ = "DV Klopfenstein"
 import os
 import sys
 import argparse
-import collections as cx
 
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.api import NIHiCiteAPI
@@ -20,7 +19,7 @@ class NIHiCiteCli:
     def __init__(self):
         self.cfgparser = self._init_cfgparser()
         self.dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
-        self.pubmed_dir = self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        self.dir_pubmed = self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         self.pubmed = PubMed(
             email=self.cfgparser.get_email(),
             apikey=self.cfgparser.get_apikey(),
@@ -79,7 +78,8 @@ class NIHiCiteCli:
         args = argparser.parse_args()
         pmids = self.run_icite(args, argparser)
         if args.pubmed:
-            self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, self.pubmed_dir)
+            pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, self.dir_pubmed)
+            self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
     def run_icite(self, args, argparser):
         """Run iCite/PubMed"""

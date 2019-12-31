@@ -24,10 +24,9 @@ class PubMed(EntrezUtilities):
     def __init__(self, email, apikey, tool):
         super(PubMed, self).__init__(email, apikey, tool)
 
-    def dnld_wr1_per_pmid(self, pmids, force_download=False, dir_pubmed="."):
+    def dnld_wr1_per_pmid(self, pmid_nt_list):
         """Download and write file one PubMed entry per PMID"""
         # Get filenames to store PubMed entry information, one PMID per file
-        pmid_nt_list = self._get_pmid_nt_list(pmids, force_download, dir_pubmed)
         if not pmid_nt_list:
             return
         # Run EPost
@@ -108,7 +107,7 @@ class PubMed(EntrezUtilities):
         return msg[:p1_err]
 
     @staticmethod
-    def _get_pmid_nt_list(pmids, force_download, dir_pubmed):
+    def get_pmid_nt_list(pmids, force_download, dir_pubmed):
         """Get list of PubMed entries: Title, abstract, authors, journal, MeSH"""
         nts = []
         ntobj = cx.namedtuple('Nt', 'PMID fout_pubmed fout_exists')
