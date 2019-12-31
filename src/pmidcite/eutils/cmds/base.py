@@ -109,6 +109,7 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
+        print('EPOST', rsp)
         ret = {
             'num_ids_p_epost': num_ids_p_epost,
             'qkey2ids': [pmids[:num_ids_p_epost]]
@@ -133,7 +134,10 @@ class EntrezUtilities(object):
                 if self.log is not None:
                     self.log.write("epost querykey({:>6}) pmids={}\n".format(
                         rsp['querykey'], id_str))
+        elif 'error' in rsp:
+            raise RuntimeError('**ERROR EPost: {MSG}'.format(MSG=rsp['error']))
         else:
+            print(rsp)
             raise Exception("NO webenv RETURNED FROM FIRST EPOST")
         ## if self.log is not None:
         ##     self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
