@@ -107,7 +107,7 @@ class NIHiCiteCli:
         if args.print_keys:
             loader.prt_keys()
         outfile = self._get_outfile(args)
-        mode = self._get_mode(args)
+        mode, force_write = self._get_mode_force(args)
         prt_verbose = not args.succinct
         pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose)
         if outfile is None:
@@ -115,7 +115,7 @@ class NIHiCiteCli:
         else:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            loader.wr_papers(outfile, args.force_write, pmid2ntpaper, mode)
+            loader.wr_papers(outfile, force_write, pmid2ntpaper, mode)
         return pmids
 
     def _get_iciteloader(self, args):
@@ -152,12 +152,14 @@ class NIHiCiteCli:
         return pmids
 
     @staticmethod
-    def _get_mode(args):
+    def _get_mode_force(args):
         """Given arguments, return outfile"""
+        # if '-o', only over-write existing file if explicitly requested
         if args.outfile is not None:
-            return 'w'
+            return 'w', args.force_write
+        # if '-a', always append given file
         if args.append_outfile is not None:
-            return 'a'
+            return 'a', True
         return 'w'
 
     @staticmethod
