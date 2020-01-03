@@ -22,25 +22,28 @@ class NIHiCiteLoader:
         self.dir_dnld = api.dir_dnld
         self.api = api                # NIHiCiteAPI
 
-    def wr_papers(self, fout_txt, pmid2ntpaper, mode='w'):
+    def wr_papers(self, fout_txt, force, pmid2ntpaper, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
+        if not pmid2ntpaper:
+            return
         pmids_all = pmid2ntpaper.keys()
         pmids_new = pmids_all
         if mode == 'a':
             pmids_new = self._get_new_pmids(fout_txt, pmids_all)
         if pmids_new:
-            if pmid2ntpaper:
+            if self._do_write(fout_txt, force):
                 with open(fout_txt, mode) as prt:
                     self.prt_papers(pmid2ntpaper, prt)
-        print('  {WR}: {TXT}'.format(
-            WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
+                print('  {WR}: {TXT}'.format(
+                    WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""
         for pmid, paper in pmid2ntpaper.items():
-            self.prt_paper(pmid, paper, pmid, prt, prt_assc_pmids)
+            self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
 
-    def prt_paper(self, pmid, paper, name, prt=sys.stdout, prt_assc_pmids=True):
+    # pylint: disable=too-many-arguments
+    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if prt_assc_pmids:
@@ -92,7 +95,7 @@ class NIHiCiteLoader:
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
-                    self.prt_paper(ntpaper.pmid, ntpaper.paper, name, prt)
+                    self.prt_paper(ntpaper.paper, ntpaper.pmid, name, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
     def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids):
@@ -183,6 +186,14 @@ class NIHiCiteLoader:
             if iciteobj is not None:
                 return iciteobj
         return self.load_icite(file_pmid)  # NIHiCiteEntry
+
+    @staticmethod
+    def _do_write(fout_txt, force):
+        """Ask for a yes-no answer from the user on STDIN"""
+        if not os.path.exists(fout_txt) or force:
+            return True
+        prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
+        return input(prompt_user).lower()[:1] == 'y'
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

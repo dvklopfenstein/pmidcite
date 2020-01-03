@@ -43,11 +43,14 @@ class NIHiCiteCli:
             '-i', '--infile', nargs='*',
             help='Read PMIDs from a file containing one PMID per line')
         parser.add_argument(
-            '-a', '--outfile_append',
+            '-a', '--append_outfile',
             help='Append current citation report to an ASCII text file. Create if needed.')
         parser.add_argument(
             '-o', '--outfile',
             help='Write current citeation report to an ASCII text file')
+        parser.add_argument(
+            '-f', '--force_write',
+            help='if an existing output file exists, over-write it')
         parser.add_argument(
             '-s', '--succinct', action='store_true',
             help="Print one line for each PMID provided by user. Don't add lines per cite or ref")
@@ -58,7 +61,7 @@ class NIHiCiteCli:
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         parser.add_argument(
-            '-f', '--force_download', action='store_true',
+            '-D', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
@@ -105,8 +108,8 @@ class NIHiCiteCli:
             loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
-                loader.prt_papers(pmid2ntpaper, prt=sys.stdout)
-            loader.wr_papers(outfile, pmid2ntpaper, mode)
+                loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            loader.wr_papers(outfile, args.force_write, pmid2ntpaper, mode)
         return pmids
 
     def get_pmids(self, args):
@@ -140,7 +143,7 @@ class NIHiCiteCli:
         """Given arguments, return outfile"""
         if args.outfile is not None:
             return 'w'
-        if args.outfile_append is not None:
+        if args.append_outfile is not None:
             return 'a'
         return 'w'
 
@@ -149,8 +152,8 @@ class NIHiCiteCli:
         """Given arguments, return outfile"""
         if args.outfile is not None:
             return args.outfile
-        if args.outfile_append is not None:
-            return args.outfile_append
+        if args.append_outfile is not None:
+            return args.append_outfile
         return None
 
 
