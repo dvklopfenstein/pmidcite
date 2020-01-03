@@ -27,6 +27,14 @@ class NIHiCitePaper:
         """Return a string summarizing the the paper described herein"""
         return str(self.icite)
 
+    @staticmethod
+    def prt_keys(prt=sys.stdout):
+        """Print paper keys"""
+        prt.write('  TOP: A user-requested paper\n')
+        prt.write('  CIT: A paper that cited TOP\n')
+        prt.write('  CLI: A clinical paper that cited TOP\n')
+        prt.write('  REF: A clinical paper that cited TOP\n')
+
     def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby=None):
         """Print summary of paper"""
         if self.name:

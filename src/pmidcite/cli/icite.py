@@ -17,7 +17,7 @@ class NIHiCiteCli:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
     def __init__(self):
-        self.cfgparser = self._init_cfgparser()
+        self.cfgparser = self._init_cfgparser()  # Cfg
         self.dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
         self.dir_pubmed = self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         self.pubmed = PubMed(
@@ -41,34 +41,37 @@ class NIHiCiteCli:
             help='PubMed IDs (PMIDs)')
         parser.add_argument(
             '-i', '--infile', nargs='*',
-            help='Read PMIDs from a file containing one PMID per line')
+            help='Read PMIDs from a file containing one PMID per line.')
         parser.add_argument(
             '-a', '--append_outfile',
             help='Append current citation report to an ASCII text file. Create if needed.')
         parser.add_argument(
+            '-k', '--print_keys', action='store_true',
+            help='Print the keys describing the abbreviations.')
+        parser.add_argument(
             '-o', '--outfile',
-            help='Write current citeation report to an ASCII text file')
+            help='Write current citeation report to an ASCII text file.')
         parser.add_argument(
             '-f', '--force_write',
-            help='if an existing output file exists, over-write it')
+            help='if an existing outfile file exists, overwrite it.')
         parser.add_argument(
             '-s', '--succinct', action='store_true',
-            help="Print one line for each PMID provided by user. Don't add lines per cite or ref")
+            help="Print one line for each PMID provided by user. Don't add lines per cite or ref.")
         parser.add_argument(
             '-q', '--quiet', action='store_true',
-            help='Quiet mode; Do not echo the paper report to screen')
+            help='Quiet mode; Do not echo the paper report to screen.')
         parser.add_argument(
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         parser.add_argument(
             '-D', '--force_download', action='store_true',
-            help='Download PMID iCite information to a Python file')
+            help='Download PMID iCite information to a Python file.')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
-            help='Print the list of citations, but not the list of references')
+            help='Print the list of citations, but not the list of references.')
         parser.add_argument(
             '--md', action='store_true',
-            help='Print using markdown table format')
+            help='Print using markdown table format.')
         parser.add_argument(
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
@@ -93,13 +96,16 @@ class NIHiCiteCli:
             return []
         # Get user-specified PMIDs
         pmids = self.get_pmids(args)
-        if not pmids:
+        if not pmids and not args.print_keys:
             argparser.print_help()
             return pmids
-        kws = {}  # TBD NIHiCiteCli
-        log = None if args.quiet else sys.stdout
-        api = NIHiCiteAPI(self.dir_pmid_py, log, **kws)
-        loader = NIHiCiteLoader(args.force_download, api, not args.no_references)
+        return self._run_icite(pmids, args)
+
+    def _run_icite(self, pmids, args):
+        """Print papers, including citation counts"""
+        loader = self._get_iciteloader(args)
+        if args.print_keys:
+            loader.prt_keys()
         outfile = self._get_outfile(args)
         mode = self._get_mode(args)
         prt_verbose = not args.succinct
@@ -111,6 +117,13 @@ class NIHiCiteCli:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
             loader.wr_papers(outfile, args.force_write, pmid2ntpaper, mode)
         return pmids
+
+    def _get_iciteloader(self, args):
+        """Create NIHiCiteLoader"""
+        kws = {}  # TBD NIHiCiteCli
+        log = None if args.quiet else sys.stdout
+        api = NIHiCiteAPI(self.dir_pmid_py, log, **kws)
+        return NIHiCiteLoader(args.force_download, api, not args.no_references)
 
     def get_pmids(self, args):
         """Get PMIDs from the command line or from a file"""

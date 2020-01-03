@@ -37,6 +37,18 @@ class NIHiCiteLoader:
                 print('  {WR}: {TXT}'.format(
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
+    @staticmethod
+    def prt_keys(prt=sys.stdout):
+        """Print paper keys"""
+        prt.write('\nDESCRIPTION OF PAPER LINE:\n')
+        prt.write('  ABC {ICITE_FMT}\n'.format(ICITE_FMT=NIHiCiteEntry.line_fmt()))
+        prt.write('\n')
+        prt.write('ABC:\n')
+        NIHiCitePaper.prt_keys(prt)
+        prt.write('\nNIH iCite details:\n')
+        NIHiCiteEntry.prt_keys(prt)
+        prt.write('\n')
+
     def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""
         for pmid, paper in pmid2ntpaper.items():
