@@ -1,4 +1,9 @@
 # PMID Cite
+Literature search using the command-line
+by prefering [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) plus
+citation data from [**NIH's iCite**](https://icite.od.nih.gov) 
+over [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)
+
 Prefer:
   * [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) queries
   * PubMed data
