@@ -93,7 +93,11 @@ class NIHiCiteEntry:
         return ''.join(lst)
 
     def get_aart_translation(self):
-        """Get succinct ASCII art for concise info display"""
+        """Get succinct ASCII art for the translation information"""
+        # Translation of basic sciene research into practical clinical applications
+        # or 'bench-to-bedside'
+        # https://www.ncbi.nlm.nih.gov/pubmed/23705970
+        # https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000416
         lst = []
         dct = self.dct
         lst.append('H' if dct['human'] != 0.0 else '.')
