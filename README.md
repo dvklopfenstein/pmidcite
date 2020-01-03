@@ -1,7 +1,7 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 Command-line-based literature search
 using citation data from [**NIH's iCite**](https://icite.od.nih.gov),
-rather than
+rather than clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
