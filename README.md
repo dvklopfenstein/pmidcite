@@ -1,7 +1,7 @@
 # PMID Cite
-Do a literature search using the command-line
-with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)
-citation data from [**NIH's iCite**](https://icite.od.nih.gov),
+Command-line-based literature search
+using citation data from [**NIH's iCite**](https://icite.od.nih.gov),
+for research articles that have a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)
 rather than [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)
 
 ## PMID Cite feature summary
