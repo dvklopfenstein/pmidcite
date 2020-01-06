@@ -52,7 +52,7 @@ class NIHiCiteCli:
             '-o', '--outfile',
             help='Write current citeation report to an ASCII text file.')
         parser.add_argument(
-            '-f', '--force_write',
+            '-f', '--force_write', action='store_true',
             help='if an existing outfile file exists, overwrite it.')
         parser.add_argument(
             '-s', '--succinct', action='store_true',
@@ -157,10 +157,10 @@ class NIHiCiteCli:
         # if '-o', only over-write existing file if explicitly requested
         if args.outfile is not None:
             return 'w', args.force_write
-        # if '-a', always append given file
+        # if '-a', always append given file or create the file if needed
         if args.append_outfile is not None:
             return 'a', True
-        return 'w'
+        return 'w', True
 
     @staticmethod
     def _get_outfile(args):

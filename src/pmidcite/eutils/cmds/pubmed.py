@@ -6,7 +6,6 @@ __license__ = "GPL"
 
 import os
 import collections as cx
-#### import sys
 import re
 from pmidcite.eutils.cmds.base import EntrezUtilities
 

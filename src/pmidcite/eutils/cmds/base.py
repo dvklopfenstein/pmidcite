@@ -182,6 +182,7 @@ class EntrezUtilities(object):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
+        ## print(rsp_dct)
         rcvd = self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return rcvd
 
