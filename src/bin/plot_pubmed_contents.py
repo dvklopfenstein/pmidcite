@@ -45,9 +45,9 @@ def _get_name2cnt():
     #          0 pmcsd_and_nihms      pubstatuspmcsd AND pubstatusnihms
     #     59,242 pmcsd_pmc1           pubstatuspmcsd AND pubmed pmc[sb]
     #        903 pmcsd_pmc0           pubstatuspmcsd NOT pubmed pmc[sb]
-    #    557,390 inprocess_all        inprocess[sb]
-    #    422,103 inprocess_pmc0       inprocess[sb] NOT pubmed pmc[sb]
-    #    135,287 inprocess_pmc1       inprocess[sb] AND pubmed pmc[sb]
+    #    557,390 inprocess_A_all      inprocess[sb]
+    #    422,103 inprocess_A_pmc0     inprocess[sb] NOT pubmed pmc[sb]
+    #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
     #    557,390 inprocess_ml0        inprocess[sb] NOT medline[sb]
     #          0 inprocess_ml1        inprocess[sb] AND medline[sb]
     # 27,010,168 medline_n_inprocess  medline[sb] OR inprocess[sb]
@@ -87,6 +87,7 @@ def _get_name2cnt():
     #     22,260 pmcbook_A            pmcbook
     #     22,260 pmcbook_A_ml0        pmcbook NOT medline[sb]
     #     22,260 pmcbook_A_pmc0       pmcbook NOT pubmed pmc[sb]
+
     return {
         "all": 30514237,
         "all_ml0_pmc0": 1818474,
