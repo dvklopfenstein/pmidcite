@@ -58,7 +58,9 @@ class PubMedContents(EntrezUtilities):
         ('inprocess_all', 'inprocess[sb]'),
         ('inprocess_pmc0', 'inprocess[sb] NOT pubmed pmc[sb]'),
         ('inprocess_pmc1', 'inprocess[sb] AND pubmed pmc[sb]'),
-        ('medline_inprocess', 'medline[sb] OR inprocess[sb]'),
+        ('inprocess_ml0', 'inprocess[sb] NOT medline[sb]'),
+        ('inprocess_ml1', 'inprocess[sb] AND medline[sb]'),
+        ('medline_n_inprocess', 'medline[sb] OR inprocess[sb]'),
         # medline[sb]:
         #   Citations that have been indexed with MeSH terms, Publication Types, Substance Names, etc.
         ('medline_all', 'medline[sb]'),
@@ -99,17 +101,18 @@ class PubMedContents(EntrezUtilities):
         #    * they are from issues published prior to the date the journal was selected for indexing, or
         #    * citations to articles from journals that deposit their full text articles in PMC
         #      but have not yet been recommended for indexing in MEDLINE.
-        ('pm_ml0', 'pubmednotmedline[sb]'),
-        ('pm_ml0b', 'pubmednotmedline[sb] NOT medline[sb]'),
-        ('pm_ml0_ip1', 'pubmednotmedline[sb] AND inprocess[sb]'),
-        ('pm_ml0_ip0', 'pubmednotmedline[sb] NOT inprocess[sb]'),
-        ('pm_ml0_pmc1', 'pubmednotmedline[sb] AND pubmed pmc[sb]'),
-        ('pm_ml0_pmc0', 'pubmednotmedline[sb] NOT pubmed pmc[sb]'),
+        ('pmnml_A', 'pubmednotmedline[sb]'),
+        ('pmnml_B', 'pubmednotmedline[sb] NOT medline[sb]'),
+        ('pmnml_C_ip0', 'pubmednotmedline[sb] NOT inprocess[sb]'),
+        ('pmnml_0_ip1', 'pubmednotmedline[sb] AND inprocess[sb]'),
+        ('pmnml_A_pmc1', 'pubmednotmedline[sb] AND pubmed pmc[sb]'),
+        ('pmnml_A_pmc0', 'pubmednotmedline[sb] NOT pubmed pmc[sb]'),
         # pmcbook:
         #   Book and book chapter citations available on the NCBI Bookshelf.
-        ('pmcbook', 'pmcbook'),
-        ('pmcbook_ml0', 'pmcbook NOT medline[sb]'),
-        ('pmcbook_pmc0', 'pmcbook NOT pubmed pmc[sb]'),
+        ('pmcbook_A', 'pmcbook'),
+        ('pmcbook_A_ml0', 'pmcbook NOT medline[sb]'),
+        ('pmcbook_A_pmc0', 'pmcbook NOT pubmed pmc[sb]'),
+        ('pmcbook_A_pmc0', 'pmcbook NOT pubmed pmc[sb]'),
     ])
 
     arrow_p = {
@@ -128,7 +131,9 @@ class PubMedContents(EntrezUtilities):
         """Get the count of various types of content in PubMed"""
         name2cnt = {}
         for name, query in self.name2query.items():
-            name2cnt[name] = self.dnld_count(query)
+            cnt = self.dnld_count(query)
+            print(' {N:12,} {A:20} {Q}'.format(N=cnt, A=name, Q=query))
+            name2cnt[name] = cnt
         # 2019/01/04 PubMed Query returns 30,500,360 results: all [sb]
         # 2019/01/04 PubMed Query returns  3,499,063 results: medline[sb] AND pubmed pmc[sb]
         # 2019/01/04 PubMed Query returns  3,636,767 results: medline[sb] OR inprocess[sb] AND pubmed pmc[sb]
@@ -166,10 +171,38 @@ class PubMedContents(EntrezUtilities):
         """Print the content typename and the count of that type"""
         # prt.write('    cnts = {\n')
         prt.write('    return {\n')
-        for name in self.name2query():
+        for name in self.name2query:
             cnt = name2cnt[name]
             prt.write('        "{NAME}": {N},\n'.format(N=cnt, NAME=name))
         prt.write('    }\n')
+
+    @staticmethod
+    def _get_content_brokenbars(a2n):
+        """Transform the content counts to broken bar data"""
+        par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
+        ml1 = a2n['medline_pmc0']
+        ml2 = ml1 + a2n['inprocess_pmc0']
+        ml3 = ml2 + a2n['inprocess_pmc1']
+        ml4 = ml3 + a2n['medline_pmc1']
+        # pylint: disable=bad-whitespace
+        return [
+            # All PubMed
+            ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
+            # MEDLINE
+            ([(0, ml1)],                       (25, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml1, a2n['inprocess_all'])],    (25, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],     (25, 1.8), {'facecolors':'tab:blue', **par}),
+            # PMC
+            ([(ml2, a2n['inprocess_pmc1'])],   (23, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'])],      (23, 1.8), {'facecolors':'y', **par}),
+            # Other
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])],  (21, 1.8), {'facecolors':'tab:orange', **par}),
+            # ([(ml2, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
+            # ([(ml3, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
+            ## ([(110, 30), (150, 10)], (10, 9), {'facecolors':'tab:blue'}),
+            ## ([(10, 50), (100, 20), (130, 10)], (20, 9), {'facecolors':('tab:orange', 'tab:green', 'tab:red')}),
+        ]
 
     @staticmethod
     def chk_content_counts(a2n):
@@ -179,9 +212,10 @@ class PubMedContents(EntrezUtilities):
         assert a2n['medline_pmc0'] + a2n['medline_pmc1'] == a2n['medline_all']
         assert a2n['inprocess_pmc0'] + a2n['inprocess_pmc1'] == a2n['inprocess_all']
         assert a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'] == a2n['all']
+        assert a2n['pmnml_A_pmc0'] + a2n['pmnml_A_pmc1'] == a2n['pmnml_C_ip0']
         pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_pmc1']
         print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
-        print(pmc_notmedline - a2n['pm_ml0_pmc1'])
+        print(pmc_notmedline - a2n['pmnml_A_pmc1'])
         print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
             N=a2n['all_ml0_pmc0'], M=a2n['all']))
         print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
@@ -203,58 +237,59 @@ class PubMedContents(EntrezUtilities):
             return int(dct['count'])
         return dct
 
-    def plt_content_counts(self, fout_png, a2n):
-        """Plot pubmed content"""
-        fig, axes = plt.subplots()
-        for xvals, yval, dct in self._get_content_brokenbars(a2n):
-            axes.broken_barh(xvals, yval, **dct)
-        axes.set_ylim(0, 35)
-        xmax = a2n['all']
-        self._add_bounding_lines_all(xmax, 2)
-        self._add_bounding_lines_medline(a2n['medline_inprocess'], 4, xmax)
-        self._add_bounding_lines_inprocess(a2n, 6, xmax)
-        self._add_bounding_lines_pmc(a2n, 10, xmax)
         ## axes.set_xlim(0, 200)
         ## axes.set_xlabel('seconds since start')
         ## axes.set_yticks([15, 25])
         ## axes.set_yticklabels(['All', 'MEDLINE'])
-        axes.grid(False)
         ## axes.annotate('race interrupted', (61, 25),
         ##             xytext=(0.8, 0.9), textcoords='axes fraction',
         ##             arrowprops=dict(facecolor='black', shrink=0.05),
         ##             fontsize=16,
         ##             horizontalalignment='right', verticalalignment='top')
-        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=200)
-        print('  WROTE: {PNG}'.format(PNG=fout_png))
-
-    def _add_bounding_lines_pmc(self, a2n, yval, xmax):
-        """Add bounding lines"""
-        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_pmc0']
-        pmc_all = a2n['pmc_all'] - a2n['inprocess_pmc1']
-        pmc_x1 = pmc_x0 + pmc_all
-        plt.plot((pmc_x0, pmc_x0), (yval-1, yval+1), color='k', linewidth=0.4)
-        plt.plot((pmc_x1, pmc_x1), (yval-1, yval+1), color='k', linewidth=0.4)
-        plt.arrow(pmc_x0-3300000, yval, 3300000, 0, **self.arrow_p)
-        plt.arrow(pmc_x1+1300000, yval, -1300000, 0, **self.arrow_p)
-        txt = '~{N:4.1f} million ({P:3.1f}%) PMC'.format(
-            N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
-        plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_all(self, xend, yval):
         """Add bounding lines"""
         plt.axvline(x=0, color='k', linewidth=0.4)
         plt.axvline(x=xend, color='k', linewidth=0.4)
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
-        txt = '~{N:4.1f} million citations in PubMed'.format(
-            N=round(xend/1000000.0, 1))
+        plt.arrow(25300000, yval, xend-25300000, 0, **self.arrow_p)
+        txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
         plt.annotate(txt, (7400000, yval-.5))
-        plt.arrow(23500000, yval, xend-23500000, 0, **self.arrow_p)
+
+    def _add_bounding_lines_ml0pmc0(self, a2n, yval, xmax):
+        """Add bounding lines"""
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_pmc0']
+        pmc_x1 = pmc_x0 + a2n['inprocess_pmc1']
+        pmc_x2 = pmc_x1 + a2n['medline_pmc1']
+        pmc_all = a2n['pmc_all'] - a2n['inprocess_pmc1']
+        pmc_xn = pmc_x0 + pmc_all
+        plt.plot((pmc_x1, pmc_x1), (yval-1, yval+1), color='k', linewidth=0.4)
+        plt.plot((pmc_x2, pmc_x2), (yval-1, yval+2), color='k', linewidth=0.4)
+        ## plt.plot((pmc_xn, pmc_xn), (yval-1, yval+1), color='k', linewidth=0.4)
+        ## plt.arrow(pmc_x0-3300000, yval, 3300000, 0, **self.arrow_p)
+        ## plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
+        ## txt = '~{N:4.1f} million ({P:3.1f}%) PMC'.format(
+        ##     N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+        ## plt.annotate(txt, (7400000, yval-.5))
+
+    def _add_bounding_lines_pmc(self, a2n, yval, xmax):
+        """Add bounding lines"""
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_pmc0']
+        pmc_all = a2n['pmc_all'] - a2n['inprocess_pmc1']
+        pmc_xn = pmc_x0 + pmc_all
+        plt.plot((pmc_x0, pmc_x0), (yval-1, yval+3), color='k', linewidth=0.4)
+        plt.plot((pmc_xn, pmc_xn), (yval-1, yval+6), color='k', linewidth=0.4)  # ORANGE LINE
+        plt.arrow(pmc_x0-3300000, yval, 3300000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
+        txt = '~{N:4.1f} million ({P:3.1f}%) PMC'.format(
+            N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_medline(self, xend, yval, xmax):
         """Add bounding lines"""
         plt.plot((xend, xend), (yval-1, yval+2.8), color='k', linewidth=0.4)
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
-        txt = '~{N:4.1f} million ({P:4.1f}%) MEDLINE'.format(
+        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
             N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
         plt.annotate(txt, (7400000, yval-.5))
         plt.arrow(22500000, yval, xend-22500000, 0, **self.arrow_p)
@@ -272,37 +307,20 @@ class PubMedContents(EntrezUtilities):
             N=round(xip/1000.0), P=100.0*xip/xmax)
         plt.annotate(txt, (9000000, yval-.5))
 
-    @staticmethod
-    def _get_content_brokenbars(a2n):
-        """Transform the content counts to broken bar data"""
-        par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
-        ml1 = a2n['medline_pmc0']
-        ml2 = ml1 + a2n['inprocess_pmc0']
-        ml3 = ml2 + a2n['inprocess_pmc1']
-        ml4 = ml3 + a2n['medline_pmc1']
-        # pylint: disable=bad-whitespace
-        return [
-            # All PubMed
-            ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
-            # MEDLINE
-            ([(0, ml1)],                       ( 7, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml1, a2n['inprocess_all'])],    ( 7, 1.8), {'facecolors':'tab:cyan', **par}),
-            # ([(ml1, a2n['inprocess_pmc0'])], ( 7, 1.8), {'facecolors':'tab:orange', **par}),
-            # ([(ml2, a2n['inprocess_pmc1'])], ( 7, 1.8), {'facecolors':'tab:green', **par}),
-            ([(ml3, a2n['medline_pmc1'])],     ( 7, 1.8), {'facecolors':'tab:blue', **par}),
-            # PMC
-            ([(ml2, a2n['inprocess_pmc1'])],   ( 9, 1.8), {'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],     ( 9, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pm_ml0_pmc1'])],      ( 9, 1.8), {'facecolors':'y', **par}),
-            # Full PMC to compare against brokenbar PMC
-            # ([(ml2, a2n['pmc_all'])],          (15, 2), {'facecolors':'tab:cyan', **par}),
-            #
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])],  (11, 1.8), {'facecolors':'tab:orange', **par}),
-            # ([(ml2, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
-            # ([(ml3, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
-            ## ([(110, 30), (150, 10)], (10, 9), {'facecolors':'tab:blue'}),
-            ## ([(10, 50), (100, 20), (130, 10)], (20, 9), {'facecolors':('tab:orange', 'tab:green', 'tab:red')}),
-        ]
-
+    def plt_content_counts(self, fout_png, a2n):
+        """Plot pubmed content"""
+        fig, axes = plt.subplots()
+        for xvals, yval, dct in self._get_content_brokenbars(a2n):
+            axes.broken_barh(xvals, yval, **dct)
+        axes.set_ylim(0, 35)
+        xmax = a2n['all']
+        self._add_bounding_lines_all(xmax, 30)
+        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], 28, xmax)
+        self._add_bounding_lines_inprocess(a2n, 6, xmax)
+        self._add_bounding_lines_pmc(a2n, 10, xmax)
+        self._add_bounding_lines_ml0pmc0(a2n, 12, xmax)
+        axes.grid(False)
+        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=200)
+        print('  WROTE: {PNG}'.format(PNG=fout_png))
 
 # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
