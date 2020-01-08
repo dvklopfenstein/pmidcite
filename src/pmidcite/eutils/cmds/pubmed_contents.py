@@ -256,6 +256,16 @@ class PubMedContents(EntrezUtilities):
         txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
         plt.annotate(txt, (7400000, yval-.5))
 
+    def _add_bounding_lines_medline(self, xend, yval, xmax):
+        """Add bounding lines"""
+        plt.plot((xend, xend), (yval-1, yval+1.8), color='k', linewidth=0.4)
+        plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
+        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
+            N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
+        plt.arrow(22500000, yval, xend-22500000, 0, **self.arrow_p)
+
+
     def _add_bounding_lines_ml0pmc0(self, a2n, yval, xmax):
         """Add bounding lines"""
         pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_pmc0']
@@ -284,15 +294,6 @@ class PubMedContents(EntrezUtilities):
         txt = '~{N:4.1f} million ({P:3.1f}%) PMC'.format(
             N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
         plt.annotate(txt, (7400000, yval-.5))
-
-    def _add_bounding_lines_medline(self, xend, yval, xmax):
-        """Add bounding lines"""
-        plt.plot((xend, xend), (yval-1, yval+2.8), color='k', linewidth=0.4)
-        plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
-        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
-            N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
-        plt.annotate(txt, (7400000, yval-.5))
-        plt.arrow(22500000, yval, xend-22500000, 0, **self.arrow_p)
 
     def _add_bounding_lines_inprocess(self, a2n, yval, xmax):
         """Add bounding lines"""
