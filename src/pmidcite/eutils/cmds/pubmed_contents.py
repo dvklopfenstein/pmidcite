@@ -272,8 +272,8 @@ class PubMedContents(EntrezUtilities):
     def _add_bounding_lines_medline(self, xend, yval, xmax):
         """Add bounding lines"""
         plt.plot((xend, xend), (yval-5.7, yval+1), color='k', linewidth=0.4)    # BLUE-YELLOW DIVIDER
-        plt.plot((xend, xend), (yval-7.2, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
-        plt.plot((xend, xend), (yval-11, yval-8.7), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-8.7, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
+        #plt.plot((xend, xend), (yval-11, yval-8.7), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
         plt.arrow(20000000, yval, xend-20000000, 0, **self.arrow_p)
         txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
@@ -318,17 +318,17 @@ class PubMedContents(EntrezUtilities):
         pmc_xn = pmc_x0 + pmc_all
         plt.plot((pmc_x0, pmc_x0), (yval-3, yval+1.7), color='k', linewidth=0.4)  # LOWER CYAN DIVIDER
         # PMC
-        plt.arrow(pmc_x0+1300000, yval, -1300000, 0, **self.arrow_p)
-        plt.arrow(pmc_xn-1300000, yval, 1300000, 0, **self.arrow_p)
-        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval), ha='center', va='center')
+        plt.arrow(pmc_x0+1600000, yval-1.5, -1600000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn-1600000, yval-1.5, 1600000, 0, **self.arrow_p)
+        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-1.5), ha='center', va='center')
         # PMC/MEDLINE arrows
-        plt.arrow(pmc_x0+900000, yval-1.3, -900000, 0, **self.arrow_p)
-        plt.arrow(pmc_x1-900000, yval-1.3, 900000, 0, **self.arrow_p)
-        plt.arrow(pmc_xn+700000, yval-1.3, -700000, 0, **self.arrow_p)
+        plt.arrow(pmc_x0+900000, yval, -900000, 0, **self.arrow_p)
+        plt.arrow(pmc_x1-900000, yval, 900000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+700000, yval, -700000, 0, **self.arrow_p)
         txt_ml1 = '{P:2.0f}%'.format(P=round(100.0*pmc_ml1/pmc_all))
-        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval-1.3), ha='center', va='center', fontsize=8)
+        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval), ha='center', va='center', fontsize=8)
         txt_ml0 = '{P:2.0f}%'.format(P=round(100.0*(pmc_all-pmc_ml1)/pmc_all))
-        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval-1.3), ha='center', va='center', fontsize=8)
+        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval), ha='center', va='center', fontsize=8)
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
