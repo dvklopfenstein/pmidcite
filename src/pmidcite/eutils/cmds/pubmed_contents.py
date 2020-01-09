@@ -265,7 +265,7 @@ class PubMedContents(EntrezUtilities):
         plt.plot((0, 0), (ymax-9, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
         plt.plot((xend, xend), (ymax-9, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
         plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
-        plt.arrow(25300000, ymax, xend-25300000, 0, **self.arrow_p)
+        plt.arrow(23800000, ymax, xend-23800000, 0, **self.arrow_p)
         txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
         plt.annotate(txt, (7400000, ymax-.5))
 
@@ -274,18 +274,9 @@ class PubMedContents(EntrezUtilities):
         plt.plot((xend, xend), (yval-5.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
         plt.plot((xend, xend), (yval-11, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
-        plt.arrow(20000000, yval, xend-20000000, 0, **self.arrow_p)
+        plt.arrow(18800000, yval, xend-18800000, 0, **self.arrow_p)
         txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
             N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
-        plt.annotate(txt, (7400000, yval-.5))
-
-    def _add_bounding_lines_other(self, other_sz, yval, xmax):
-        """Add bounding lines"""
-        xval = xmax - other_sz
-        plt.plot((xval, xval), (yval-7, yval+3), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
-        plt.arrow(xval-10200000, yval, 10200000, 0, **self.arrow_p)
-        plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
-        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
         plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_pmc(self, a2n, yval, xmax):
@@ -298,9 +289,18 @@ class PubMedContents(EntrezUtilities):
         pmc_all = a2n['pmc_all']
         pmc_xn = pmc_x0 + pmc_all
         plt.plot((pmc_x0, pmc_x0), (yval-1.7, yval+3), color='k', linewidth=0.4)  # UPPER CYAN DIVIDER
-        plt.arrow(pmc_x0-5900000, yval, 5900000, 0, **self.arrow_p)
+        plt.arrow(pmc_x0-6600000, yval, 6600000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
         txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
+
+    def _add_bounding_lines_other(self, other_sz, yval, xmax):
+        """Add bounding lines"""
+        xval = xmax - other_sz
+        plt.plot((xval, xval), (yval-7, yval+3), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
+        plt.arrow(xval-11200000, yval, 11200000, 0, **self.arrow_p)
+        plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
+        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
         plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_pmc_100(self, a2n, yval):
@@ -333,6 +333,7 @@ class PubMedContents(EntrezUtilities):
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
+        xmax = a2n['all']
         ymax = 14.5
         # Remove automatically-added 5% axes padding
         mpl.rcParams['axes.xmargin'] = 0
@@ -343,13 +344,13 @@ class PubMedContents(EntrezUtilities):
         axes.get_xaxis().set_visible(False)
         axes.get_yaxis().set_visible(False)
         axes.set_frame_on(False)
+        axes.set_xlim(0, xmax+500000)
         axes.set_ylim(0, ymax+1)
         axes.grid(False)
         # Add horizontal bars for: PubMed, PMC, and other
         for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
             axes.broken_barh(xvals, yval, **dct)
         # Add Dimension lines
-        xmax = a2n['all']
         self._add_bounding_lines_all(xmax, ymax)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
         self._add_bounding_lines_pmc(a2n, ymax-6, xmax)
