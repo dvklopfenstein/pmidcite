@@ -284,20 +284,20 @@ class PubMedContents(EntrezUtilities):
             N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
         plt.annotate(txt, (7400000, yval-.5))
 
-    def _add_bounding_lines_pmc(self, a2n, yval, xmax):
-        """Add bounding lines"""
-        #   # PMC
-        #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
-        #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
-        #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
-        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
-        pmc_all = a2n['pmc_all']
-        pmc_xn = pmc_x0 + pmc_all
-        plt.plot((pmc_x0, pmc_x0), (yval-1, yval+1), color='k', linewidth=0.4)
-        plt.arrow(pmc_x0-5900000, yval, 5900000, 0, **self.arrow_p)
-        plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
-        txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
-        plt.annotate(txt, (7400000, yval-.5))
+    #### def _add_bounding_lines_pmc(self, a2n, yval, xmax):
+    ####     """Add bounding lines"""
+    ####     #   # PMC
+    ####     #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
+    ####     #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
+    ####     #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
+    ####     pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
+    ####     pmc_all = a2n['pmc_all']
+    ####     pmc_xn = pmc_x0 + pmc_all
+    ####     plt.plot((pmc_x0, pmc_x0), (yval-1, yval+1), color='k', linewidth=0.4)
+    ####     plt.arrow(pmc_x0-5900000, yval, 5900000, 0, **self.arrow_p)
+    ####     plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
+    ####     txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+    ####     plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
         """Add bounding lines"""
@@ -352,8 +352,6 @@ class PubMedContents(EntrezUtilities):
             axes.broken_barh(xvals, yval, **dct)
         axes.set_ylim(0, 35)
         xmax = a2n['all']
-        ## plt.axvline(x=a2n['ml1_pmc1'], color='k', linewidth=0.4)
-        ## plt.axvline(x=xmax-a2n['all_ml0_pmc0b'], color='k', linewidth=0.4)
         self._add_bounding_lines_all(xmax, 30)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], 28, xmax)
         self._add_bounding_lines_pmc(a2n, 24, xmax)
