@@ -328,16 +328,17 @@ class PubMedContents(EntrezUtilities):
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
+        ymax = 30
         _, axes = plt.subplots()
-        for xvals, yval, dct in self._get_content_brokenbars(a2n, 25):
+        for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
             axes.broken_barh(xvals, yval, **dct)
         axes.set_ylim(0, 35)
         xmax = a2n['all']
-        self._add_bounding_lines_all(xmax, 30)
-        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], 28, xmax)
-        self._add_bounding_lines_pmc(a2n, 24, xmax)
-        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], 22, xmax)
-        self._add_bounding_lines_pmc_100(a2n, 20)
+        self._add_bounding_lines_all(xmax, ymax)
+        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
+        self._add_bounding_lines_pmc(a2n, ymax-6, xmax)
+        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-8, xmax)
+        self._add_bounding_lines_pmc_100(a2n, ymax-10)
         axes.grid(False)
         plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=200)
         print('  WROTE: {PNG}'.format(PNG=fout_png))
