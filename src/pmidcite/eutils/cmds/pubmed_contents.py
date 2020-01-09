@@ -205,7 +205,7 @@ class PubMedContents(EntrezUtilities):
             # PMC
             ([(ml2, a2n['inprocess_A_pmc1'])], (yval-2, 1.8), {'facecolors':'tab:cyan', **par}),
             ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'y', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'brown', **par}),
             # Other
             ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-4, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
         ]
@@ -354,6 +354,7 @@ class PubMedContents(EntrezUtilities):
         for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
             bbars.append(axes.broken_barh(xvals, yval, **dct))
         # Add Dimension lines
+        # https://schoolworkhelper.net/technical-drawing-alphabet-of-line/
         self._add_bounding_lines_all(xmax, ymax)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
         self._add_bounding_lines_pmc(a2n, ymax-6, xmax)
