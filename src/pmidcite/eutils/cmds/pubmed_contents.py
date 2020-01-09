@@ -186,7 +186,7 @@ class PubMedContents(EntrezUtilities):
         prt.write('    }\n')
 
     @staticmethod
-    def _get_content_brokenbars(a2n):
+    def _get_content_brokenbars(a2n, yval):
         """Transform the content counts to broken bar data"""
         par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
         ml1 = a2n['medline_pmc0']
@@ -198,19 +198,15 @@ class PubMedContents(EntrezUtilities):
             # All PubMed
             ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
             # MEDLINE
-            ([(0, ml1)],                      (25, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml1, a2n['inprocess_A_all'])], (25, 1.8), {'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],    (25, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(0, ml1)],                      (yval, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml1, a2n['inprocess_A_all'])], (yval, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],    (yval, 1.8), {'facecolors':'tab:blue', **par}),
             # PMC
-            ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
+            ([(ml2, a2n['inprocess_A_pmc1'])], (yval-2, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'facecolors':'y', **par}),
             # Other
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (21, 1.8), {'facecolors':'tab:orange', **par}),
-            # ([(ml2, a2n['inprocess_A_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
-            # ([(ml3, a2n['inprocess_A_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
-            ## ([(110, 30), (150, 10)], (10, 9), {'facecolors':'tab:blue'}),
-            ## ([(10, 50), (100, 20), (130, 10)], (20, 9), {'facecolors':('tab:orange', 'tab:green', 'tab:red')}),
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-4, 1.8), {'facecolors':'tab:orange', **par}),
         ]
 
     @staticmethod
@@ -333,7 +329,7 @@ class PubMedContents(EntrezUtilities):
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
         _, axes = plt.subplots()
-        for xvals, yval, dct in self._get_content_brokenbars(a2n):
+        for xvals, yval, dct in self._get_content_brokenbars(a2n, 25):
             axes.broken_barh(xvals, yval, **dct)
         axes.set_ylim(0, 35)
         xmax = a2n['all']
