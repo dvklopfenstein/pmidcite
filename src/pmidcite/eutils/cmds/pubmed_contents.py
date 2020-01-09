@@ -328,7 +328,7 @@ class PubMedContents(EntrezUtilities):
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
-        ymax = 30
+        ymax = 20
         _, axes = plt.subplots()
         for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
             axes.broken_barh(xvals, yval, **dct)
