@@ -6,8 +6,8 @@ __author__ = "DV Klopfenstein"
 # pylint: disable=wrong-import-position
 import sys
 import collections as cx
-import matplotlib
-matplotlib.use('agg')
+import matplotlib as mpl
+mpl.use('agg')
 import matplotlib.pyplot as plt
 
 from pmidcite.eutils.cmds.base import EntrezUtilities
@@ -329,9 +329,12 @@ class PubMedContents(EntrezUtilities):
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
         ymax = 12
+        # Remove automatically-added 5% axes padding
+        mpl.rcParams['axes.xmargin'] = 0
+        mpl.rcParams['axes.ymargin'] = 0
         # Get figure and axes with axes turned off and axes whitespace removed
         fig, axes = plt.subplots()
-        fig.set_size_inches(6.4, 2.2)
+        fig.set_size_inches(6.4, 1.8)
         axes.get_xaxis().set_visible(False)
         axes.get_yaxis().set_visible(False)
         axes.set_frame_on(False)
