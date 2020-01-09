@@ -262,7 +262,7 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_all(self, xend, ymax):
         """Add bounding lines"""
-        plt.plot((0, 0), (ymax-9, ymax+1), color='k', linewidth=0.4)          # LEFT  PubMed LINE
+        plt.plot((0, 0), (ymax-9, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
         plt.plot((xend, xend), (ymax-9, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
         plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
         plt.arrow(25300000, ymax, xend-25300000, 0, **self.arrow_p)
@@ -271,9 +271,8 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_medline(self, xend, yval, xmax):
         """Add bounding lines"""
-        plt.plot((xend, xend), (yval-5.7, yval+1), color='k', linewidth=0.4)    # BLUE-YELLOW DIVIDER
-        plt.plot((xend, xend), (yval-8.7, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
-        #plt.plot((xend, xend), (yval-11, yval-8.7), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-5.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-11, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
         plt.arrow(20000000, yval, xend-20000000, 0, **self.arrow_p)
         txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
@@ -283,7 +282,7 @@ class PubMedContents(EntrezUtilities):
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
         """Add bounding lines"""
         xval = xmax - other_sz
-        plt.plot((xval, xval), (yval-5, yval+3), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
+        plt.plot((xval, xval), (yval-7, yval+3), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
         plt.arrow(xval-10200000, yval, 10200000, 0, **self.arrow_p)
         plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
         txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
@@ -316,23 +315,25 @@ class PubMedContents(EntrezUtilities):
         pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
         pmc_x1 = pmc_x0 + pmc_ml1
         pmc_xn = pmc_x0 + pmc_all
-        plt.plot((pmc_x0, pmc_x0), (yval-3, yval+1.7), color='k', linewidth=0.4)  # LOWER CYAN DIVIDER
-        # PMC
-        plt.arrow(pmc_x0+1600000, yval-1.5, -1600000, 0, **self.arrow_p)
-        plt.arrow(pmc_xn-1600000, yval-1.5, 1600000, 0, **self.arrow_p)
-        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-1.5), ha='center', va='center')
-        # PMC/MEDLINE arrows
-        plt.arrow(pmc_x0+900000, yval, -900000, 0, **self.arrow_p)
-        plt.arrow(pmc_x1-900000, yval, 900000, 0, **self.arrow_p)
-        plt.arrow(pmc_xn+700000, yval, -700000, 0, **self.arrow_p)
+        plt.plot((pmc_x0, pmc_x0), (yval-5, yval+1.7), color='k', linewidth=0.4)  # LOWER CYAN DIVIDER
+        # PMC AND MEDLINE
+        plt.annotate('MEDLINE', (pmc_x0+pmc_ml1/2.0, yval-1.1), ha='center', va='center', fontsize=8)
+        # PMC|MEDLINE
+        plt.arrow(pmc_x0+900000, yval-2.3, -900000, 0, **self.arrow_p)
+        plt.arrow(pmc_x1-900000, yval-2.3, 900000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+700000, yval-2.3, -700000, 0, **self.arrow_p)
         txt_ml1 = '{P:2.0f}%'.format(P=round(100.0*pmc_ml1/pmc_all))
-        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval), ha='center', va='center', fontsize=8)
+        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval-2.3), ha='center', va='center', fontsize=8)
         txt_ml0 = '{P:2.0f}%'.format(P=round(100.0*(pmc_all-pmc_ml1)/pmc_all))
-        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval), ha='center', va='center', fontsize=8)
+        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval-2.3), ha='center', va='center', fontsize=8)
+        # PMC
+        plt.arrow(pmc_x0+1600000, yval-4, -1600000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn-1600000, yval-4, 1600000, 0, **self.arrow_p)
+        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-4), ha='center', va='center')
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
-        ymax = 12
+        ymax = 14.5
         # Remove automatically-added 5% axes padding
         mpl.rcParams['axes.xmargin'] = 0
         mpl.rcParams['axes.ymargin'] = 0
