@@ -260,14 +260,14 @@ class PubMedContents(EntrezUtilities):
             return int(dct['count'])
         return dct
 
-    def _add_bounding_lines_all(self, xend, yval):
+    def _add_bounding_lines_all(self, xend, ymax):
         """Add bounding lines"""
-        plt.axvline(x=0, color='k', linewidth=0.4)
-        plt.axvline(x=xend, color='k', linewidth=0.4)
-        plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
-        plt.arrow(25300000, yval, xend-25300000, 0, **self.arrow_p)
+        plt.plot((0, 0), (ymax-9, ymax+1), color='k', linewidth=0.4)          # LEFT  PubMed LINE
+        plt.plot((xend, xend), (ymax-9, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
+        plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
+        plt.arrow(25300000, ymax, xend-25300000, 0, **self.arrow_p)
         txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
-        plt.annotate(txt, (7400000, yval-.5))
+        plt.annotate(txt, (7400000, ymax-.5))
 
     def _add_bounding_lines_medline(self, xend, yval, xmax):
         """Add bounding lines"""
