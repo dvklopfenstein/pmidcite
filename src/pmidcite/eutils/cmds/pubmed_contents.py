@@ -20,6 +20,7 @@ class PubMedContents(EntrezUtilities):
     name2query = cx.OrderedDict([
         ('all', 'all [sb]'),
         ('all_ml0_pmc0', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]'),
+        ('all_ml0_pmc0b', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd'),
         ('ml1_pmc1', 'inprocess[sb] OR medline[sb] OR pubmed pmc[sb]'),
         # publisher[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT # pmcbook:
         #   1. Citations recently added to PubMed via electronic submission
@@ -55,9 +56,9 @@ class PubMedContents(EntrezUtilities):
         ('pmcsd_pmc0', 'pubstatuspmcsd NOT pubmed pmc[sb]'),
         # inprocess[sb]:
         #   MeSH terms will be assigned if the subject of the article is within the scope of MEDLINE.
-        ('inprocess_all', 'inprocess[sb]'),
-        ('inprocess_pmc0', 'inprocess[sb] NOT pubmed pmc[sb]'),
-        ('inprocess_pmc1', 'inprocess[sb] AND pubmed pmc[sb]'),
+        ('inprocess_A_all', 'inprocess[sb]'),
+        ('inprocess_A_pmc0', 'inprocess[sb] NOT pubmed pmc[sb]'),
+        ('inprocess_A_pmc1', 'inprocess[sb] AND pubmed pmc[sb]'),
         ('inprocess_ml0', 'inprocess[sb] NOT medline[sb]'),
         ('inprocess_ml1', 'inprocess[sb] AND medline[sb]'),
         ('medline_n_inprocess', 'medline[sb] OR inprocess[sb]'),
@@ -69,6 +70,12 @@ class PubMedContents(EntrezUtilities):
         # pubmed pmc[sb]:
         #   Citations in PMC
         ('pmc_all', 'pubmed pmc[sb]'),
+        #  5,323,939 pmc_all              pubmed pmc[sb]
+        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+        #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
+        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+        ('pmc_all?', 'pubmed pmc[sb] AND (inprocess[sb] OR medline[sb] OR pubmednotmedline[sb])'),
+        ('pmc_unknown', 'pubmed pmc[sb] NOT inprocess[sb] NOT medline[sb] NOT pubmednotmedline[sb]'),
         # https://www.ncbi.nlm.nih.gov/pmc/about/submission-methods/
         ('au_all', 'author manuscript all[sb]'),
         ('au_all1', 'author manuscript all[sb] AND all[sb]'),
@@ -181,25 +188,25 @@ class PubMedContents(EntrezUtilities):
         """Transform the content counts to broken bar data"""
         par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
         ml1 = a2n['medline_pmc0']
-        ml2 = ml1 + a2n['inprocess_pmc0']  # PMC inprocess start
-        ml3 = ml2 + a2n['inprocess_pmc1']  # PMC start
+        ml2 = ml1 + a2n['inprocess_A_pmc0']  # PMC inprocess start
+        ml3 = ml2 + a2n['inprocess_A_pmc1']  # PMC start
         ml4 = ml3 + a2n['medline_pmc1']
         # pylint: disable=bad-whitespace
         return [
             # All PubMed
             ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
             # MEDLINE
-            ([(0, ml1)],                       (25, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml1, a2n['inprocess_all'])],    (25, 1.8), {'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],     (25, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(0, ml1)],                      (25, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml1, a2n['inprocess_A_all'])], (25, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],    (25, 1.8), {'facecolors':'tab:blue', **par}),
             # PMC
-            ([(ml2, a2n['inprocess_pmc1'])],   (23, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
             ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pmnml_A_pmc1'])],      (23, 1.8), {'facecolors':'y', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
             # Other
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])],  (21, 1.8), {'facecolors':'tab:orange', **par}),
-            # ([(ml2, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
-            # ([(ml3, a2n['inprocess_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (21, 1.8), {'facecolors':'tab:orange', **par}),
+            # ([(ml2, a2n['inprocess_A_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
+            # ([(ml3, a2n['inprocess_A_pmc1'])],   (10, 2), {'facecolors':'tab:cyan', **par}),
             ## ([(110, 30), (150, 10)], (10, 9), {'facecolors':'tab:blue'}),
             ## ([(10, 50), (100, 20), (130, 10)], (20, 9), {'facecolors':('tab:orange', 'tab:green', 'tab:red')}),
         ]
@@ -215,7 +222,7 @@ class PubMedContents(EntrezUtilities):
         #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
         #    557,390 inprocess_ml0        inprocess[sb] NOT medline[sb]
         #          0 inprocess_ml1        inprocess[sb] AND medline[sb]
-        assert a2n['inprocess_all'] == a2n['inprocess_pmc0'] + a2n['inprocess_pmc1']
+        assert a2n['inprocess_A_all'] == a2n['inprocess_A_pmc0'] + a2n['inprocess_A_pmc1']
         # 30,514,237 all          all [sb]
         #  1,818,474 all_ml0_pmc0 all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]
         # 28,695,763 ml1_pmc1     inprocess[sb] OR medline[sb] OR pubmed pmc[sb]
@@ -227,7 +234,11 @@ class PubMedContents(EntrezUtilities):
         #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
         #  1,504,065 pmnml_A_pmc0         pubmednotmedline[sb] NOT pubmed pmc[sb]
         assert a2n['pmnml_A'] == a2n['pmnml_A_pmc1'] + a2n['pmnml_A_pmc0']
-        pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_pmc1']
+        #  5,323,939 pmc_all              pubmed pmc[sb]
+        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+        #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
+        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+        pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
         print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
         print(pmc_notmedline - a2n['pmnml_A_pmc1'])
         print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
@@ -281,11 +292,14 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_pmc(self, a2n, yval, xmax):
         """Add bounding lines"""
-        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_pmc0']
-        pmc_all = a2n['pmc_all'] - a2n['inprocess_pmc1']
-        pmc_xn = pmc_x0 + pmc_all
+        #   # PMC
+        #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
+        #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
+        #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
+        pmc_all = a2n['pmc_all']
+        pmc_xn = pmc_x0 + pmc_all 
         plt.plot((pmc_x0, pmc_x0), (yval-1, yval+1), color='k', linewidth=0.4)
-        ## plt.plot((pmc_xn, pmc_xn), (yval-3, yval+1), color='k', linewidth=0.4)  # YELLOW/ORANGE LINE
         plt.arrow(pmc_x0-5900000, yval, 5900000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
         txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
@@ -309,7 +323,7 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_inprocess(self, a2n, yval, xmax):
         """Add bounding lines"""
-        xip = a2n['inprocess_all']
+        xip = a2n['inprocess_A_all']
         xp0 = a2n['medline_pmc0']
         xp1 = xp0 + xip
         plt.plot((xp0, xp0), (yval-1, yval+.8), color='k', linewidth=0.4)
@@ -328,6 +342,7 @@ class PubMedContents(EntrezUtilities):
         axes.set_ylim(0, 35)
         xmax = a2n['all']
         ## plt.axvline(x=a2n['ml1_pmc1'], color='k', linewidth=0.4)
+        ## plt.axvline(x=xmax-a2n['all_ml0_pmc0b'], color='k', linewidth=0.4)
         self._add_bounding_lines_all(xmax, 30)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], 28, xmax)
         self._add_bounding_lines_pmc(a2n, 24, xmax)
