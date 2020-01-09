@@ -310,21 +310,25 @@ class PubMedContents(EntrezUtilities):
         #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
         #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
         #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
-        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
-        pmc_ml = a2n['medline_pmc1'] + a2n['inprocess_A_pmc1']
-        pmc_x1 = pmc_x0 + pmc_ml
         pmc_all = a2n['pmc_all']
+        pmc_ml1 = a2n['medline_pmc1'] + a2n['inprocess_A_pmc1']
+        pmc_ml0 = pmc_all - pmc_ml1
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
+        pmc_x1 = pmc_x0 + pmc_ml1
         pmc_xn = pmc_x0 + pmc_all
         plt.plot((pmc_x0, pmc_x0), (yval-3, yval+1.7), color='k', linewidth=0.4)  # LOWER CYAN DIVIDER
         # PMC
         plt.arrow(pmc_x0+1300000, yval, -1300000, 0, **self.arrow_p)
         plt.arrow(pmc_xn-1300000, yval, 1300000, 0, **self.arrow_p)
         plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval), ha='center', va='center')
-        # PMC/MEDLINE
-        plt.arrow(pmc_x0+500000, yval-1.3, -500000, 0, **self.arrow_p)
-        plt.arrow(pmc_x1-500000, yval-1.3, 500000, 0, **self.arrow_p)
-        txt = '{P:3.1f}%'.format(P=100.0*pmc_ml/pmc_all)
-        plt.annotate(txt, (pmc_x0+pmc_ml/2.0, yval-1.3), ha='center', va='center', fontsize=8)
+        # PMC/MEDLINE arrows
+        plt.arrow(pmc_x0+900000, yval-1.3, -900000, 0, **self.arrow_p)
+        plt.arrow(pmc_x1-900000, yval-1.3, 900000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+700000, yval-1.3, -700000, 0, **self.arrow_p)
+        txt_ml1 = '{P:2.0f}%'.format(P=round(100.0*pmc_ml1/pmc_all))
+        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval-1.3), ha='center', va='center', fontsize=8)
+        txt_ml0 = '{P:2.0f}%'.format(P=round(100.0*(pmc_all-pmc_ml1)/pmc_all))
+        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval-1.3), ha='center', va='center', fontsize=8)
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
