@@ -319,20 +319,21 @@ class PubMedContents(EntrezUtilities):
         # PMC
         plt.arrow(pmc_x0+1300000, yval, -1300000, 0, **self.arrow_p)
         plt.arrow(pmc_xn-1300000, yval, 1300000, 0, **self.arrow_p)
-        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-.5), ha='center')
+        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval), ha='center', va='center')
         # PMC/MEDLINE
-        plt.arrow(pmc_x0+500000, yval-2, -500000, 0, **self.arrow_p)
-        plt.arrow(pmc_x1-500000, yval-2, 500000, 0, **self.arrow_p)
+        plt.arrow(pmc_x0+500000, yval-1.3, -500000, 0, **self.arrow_p)
+        plt.arrow(pmc_x1-500000, yval-1.3, 500000, 0, **self.arrow_p)
         txt = '{P:3.1f}%'.format(P=100.0*pmc_ml/pmc_all)
-        plt.annotate(txt, (pmc_x0+pmc_ml/2.0, yval-2), ha='center', va='center', fontsize=8)
+        plt.annotate(txt, (pmc_x0+pmc_ml/2.0, yval-1.3), ha='center', va='center', fontsize=8)
 
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
-        ymax = 20
-        _, axes = plt.subplots()
+        ymax = 12
+        fig, axes = plt.subplots()
+        fig.set_size_inches(6.4, 2.2)
         for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
             axes.broken_barh(xvals, yval, **dct)
-        axes.set_ylim(0, 35)
+        axes.set_ylim(0, ymax+1)
         xmax = a2n['all']
         self._add_bounding_lines_all(xmax, ymax)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
