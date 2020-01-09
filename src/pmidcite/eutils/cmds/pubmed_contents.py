@@ -3,12 +3,13 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-# pylint: disable=wrong-import-position
-import sys
-import collections as cx
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
+
+import sys
+import collections as cx
+import itertools
 
 from pmidcite.eutils.cmds.base import EntrezUtilities
 
@@ -198,15 +199,15 @@ class PubMedContents(EntrezUtilities):
             # All PubMed
             ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
             # MEDLINE
-            ([(0, ml1)],                      (yval, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml1, a2n['inprocess_A_all'])], (yval, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(0, ml1)],                      (yval, 1.8), {'label':'MEDLINE', 'facecolors':'tab:blue', **par}),
+            ([(ml1, a2n['inprocess_A_all'])], (yval, 1.8), {'label':'MEDLINE in process', 'facecolors':'tab:cyan', **par}),
             ([(ml3, a2n['medline_pmc1'])],    (yval, 1.8), {'facecolors':'tab:blue', **par}),
             # PMC
             ([(ml2, a2n['inprocess_A_pmc1'])], (yval-2, 1.8), {'facecolors':'tab:cyan', **par}),
             ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'facecolors':'y', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'y', **par}),
             # Other
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-4, 1.8), {'facecolors':'tab:orange', **par}),
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-4, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
         ]
 
     @staticmethod
@@ -336,6 +337,7 @@ class PubMedContents(EntrezUtilities):
         xmax = a2n['all']
         ymax = 14.5
         # Remove automatically-added 5% axes padding
+        mpl.rcParams['axes.autolimit_mode'] = 'data'  # 'data' or 'round_numbers'
         mpl.rcParams['axes.xmargin'] = 0
         mpl.rcParams['axes.ymargin'] = 0
         # Get figure and axes with axes turned off and axes whitespace removed
@@ -348,14 +350,19 @@ class PubMedContents(EntrezUtilities):
         axes.set_ylim(0, ymax+1)
         axes.grid(False)
         # Add horizontal bars for: PubMed, PMC, and other
+        bbars = []
         for xvals, yval, dct in self._get_content_brokenbars(a2n, ymax-5):
-            axes.broken_barh(xvals, yval, **dct)
+            bbars.append(axes.broken_barh(xvals, yval, **dct))
         # Add Dimension lines
         self._add_bounding_lines_all(xmax, ymax)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
         self._add_bounding_lines_pmc(a2n, ymax-6, xmax)
         self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-8, xmax)
         self._add_bounding_lines_pmc_100(a2n, ymax-10)
+        # Add legend
+        axes.legend(loc='lower left', fontsize=8, ncol=2,
+                    bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
+                    handletextpad=.2, columnspacing=1.0, labelspacing=.2)
         # Save figure
         plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=300)
         print('  WROTE: {PNG}'.format(PNG=fout_png))
