@@ -3,14 +3,12 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import sys
+import collections as cx
+
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
-
-import sys
-import collections as cx
-import itertools
-
 from pmidcite.eutils.cmds.base import EntrezUtilities
 
 
@@ -131,7 +129,11 @@ class PubMedContents(EntrezUtilities):
         'length_includes_head':True,
         'head_width':.3,
         'head_length':400000,
+        'head_starts_at_zero': False,
         'overhang':0.0,
+        # https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/joinstyle.html
+        'capstyle':'butt',    # butt round projecting
+        'joinstyle':'bevel',  # miter, round, bevel
     }
 
     def __init__(self, email, apikey, tool):
@@ -207,7 +209,7 @@ class PubMedContents(EntrezUtilities):
             ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
             ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'brown', **par}),
             # Other
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-4, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-6, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
         ]
 
     @staticmethod
@@ -263,8 +265,8 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_all(self, xend, ymax):
         """Add bounding lines"""
-        plt.plot((0, 0), (ymax-9, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
-        plt.plot((xend, xend), (ymax-9, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
+        plt.plot((0, 0), (ymax-11, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
+        plt.plot((xend, xend), (ymax-11, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
         plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
         plt.arrow(23800000, ymax, xend-23800000, 0, **self.arrow_p)
         txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
@@ -272,8 +274,8 @@ class PubMedContents(EntrezUtilities):
 
     def _add_bounding_lines_medline(self, xend, yval, xmax):
         """Add bounding lines"""
-        plt.plot((xend, xend), (yval-5.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
-        plt.plot((xend, xend), (yval-11, yval-6.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-7.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-13, yval-8.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
         plt.arrow(18800000, yval, xend-18800000, 0, **self.arrow_p)
         txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
@@ -289,16 +291,25 @@ class PubMedContents(EntrezUtilities):
         pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
         pmc_all = a2n['pmc_all']
         pmc_xn = pmc_x0 + pmc_all
-        plt.plot((pmc_x0, pmc_x0), (yval-1.7, yval+3), color='k', linewidth=0.4)  # UPPER CYAN DIVIDER
+        plt.plot((pmc_x0, pmc_x0), (yval-1.7, yval+3), color='k', linewidth=0.4)    # UPPER CYAN DIVIDER
+        plt.plot((pmc_x0, pmc_x0), (yval-3.7, yval-2.3), color='k', linewidth=0.4)  # UPPER CYAN DIVIDER
+        # PMC
         plt.arrow(pmc_x0-6600000, yval, 6600000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
         txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
         plt.annotate(txt, (7400000, yval-.5))
+        # PMC Only
+        plt.arrow(a2n['medline_n_inprocess']-8000000, yval-2, 8000000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+1300000, yval-2, -1300000, 0, **self.arrow_p)
+        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(
+            N=round(pmc_all/1000000.0),
+            P=100.0*(a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])/xmax)
+        plt.annotate(txt, (7400000, yval-2.5))
 
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
         """Add bounding lines"""
         xval = xmax - other_sz
-        plt.plot((xval, xval), (yval-7, yval+3), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
+        plt.plot((xval, xval), (yval-7, yval+5), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
         plt.arrow(xval-11200000, yval, 11200000, 0, **self.arrow_p)
         plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
         txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
@@ -335,7 +346,7 @@ class PubMedContents(EntrezUtilities):
     def plt_content_counts(self, fout_png, a2n):
         """Plot pubmed content"""
         xmax = a2n['all']
-        ymax = 14.5
+        ymax = 16.5
         # Remove automatically-added 5% axes padding
         mpl.rcParams['axes.autolimit_mode'] = 'data'  # 'data' or 'round_numbers'
         mpl.rcParams['axes.xmargin'] = 0
@@ -358,8 +369,8 @@ class PubMedContents(EntrezUtilities):
         self._add_bounding_lines_all(xmax, ymax)
         self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
         self._add_bounding_lines_pmc(a2n, ymax-6, xmax)
-        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-8, xmax)
-        self._add_bounding_lines_pmc_100(a2n, ymax-10)
+        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-10, xmax)
+        self._add_bounding_lines_pmc_100(a2n, ymax-12)
         # Add legend
         axes.legend(loc='lower left', fontsize=8, ncol=2,
                     bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,

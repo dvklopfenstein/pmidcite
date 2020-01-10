@@ -14,7 +14,7 @@ def main(dnld=False):
     """Plot the types of content and their amount in PubMed"""
     date = str(datetime.datetime.now().date()).replace('-', '_')
     fout_png = 'log/pubmed_content/pubmed_content_{DATE}.png'.format(DATE=date)
-    fout_png = 'pubmed_content_{DATE}.png'.format(DATE=date)
+    fout_png = 'pubmed_content_2020_01_09.png'.format(DATE=date)
     cfg = Cfg()
     obj = PubMedContents(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
     name2cnt = obj.dnld_content_counts() if dnld else _get_name2cnt()
@@ -25,6 +25,7 @@ def main(dnld=False):
     obj.chk_content_counts(name2cnt)
     obj.plt_content_counts(fout_png, name2cnt)
 
+# pylint: disable=line-too-long
 def _get_name2cnt():
     """Return saved counts, rather than re-downloading"""
     # 2020_01_08
