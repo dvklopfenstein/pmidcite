@@ -3,7 +3,9 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import os
 import sys
+import datetime
 import collections as cx
 from pmidcite.eutils.cmds.base import EntrezUtilities
 
@@ -50,7 +52,7 @@ class PubMedDnld(EntrezUtilities):
         ('pmcsd_and_nihms', 'pubstatuspmcsd AND pubstatusnihms'),  # DISJOINT
         ('pmcsd_pmc1', 'pubstatuspmcsd AND pubmed pmc[sb]'),
         ('pmcsd_pmc0', 'pubstatuspmcsd NOT pubmed pmc[sb]'),
-        # inprocess[sb]:
+        # inprocess MEDLINE:  inprocess[sb]
         #   MeSH terms will be assigned if the subject of the article is within the scope of MEDLINE.
         ('inprocess_A_all', 'inprocess[sb]'),
         ('inprocess_A_pmc0', 'inprocess[sb] NOT pubmed pmc[sb]'),
@@ -71,6 +73,9 @@ class PubMedDnld(EntrezUtilities):
         #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
         #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
         ('pmc_all?', 'pubmed pmc[sb] AND (inprocess[sb] OR medline[sb] OR pubmednotmedline[sb])'),
+        ('pmc_m1', 'pubmed pmc[sb] AND (inprocess[sb] OR medline[sb])'),
+        ('pmc_m0', 'pubmed pmc[sb] NOT inprocess[sb] NOT medline[sb]'),
+        ('pmc_m0b', 'pubmed pmc[sb] AND pubmednotmedline[sb]'),
         ('pmc_unknown', 'pubmed pmc[sb] NOT inprocess[sb] NOT medline[sb] NOT pubmednotmedline[sb]'),
         # https://www.ncbi.nlm.nih.gov/pmc/about/submission-methods/
         ('au_all', 'author manuscript all[sb]'),
@@ -120,13 +125,33 @@ class PubMedDnld(EntrezUtilities):
 
     def __init__(self, email, apikey, tool):
         super(PubMedDnld, self).__init__(email, apikey, tool)
+        self.date = str(datetime.datetime.now().date()).replace('-', '_')
+
+    def get_content_counts(self, file_py, force_dnld):
+        """Read or download the PubMed content counts"""
+        if not os.path.exists(file_py) or force_dnld:
+            name2cnt = self.dnld_content_counts()
+            self.wrpy_count_data(file_py, name2cnt)
+            self.chk_content_counts(name2cnt)
+            return name2cnt, self.date
+        return self.load_count_data(file_py)
+
+    @staticmethod
+    def load_count_data(fin_py):
+        """Load NIH iCite information from Python modules"""
+        import importlib
+        spec = importlib.util.spec_from_file_location("module.name", fin_py)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        print('  READ: {PY}'.format(PY=fin_py))
+        return mod.CNTS, mod.DATE
 
     def dnld_content_counts(self):
         """Get the count of various types of content in PubMed"""
         name2cnt = {}
         for name, query in self.name2query.items():
             cnt = self.dnld_count(query)
-            print(' {N:12,} {A:20} {Q}'.format(N=cnt, A=name, Q=query))
+            print('  Downloaded {N:12,} {A:20} {Q}'.format(N=cnt, A=name, Q=query))
             name2cnt[name] = cnt
         # 2019/01/04 PubMed Query returns 30,500,360 results: all [sb]
         # 2019/01/04 PubMed Query returns  3,499,063 results: medline[sb] AND pubmed pmc[sb]
@@ -155,20 +180,30 @@ class PubMedDnld(EntrezUtilities):
         # PubMed Query: author manuscript[sb] AND pubmed pmc[sb]
         return name2cnt
 
+    def wrpy_count_data(self, fout_py, name2cnt):
+        """Write PubMed count data into a Python module"""
+        with open(fout_py, 'w') as prt:
+            prt.write('"""Downloaded PubMed count data"""\n\n')
+            prt.write("DATE = '{DATE}'\n\n".format(DATE=self.date))
+            self.prt_content_counts(name2cnt, prt)
+            prt.write('\n')
+            self.prt_content_cntdct(name2cnt, prt)
+            prt.write('\n')
+            print('  WROTE: {PY}'.format(PY=fout_py))
+
     def prt_content_counts(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         for name, query in self.name2query.items():
             cnt = name2cnt[name]
-            prt.write('    # {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
+            prt.write('# {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
 
     def prt_content_cntdct(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
-        # prt.write('    cnts = {\n')
-        prt.write('    return {\n')
+        prt.write('CNTS = {\n')
         for name in self.name2query:
             cnt = name2cnt[name]
-            prt.write('        "{NAME}": {N},\n'.format(N=cnt, NAME=name))
-        prt.write('    }\n')
+            prt.write('    "{NAME}": {N},\n'.format(N=cnt, NAME=name))
+        prt.write('}\n')
 
     @staticmethod
     def chk_content_counts(a2n):

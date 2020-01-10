@@ -7,6 +7,8 @@ import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
 
+from pmidcite.eutils.pubmed_counts.data import DataMgr
+
 
 class PubMedPlot:
     """Plot the types of content and their amount in PubMed"""
@@ -27,31 +29,7 @@ class PubMedPlot:
 
     def __init__(self, name2cnt):
         self.name2cnt = name2cnt
-
-    def _get_content_brokenbars(self, yval):
-        """Transform the content counts to broken bar data"""
-        a2n = self.name2cnt
-        par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
-        ml1 = a2n['medline_pmc0']
-        ml2 = ml1 + a2n['inprocess_A_pmc0']  # PMC inprocess start
-        ml3 = ml2 + a2n['inprocess_A_pmc1']  # PMC start
-        ml4 = ml3 + a2n['medline_pmc1']
-        # pylint: disable=bad-whitespace
-        # pylint: disable=line-too-long
-        return [
-            # All PubMed
-            ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
-            # MEDLINE
-            ([(0, ml1)],                      (yval, 1.8), {'label':'MEDLINE', 'facecolors':'tab:blue', **par}),
-            ([(ml1, a2n['inprocess_A_all'])], (yval, 1.8), {'label':'MEDLINE in process', 'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],    (yval, 1.8), {'facecolors':'tab:blue', **par}),
-            # PMC
-            ([(ml2, a2n['inprocess_A_pmc1'])], (yval-2, 1.8), {'facecolors':'tab:cyan', **par}),
-            ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
-            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'brown', **par}),
-            # Other
-            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-6, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
-        ]
+        self.dataobj = DataMgr(self.name2cnt)
 
     def chk_content_counts(self):
         """Check the content typename and the count of that type"""
@@ -104,20 +82,21 @@ class PubMedPlot:
         plt.plot((xend, xend), (ymax-11, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
         plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
         plt.arrow(23800000, ymax, xend-23800000, 0, **self.arrow_p)
-        txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
+        ntd = self.dataobj.pltdata_pubmed['PubMed']
+        txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(ntd.count/1000000.0, 1))
         plt.annotate(txt, (7400000, ymax-.5))
 
-    def _add_bounding_lines_medline(self, xend, yval, xmax):
+    def _add_bounding_lines_medline(self, xend, yval):
         """Add bounding lines"""
         plt.plot((xend, xend), (yval-7.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
         plt.plot((xend, xend), (yval-13, yval-8.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
         plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
         plt.arrow(18800000, yval, xend-18800000, 0, **self.arrow_p)
-        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
-            N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
+        ntd = self.dataobj.pltdata_pubmed['MEDLINE_n_inprocess']
+        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
         plt.annotate(txt, (7400000, yval-.5))
 
-    def _add_bounding_lines_pmc(self, yval, xmax):
+    def _add_bounding_lines_pmc(self, yval):
         """Add bounding lines"""
         a2n = self.name2cnt
         # pylint: disable=line-too-long
@@ -133,13 +112,14 @@ class PubMedPlot:
         # PMC
         plt.arrow(pmc_x0-6600000, yval, 6600000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
-        txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+        ntd = self.dataobj.pltdata_pubmed['PMC']
+        txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
         plt.annotate(txt, (7400000, yval-.5))
         # PMC Only
         plt.arrow(a2n['medline_n_inprocess']-8000000, yval-2, 8000000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval-2, -1300000, 0, **self.arrow_p)
-        pmc_only = a2n['pmnml_A_pmc1'] + a2n['pmc_unknown']
-        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(N=round(pmc_only/1000000.0), P=100.0*pmc_only/xmax)
+        ntd = self.dataobj.pltdata_pubmed['PMC_only']
+        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
         plt.annotate(txt, (7400000, yval-2.5))
 
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
@@ -148,8 +128,8 @@ class PubMedPlot:
         plt.plot((xval, xval), (yval-7, yval+5), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
         plt.arrow(xval-11200000, yval, 11200000, 0, **self.arrow_p)
         plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
-        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(
-            N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
+        ntd = self.dataobj.pltdata_pubmed['other']
+        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
         plt.annotate(txt, (7400000, yval-.5))
 
     def _add_bounding_lines_pmc_100(self, yval):
@@ -202,13 +182,13 @@ class PubMedPlot:
         axes.grid(False)
         # Add horizontal bars for: PubMed, PMC, and other
         bbars = []
-        for xvals, yval, dct in self._get_content_brokenbars(ymax-5):
+        for xvals, yval, dct in self.dataobj.get_pubmed_colorbars(ymax-5):
             bbars.append(axes.broken_barh(xvals, yval, **dct))
         # Add Dimension lines
         # https://schoolworkhelper.net/technical-drawing-alphabet-of-line/
         self._add_bounding_lines_all(xmax, ymax)
-        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
-        self._add_bounding_lines_pmc(ymax-6, xmax)
+        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2)
+        self._add_bounding_lines_pmc(ymax-6)
         self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-10, xmax)
         self._add_bounding_lines_pmc_100(ymax-12)
         # Add legend
