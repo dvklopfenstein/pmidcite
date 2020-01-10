@@ -1,0 +1,223 @@
+"""Plot the types of content and their amount in PubMed"""
+
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
+__author__ = "DV Klopfenstein"
+
+import matplotlib as mpl
+mpl.use('agg')
+import matplotlib.pyplot as plt
+
+
+class PubMedPlot:
+    """Plot the types of content and their amount in PubMed"""
+
+    arrow_p = {
+        'color': 'k',
+        'linewidth':0.4,
+        'shape':'full',
+        'length_includes_head':True,
+        'head_width':.3,
+        'head_length':400000,
+        'head_starts_at_zero': False,
+        'overhang':0.0,
+        # https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/joinstyle.html
+        'capstyle':'butt',    # butt round projecting
+        'joinstyle':'bevel',  # miter, round, bevel
+    }
+
+    def __init__(self, name2cnt):
+        self.name2cnt = name2cnt
+
+    def _get_content_brokenbars(self, yval):
+        """Transform the content counts to broken bar data"""
+        a2n = self.name2cnt
+        par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
+        ml1 = a2n['medline_pmc0']
+        ml2 = ml1 + a2n['inprocess_A_pmc0']  # PMC inprocess start
+        ml3 = ml2 + a2n['inprocess_A_pmc1']  # PMC start
+        ml4 = ml3 + a2n['medline_pmc1']
+        # pylint: disable=bad-whitespace
+        # pylint: disable=line-too-long
+        return [
+            # All PubMed
+            ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
+            # MEDLINE
+            ([(0, ml1)],                      (yval, 1.8), {'label':'MEDLINE', 'facecolors':'tab:blue', **par}),
+            ([(ml1, a2n['inprocess_A_all'])], (yval, 1.8), {'label':'MEDLINE in process', 'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],    (yval, 1.8), {'facecolors':'tab:blue', **par}),
+            # PMC
+            ([(ml2, a2n['inprocess_A_pmc1'])], (yval-2, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(ml3, a2n['medline_pmc1'])],     (yval-2, 1.8), {'facecolors':'tab:blue', **par}),
+            ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (yval-2, 1.8), {'label':'PMC Only', 'facecolors':'brown', **par}),
+            # Other
+            ([(a2n['ml1_pmc1'], a2n['all_ml0_pmc0'])], (yval-6, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
+        ]
+
+    def chk_content_counts(self):
+        """Check the content typename and the count of that type"""
+        a2n = self.name2cnt
+        assert a2n['nihms_pub0'] + a2n['nihms_pub1'] == a2n['nihms']
+        assert a2n['pmcsd_pmc0'] + a2n['pmcsd_pmc1'] == a2n['pmcsd']
+        assert a2n['medline_pmc0'] + a2n['medline_pmc1'] == a2n['medline_all']
+        #    557,390 inprocess_A_all      inprocess[sb]
+        #    422,103 inprocess_A_pmc0     inprocess[sb] NOT pubmed pmc[sb]
+        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+        #    557,390 inprocess_ml0        inprocess[sb] NOT medline[sb]
+        #          0 inprocess_ml1        inprocess[sb] AND medline[sb]
+        assert a2n['inprocess_A_all'] == a2n['inprocess_A_pmc0'] + a2n['inprocess_A_pmc1']
+        # 30,514,237 all          all [sb]
+        #  1,818,474 all_ml0_pmc0 all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]
+        # 28,695,763 ml1_pmc1     inprocess[sb] OR medline[sb] OR pubmed pmc[sb]
+        assert a2n['all'] == a2n['all_ml0_pmc0'] + a2n['ml1_pmc1']
+        #  3,116,339 pmnml_A              pubmednotmedline[sb]
+        #  3,116,339 pmnml_B              pubmednotmedline[sb] NOT medline[sb]
+        #  3,116,339 pmnml_C_ip0          pubmednotmedline[sb] NOT inprocess[sb]
+        #          0 pmnml_0_ip1          pubmednotmedline[sb] AND inprocess[sb]
+        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+        #  1,504,065 pmnml_A_pmc0         pubmednotmedline[sb] NOT pubmed pmc[sb]
+        assert a2n['pmnml_A'] == a2n['pmnml_A_pmc1'] + a2n['pmnml_A_pmc0']
+        #  5,323,939 pmc_all              pubmed pmc[sb]
+        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+        #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
+        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+        pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
+        print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
+        print(pmc_notmedline - a2n['pmnml_A_pmc1'])
+        print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
+            N=a2n['all_ml0_pmc0'], M=a2n['all']))
+        print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
+            T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
+            A=a2n['ml1_pmc1'],
+            B=a2n['all_ml0_pmc0']))
+        total = a2n['all']
+        au_all = a2n['au_all']
+        print('  {N:10,} of {M:10,} {P:3.5f}% author ms'.format(
+            N=au_all, M=total, P=100.0*au_all/total))
+        print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
+            T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
+            A=a2n['ml1_pmc1'],
+            B=a2n['all_ml0_pmc0']))
+
+    def _add_bounding_lines_all(self, xend, ymax):
+        """Add bounding lines"""
+        plt.plot((0, 0), (ymax-11, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
+        plt.plot((xend, xend), (ymax-11, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
+        plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
+        plt.arrow(23800000, ymax, xend-23800000, 0, **self.arrow_p)
+        txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(xend/1000000.0, 1))
+        plt.annotate(txt, (7400000, ymax-.5))
+
+    def _add_bounding_lines_medline(self, xend, yval, xmax):
+        """Add bounding lines"""
+        plt.plot((xend, xend), (yval-7.7, yval+1), color='k', linewidth=0.4)   # BLUE-YELLOW DIVIDER
+        plt.plot((xend, xend), (yval-13, yval-8.3), color='k', linewidth=0.4)  # BLUE-YELLOW DIVIDER
+        plt.arrow(7200000, yval, -7300000, 0, **self.arrow_p)
+        plt.arrow(18800000, yval, xend-18800000, 0, **self.arrow_p)
+        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(
+            N=round(xend/1000000.0, 1), P=100.0*xend/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
+
+    def _add_bounding_lines_pmc(self, yval, xmax):
+        """Add bounding lines"""
+        a2n = self.name2cnt
+        # pylint: disable=line-too-long
+        #   # PMC
+        #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
+        #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
+        #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
+        pmc_all = a2n['pmc_all']
+        pmc_xn = pmc_x0 + pmc_all
+        plt.plot((pmc_x0, pmc_x0), (yval-1.7, yval+3), color='k', linewidth=0.4)    # UPPER CYAN DIVIDER
+        plt.plot((pmc_x0, pmc_x0), (yval-3.7, yval-2.3), color='k', linewidth=0.4)  # UPPER CYAN DIVIDER
+        # PMC
+        plt.arrow(pmc_x0-6600000, yval, 6600000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+1300000, yval, -1300000, 0, **self.arrow_p)
+        txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(pmc_all/1000000.0), P=100.0*pmc_all/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
+        # PMC Only
+        plt.arrow(a2n['medline_n_inprocess']-8000000, yval-2, 8000000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+1300000, yval-2, -1300000, 0, **self.arrow_p)
+        pmc_only = a2n['pmnml_A_pmc1'] + a2n['pmc_unknown']
+        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(N=round(pmc_only/1000000.0), P=100.0*pmc_only/xmax)
+        plt.annotate(txt, (7400000, yval-2.5))
+
+    def _add_bounding_lines_other(self, other_sz, yval, xmax):
+        """Add bounding lines"""
+        xval = xmax - other_sz
+        plt.plot((xval, xval), (yval-7, yval+5), color='k', linewidth=0.4)  # YELLOW-ORANGE DIVIDER
+        plt.arrow(xval-11200000, yval, 11200000, 0, **self.arrow_p)
+        plt.arrow(xmax+600000, yval, -600000, 0, **self.arrow_p)
+        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(
+            N=round(other_sz/1000000.0), P=100.0*other_sz/xmax)
+        plt.annotate(txt, (7400000, yval-.5))
+
+    def _add_bounding_lines_pmc_100(self, yval):
+        """Add bounding lines"""
+        a2n = self.name2cnt
+        # pylint: disable=line-too-long
+        #   # PMC
+        #   ([(ml2, a2n['inprocess_A_pmc1'])], (23, 1.8), {'facecolors':'tab:cyan', **par}),
+        #   ([(ml3, a2n['medline_pmc1'])],     (23, 1.8), {'facecolors':'tab:blue', **par}),
+        #   ([(ml4, a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])], (23, 1.8), {'facecolors':'y', **par}),
+        pmc_all = a2n['pmc_all']
+        pmc_ml1 = a2n['medline_pmc1'] + a2n['inprocess_A_pmc1']
+        pmc_ml0 = pmc_all - pmc_ml1
+        pmc_x0 = a2n['medline_pmc0'] + a2n['inprocess_A_pmc0']
+        pmc_x1 = pmc_x0 + pmc_ml1
+        pmc_xn = pmc_x0 + pmc_all
+        plt.plot((pmc_x0, pmc_x0), (yval-5, yval+1.7), color='k', linewidth=0.4)  # LOWER CYAN DIVIDER
+        # PMC AND MEDLINE
+        plt.annotate('MEDLINE', (pmc_x0+pmc_ml1/2.0, yval-1.1), ha='center', va='center', fontsize=8)
+        # PMC|MEDLINE
+        plt.arrow(pmc_x0+900000, yval-2.3, -900000, 0, **self.arrow_p)
+        plt.arrow(pmc_x1-900000, yval-2.3, 900000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn+700000, yval-2.3, -700000, 0, **self.arrow_p)
+        txt_ml1 = '{P:2.0f}%'.format(P=round(100.0*pmc_ml1/pmc_all))
+        plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval-2.3), ha='center', va='center', fontsize=8)
+        txt_ml0 = '{P:2.0f}%'.format(P=round(100.0*(pmc_all-pmc_ml1)/pmc_all))
+        plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval-2.3), ha='center', va='center', fontsize=8)
+        # PMC
+        plt.arrow(pmc_x0+1600000, yval-4, -1600000, 0, **self.arrow_p)
+        plt.arrow(pmc_xn-1600000, yval-4, 1600000, 0, **self.arrow_p)
+        plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-4), ha='center', va='center')
+
+    def plt_content_counts(self, fout_png):
+        """Plot pubmed content"""
+        a2n = self.name2cnt
+        xmax = a2n['all']
+        ymax = 16.5
+        # Remove automatically-added 5% axes padding
+        mpl.rcParams['axes.autolimit_mode'] = 'data'  # 'data' or 'round_numbers'
+        mpl.rcParams['axes.xmargin'] = 0
+        mpl.rcParams['axes.ymargin'] = 0
+        # Get figure and axes with axes turned off and axes whitespace removed
+        fig, axes = plt.subplots()
+        fig.set_size_inches(6.4, 1.8)
+        axes.get_xaxis().set_visible(False)
+        axes.get_yaxis().set_visible(False)
+        axes.set_frame_on(False)
+        axes.set_xlim(0, xmax+500000)
+        axes.set_ylim(0, ymax+1)
+        axes.grid(False)
+        # Add horizontal bars for: PubMed, PMC, and other
+        bbars = []
+        for xvals, yval, dct in self._get_content_brokenbars(ymax-5):
+            bbars.append(axes.broken_barh(xvals, yval, **dct))
+        # Add Dimension lines
+        # https://schoolworkhelper.net/technical-drawing-alphabet-of-line/
+        self._add_bounding_lines_all(xmax, ymax)
+        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2, xmax)
+        self._add_bounding_lines_pmc(ymax-6, xmax)
+        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-10, xmax)
+        self._add_bounding_lines_pmc_100(ymax-12)
+        # Add legend
+        axes.legend(loc='lower left', fontsize=8, ncol=2,
+                    bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
+                    handletextpad=.2, columnspacing=1.0, labelspacing=.2)
+        # Save figure
+        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=300)
+        print('  WROTE: {PNG}'.format(PNG=fout_png))
+
+
+# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

@@ -7,7 +7,8 @@ __author__ = "DV Klopfenstein"
 import sys
 import datetime
 from pmidcite.cfg import Cfg
-from pmidcite.eutils.cmds.pubmed_contents import PubMedContents
+from pmidcite.eutils.pubmed_counts.dnld import PubMedDnld
+from pmidcite.eutils.pubmed_counts.plt import PubMedPlot
 
 
 def main(dnld=False):
@@ -16,14 +17,14 @@ def main(dnld=False):
     fout_png = 'log/pubmed_content/pubmed_content_{DATE}.png'.format(DATE=date)
     fout_png = 'pubmed_content_2020_01_09.png'.format(DATE=date)
     cfg = Cfg()
-    obj = PubMedContents(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
-    name2cnt = obj.dnld_content_counts() if dnld else _get_name2cnt()
+    dnld = PubMedDnld(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
+    name2cnt = dnld.dnld_content_counts() if dnld else _get_name2cnt()
     print('    # {DATE}'.format(DATE=date))
-    obj.prt_content_counts(name2cnt)
+    dnld.prt_content_counts(name2cnt)
     if dnld:
-        obj.prt_content_cntdct(name2cnt)
-    obj.chk_content_counts(name2cnt)
-    obj.plt_content_counts(fout_png, name2cnt)
+        dnld.prt_content_cntdct(name2cnt)
+    dnld.chk_content_counts(name2cnt)
+    PubMedPlot(name2cnt).plt_content_counts(fout_png)
 
 # pylint: disable=line-too-long
 def _get_name2cnt():
