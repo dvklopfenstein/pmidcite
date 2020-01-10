@@ -301,9 +301,8 @@ class PubMedContents(EntrezUtilities):
         # PMC Only
         plt.arrow(a2n['medline_n_inprocess']-8000000, yval-2, 8000000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval-2, -1300000, 0, **self.arrow_p)
-        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(
-            N=round(pmc_all/1000000.0),
-            P=100.0*(a2n['pmnml_A_pmc1'] + a2n['pmc_unknown'])/xmax)
+        pmc_only = a2n['pmnml_A_pmc1'] + a2n['pmc_unknown']
+        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(N=round(pmc_only/1000000.0), P=100.0*pmc_only/xmax)
         plt.annotate(txt, (7400000, yval-2.5))
 
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
