@@ -1,5 +1,5 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
-Augment your literature search in PubMed 
+Augment your literature search 
 from the command-line to link 
 citation data from [**NIH's iCite**](https://icite.od.nih.gov)
 and PubMed IDs (PMIDs),
