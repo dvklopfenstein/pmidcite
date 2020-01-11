@@ -2,9 +2,11 @@
 
 DATE = '2020_01_10'
 
+# pylint: disable=line-too-long
 # 30,522,105 all                  all [sb]
 #  1,817,560 all_ml0_pmc0         all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]
 #  1,815,524 all_ml0_pmc0b        all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd
+#    314,243 all_ml0_pmc0c        all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT pubmednotmedline[sb]
 # 28,704,545 ml1_pmc1             inprocess[sb] OR medline[sb] OR pubmed pmc[sb]
 #    310,814 pub_init0            publisher[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT pmcbook
 #     76,964 pub_init1            publisher[sb] AND (pubstatusnihms OR pubstatuspmcsd OR pmcbook)
@@ -59,6 +61,8 @@ DATE = '2020_01_10'
 #      8,009 au_embargo           author manuscript[sb] AND medline[sb] NOT pubmed pmc[sb]
 #  3,117,473 pmnml_A              pubmednotmedline[sb]
 #  3,117,473 pmnml_B              pubmednotmedline[sb] NOT medline[sb]
+#  1,503,169 pmnml_C              pubmednotmedline[sb] NOT pubmed pmc[sb]
+#  1,503,169 pmnml_D              pubmednotmedline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms[sb] NOT pubstatuspmcsd[sb]
 #  3,117,473 pmnml_C_ip0          pubmednotmedline[sb] NOT inprocess[sb]
 #          0 pmnml_0_ip1          pubmednotmedline[sb] AND inprocess[sb]
 #  1,614,304 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
@@ -71,6 +75,7 @@ CNTS = {
     "all": 30522105,
     "all_ml0_pmc0": 1817560,
     "all_ml0_pmc0b": 1815524,
+    "all_ml0_pmc0c": 314243,
     "ml1_pmc1": 28704545,
     "pub_init0": 310814,
     "pub_init1": 76964,
@@ -125,6 +130,8 @@ CNTS = {
     "au_embargo": 8009,
     "pmnml_A": 3117473,
     "pmnml_B": 3117473,
+    "pmnml_C": 1503169,
+    "pmnml_D": 1503169,
     "pmnml_C_ip0": 3117473,
     "pmnml_0_ip1": 0,
     "pmnml_A_pmc1": 1614304,
@@ -133,4 +140,3 @@ CNTS = {
     "pmcbook_A_ml0": 22264,
     "pmcbook_A_pmc0": 22264,
 }
-

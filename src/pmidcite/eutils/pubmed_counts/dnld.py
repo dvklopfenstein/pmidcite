@@ -19,6 +19,8 @@ class PubMedDnld(EntrezUtilities):
         ('all', 'all [sb]'),
         ('all_ml0_pmc0', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]'),
         ('all_ml0_pmc0b', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd'),
+        # Categories include: "Online, ahead of print" and old articles/books, Reviews found in GeneReviews, etc.
+        ('all_ml0_pmc0c', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT pubmednotmedline[sb]'),
         ('ml1_pmc1', 'inprocess[sb] OR medline[sb] OR pubmed pmc[sb]'),
         # publisher[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT # pmcbook:
         #   1. Citations recently added to PubMed via electronic submission
@@ -111,6 +113,8 @@ class PubMedDnld(EntrezUtilities):
         #      but have not yet been recommended for indexing in MEDLINE.
         ('pmnml_A', 'pubmednotmedline[sb]'),
         ('pmnml_B', 'pubmednotmedline[sb] NOT medline[sb]'),
+        ('pmnml_C', 'pubmednotmedline[sb] NOT pubmed pmc[sb]'),
+        ('pmnml_D', 'pubmednotmedline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms[sb] NOT pubstatuspmcsd[sb]'),
         ('pmnml_C_ip0', 'pubmednotmedline[sb] NOT inprocess[sb]'),
         ('pmnml_0_ip1', 'pubmednotmedline[sb] AND inprocess[sb]'),
         ('pmnml_A_pmc1', 'pubmednotmedline[sb] AND pubmed pmc[sb]'),
@@ -185,10 +189,10 @@ class PubMedDnld(EntrezUtilities):
         with open(fout_py, 'w') as prt:
             prt.write('"""Downloaded PubMed count data"""\n\n')
             prt.write("DATE = '{DATE}'\n\n".format(DATE=self.date))
+            prt.write('# pylint: disable=line-too-long\n')
             self.prt_content_counts(name2cnt, prt)
             prt.write('\n')
             self.prt_content_cntdct(name2cnt, prt)
-            prt.write('\n')
             print('  WROTE: {PY}'.format(PY=fout_py))
 
     def prt_content_counts(self, name2cnt, prt=sys.stdout):
