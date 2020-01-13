@@ -40,6 +40,7 @@ class DataMgr:
         name_data.append(('MEDLINE_and_PMC',     self._get_nt_pubmed(a2n['ml1_pmc1'])))
         name_data.append(('MEDLINE_n_inprocess', self._get_nt_pubmed(a2n['medline_n_inprocess'])))
         name_data.append(('PMC',                 self._get_nt_pubmed(a2n['pmc_all'])))
+        name_data.append(('PMC_ml',              self._get_nt_pubmed(a2n['pmc_m1'])))
         name_data.append(('PMC_only',            self._get_nt_pubmed(a2n['pmc_m0'])))
         name_data.append(('other',               self._get_nt_pubmed(a2n['all_ml0_pmc0'])))
         #
@@ -56,7 +57,7 @@ class DataMgr:
         name_data.append(('ml_pmc1_ip1', self._get_nt_pubmed(a2n['inprocess_A_pmc1'])))
         name_data.append(('ml_pmc1',     self._get_nt_pubmed(a2n['medline_pmc1'])))
         dct = cx.OrderedDict(name_data)
-        # Check that counts add up
+        # Check that counts for the PubMed content figure add up
         #                             BLUE|CYAN|BROWN              + ORANGE
         assert dct['PubMed'].count == dct['MEDLINE_and_PMC'].count + dct['other'].count
         #                             BLUE|CYAN                        + BROWN                 + ORANGE
@@ -67,6 +68,8 @@ class DataMgr:
         assert dct['PMC'].count == dct['pmc_ip1'].count + dct['pmc_ml1'].count + dct['pmc_ml0'].count
         #                                          BLUE                   CYAN                       CYAN                   BROWN
         assert dct['MEDLINE_n_inprocess'].count == dct['ml_pmc0'].count + dct['ml_pmc0_ip1'].count + dct['ml_pmc1_ip1'].count + dct['ml_pmc1'].count
+        #                          CYAN|BLUE             BROWN
+        assert dct['PMC'].count == dct['PMC_ml'].count + dct['PMC_only'].count
         return dct
 
     def _get_nt_pubmed(self, cnt):

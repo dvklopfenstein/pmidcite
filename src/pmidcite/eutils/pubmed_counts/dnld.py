@@ -18,8 +18,11 @@ class PubMedDnld(EntrezUtilities):
     name2query = cx.OrderedDict([
         ('all', 'all [sb]'),
         ('all_ml0_pmc0', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]'),
+        ('all_ml0_pmc0_free0', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT free full text[sb]'),
+        ('all_ml0_pmc0_free1', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] AND free full text[sb]'),
         ('all_ml0_pmc0b', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd'),
         # Categories include: "Online, ahead of print" and old articles/books, Reviews found in GeneReviews, etc.
+        ('all_ml0_pmc0d', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd AND pubmednotmedline[sb]'),
         ('all_ml0_pmc0c', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT pubmednotmedline[sb]'),
         ('ml1_pmc1', 'inprocess[sb] OR medline[sb] OR pubmed pmc[sb]'),
         # publisher[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT # pmcbook:
