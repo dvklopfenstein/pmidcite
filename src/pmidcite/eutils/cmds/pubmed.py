@@ -13,8 +13,7 @@ from pmidcite.eutils.cmds.base import EntrezUtilities
 class PubMed(EntrezUtilities):
     """Fetch and write text"""
 
-    efetch_params = {
-        'db': 'pubmed',
+    return_params = {
         'rettype': 'medline',
         'retmode': 'text',
     }
@@ -23,21 +22,26 @@ class PubMed(EntrezUtilities):
     def __init__(self, email, apikey, tool):
         super(PubMed, self).__init__(email, apikey, tool)
 
-    def dnld_wr1_per_pmid(self, pmid_nt_list):
+    def dnld_wr1_per_pmid(self, pmid_nt_list, num_ids_p_epost=10):
         """Download and write file one PubMed entry per PMID"""
         # Get filenames to store PubMed entry information, one PMID per file
         if not pmid_nt_list:
             return
         # Run EPost
         pmids = [nt.PMID for nt in pmid_nt_list]
-        epost_rsp = self.epost('pubmed', pmids, num_ids_p_epost=10)
-        # Set EFetch params
-        efetch_params = dict(self.efetch_params)
-        efetch_params['webenv'] = epost_rsp['webenv']
-        efetch_params['retmax'] = 1  # num_pmids_p_efetch
-        # Run EFetches
-        efetch_idxs = self._get_efetch_indices(epost_rsp, efetch_params['retmax'], len(pmids))
+        efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', num_ids_p_epost, 1, **self.return_params)
         self._dnld_wr1_per_pmid(efetch_idxs, efetch_params, pmid_nt_list)
+
+    def epost_ids(self, ids, database, num_ids_p_epost, retmax, **return_params):
+        """Post IDs using EPost"""
+        epost_rsp = self.epost(database, ids, num_ids_p_epost=num_ids_p_epost)
+        # Set EFetch params
+        efetch_params = dict(return_params)
+        efetch_params['webenv'] = epost_rsp['webenv']
+        efetch_params['retmax'] = retmax  # num_ids_p_efetch
+        # Run EFetches
+        efetch_idxs = self._get_efetch_indices(epost_rsp, retmax, len(ids))
+        return efetch_idxs, efetch_params
 
     def _dnld_wr1_per_pmid(self, efetch_idxs, efetch_params, pmid_nt_list):
         """Download and write one PMID PubMed entry into one text file"""
@@ -78,6 +82,9 @@ class PubMed(EntrezUtilities):
     def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
         """Get text from EFetch response"""
         rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, **params)
+        if rsp_dct is None:
+            print('\n{DESC}\n**ERROR: DATA is None'.format(DESC=desc))
+            return None
         rsp_txt = rsp_dct['data'].decode('utf-8')
         err_txt = self._chk_error_str(rsp_txt)
         if err_txt is not None:
@@ -92,7 +99,7 @@ class PubMed(EntrezUtilities):
     @staticmethod
     def _get_str_post_fetch(num_pmids_p_epost, num_pmids_p_efetch, querykey, start):
         """Get a string summarizing current EPost and EFetch"""
-        return 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q}) start({S})'.format(
+        return 'IDs/epost={P} IDs/efetch={F} querykey({Q}) start({S})'.format(
             P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey, S=start)
 
     @staticmethod

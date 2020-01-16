@@ -2,7 +2,7 @@
 Augment your literature search 
 from the command-line to link 
 citation data from [**NIH's iCite**](https://icite.od.nih.gov)
-and PubMed IDs (PMIDs),
+and [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.

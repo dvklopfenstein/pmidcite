@@ -106,9 +106,9 @@ class EntrezUtilities(object):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
         if not isinstance(pmids, list):
-            raise RuntimeError('**FATAL: EPost PMIDs MUST BE IN A LIST')
+            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs MUST BE IN A LIST'.format(pmids))
         if not pmids:
-            print('**NOTE: NO PMIDs to EPost')
+            print('**NOTE: NO IDs to EPost')
             return None
         ret = {
             'num_ids_p_epost': num_ids_p_epost,
@@ -201,25 +201,27 @@ class EntrezUtilities(object):
         cgi = self._mk_cgi(cmd, **params)
         ## print('CGI: {CGI}\n'.format(CGI=cgi))
         try:
-            return self._run_req(cgi) # post=None, ecitmatch=False):
+            rsp = self._run_req(cgi) # post=None, ecitmatch=False):
+            print(rsp)
+            return rsp
         except json.decoder.JSONDecodeError as errobj:
-            print('CGI: {CGI}\n'.format(CGI=cgi))
-            print('JSONDecodeError = {ERR}'.format(ERR=str(errobj)))
+            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
+            print('**FATAL: JSONDecodeError = {ERR}\n'.format(ERR=str(errobj)))
             traceback.print_exc()
         except urllib.error.HTTPError as errobj:
-            print('CGI: {CGI}\n'.format(CGI=cgi))
-            print('HTTPError = {ERR}'.format(ERR=str(errobj.code)))
+            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
+            print('**FATAL: {ERR}\n'.format(ERR=str(errobj)))
             traceback.print_exc()
         except urllib.error.ContentTooShortError as errobj:
-            print('CGI: {CGI}\n'.format(CGI=cgi))
-            print('ContentTooShortError = {ERR}'.format(ERR=str(errobj.reason)))
+            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
+            print('**FATAL: ContentTooShortError = {ERR}\n'.format(ERR=str(errobj.reason)))
             traceback.print_exc()
         except urllib.error.URLError as errobj:
-            print('CGI: {CGI}\n'.format(CGI=cgi))
-            print('URLError = {ERR}'.format(ERR=str(errobj.reason)))
+            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
+            print('**FATAL: URLError = {ERR}\n'.format(ERR=str(errobj.reason)))
             traceback.print_exc()
         except RuntimeError as errobj:
-            print('CGI: {CGI}\n'.format(CGI=cgi))
+            print('\n**FATAL: CGI: {CGI}\n'.format(CGI=cgi))
             print(errobj)
             traceback.print_exc()
 
