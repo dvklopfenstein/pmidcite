@@ -5,13 +5,11 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import sys
-#### import os
 import collections as cx
-#### import importlib.util
+import traceback
 import requests
 
 from pmidcite.icite.entry import NIHiCiteEntry
-#### from pmidcite.icite.paper import NIHiCitePaper
 
 
 class NIHiCiteAPI:
@@ -50,6 +48,7 @@ class NIHiCiteAPI:
 
     def dnld_icites(self, pmids):
         """Run iCite on given PubMed IDs"""
+        # print('NNNNNNNNNNNNNNNNNN dnld_icites')
         if not pmids:
             return []
         num_pmids = len(pmids)
@@ -61,33 +60,35 @@ class NIHiCiteAPI:
             pmids = pmids[:900]
         ## assert len(pmids) <= 1000, '{N} pmids > 1000'.format(N=len(pmids))
         cmd = '{URL}?pmids={PMIDS}'.format(URL=self.url_base, PMIDS=','.join(str(p) for p in pmids))
-        rsp = requests.get(cmd)
-        if rsp.status_code == 200:
-            # Keys:
-            #   'meta': {'limit': 1000, 'offset': 0, 'fl': None}
-            #   'links': {
-            #       'self': 'https://icite.od.nih.gov/api/pubs?limit=1000&offset=0&fl=',
-            #       'next': 'https://icite.od.nih.gov/api/pubs?limit=1000&offset=1000&fl='}
-            #   'data': [{'pmid': 1, 'year': 1975, ...
-            lst = []
-            rsp_json = rsp.json()
+        rsp_json = self._send_request(cmd)
+        lst = []
+        if rsp_json is not None:
             for json_dct in rsp_json['data']:
                 lst.append(self._jsonpmid_to_obj(json_dct))  # NIHiCiteEntry
-            return lst
-        raise RuntimeError(self._err_msg(rsp))
+        return lst
 
     def dnld_icite(self, pmid):
         """Run iCite on given PubMed IDs"""
+        # print('111111111111111111 dnld_icite')
         cmd = '/'.join([self.url_base, str(pmid)])
-        rsp = requests.get(cmd)
-        if rsp.status_code == 200:
-            json_dct = rsp.json()
-            if json_dct is not None:
-                return self._jsonpmid_to_obj(json_dct)
+        json_dct = self._send_request(cmd)
+        return self._jsonpmid_to_obj(json_dct) if json_dct else None
+
+    def _send_request(self, cmd):
+        """Send the request to iCite"""
+        try:
+            rsp = requests.get(cmd)
+            if rsp.status_code == 200:
+                return rsp.json()
+            print(self._err_msg(rsp))
             return None
-        #### raise RuntimeError(self._err_msg(rsp))
-        print(self._err_msg(rsp))
-        return None
+        except requests.exceptions.ConnectionError as errobj:
+            print('**ERROR: ConnectionError = {ERR}\n'.format(ERR=str(errobj)))
+            return None
+        except:
+            traceback.print_exc()
+            raise RuntimeError('**ERROR DOWNLOADING {CMD}'.format(CMD=cmd))
+
 
     @staticmethod
     def _err_msg(rsp):
