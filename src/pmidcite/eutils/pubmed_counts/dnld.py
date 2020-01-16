@@ -1,5 +1,23 @@
 """Plot the types of content and their amount in PubMed"""
 
+# To check whether a journal is indexed in MEDLINE and stored in PMC,
+# search the NLM Catalog:
+# 
+#     https://www.ncbi.nlm.nih.gov/nlmcatalog
+# 
+# PMC also maintains a journals list, which is dynamic list, 
+# that provides journal participation level information:
+# 
+#     https://www.ncbi.nlm.nih.gov/pmc/journals/
+#
+# Lidia Hutcherson
+# LinkOut Development Team
+# Information Engineering Branch
+# National Center for Biotechnology Information
+# US National Library of Medicine
+# Linking to a World of Resources
+# http://www.ncbi.nlm.nih.gov/projects/linkout/
+
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
@@ -25,6 +43,10 @@ class PubMedDnld(EntrezUtilities):
         ('all_ml0_pmc0d', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd AND pubmednotmedline[sb]'),
         ('all_ml0_pmc0c', 'all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT pubmednotmedline[sb]'),
         ('ml1_pmc1', 'inprocess[sb] OR medline[sb] OR pubmed pmc[sb]'),
+        # Over 2 million FREE-text articles in PubMed that are NOT in PMC
+        ('pm1free_pmc0', 'free full text[sb] NOT loprovpmc[sb]'),
+        # Over 2 million FREE-text articles in PubMed that are NOT in PMC
+        ('ml1free_pmc0', 'free full text[sb] AND medline[sb] NOT pubmed pmc[sb]'),
         # publisher[sb] NOT pubstatusnihms NOT pubstatuspmcsd NOT # pmcbook:
         #   1. Citations recently added to PubMed via electronic submission
         #   from a publisher, and are soon to proceed to the next stage,
