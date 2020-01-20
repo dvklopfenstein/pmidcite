@@ -16,7 +16,7 @@ rather than clicking and clicking on
   * Sort results by *Cited by N*
   * Display author papers
 
-## PMID Cite feature quick start
+## PMID Cite feature [quick start](doc/README_quickstart.md)
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
