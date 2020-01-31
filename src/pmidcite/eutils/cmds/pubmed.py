@@ -29,6 +29,7 @@ class PubMed(EntrezUtilities):
             return
         # Run EPost
         pmids = [nt.PMID for nt in pmid_nt_list]
+        # pylint: disable=line-too-long
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', num_ids_p_epost, 1, **self.return_params)
         self._dnld_wr1_per_pmid(efetch_idxs, efetch_params, pmid_nt_list)
 
@@ -81,7 +82,7 @@ class PubMed(EntrezUtilities):
 
     def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
         """Get text from EFetch response"""
-        rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, **params)
+        rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, db='pubmed', **params)
         if rsp_dct is None:
             print('\n{DESC}\n**ERROR: DATA is None'.format(DESC=desc))
             return None
