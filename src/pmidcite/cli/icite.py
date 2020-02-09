@@ -55,6 +55,12 @@ class NIHiCiteCli:
             '-f', '--force_write', action='store_true',
             help='if an existing outfile file exists, overwrite it.')
         parser.add_argument(
+            '-D', '--force_download', action='store_true',
+            help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        parser.add_argument(
+            '-R', '--no_references', action='store_true',
+            help='Print the list of citations, but not the list of references.')
+        parser.add_argument(
             '-s', '--succinct', action='store_true',
             help="Print one line for each PMID provided by user. Don't add lines per cite or ref.")
         parser.add_argument(
@@ -63,12 +69,6 @@ class NIHiCiteCli:
         parser.add_argument(
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
-        parser.add_argument(
-            '-D', '--force_download', action='store_true',
-            help='Download PMID iCite information to a Python file.')
-        parser.add_argument(
-            '-R', '--no_references', action='store_true',
-            help='Print the list of citations, but not the list of references.')
         parser.add_argument(
             '--md', action='store_true',
             help='Print using markdown table format.')
