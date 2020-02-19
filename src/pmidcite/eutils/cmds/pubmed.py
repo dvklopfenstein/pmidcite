@@ -59,7 +59,7 @@ class PubMed(EntrezUtilities):
                         TXT=ntd.fout_pubmed))
 
     def _get_efetch_indices(self, epost_rsp, num_pmids_p_efetch, num_pmids):
-        """Get EFtech list of: querykey_cur, pmids_cur, start"""
+        """Get EFetech list of: querykey_cur, pmids_cur, start"""
         # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
         # ----- ----------------- ------------------      ------------
         #     5                 2                  3                 3

@@ -11,10 +11,8 @@
 #
 # The E-utilities In-Depth: Parameters, Syntax and More:
 # http://www.ncbi.nlm.nih.gov/books/NBK25499/
-#
-# For NCBI's online documentation of efetch:
 # http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch
-#
+
 # tags:
 # https://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.Tn/
 
@@ -42,19 +40,14 @@ class EntrezUtilities(object):
     """Helper class for Entrez E-Utilities"""
 
     cgifmt = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/{ECMD}.fcgi"
-    exp_kws = {'email', 'apikey', 'tool', 'log'}
 
     max_tries = 3
     sleep_between_tries = 15
 
     def __init__(self, email, apikey, tool, log=sys.stdout):
-        # Cfg reads your email, apikey, and tool from file, .eutilsrc
-        # To prevent your API key from being public,
-        # don't store .eutilsrc in a public repo.
-        #### _cfg = Cfg()
-        self.email = email      # _cfg.get_email()
-        self.api_key = apikey   # _cfg.get_apikey()
-        self.tool = tool        # _cfg.get_tool()
+        self.email = email
+        self.api_key = apikey
+        self.tool = tool
         self.previous = 0
         self.log = log
 
@@ -63,50 +56,50 @@ class EntrezUtilities(object):
         # einfo: http://www.ncbi.nlm.nih.gov/books/NBK25499/
         return self.run_eutilscmd('einfo', retmode='json')
 
-    def pubmed_query_fetch(self, query):
-        """Given a PubMed query, return results as  text"""
-        rsp_qry = self.find_ids_with_esearch('pubmed', query, retmax=500)
-        if rsp_qry is None:
-            return {'TEXT':None, 'RSP_QUERY': rsp_qry, 'RSP_POST':None}
-        rsp_post = self.epost('pubmed', rsp_qry['idlist'], num_ids_p_epost=10)
-        txt = self.run_eutilscmd(
-            'efetch',
-            db='pubmed',
-            retstart=0,
-            retmax=500,          # max: 10,000
-            rettype='medline',
-            retmode='text',
-            webenv=rsp_post['webenv'],
-            query_key=rsp_post['querykey'])
-        return {'TEXT':txt, 'RSP_QUERY': rsp_qry, 'RSP_POST':rsp_post}
+    #### def pubmed_query_fetch(self, query):
+    ####     """Given a PubMed query, return results as  text"""
+    ####     rsp_qry = self.find_ids_with_esearch('pubmed', query, retmax=500)
+    ####     if rsp_qry is None:
+    ####         return {'TEXT':None, 'RSP_QUERY': rsp_qry, 'RSP_POST':None}
+    ####     rsp_post = self.epost('pubmed', rsp_qry['idlist'], num_ids_p_epost=10)
+    ####     txt = self.run_eutilscmd(
+    ####         'efetch',
+    ####         db='pubmed',
+    ####         retstart=0,
+    ####         retmax=500,          # max: 10,000
+    ####         rettype='medline',
+    ####         retmode='text',
+    ####         webenv=rsp_post['webenv'],
+    ####         query_key=rsp_post['querykey'])
+    ####     return {'TEXT':txt, 'RSP_QUERY': rsp_qry, 'RSP_POST':rsp_post}
 
-    def find_ids_with_esearch(self, database, query, retmax, **esearch):
-        """Searches an NCBI database for a user search term, returns NCBI IDs."""
-        dct = self.run_eutilscmd(
-            'esearch',
-            db=database,
-            term=query,
-            retmax=retmax,
-            usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
-            retmode='json',
-            **esearch)
+    #### def find_ids_with_esearch(self, database, query, retmax, **esearch):
+    ####     """Searches an NCBI database for a user search term, returns NCBI IDs."""
+    ####     dct = self.run_eutilscmd(
+    ####         'esearch',
+    ####         db=database,
+    ####         term=query,
+    ####         retmax=retmax,
+    ####         usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
+    ####         retmode='json',
+    ####         **esearch)
 
-        if dct is not None and 'idlist' in dct and dct['idlist']:
-            # KEYS: count retmax retstart querykey webenv idlist
-            #       translationset translationstack querytranslation warninglist
-            dct['idlist'] = [int(n) for n in dct['idlist']]
-            dct['count'] = int(dct['count'])
-            # Note: If the maximum number of PMIDs are found, won't get the ones after
-            assert len(dct['idlist']) < retmax, 'EntrezUtilities: PMIDS({N}) > retmax({M})'.format(
-                M=len(dct['idlist']), N=dct['count'])
-            return dct
-        return None
+    ####     if dct is not None and 'idlist' in dct and dct['idlist']:
+    ####         # KEYS: count retmax retstart querykey webenv idlist
+    ####         #       translationset translationstack querytranslation warninglist
+    ####         dct['idlist'] = [int(n) for n in dct['idlist']]
+    ####         dct['count'] = int(dct['count'])
+    ####         # Note: If the maximum number of PMIDs are found, won't get the ones after
+    ####         assert len(dct['idlist']) < retmax, 'EntrezUtilities: PMIDS({N}) > retmax({M})'.format(
+    ####             M=len(dct['idlist']), N=dct['count'])
+    ####         return dct
+    ####     return None
 
     def epost(self, database, pmids, num_ids_p_epost=10):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
         if not isinstance(pmids, list):
-            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs MUST BE IN A LIST'.format(pmids))
+            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs NOT A LIST'.format(pmids))
         if not pmids:
             print('**NOTE: NO IDs to EPost')
             return None
@@ -202,7 +195,7 @@ class EntrezUtilities(object):
         ## print('CGI: {CGI}\n'.format(CGI=cgi))
         try:
             rsp = self._run_req(cgi) # post=None, ecitmatch=False):
-            print(rsp)
+            # print('PPPPPPPPPPPPPPPPPP src/pmidcite/eutils/cmds/base.py run_req', rsp)
             return rsp
         except json.decoder.JSONDecodeError as errobj:
             print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
@@ -357,6 +350,14 @@ class EntrezUtilities(object):
             if '[Title]' in term or '[TI]' in term:
                 return False
         return True
+
+    @staticmethod
+    def _get_num_iterations(count, retmax):
+        """Get the number of iterations given the total and the max returned per time"""
+        num_tot = count//retmax
+        if count%retmax != 0:
+            num_tot += 1
+        return num_tot
 
 
 # Copyright (C) 2014-present DV Klopfenstein. All rights reserved.

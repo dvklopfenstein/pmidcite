@@ -8,29 +8,21 @@ import sys
 import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.api import NIHiCiteAPI
-from pmidcite.icite.pmid_loader import NIHiCiteLoader
-from pmidcite.cfg import Cfg
+from pmidcite.icite.run import PmidCite
 
 
 class NIHiCiteCli:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
     def __init__(self):
-        self.cfgparser = self._init_cfgparser()  # Cfg
-        self.dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
-        self.dir_pubmed = self.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        self.pmidcite = PmidCite()
+        cfgparser = self.pmidcite.cfgparser
+        self.dir_pmid_py = cfgparser.cfgparser['pmidcite']['dir_pmid_py']
+        self.dir_pubmed = cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         self.pubmed = PubMed(
-            email=self.cfgparser.get_email(),
-            apikey=self.cfgparser.get_apikey(),
-            tool=self.cfgparser.get_tool())
-
-    @staticmethod
-    def _init_cfgparser():
-        """Init cfg parser"""
-        cfgparser = Cfg(chk=False)
-        cfgparser.rd_rc()
-        return cfgparser
+            email=cfgparser.get_email(),
+            apikey=cfgparser.get_apikey(),
+            tool=cfgparser.get_tool())
 
     @staticmethod
     def get_argparser():
@@ -92,10 +84,10 @@ class NIHiCiteCli:
         print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
         if args.generate_rcfile:
-            self.cfgparser.cfgparser.write(sys.stdout)
+            self.pmidcite.prt_rcfile(sys.stdout)
             return []
         # Get user-specified PMIDs
-        pmids = self.get_pmids(args)
+        pmids = self.get_pmids(args.pmids, args.infile)
         if not pmids and not args.print_keys:
             argparser.print_help()
             return pmids
@@ -103,7 +95,7 @@ class NIHiCiteCli:
 
     def _run_icite(self, pmids, args):
         """Print papers, including citation counts"""
-        loader = self._get_iciteloader(args)
+        loader = self.pmidcite.get_iciteloader(args.force_download, args.no_references, args.quiet)
         if args.print_keys:
             loader.prt_keys()
         outfile = self._get_outfile(args)
@@ -118,37 +110,17 @@ class NIHiCiteCli:
             loader.wr_papers(outfile, force_write, pmid2ntpaper, mode)
         return pmids
 
-    def _get_iciteloader(self, args):
-        """Create NIHiCiteLoader"""
-        kws = {}  # TBD NIHiCiteCli
-        log = None if args.quiet else sys.stdout
-        api = NIHiCiteAPI(self.dir_pmid_py, log, **kws)
-        return NIHiCiteLoader(args.force_download, api, not args.no_references)
-
-    def get_pmids(self, args):
+    def get_pmids(self, pmid_list, fin_pmids):
         """Get PMIDs from the command line or from a file"""
-        if not args.pmids and not args.infile:
+        if not pmid_list and not fin_pmids:
             return []
-        pmids = list(args.pmids)
-        if args.infile:
-            for fin in args.infile:
+        pmids = list(pmid_list)
+        if fin_pmids:
+            for fin in fin_pmids:
                 if os.path.exists(fin):
-                    pmids.extend(self._read_pmids(fin))
+                    pmids.extend(self.pmidcite.read_pmids(fin))
                 else:
                     print('  MISSING: {FILE}'.format(FILE=fin))
-        return pmids
-
-    @staticmethod
-    def _read_pmids(fin):
-        """Read PMIDs from a file. One PMID per line."""
-        pmids = []
-        with open(fin) as ifstrm:
-            for line in ifstrm:
-                line = line.strip()
-                if line.isdigit():
-                    pmids.append(int(line))
-            print('  {N} PMIDs READ: {FILE}'.format(
-                N=len(pmids), FILE=fin))
         return pmids
 
     @staticmethod
