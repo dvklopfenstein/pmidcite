@@ -19,7 +19,7 @@ class NIHiCiteLoader:
     def __init__(self, force_dnld, api, rpt_references=False):
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
-        self.dir_dnld = api.dir_dnld
+        self.dir_dnld = api.dir_dnld  # e.g., ./icite
         self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, force, pmid2ntpaper, mode='w'):
@@ -115,6 +115,7 @@ class NIHiCiteLoader:
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
+            ## print('NNNNNNNNNNNNNNNNNNNN', name, pmid)
             paper = self._get_paper(pmid, name, dnld_assc_pmids)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
