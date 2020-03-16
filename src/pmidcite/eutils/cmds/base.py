@@ -1,20 +1,16 @@
 """This script downloads NCBI records based on user search query"""
 
-# Entrez Help:
-# https://www.ncbi.nlm.nih.gov/books/NBK3837/
+# Entrez Help: # https://www.ncbi.nlm.nih.gov/books/NBK3837/
 #
-# A General Introduction to the E-utilities:
-# https://www.ncbi.nlm.nih.gov/books/NBK25497/
+# A General Introduction to the E-utilities: # https://www.ncbi.nlm.nih.gov/books/NBK25497/
 #
-# Entrez Programming Utilities Help:
-# http://www.ncbi.nlm.nih.gov/books/NBK25501/
+# Entrez-Utilities Help: # http://www.ncbi.nlm.nih.gov/books/NBK25501/
 #
 # The E-utilities In-Depth: Parameters, Syntax and More:
 # http://www.ncbi.nlm.nih.gov/books/NBK25499/
 # http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch
 
-# tags:
-# https://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.Tn/
+# tags: # https://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.Tn/
 
 
 __copyright__ = "Copyright (C) 2014-present DV Klopfenstein. All rights reserved."
