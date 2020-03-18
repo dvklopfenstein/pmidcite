@@ -18,5 +18,7 @@ rather than clicking and clicking on
 
 ## PMID Cite feature [quick start](doc/README_quickstart.md)
 
+## Take a [quick tour](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [PubMed](https://pubmed.ncbi.nlm.nih.gov) 
+
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

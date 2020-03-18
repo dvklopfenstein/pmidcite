@@ -223,8 +223,9 @@ class PubMedDnld(EntrezUtilities):
     def prt_content_counts(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         for name, query in self.name2query.items():
-            cnt = name2cnt[name]
-            prt.write('# {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
+            if name in name2cnt:
+                cnt = name2cnt[name]
+                prt.write('# {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
 
     def prt_content_cntdct(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
