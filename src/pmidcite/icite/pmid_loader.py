@@ -103,42 +103,46 @@ class NIHiCiteLoader:
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
-        name2ntpaper = self._run_icite_name2pmid(name2pmid, dnld_assc_pmids=False)
+        name2ntpaper = self._run_icite_name2pmid(name2pmid, dnld_assc_pmids=False, pmid2note=None)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
                     self.prt_paper(ntpaper.paper, ntpaper.pmid, name, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
-    def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids):
+    def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
             ## print('NNNNNNNNNNNNNNNNNNNN', name, pmid)
-            paper = self._get_paper(pmid, name, dnld_assc_pmids)
+            paper = self._get_paper(pmid, name, dnld_assc_pmids, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids):
+    def get_pmid2paper(self, pmids, dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
-        pmid_paper = []
-        for _, pmid in enumerate(pmids):
-            ## print('HEY PMID:', idx, pmid)
-            paper = self._get_paper(pmid, '', dnld_assc_pmids)
-            pmid_paper.append((pmid, paper))
+        s_get_paper = self._get_paper
+        if not pmid2note:
+            pmid_paper = [(p, s_get_paper(p, '', dnld_assc_pmids, None)) for p in pmids]
+        else:
+            s_p2n = pmid2note.get
+            pmid_paper = [(p, s_get_paper(p, '', dnld_assc_pmids, s_p2n(p, ''))) for p in pmids]
         return cx.OrderedDict(pmid_paper)  # pmid2ntpaper
 
-    def _get_paper(self, pmid_top, name, dnld_assc_pmids):
+    def _get_paper(self, pmid_top, header, dnld_assc_pmids, note):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
-        if citeobj_top is None:
-            print('No results found: {PMID} {NAME}'.format(PMID=pmid_top, NAME=name))
-            return None
-        if dnld_assc_pmids:
-            self.dnld_assc_pmids(citeobj_top)
-        paper = NIHiCitePaper(pmid_top, self.dir_dnld, name)
-        return paper
+        if citeobj_top:
+            if dnld_assc_pmids:
+                self.dnld_assc_pmids(citeobj_top)
+            paper = NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
+            return paper
+        print('No results found: {PMID} {HDR} {NOTE}'.format(
+            PMID=pmid_top,
+            HDR=header if header else '',
+            NOTE=note if note else ''))
+        return None
 
     def dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""

@@ -13,10 +13,12 @@ from pmidcite.icite.entry import NIHiCiteEntry
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    def __init__(self, pmid, dirpy, name=None):
+    # pylint: disable=too-many-instance-attributes
+    def __init__(self, pmid, dirpy, header=None, note=None):
         self.pmid = pmid
         self.dirpy = dirpy
-        self.name = name
+        self.hdr = header  # A header to print before a paper
+        self.note = note   # A short note to print at end of cite line
         self.icite = NIHiCiteEntry(self.load_pmid(pmid))
         ## print('VVVVVVVVVVVVVVV', self.icite)
         self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
@@ -25,7 +27,8 @@ class NIHiCitePaper:
 
     def str_line(self):
         """Return a string summarizing the the paper described herein"""
-        return str(self.icite)
+        txt = str(self.icite)
+        return txt if not self.note else '{TXT} {NOTE}'.format(TXT=txt, NOTE=self.note)
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
@@ -37,8 +40,8 @@ class NIHiCitePaper:
 
     def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby=None):
         """Print summary of paper"""
-        if self.name:
-            prt.write('NAME: {NAME}\n'.format(NAME=self.name))
+        if self.hdr:
+            prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
         prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
         if self.cited_by:
             prt.write('{N} of {M} citations downloaded:\n'.format(

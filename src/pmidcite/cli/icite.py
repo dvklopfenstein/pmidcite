@@ -79,7 +79,7 @@ class NIHiCiteCli:
             pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, self.dir_pubmed)
             self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
-    def run_icite(self, args, argparser):
+    def run_icite(self, args, argparser, pmid2note=None):
         """Run iCite/PubMed"""
         print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
@@ -91,9 +91,9 @@ class NIHiCiteCli:
         if not pmids and not args.print_keys:
             argparser.print_help()
             return pmids
-        return self._run_icite(pmids, args)
+        return self._run_icite(pmids, args, pmid2note)
 
-    def _run_icite(self, pmids, args):
+    def _run_icite(self, pmids, args, pmid2note):
         """Print papers, including citation counts"""
         loader = self.pmidcite.get_iciteloader(args.force_download, args.no_references, args.quiet)
         if args.print_keys:
@@ -101,7 +101,7 @@ class NIHiCiteCli:
         outfile = self._get_outfile(args)
         mode, force_write = self._get_mode_force(args)
         prt_verbose = not args.succinct
-        pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose)
+        pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose, pmid2note)
         if outfile is None:
             loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
