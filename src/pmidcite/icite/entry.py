@@ -11,7 +11,7 @@ class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
     pat_str = ('{year} {pmid:8} {aart_type} {aart_animal} '
-               '{citation_count:5} {clin:2} {references:3} '
+               '{nih_perc} {citation_count:5} {clin:2} {references:3} '
                'au[{A:02}]({author1}) {title}'
               )
     pat_md = ('{year}|{pmid:8}|{aart_type}|{aart_animal}|'
@@ -27,14 +27,14 @@ class NIHiCiteEntry:
     @staticmethod
     def line_fmt():
         """Return the format of the paper line"""
-        return 'YYYY NNNNNNNN RP HAMCc x y z au[A](First Author) Title of paper'
+        return 'YYYY NNNNNNNN RP HAMCc nih% x y z au[A](First Author) Title of paper'
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
         """Print paper keys"""
         # pylint: disable=line-too-long
         ## prt.write('NIH iCite line format:\n')
-        ## prt.write('  YYYY NNNNNNNN RP HAMCc x y z au[A](First Author) Title of paper\n\n')
+        ## prt.write('  YYYY NNNNNNNN RP HAMCc nih% x y z au[A](First Author) Title of paper\n\n')
         ## prt.write('NIH iCite details:\n')
         prt.write('      YYYY: The year the article was published\n')
         prt.write('  NNNNNNNN: PubMed ID (PMID)\n\n')
@@ -44,6 +44,7 @@ class NIHiCiteEntry:
         prt.write('         A: Has MeSH terms in the animal category\n')
         prt.write('         M: Has MeSH terms in the molecular/cellular biology category\n')
         prt.write('         C: Is a clinical trial, study, or guideline\n')
+        prt.write('      nih%: Citation performance score, NIH percentile\n\n')
         prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
         prt.write('         x: Number of unique articles that have cited the paper\n')
         prt.write('         y: Number of unique clinical articles that have cited the paper\n')
@@ -61,11 +62,13 @@ class NIHiCiteEntry:
     def _str(self, pat):
         """Return one-line string describing NIH iCite entry"""
         dct = self.dct
+        nih_percentile = dct['nih_percentile']
         return pat.format(
             pmid=dct['pmid'],
             year=dct['year'],
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
+            nih_perc='{P:3}%'.format(P=int(round(nih_percentile))) if nih_percentile else ' ...',
             citation_count=dct['citation_count'],
             clin=len(dct['cited_by_clin']),
             references=len(dct['references']),
