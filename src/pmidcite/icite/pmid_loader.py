@@ -97,8 +97,8 @@ class NIHiCiteLoader:
             for line in ifstrm:
                 if line[:4] == 'TOP ':
                     flds = line.split()
-                    assert flds[2].isdigit(), flds
-                    pmids.add(int(flds[2]))
+                    assert flds[1].isdigit(), '{} {}'.format(pmidcite_txt, flds)
+                    pmids.add(int(flds[1]))
         return pmids
 
     def wr_name2pmid(self, fout_txt, name2pmid):
