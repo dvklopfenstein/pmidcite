@@ -17,17 +17,16 @@ class NIHiCiteCli:
     def __init__(self):
         self.pmidcite = PmidCite()
         cfgparser = self.pmidcite.cfgparser
-        self.dir_pmid_py = cfgparser.cfgparser['pmidcite']['dir_pmid_py']
-        self.dir_pubmed = cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         self.pubmed = PubMed(
             email=cfgparser.get_email(),
             apikey=cfgparser.get_apikey(),
             tool=cfgparser.get_tool())
 
-    @staticmethod
-    def get_argparser():
+    def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
+        dir_pmid_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
+        dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
@@ -42,13 +41,16 @@ class NIHiCiteCli:
             help='Print the keys describing the abbreviations.')
         parser.add_argument(
             '-o', '--outfile',
-            help='Write current citeation report to an ASCII text file.')
+            help='Write current citation report to an ASCII text file.')
         parser.add_argument(
             '-f', '--force_write', action='store_true',
             help='if an existing outfile file exists, overwrite it.')
         parser.add_argument(
             '-D', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        parser.add_argument(
+            '--dir_pmid_py', default=dir_pmid_py,
+            help='Write PMID iCite information into directory (default={D})'.format(D=dir_pmid_py))
         parser.add_argument(
             '-R', '--no_references', action='store_true',
             help='Print the list of citations, but not the list of references.')
@@ -62,6 +64,9 @@ class NIHiCiteCli:
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         parser.add_argument(
+            '--dir_pubmed_txt', default=dir_pubmed_txt,
+            help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
+        parser.add_argument(
             '--md', action='store_true',
             help='Print using markdown table format.')
         parser.add_argument(
@@ -74,9 +79,11 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
+        self.pmidcite.dir_pmid_py = args.dir_pmid_py
         pmids = self.run_icite(args, argparser)
+        # pylint:disable=line-too-long
         if args.pubmed:
-            pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, self.dir_pubmed)
+            pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, args.dir_pubmed_txt)
             self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
     def run_icite(self, args, argparser, pmid2note=None):
