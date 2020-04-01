@@ -86,16 +86,18 @@ class NIHiCiteLoader:
         """Get PMIDs which are not already fully analyzed in pmidcite.txt"""
         if not os.path.exists(pmidcite_txt):
             return pmids
-        pmids_old = self._get_old_pmids(pmidcite_txt)
+        pmids_old = self.read_top_pmids(pmidcite_txt)
         return [p for p in pmids if p not in pmids_old]
 
     @staticmethod
-    def _get_old_pmids(pmidcite_txt):
+    def read_top_pmids(pmidcite_txt, top='TOP'):
         """Get PMIDs already found in pmidcite.txt"""
         pmids = set()
         with open(pmidcite_txt) as ifstrm:
+            topstr = '{TOP} '.format(TOP=top)
+            toplen = len(topstr)
             for line in ifstrm:
-                if line[:4] == 'TOP ':
+                if line[:toplen] == topstr:
                     flds = line.split()
                     assert flds[1].isdigit(), '{} {}'.format(pmidcite_txt, flds)
                     pmids.add(int(flds[1]))
