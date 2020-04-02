@@ -9,6 +9,7 @@ import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.run import PmidCite
+from pmidcite.cli.utils import get_outfile
 
 
 class NIHiCiteCli:
@@ -105,16 +106,15 @@ class NIHiCiteCli:
         loader = self.pmidcite.get_iciteloader(args.force_download, args.no_references, args.quiet)
         if args.print_keys:
             loader.prt_keys()
-        outfile = self._get_outfile(args)
-        mode, force_write = self._get_mode_force(args)
+        dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
         pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose, pmid2note)
-        if outfile is None:
+        if dct['outfile'] is None:
             loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            loader.wr_papers(outfile, force_write, pmid2ntpaper, mode)
+            loader.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'])
         return pmids
 
     def get_pmids(self, pmid_list, fin_pmids):
@@ -129,26 +129,6 @@ class NIHiCiteCli:
                 else:
                     print('  MISSING: {FILE}'.format(FILE=fin))
         return pmids
-
-    @staticmethod
-    def _get_mode_force(args):
-        """Given arguments, return outfile"""
-        # if '-o', only over-write existing file if explicitly requested
-        if args.outfile is not None:
-            return 'w', args.force_write
-        # if '-a', always append given file or create the file if needed
-        if args.append_outfile is not None:
-            return 'a', True
-        return 'w', True
-
-    @staticmethod
-    def _get_outfile(args):
-        """Given arguments, return outfile"""
-        if args.outfile is not None:
-            return args.outfile
-        if args.append_outfile is not None:
-            return args.append_outfile
-        return None
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
