@@ -43,6 +43,9 @@ class DnldPubMed:
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
             help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
+        ## parser.add_argument(
+        ##     '-c', '--wordcloud_filename',
+        ##     help='Output filename (i.e. pmids.png) for a word cloud plot for the given PMIDs')
         return parser
 
     def cli(self):
