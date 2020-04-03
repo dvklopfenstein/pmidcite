@@ -4,7 +4,7 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
-import sys
+## import sys
 import argparse
 
 ## from pmidcite.eutils.cmds.pubmed import PubMed
@@ -27,7 +27,7 @@ class ReadPmids:
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
         parser.add_argument(
-            'infile', nargs='*',
+            '-i', 'infile', nargs='*',
             help='Read PMIDs from a pmidcite output file.')
         parser.add_argument(
             '-o', '--outfile',
@@ -45,7 +45,7 @@ class ReadPmids:
         argparser = self.get_argparser()
         args = argparser.parse_args()
         print('ARGS: ', args)
-        pmids = self.read_pmids(args, argparser)
+        pmids = self._read_pmids(args, argparser)
         # keys: outfile mode force_write
         ## dct = get_outfile(args.outfile, append_outfile, args.force_write)
         dct = get_outfile(args.outfile, None, args.force_write)
@@ -55,7 +55,7 @@ class ReadPmids:
         else:
             print(pmids)
 
-    def read_pmids(self, args, argparser, pmid2note=None):
+    def _read_pmids(self, args, argparser):
         """Run iCite/PubMed"""
         print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Get user-specified PMIDs
@@ -74,12 +74,13 @@ class ReadPmids:
             return mk_outname_pmids(args.infile[0])
         return None
 
-    def rd_pmidtxts(self, fin_pmids):
+    @staticmethod
+    def rd_pmidtxts(fins_pmidcite):
         """Get PMIDs from the command line or from a file"""
         pmids = []
         seen = set()
-        if fin_pmids:
-            for fin in fin_pmids:
+        if fins_pmidcite:
+            for fin in fins_pmidcite:
                 if os.path.exists(fin):
                     for pmid in NIHiCiteLoader.read_top_pmids(fin):
                         if pmid not in seen:

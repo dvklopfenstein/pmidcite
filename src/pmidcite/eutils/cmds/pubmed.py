@@ -23,8 +23,9 @@ class PubMed(EntrezUtilities):
         super(PubMed, self).__init__(email, apikey, tool)
 
     def dnld_wr1_per_pmid(self, pmid_nt_list, num_ids_p_epost=10):
-        """Download and write file one PubMed entry per PMID"""
+        """Download and write one PubMed text file entry per PMID"""
         # Get filenames to store PubMed entry information, one PMID per file
+        # Use function, get_pmid_nt_list, to get nts w/flds: PMID fout_pubmed fout_exists
         if not pmid_nt_list:
             return
         # Run EPost

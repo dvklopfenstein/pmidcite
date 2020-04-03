@@ -3,13 +3,14 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
+## import os
 import sys
 import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.run import PmidCite
 from pmidcite.cli.utils import get_outfile
+from pmidcite.cli.utils import get_pmids
 
 
 class NIHiCiteCli:
@@ -95,7 +96,7 @@ class NIHiCiteCli:
             self.pmidcite.prt_rcfile(sys.stdout)
             return []
         # Get user-specified PMIDs
-        pmids = self.get_pmids(args.pmids, args.infile)
+        pmids = get_pmids(args.pmids, args.infile)
         if not pmids and not args.print_keys:
             argparser.print_help()
             return pmids
@@ -115,19 +116,6 @@ class NIHiCiteCli:
             if not args.quiet:
                 loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
             loader.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'])
-        return pmids
-
-    def get_pmids(self, pmid_list, fin_pmids):
-        """Get PMIDs from the command line or from a file"""
-        if not pmid_list and not fin_pmids:
-            return []
-        pmids = list(pmid_list)
-        if fin_pmids:
-            for fin in fin_pmids:
-                if os.path.exists(fin):
-                    pmids.extend(self.pmidcite.read_pmids(fin))
-                else:
-                    print('  MISSING: {FILE}'.format(FILE=fin))
         return pmids
 
 
