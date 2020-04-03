@@ -1,4 +1,4 @@
-"""Manage args for NIH iCite run for one PubMed ID (PMID)"""
+"""Given PMIDs, download PubMed entries into a text file"""
 
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
@@ -6,25 +6,22 @@ __author__ = "DV Klopfenstein"
 import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.run import PmidCite
+from pmidcite.cfg import Cfg
 from pmidcite.cli.utils import get_pmids
 
 
 class DnldPubMed:
-    """Manage args for NIH iCite run for one PubMed ID (PMID)"""
+    """Given PMIDs, download PubMed entries into a text file"""
 
     def __init__(self):
-        self.pmidcite = PmidCite()
-        cfgparser = self.pmidcite.cfgparser
-        self.pubmed = PubMed(
-            email=cfgparser.get_email(),
-            apikey=cfgparser.get_apikey(),
-            tool=cfgparser.get_tool())
+        cfg = Cfg()
+        self.cfgdct = cfg.cfgparser
+        self.pubmed = PubMed(email=cfg.get_email(), apikey=cfg.get_apikey(), tool=cfg.get_tool())
 
     def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
-        dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        dir_pubmed_txt = self.cfgdct['pmidcite']['dir_pubmed_txt']
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
