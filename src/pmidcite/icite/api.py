@@ -1,4 +1,4 @@
-"""Given a PubMed ID (PMID), return a list of publications which cite it"""
+"""Given a PubMed ID (PMID), return a list of publications which cite it from NIH's iCite"""
 # https://icite.od.nih.gov/api
 
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
@@ -13,7 +13,7 @@ from pmidcite.icite.entry import NIHiCiteEntry
 
 
 class NIHiCiteAPI:
-    """Manage pubs notes files"""
+    """Given a PubMed ID (PMID), return a list of publications which cite it from NIH's iCite"""
 
     opt_keys = {
         # Number of publications to return. The maximum allowed is 1000.
