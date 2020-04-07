@@ -50,7 +50,7 @@ class DnldPubMed:
         argparser = self.get_argparser()
         args = argparser.parse_args()
         # 1) Get PMIDs
-        pmids = self.run_icite(args, argparser)
+        pmids = self._get_pmids(args, argparser)
         print('{N} PMIDs'.format(N=len(pmids)))
         # 2) Download PubMed entries.
         #    nt flds: PMID fout_pubmed fout_exists
@@ -58,10 +58,8 @@ class DnldPubMed:
         self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
     @staticmethod
-    def run_icite(args, argparser):
-        """Run iCite/PubMed"""
-        print('DNLDPUBMED ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
-        # Get user-specified PMIDs
+    def _get_pmids(args, argparser):
+        """Extract PMIDs from required args and PMID files"""
         pmids = get_pmids(args.pmids, args.infile)
         if not pmids:
             argparser.print_help()
