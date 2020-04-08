@@ -108,11 +108,12 @@ class PubMed(EntrezUtilities):
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
                 ntd = pmid2nt[pmids_exp[0]]
-                with open(ntd.fout_pubmed, 'w') as prt:
+                print('NNNNNNNNNNNNNNN', ntd)
+                with open(ntd.file_pubmed, 'w') as prt:
                     prt.write(rsp_txt)
                     print('  {WROTE}: {TXT}'.format(
-                        WROTE='WROTE' if not ntd.fout_exists else 'UPDATED',
-                        TXT=ntd.fout_pubmed))
+                        WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
+                        TXT=ntd.file_pubmed))
 
     def _get_efetch_indices(self, epost_rsp, num_pmids_p_efetch, num_pmids):
         """Get EFetech list of: querykey_cur, pmids_cur, start"""
@@ -175,16 +176,16 @@ class PubMed(EntrezUtilities):
     def get_pmid_nt_list(pmids, force_download, dir_pubmed):
         """Get list of PubMed entries: Title, abstract, authors, journal, MeSH"""
         nts = []
-        ntobj = cx.namedtuple('Nt', 'PMID fout_pubmed fout_exists')
+        ntobj = cx.namedtuple('Nt', 'PMID file_pubmed file_exists')
         for pmid in pmids:
             # Get filename, pPMID.txt
-            fout_pubmed = os.path.join(dir_pubmed, 'p{PubMed}.txt'.format(PubMed=pmid))
-            fout_exists = os.path.exists(fout_pubmed)
-            if not fout_exists or force_download:
-                ntd = ntobj(PMID=pmid, fout_pubmed=fout_pubmed, fout_exists=fout_exists)
+            file_pubmed = os.path.join(dir_pubmed, 'p{PubMed}.txt'.format(PubMed=pmid))
+            file_exists = os.path.exists(file_pubmed)
+            if not file_exists or force_download:
+                ntd = ntobj(PMID=pmid, file_pubmed=file_pubmed, file_exists=file_exists)
                 nts.append(ntd)
             else:
-                print('**NOTE: EXISTS: {PUBMED}'.format(PUBMED=fout_pubmed))
+                print('**NOTE: EXISTS: {PUBMED}'.format(PUBMED=file_pubmed))
         return nts
 
 
