@@ -49,9 +49,11 @@ def mk_outname_pmids(fin):
 
 def get_outfile(outfile, append_outfile, force_write):
     """Given arguments, return outfile"""
-    outfile = _get_outfile(outfile, append_outfile)
     mode, force_wr = _get_mode_force(outfile, force_write, append_outfile)
-    return {'outfile':outfile, 'mode':mode, 'force_write':force_wr}
+    return {
+        'outfile': _get_outfile_resolved(outfile, append_outfile),
+        'mode':mode,
+        'force_write':force_wr}
 
 def _get_mode_force(outfile, force_write, append_outfile):
     """Given arguments, return outfile"""
@@ -63,8 +65,8 @@ def _get_mode_force(outfile, force_write, append_outfile):
         return 'a', True
     return 'w', True
 
-def _get_outfile(outfile, append_outfile):
-    """Given arguments, return outfile"""
+def _get_outfile_resolved(outfile, append_outfile):
+    """Given outfile (write_outfile) and append_outfile, return one resolved outfile name"""
     if outfile is not None:
         return outfile
     if append_outfile is not None:
