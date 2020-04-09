@@ -6,7 +6,7 @@ __author__ = "DV Klopfenstein"
 import sys
 from pmidcite.cfg import Cfg
 from pmidcite.icite.api import NIHiCiteAPI
-from pmidcite.icite.pmid_loader import NIHiCiteLoader
+from pmidcite.icite.pmid_dnlder import NIHiCiteLoader
 from pmidcite.cli.utils import read_pmids
 
 

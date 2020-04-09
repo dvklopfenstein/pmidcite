@@ -9,7 +9,7 @@ import argparse
 
 ## from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.run import PmidCite
-from pmidcite.icite.pmid_loader import NIHiCiteLoader
+from pmidcite.icite.pmid_dnlder import NIHiCiteLoader
 ## from pmidcite.cli.utils import get_mode_force
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import mk_outname_pmids
