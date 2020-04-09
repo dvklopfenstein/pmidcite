@@ -7,19 +7,21 @@ __author__ = "DV Klopfenstein"
 import sys
 import os
 import collections as cx
-import importlib.util
 
+from pmidcite.cli.utils import read_top_pmids
 from pmidcite.icite.entry import NIHiCiteEntry
 from pmidcite.icite.paper import NIHiCitePaper
+from pmidcite.icite.pmid_loader import NIHiCiteLoader
 
 
-class NIHiCiteLoader:
+class NIHiCiteDownloader:
     """Manage pubs notes files"""
 
     def __init__(self, force_dnld, api, rpt_references=False):
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
         self.dir_dnld = api.dir_dnld  # e.g., ./icite
+        self.loader = NIHiCiteLoader(self.dir_dnld)
         self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, force, pmid2ntpaper, mode='w'):
@@ -82,61 +84,49 @@ class NIHiCiteLoader:
                 M=len(pmids_req))
         raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
 
-    def _get_new_pmids(self, pmidcite_txt, pmids):
+    @staticmethod
+    def _get_new_pmids(pmidcite_txt, pmids):
         """Get PMIDs which are not already fully analyzed in pmidcite.txt"""
         if not os.path.exists(pmidcite_txt):
             return pmids
-        pmids_old = self.read_top_pmids(pmidcite_txt)
+        pmids_old = read_top_pmids(pmidcite_txt)
         return [p for p in pmids if p not in pmids_old]
-
-    @staticmethod
-    def read_top_pmids(pmidcite_txt, top='TOP'):
-        """Get PMIDs already found in pmidcite.txt"""
-        pmids = set()
-        with open(pmidcite_txt) as ifstrm:
-            topstr = '{TOP} '.format(TOP=top)
-            toplen = len(topstr)
-            for line in ifstrm:
-                if line[:toplen] == topstr:
-                    flds = line.split()
-                    assert flds[1].isdigit(), '{} {}'.format(pmidcite_txt, flds)
-                    pmids.add(int(flds[1]))
-        return pmids
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
-        name2ntpaper = self._run_icite_name2pmid(name2pmid, dnld_assc_pmids=False, pmid2note=None)
+        # pylint: disable=line-too-long
+        name2ntpaper = self._run_icite_name2pmid(name2pmid, do_dnld_assc_pmids=False, pmid2note=None)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
                     self.prt_paper(ntpaper.paper, ntpaper.pmid, name, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
-    def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids, pmid2note):
+    def _run_icite_name2pmid(self, name2pmid, do_dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
             ## print('NNNNNNNNNNNNNNNNNNNN', name, pmid)
-            paper = self._get_paper(pmid, name, dnld_assc_pmids, pmid2note)
+            paper = self._get_paper(pmid, name, do_dnld_assc_pmids, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids, pmid2note):
+    def get_pmid2paper(self, pmids, do_dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         s_get_paper = self._get_paper
         if not pmid2note:
-            pmid_paper = [(p, s_get_paper(p, '', dnld_assc_pmids, None)) for p in pmids]
+            pmid_paper = [(p, s_get_paper(p, '', do_dnld_assc_pmids, None)) for p in pmids]
         else:
             s_p2n = pmid2note.get
-            pmid_paper = [(p, s_get_paper(p, '', dnld_assc_pmids, s_p2n(p, ''))) for p in pmids]
+            pmid_paper = [(p, s_get_paper(p, '', do_dnld_assc_pmids, s_p2n(p, ''))) for p in pmids]
         return cx.OrderedDict(pmid_paper)  # pmid2ntpaper
 
-    def _get_paper(self, pmid_top, header, dnld_assc_pmids, note):
+    def _get_paper(self, pmid_top, header, do_dnld_assc_pmids, note):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
         if citeobj_top:
-            if dnld_assc_pmids:
+            if do_dnld_assc_pmids:
                 self.dnld_assc_pmids(citeobj_top)
             paper = NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
             return paper
@@ -162,31 +152,11 @@ class NIHiCiteLoader:
         if pmids_missing:
             objs_missing = self.api.dnld_icites(pmids_missing)
             pmids_load = pmids_assc.difference(pmids_missing)
-            objs_dnlded = self.load_icites(pmids_load)
+            objs_dnlded = self.loader.load_icites(pmids_load)
             ## print('{N} PMIDs loaded'.format(N=len(pmids_load)))
             return objs_missing + objs_dnlded
-        return self.load_icites(pmids_assc)
+        return self.loader.load_icites(pmids_assc)
         ## print('DDDDDDDDDDDDDDDD')
-
-    def load_icites(self, pmids):
-        """Load multiple NIH iCite data from Python modules"""
-        if not pmids:
-            return []
-        icites = []
-        for pmid in pmids:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
-            icites.append(self.load_icite(file_pmid))
-        return icites
-
-    @staticmethod
-    def load_icite(file_pmid):
-        """Load NIH iCite information from Python modules"""
-        if os.path.exists(file_pmid):
-            spec = importlib.util.spec_from_file_location("module.name", file_pmid)
-            mod = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(mod)
-            return NIHiCiteEntry(mod.ICITE)
-        return None
 
     def _get_pmids_missing(self, pmids_all):
         """Get PMIDs that have not yet been downloaded"""
@@ -204,7 +174,7 @@ class NIHiCiteLoader:
             iciteobj = self.api.dnld_icite(pmid)
             if iciteobj is not None:
                 return iciteobj
-        return self.load_icite(file_pmid)  # NIHiCiteEntry
+        return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
 
     @staticmethod
     def _do_write(fout_txt, force):

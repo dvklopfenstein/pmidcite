@@ -6,7 +6,7 @@ __author__ = "DV Klopfenstein"
 import sys
 from pmidcite.cfg import Cfg
 from pmidcite.icite.api import NIHiCiteAPI
-from pmidcite.icite.pmid_dnlder import NIHiCiteLoader
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 from pmidcite.cli.utils import read_pmids
 
 
@@ -28,7 +28,7 @@ class PmidCite:
         """Run iCite on list of PMIDs in a file"""
         pmids = read_pmids(fin_pmids)
         loader = self.get_iciteloader(force_download)
-        pmid2ntpaper = loader.get_pmid2paper(pmids, dnld_assc_pmids=False, pmid2note=None)
+        pmid2ntpaper = loader.get_pmid2paper(pmids, do_dnld_assc_pmids=False, pmid2note=None)
         loader.wr_papers(fout_icite, force_download, pmid2ntpaper, 'w')
         return pmids
 
@@ -37,11 +37,11 @@ class PmidCite:
         self.cfgparser.cfgparser.write(prt)
 
     def get_iciteloader(self, force_download, no_references=False, quiet=False):
-        """Create NIHiCiteLoader"""
+        """Create NIHiCiteDownloader"""
         kws = {}  # TBD NIHiCiteCli
         log = None if quiet else sys.stdout
         api = NIHiCiteAPI(self.dir_pmid_py, log, **kws)
-        return NIHiCiteLoader(force_download, api, not no_references)
+        return NIHiCiteDownloader(force_download, api, not no_references)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
