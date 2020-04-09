@@ -9,11 +9,11 @@ import argparse
 
 ## from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.run import PmidCite
-from pmidcite.icite.pmid_dnlder import NIHiCiteLoader
 ## from pmidcite.cli.utils import get_mode_force
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import mk_outname_pmids
 from pmidcite.cli.utils import wr_pmids
+from pmidcite.cli.utils import read_top_pmids
 
 
 class ReadPmids:
@@ -82,7 +82,7 @@ class ReadPmids:
         if fins_pmidcite:
             for fin in fins_pmidcite:
                 if os.path.exists(fin):
-                    for pmid in NIHiCiteLoader.read_top_pmids(fin):
+                    for pmid in read_top_pmids(fin):
                         if pmid not in seen:
                             pmids.append(pmid)
                             seen.add(pmid)

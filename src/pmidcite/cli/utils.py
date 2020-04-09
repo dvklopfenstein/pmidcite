@@ -4,9 +4,10 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
+import sys
 
 
-def read_pmids(fin):
+def read_pmids(fin, prt=sys.stdout):
     """Read PMIDs from a file. One PMID per line."""
     pmids = []
     with open(fin) as ifstrm:
@@ -14,8 +15,8 @@ def read_pmids(fin):
             line = line.strip()
             if line.isdigit():
                 pmids.append(int(line))
-        print('  {N} PMIDs READ: {FILE}'.format(
-            N=len(pmids), FILE=fin))
+        if prt:
+            prt.write('  {N} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
     return pmids
 
 def get_pmids(pmid_list, fin_pmids):
@@ -32,6 +33,19 @@ def get_pmids(pmid_list, fin_pmids):
                         pmids.append(pmid)
             else:
                 print('  MISSING: {FILE}'.format(FILE=fin))
+    return pmids
+
+def read_top_pmids(pmidcite_txt, top='TOP'):
+    """Get PMIDs already found in pmidcite.txt"""
+    pmids = set()
+    with open(pmidcite_txt) as ifstrm:
+        topstr = '{TOP} '.format(TOP=top)
+        toplen = len(topstr)
+        for line in ifstrm:
+            if line[:toplen] == topstr:
+                flds = line.split()
+                assert flds[1].isdigit(), '{} {}'.format(pmidcite_txt, flds)
+                pmids.add(int(flds[1]))
     return pmids
 
 def wr_pmids(fout_txt, pmids, mode='w'):
