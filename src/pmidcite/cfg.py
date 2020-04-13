@@ -21,10 +21,18 @@ class Cfg(object):
             # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
             'apikey': 'long_hex_digit',
             'tool': 'scripts',
+
+            # Information downloaded from NIH iCite stored in a Python module
+            'dir_pmid_py': '.',
+
+            # Directory for abstracts downloaded from PubMed
             'dir_pubmed_txt': '.',
 
-            # NIH iCite
-            'dir_pmid_py': '.',
+            # Used by PubMedQueryToICite:
+            # Directory for files containing PMIDs downloaded from PubMed
+            'dir_pmids': '.',
+            # Run NIH's iCite on a set of PMIDs and store results in a file
+            'dir_icite': '.',
         },
     }
 
