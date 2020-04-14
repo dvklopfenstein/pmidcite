@@ -16,7 +16,7 @@ def read_pmids(fin, prt=sys.stdout):
             if line.isdigit():
                 pmids.append(int(line))
         if prt:
-            prt.write('  {N} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
+            prt.write('{N:6,} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
     return pmids
 
 def get_pmids(pmid_list, fin_pmids):
@@ -48,12 +48,13 @@ def read_top_pmids(pmidcite_txt, top='TOP'):
                 pmids.add(int(flds[1]))
     return pmids
 
-def wr_pmids(fout_txt, pmids, mode='w'):
+def wr_pmids(fout_txt, pmids, mode='w', log=sys.stdout):
     """Write PMIDs into a text file, one PMID per line"""
     with open(fout_txt, mode) as prt:
         for pmid in pmids:
             prt.write('{PMID}\n'.format(PMID=pmid))
-        print('  {N} WROTE: {FOUT}'.format(N=len(pmids), FOUT=fout_txt))
+        if log:
+            log.write('{N:6,} WROTE: {FOUT}\n'.format(N=len(pmids), FOUT=fout_txt))
 
 def mk_outname_pmids(fin):
     """Given input file, return output file for PMIDs"""
