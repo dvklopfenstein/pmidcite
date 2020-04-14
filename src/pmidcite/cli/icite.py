@@ -111,7 +111,7 @@ class NIHiCiteCli:
             dnldr.prt_keys()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
-        pmid2ntpaper = dnldr.get_pmid2paper(pmids, prt_verbose, pmid2note)
+        pmid2ntpaper = dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
         if dct['outfile'] is None:
             dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
