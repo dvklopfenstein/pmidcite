@@ -99,23 +99,25 @@ class NIHiCiteCli:
         pmids = get_pmids(args.pmids, args.infile)
         if not pmids and not args.print_keys:
             argparser.print_help()
+            for fin in args.infile:
+                print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
             return pmids
         return self._run_icite(pmids, args, pmid2note)
 
     def _run_icite(self, pmids, args, pmid2note):
         """Print papers, including citation counts"""
-        loader = self.pmidcite.get_iciteloader(args.force_download, args.no_references, args.quiet)
+        dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, args.quiet)
         if args.print_keys:
-            loader.prt_keys()
+            dnldr.prt_keys()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
-        pmid2ntpaper = loader.get_pmid2paper(pmids, prt_verbose, pmid2note)
+        pmid2ntpaper = dnldr.get_pmid2paper(pmids, prt_verbose, pmid2note)
         if dct['outfile'] is None:
-            loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
-                loader.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            loader.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'])
+                dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'])
         return pmids
 
 
