@@ -25,30 +25,26 @@ class PubMed(EntrezUtilities):
         super(PubMed, self).__init__(email, apikey, tool)
         self.esearch = ESearch(email, apikey, tool)
 
-    def dnld_query(self, fout_entrez, query, num_ids_p_epost=10, prt=sys.stdout):
+    def dnld_query_pmids(self, query, num_ids_p_epost=10, prt=sys.stdout):
         """Searches an PubMed for a user query, writes resulting entries into one file."""
         # 1) Query PubMed. Get first N (num_ids_p_epost) of the total PMIDs
         rsp_dct = self.esearch.query('pubmed', query, retmax=num_ids_p_epost)
         tot_pmids = rsp_dct['count']
-        print('DDDDDDDDDDDDDDDDDDDDDDDDDDDD', rsp_dct)
+        pmids = list(rsp_dct['idlist'])
         if rsp_dct and prt:
-            prt.write('{N:5,} PMIDs FOR QUERY({Q})\n'.format(N=tot_pmids, Q=query))
-        # 2) Set EFetch params
-        efetch_params = dict(self.medline_text)
-        efetch_params['webenv'] = rsp_dct['webenv']
-        efetch_params['retmax'] = num_ids_p_epost  # num IDs epost == num IDs efetch
-        qkey2ids = [None for _ in range(self._get_num_querykeys(num_ids_p_epost, tot_pmids))]
-        qkey2ids[0] = rsp_dct['idlist']
-        ef_dct = {
+            prt.write('{N:6,} PMIDs FOR QUERY({Q})\n'.format(N=tot_pmids, Q=query))
+        # 2) Continue to download PMIDs, N (num_ids_p_epost) at a time
+        kws_p = {
+            'webenv': rsp_dct['webenv'],
             'querykey': rsp_dct['querykey'],
-            'num_ids_p_epost': num_ids_p_epost,
-            'qkey2ids': qkey2ids,
+            'retmax': num_ids_p_epost,
         }
-        # 3) Get number of times we run efetch
-        efetch_idxs = self._get_efetch_indices(ef_dct, num_ids_p_epost, tot_pmids)
-        for e in efetch_idxs:
-            print('EEEEEEEEEEEEEEEEEEEEEEEE', e)
-        self._dnld_wr_all(fout_entrez, efetch_idxs, efetch_params)
+        for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_pmids)):
+            rsp_dct = self.esearch.query('pubmed', query, retstart=num_ids_p_epost*retnum, **kws_p)
+            pmids.extend(rsp_dct['idlist'])
+        assert tot_pmids == len(set(pmids)), 'PMIDS EXP({E}) ACT({A})'.format(
+            E=tot_pmids, A=len(set(pmids)))
+        return pmids
 
     def _dnld_wr_all(self, fout_pubmed, efetch_idxs, efetch_params):
         """Download and write all PMIDs PubMed text entries into one file"""
@@ -108,7 +104,7 @@ class PubMed(EntrezUtilities):
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
                 ntd = pmid2nt[pmids_exp[0]]
-                print('NNNNNNNNNNNNNNN', ntd)
+                #print('NNNNNNNNNNNNNNN', ntd)
                 with open(ntd.file_pubmed, 'w') as prt:
                     prt.write(rsp_txt)
                     print('  {WROTE}: {TXT}'.format(
@@ -133,6 +129,7 @@ class PubMed(EntrezUtilities):
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
                 desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
+                # pylint: disable=line-too-long
                 pmids_exp = pmids_cur[start:start+num_pmids_p_efetch] if pmids_cur is not None else None
                 nts.append([desc, start, pmids_exp, querykey_cur])
         return nts
@@ -152,8 +149,10 @@ class PubMed(EntrezUtilities):
         pmids_downloaded = [int(i) for i in re.findall(r'PMID-\s*(\d+)', rsp_txt)]
         #print(desc, pmids_downloaded, pmids_exp)
         if pmids_exp:
+            # pylint: disable=line-too-long
             assert pmids_downloaded == pmids_exp, '{TXT}\nDESC: {DESC}\nDL[{D}]: {DL}\nEXP[{L}]: {EXP}'.format(
-                TXT=rsp_txt, DESC=desc, D=len(pmids_downloaded),DL=pmids_downloaded, EXP=pmids_exp, L=len(pmids_exp))
+                TXT=rsp_txt, DESC=desc, D=len(pmids_downloaded),
+                DL=pmids_downloaded, EXP=pmids_exp, L=len(pmids_exp))
         return rsp_txt
 
     @staticmethod
