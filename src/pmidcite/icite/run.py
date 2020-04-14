@@ -27,16 +27,16 @@ class PmidCite:
     def run_pmid_file(self, fin_pmids, fout_icite, force_download):
         """Run iCite on list of PMIDs in a file"""
         pmids = read_pmids(fin_pmids)
-        loader = self.get_iciteloader(force_download)
-        pmid2ntpaper = loader.get_pmid2paper(pmids, do_dnld_assc_pmids=False, pmid2note=None)
-        loader.wr_papers(fout_icite, force_download, pmid2ntpaper, 'w')
+        dnldr = self.get_icitedownloader(force_download)
+        pmid2ntpaper = dnldr.get_pmid2paper(pmids, do_dnld_assc_pmids=False, pmid2note=None)
+        dnldr.wr_papers(fout_icite, force_download, pmid2ntpaper, 'w')
         return pmids
 
     def prt_rcfile(self, prt=sys.stdout):
         """Print pmidcite rcfile"""
         self.cfgparser.cfgparser.write(prt)
 
-    def get_iciteloader(self, force_download, no_references=False, quiet=False):
+    def get_icitedownloader(self, force_download, no_references=False, quiet=False):
         """Create NIHiCiteDownloader"""
         kws = {}  # TBD NIHiCiteCli
         log = None if quiet else sys.stdout
