@@ -36,7 +36,7 @@ class NIHiCiteDownloader:
             if self._do_write(fout_txt, force):
                 with open(fout_txt, mode) as prt:
                     self.prt_papers(pmid2ntpaper, prt)
-                print('  {WR}: {TXT}'.format(
+                print('{WR}: {TXT}'.format(
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     @staticmethod
@@ -73,13 +73,13 @@ class NIHiCiteDownloader:
     def _msg_wrote(mode, pmids_req, pmids_new):
         """Get the 'WROTE' or 'APPENDED' message"""
         if mode == 'w':
-            return '{N} WROTE'.format(N=len(pmids_req))
+            return '{N:6,} WROTE'.format(N=len(pmids_req))
         if mode == 'a':
             if pmids_new:
-                return '{N} of {M} APPENDED'.format(
+                return '{N:,} of {M:,} APPENDED'.format(
                     N=len(pmids_new),
                     M=len(pmids_req))
-            return '{N} of {M} FOUND'.format(
+            return '{N:,} of {M:,} FOUND'.format(
                 N=len(pmids_new),
                 M=len(pmids_req))
         raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
