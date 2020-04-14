@@ -184,13 +184,13 @@ class EntrezUtilities(object):
         cgi += '?' + options
         return cgi
 
-    def run_req(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
+    def run_req(self, cmd, prt=None, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
         cgi = self._mk_cgi(cmd, **params)
         ## print('CGI: {CGI}\n'.format(CGI=cgi))
         try:
-            rsp = self._run_req(cgi) # post=None, ecitmatch=False):
+            rsp = self._run_req(cgi, prt) # post=None, ecitmatch=False):
             # print('PPPPPPPPPPPPPPPPPP src/pmidcite/eutils/cmds/base.py run_req', rsp)
             return rsp
         except json.decoder.JSONDecodeError as errobj:
@@ -214,7 +214,7 @@ class EntrezUtilities(object):
             print(errobj)
             traceback.print_exc()
 
-    def _run_req(self, cgi):  # params=None, post=None, ecitmatch=False):
+    def _run_req(self, cgi, prt):  # params=None, post=None, ecitmatch=False):
         """Get a response from running a Entrez Utilities command"""
         # NCBI requirement: At most three queries per second if no API key is provided.
         # Equivalently, at least a third of second between queries
@@ -228,6 +228,8 @@ class EntrezUtilities(object):
             self.previous = current + wait
         else:
             self.previous = current
+        if prt:
+            prt.write('CMD: {CMD}\n'.format(CMD=cgi))
 
         for i in range(self.max_tries):
             try:
