@@ -11,7 +11,7 @@ class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
     pat_str = ('{pmid:8} {aart_type} {aart_animal} '
-               '{nih_sd} {year} {citation_count:5} {clin:2} {references:3} '
+               '{nih_perc:3} {nih_sd} {year} {citation_count:5} {clin:2} {references:3} '
                'au[{A:02}]({author1}) {title}'
               )
     pat_md = ('{year}|{pmid:8}|{aart_type}|{aart_animal}|'
@@ -23,11 +23,12 @@ class NIHiCiteEntry:
 
     def __init__(self, icite_dct):
         self.dct = icite_dct
-        self.dct['nih_sd'] = self._init_nih_sd()
+        nih_percentile = icite_dct['nih_percentile']
+        self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
+        self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else -1
 
-    def _init_nih_sd(self):
+    def _init_nih_sd(self, nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
-        nih_percentile = self.dct['nih_percentile']
         # No NIH percentile yet assigned. This paper should be checked out.
         if nih_percentile is None:
             return 5
@@ -65,7 +66,8 @@ class NIHiCiteEntry:
         prt.write('         A: Has MeSH terms in the animal category\n')
         prt.write('         M: Has MeSH terms in the molecular/cellular biology category\n')
         prt.write('         C: Is a clinical trial, study, or guideline\n')
-        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or TBD\n\n')
+        prt.write('         %: NIH citation percentile rounded to an integer\n\n')
+        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
         prt.write('      YYYY: The year the article was published\n')
         prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
         prt.write('         x: Number of unique articles that have cited the paper\n')
@@ -91,6 +93,7 @@ class NIHiCiteEntry:
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
             nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
+            nih_perc=dct['nih_perc'],
             citation_count=dct['citation_count'],
             clin=len(dct['cited_by_clin']),
             references=len(dct['references']),
