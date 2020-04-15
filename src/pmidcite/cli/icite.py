@@ -117,7 +117,7 @@ class NIHiCiteCli:
         else:
             if not args.quiet:
                 dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'])
+            dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'], pmid2note)
         return pmids
 
 
