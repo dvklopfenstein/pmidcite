@@ -10,8 +10,28 @@ from pmidcite.utils_module import load_modpy
 from pmidcite.icite.entry import NIHiCiteEntry
 
 
+def sortby_year(obj):
+    """Sort lists of iCite items"""
+    return [-1*obj.dct['year'], -1*obj.dct['nih_percentile']]
+
+def sortby_cite(obj):
+    """Sort lists of iCite items"""
+    return [-1*obj.dct['citation_count'], -1*obj.dct['year']]
+
+def sortby_nih_sd(obj):
+    """Sort lists of iCite items"""
+    dct = obj.dct
+    return [-1*dct['nih_sd'], -1*dct['year'], -1*dct['nih_perc'], -1*dct['citation_count']]
+
+
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
+
+    sortby_dct = {
+        'nih_sd': sortby_nih_sd,
+        'cite': sortby_cite,
+        'year': sortby_year,
+    }
 
     # pylint: disable=too-many-instance-attributes
     def __init__(self, pmid, dirpy, header=None, note=None):
@@ -38,51 +58,39 @@ class NIHiCitePaper:
         prt.write('  CLI: A clinical paper that cited TOP\n')
         prt.write('  REF: A clinical paper that cited TOP\n')
 
-    def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby=None):
+    def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby_cites='nih_sd', sortby_refs=None):
         """Print summary of paper"""
         if self.hdr:
             prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
         prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
+        # Citations by clinical papers
+        if self.cited_by_clin:
+            prt.write('Cited by {N} Clinical papers:\n'.format(N=len(self.cited_by_clin)))
+        self.prt_list(self.cited_by_clin, 'CLI', prt, sortby_cites)
+        # Citations 
         if self.cited_by:
             prt.write('{N} of {M} citations downloaded:\n'.format(
                 N=len([1 for o in self.cited_by if o.dct['cited_by']]),
                 M=self.icite.dct['citation_count']))
-        self.prt_list(self.cited_by, 'CIT', prt, sortby)
-        if self.cited_by_clin:
-            prt.write('{N} Cited by Clinical papers:\n'.format(N=len(self.cited_by_clin)))
-        self.prt_list(self.cited_by_clin, 'CLI', prt, sortby)
+        self.prt_list(self.cited_by, 'CIT', prt, sortby_cites)
+        # References
         if rpt_references and self.references:
             prt.write('{N} of {M} References downloaded:\n'.format(
                 N=len(self.references),
                 M=len(self.icite.dct['references'])))
-            self.prt_list(self.references, 'REF', prt, sortby)
-
-    @staticmethod
-    def sortby_year(obj):
-        """Sort lists of iCite items"""
-        return [-1*obj.dct['year'], -1*obj.dct['citation_count']]
-
-    @staticmethod
-    def sortby_cite(obj):
-        """Sort lists of iCite items"""
-        return [-1*obj.dct['citation_count'], -1*obj.dct['year']]
-
-    def _get_sortby(self, sortby):
-        """Get a sorting function for NIH iCite objects"""
-        if sortby is None:
-            return self.sortby_year
-        if isinstance(sortby, str):
-            return self.sortby_year if sortby == 'year' else self.sortby_cite
-        return sortby
+            self.prt_list(self.references, 'REF', prt, sortby_refs)
 
     def get_sorted(self, icites, sortby=None):
         """Get citations or references, sorted"""
-        sortby = self._get_sortby(sortby)
+        if sortby in self.sortby_dct:
+            sortby = self.sortby_dct[sortby]
         return sorted(icites, key=sortby)
 
     def prt_list(self, icites, desc, prt, sortby=None):
         """Print list of NIH iCites in summary format"""
-        for icite in self.get_sorted(icites, sortby):
+        if sortby is not None:
+            icites = self.get_sorted(icites, sortby)
+        for icite in icites:
             prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
 
     def load_pmid(self, pmid):
