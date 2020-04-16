@@ -99,10 +99,16 @@ class NIHiCiteCli:
         pmids = get_pmids(args.pmids, args.infile)
         if not pmids and not args.print_keys:
             argparser.print_help()
-            for fin in args.infile:
-                print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
+            self._prt_infiles(args.infile)
             return pmids
         return self._run_icite(pmids, args, pmid2note)
+
+    @staticmethod
+    def _prt_infiles(infiles):
+        """Print input files"""
+        if infiles:
+            for fin in infiles:
+                print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
 
     def _run_icite(self, pmids, args, pmid2note):
         """Print papers, including citation counts"""
