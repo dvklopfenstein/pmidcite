@@ -24,6 +24,7 @@ def get_pmids(pmid_list, fin_pmids):
     if not pmid_list and not fin_pmids:
         return []
     pmids = list(pmid_list)
+    # Search PMIDs listed in files
     seen = set(pmids)
     if fin_pmids:
         for fin in fin_pmids:
