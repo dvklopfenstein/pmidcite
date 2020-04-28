@@ -41,7 +41,7 @@ class NIHiCiteAPI:
     flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
     yes_no = {'Yes':True, 'No':False}
 
-    def __init__(self, dirpy_dnld='.', prt=sys.stdout, **kws):
+    def __init__(self, dirpy_dnld='.', prt=None, **kws):
         self.dir_dnld = dirpy_dnld
         self.prt = prt
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}

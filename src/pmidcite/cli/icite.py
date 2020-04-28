@@ -112,7 +112,7 @@ class NIHiCiteCli:
 
     def _run_icite(self, pmids, args, pmid2note):
         """Print papers, including citation counts"""
-        dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, args.quiet)
+        dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, prt=None)
         if args.print_keys:
             dnldr.prt_keys()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)

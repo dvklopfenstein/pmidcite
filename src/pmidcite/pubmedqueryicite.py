@@ -38,7 +38,7 @@ class PubMedQueryToICite:
     def wr_icite(self, fout_icite, pmids, pmid2note=None):
         """Run PMIDs in iCite and print results into a file"""
         dnldr = self.pmidcite.get_icitedownloader(
-            self.force_dnld, no_references=False, quiet=not self.verbose)
+            self.force_dnld, no_references=False, prt=None)
         pmid2ntpaper = dnldr.get_pmid2paper(pmids, self.verbose, pmid2note)
         dnldr.wr_papers(fout_icite, True, pmid2ntpaper)
 
