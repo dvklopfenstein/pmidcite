@@ -101,7 +101,8 @@ class NIHiCiteCli:
             argparser.print_help()
             self._prt_infiles(args.infile)
             return pmids
-        return self._run_icite(pmids, args, pmid2note)
+        dnldr = self.get_icite_downloader(args.force_download, args.no_references)
+        return self._run_icite(pmids, args, pmid2note, dnldr)
 
     @staticmethod
     def _prt_infiles(infiles):
@@ -110,21 +111,34 @@ class NIHiCiteCli:
             for fin in infiles:
                 print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
 
-    def _run_icite(self, pmids, args, pmid2note):
+    @staticmethod
+    def _run_icite(pmids, args, pmid2note, dnldr):
         """Print papers, including citation counts"""
-        dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, prt=None)
         if args.print_keys:
             dnldr.prt_keys()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
-        pmid2ntpaper = dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
+        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
         if dct['outfile'] is None:
-            dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
-                dnldr.prt_papers(pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2ntpaper, dct['mode'], pmid2note)
-        return pmids
+                dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'], pmid2note)
+        return pmid2icitepaper
+
+    def get_icite_downloader(self, force_download, no_references):
+        """Get iCite downloader"""
+        return self.pmidcite.get_icitedownloader(force_download, no_references, prt=None)
+
+    #def _get_pmid2icitepaper(self, pmids, args):
+    #    """Get pmid2icitepaper"""
+    #    dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, prt=None)
+    #    if args.print_keys:
+    #        dnldr.prt_keys()
+    #    dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
+    #    prt_verbose = not args.succinct
+    #    return dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
