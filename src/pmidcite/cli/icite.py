@@ -82,27 +82,26 @@ class NIHiCiteCli:
         argparser = self.get_argparser()
         args = argparser.parse_args()
         self.pmidcite.dir_pmid_py = args.dir_pmid_py
-        pmids = self.run_icite(args, argparser)
+        dnldr = self.get_icite_downloader(args.force_download, args.no_references)
+        pmids = get_pmids(args.pmids, args.infile)
+        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
+        self.run_icite(pmid2icitepaper, dnldr, args, argparser)
         # pylint:disable=line-too-long
         if args.pubmed:
             pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, args.dir_pubmed_txt)
             self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
-    def run_icite(self, args, argparser, pmid2note=None):
+    def run_icite(self, pmid2icitepaper, dnldr, args, argparser, pmid2note=None):
         """Run iCite/PubMed"""
         print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.pmidcite.prt_rcfile(sys.stdout)
-            return []
         # Get user-specified PMIDs
-        pmids = get_pmids(args.pmids, args.infile)
-        if not pmids and not args.print_keys:
+        if not pmid2icitepaper and not args.print_keys:
             argparser.print_help()
             self._prt_infiles(args.infile)
-            return pmids
-        dnldr = self.get_icite_downloader(args.force_download, args.no_references)
-        return self._run_icite(pmids, args, pmid2note, dnldr)
+        self._run_icite(pmid2icitepaper, args, pmid2note, dnldr)
 
     @staticmethod
     def _prt_infiles(infiles):
@@ -112,20 +111,19 @@ class NIHiCiteCli:
                 print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
 
     @staticmethod
-    def _run_icite(pmids, args, pmid2note, dnldr):
+    def _run_icite(pmid2icitepaper, args, pmid2note, dnldr):
         """Print papers, including citation counts"""
         if args.print_keys:
             dnldr.prt_keys()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
-        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
         if dct['outfile'] is None:
-            dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose, pmid2note=pmid2note)
         else:
             if not args.quiet:
                 dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+            # pylint: disable=line-too-long
             dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'], pmid2note)
-        return pmid2icitepaper
 
     def get_icite_downloader(self, force_download, no_references):
         """Get iCite downloader"""
