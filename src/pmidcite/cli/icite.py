@@ -91,6 +91,7 @@ class NIHiCiteCli:
             pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, args.dir_pubmed_txt)
             self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
+    # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper, dnldr, args, argparser, pmid2note=None):
         """Run iCite/PubMed"""
         print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
@@ -118,7 +119,8 @@ class NIHiCiteCli:
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
         if dct['outfile'] is None:
-            dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose, pmid2note=pmid2note)
+            dnldr.prt_papers(
+                pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose, pmid2note=pmid2note)
         else:
             if not args.quiet:
                 dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
