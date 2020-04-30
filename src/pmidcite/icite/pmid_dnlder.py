@@ -26,6 +26,7 @@ class NIHiCiteDownloader:
 
     def wr_papers(self, fout_txt, force, pmid2ntpaper, mode='w', pmid2note=None):
         """Run iCite for user-provided PMIDs and write to a file"""
+        #print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers', pmid2note)
         if not pmid2ntpaper:
             return
         pmids_all = pmid2ntpaper.keys()
@@ -54,12 +55,13 @@ class NIHiCiteDownloader:
 
     def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
         """Print papers, including citation counts, cite_by and references list"""
+        #print('PPPPPPPPPPPPPPPPPPPPPPPPPPP NIHiCiteDownloader prt_papers')
         pmids = set()
         if pmid2note is None:
             pmid2note = {}
         for pmid, paper in pmid2ntpaper.items():
             if paper is not None:
-                self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
+                self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids, pmid2note)
                 pmids.add(pmid)
             elif pmid in pmid2note:
                 prt.write('TOP {PMID} {NOTE}\n'.format(PMID=pmid, NOTE=pmid2note[pmid]))
@@ -69,10 +71,11 @@ class NIHiCiteDownloader:
         return pmids
 
     # pylint: disable=too-many-arguments
-    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
+    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if prt_assc_pmids:
+                #print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX paper.prt_summary')
                 paper.prt_summary(prt, self.rpt_references, sortby_cites='nih_sd', sortby_refs=None)
                 prt.write('\n')
             else:
@@ -119,13 +122,14 @@ class NIHiCiteDownloader:
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
-            ## print('NNNNNNNNNNNNNNNNNNNN', name, pmid)
+            ## print('NNNNNNNNNNNNNNNNNNNN _geticitepaper', name, pmid)
             paper = self._geticitepaper(pmid, name, do_dnld_assc_pmids, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
     def get_pmid2paper(self, pmids, do_dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
+        # print('NNNNNNNNNNNNNNNNNNNN _geticitepaper')
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
             papers = [s_geticitepaper(p, '', do_dnld_assc_pmids, None) for p in pmids]
