@@ -27,7 +27,7 @@ class NIHiCiteCli:
     def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
-        dir_pmid_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pmid_py']
+        dir_icite_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite_py']
         dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
@@ -51,8 +51,8 @@ class NIHiCiteCli:
             '-D', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
         parser.add_argument(
-            '--dir_pmid_py', default=dir_pmid_py,
-            help='Write PMID iCite information into directory (default={D})'.format(D=dir_pmid_py))
+            '--dir_icite_py', default=dir_icite_py,
+            help='Write PMID iCite information into directory (default={D})'.format(D=dir_icite_py))
         parser.add_argument(
             '-R', '--no_references', action='store_true',
             help='Print the list of citations, but not the list of references.')
@@ -81,7 +81,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
-        self.pmidcite.dir_pmid_py = args.dir_pmid_py
+        self.pmidcite.dir_icite_py = args.dir_icite_py
         dnldr = self.get_icite_downloader(args.force_download, args.no_references)
         pmids = get_pmids(args.pmids, args.infile)
         pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)

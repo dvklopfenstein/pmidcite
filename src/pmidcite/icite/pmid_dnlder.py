@@ -129,7 +129,7 @@ class NIHiCiteDownloader:
 
     def get_pmid2paper(self, pmids, do_dnld_assc_pmids, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
-        # print('NNNNNNNNNNNNNNNNNNNN _geticitepaper')
+        print('NNNNNNNNNNNNNNNNNNNN pmidcite get_pmid2paper', pmids, do_dnld_assc_pmids, pmid2note)
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
             papers = [s_geticitepaper(p, '', do_dnld_assc_pmids, None) for p in pmids]

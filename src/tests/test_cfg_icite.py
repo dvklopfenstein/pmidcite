@@ -33,9 +33,9 @@ def test_cfg_icite():
     assert next(iter(cfg)) == file_cfg, 'UNEXPECTED FILENAME: EXP({E}) ACT({A})'.format(
         E=file_cfg, A=next(iter(cfg)))
 
-    assert obj.cfgparser['pmidcite']['dir_pmid_py'] == Cfg.dfltdct['pmidcite']['dir_pmid_py'], \
-        'dir_pmid_py: EXP({E}) ACT({A})'.format(
-            A=obj.cfgparser['pmidcite']['dir_pmid_py'], E=Cfg.dfltdct['pmidcite']['dir_pmid_py'])
+    assert obj.cfgparser['pmidcite']['dir_icite_py'] == Cfg.dfltdct['pmidcite']['dir_icite_py'], \
+        'dir_icite_py: EXP({E}) ACT({A})'.format(
+            A=obj.cfgparser['pmidcite']['dir_icite_py'], E=Cfg.dfltdct['pmidcite']['dir_icite_py'])
     assert obj.cfgparser['pmidcite']['dir_pubmed_txt'] == Cfg.dfltdct['pmidcite']['dir_pubmed_txt']
 
 def test_cfg_eutils():

@@ -15,7 +15,7 @@ class PmidCite:
 
     def __init__(self):
         self.cfgparser = self._init_cfgparser()  # Cfg
-        self.dir_pmid_py = self.cfgparser.cfgparser['pmidcite']['dir_pmid_py']  # ./icite
+        self.dir_icite_py = self.cfgparser.cfgparser['pmidcite']['dir_icite_py']  # ./icite
 
     @staticmethod
     def _init_cfgparser():
@@ -39,7 +39,7 @@ class PmidCite:
     def get_icitedownloader(self, force_download, no_references=False, prt=None):
         """Create NIHiCiteDownloader"""
         kws = {}  # TBD NIHiCiteCli
-        api = NIHiCiteAPI(self.dir_pmid_py, prt, **kws)
+        api = NIHiCiteAPI(self.dir_icite_py, prt, **kws)
         return NIHiCiteDownloader(force_download, api, not no_references)
 
 

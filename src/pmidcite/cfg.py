@@ -23,7 +23,7 @@ class Cfg(object):
             'tool': 'scripts',
 
             # Information downloaded from NIH iCite stored in a Python module
-            'dir_pmid_py': '.',
+            'dir_icite_py': '.',
 
             # Directory for abstracts downloaded from PubMed
             'dir_pubmed_txt': '.',
@@ -107,6 +107,10 @@ class Cfg(object):
     def get_tool(self):
         """Get tool name"""
         return self.cfgparser['pmidcite']['tool']
+
+    def get_dir_pubmed_txt(self):
+        """Get the name of the directory containg PubMed entry text files"""
+        self.cfgparser['pmidcite']['dir_pubmed_txt']
 
     def _get_cfgparser(self):
         """Create a ConfigParser() filled with the default key-value"""

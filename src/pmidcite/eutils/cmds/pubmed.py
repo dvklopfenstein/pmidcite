@@ -111,6 +111,7 @@ class PubMed(EntrezUtilities):
                         WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
                         TXT=ntd.file_pubmed))
 
+
     def _get_efetch_indices(self, epost_rsp, num_pmids_p_efetch, num_pmids):
         """Get EFetech list of: querykey_cur, pmids_cur, start"""
         # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
@@ -124,7 +125,8 @@ class PubMed(EntrezUtilities):
             'P':epost_rsp['num_ids_p_epost'],
             'F':num_pmids_p_efetch,
             'Qmax':epost_rsp['querykey']}
-        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
+        ##for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
+        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 0):
             if querykey_cur == querykey_max:
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
