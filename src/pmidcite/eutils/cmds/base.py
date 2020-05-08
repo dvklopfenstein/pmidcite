@@ -230,6 +230,7 @@ class EntrezUtilities(object):
             self.previous = current
         if prt:
             prt.write('CMD: {CMD}\n'.format(CMD=cgi))
+        ## sys.stdout.write('CMD: {CMD}\n'.format(CMD=cgi))  # For PubMed MISMATCHES
 
         for i in range(self.max_tries):
             try:
