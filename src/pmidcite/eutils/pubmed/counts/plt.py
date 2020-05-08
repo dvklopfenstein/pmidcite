@@ -7,7 +7,7 @@ import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
 
-from pmidcite.eutils.pubmed_counts.data import DataMgr
+from pmidcite.eutils.pubmed.counts.data import DataMgr
 
 
 class PubMedPlot:

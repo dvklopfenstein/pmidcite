@@ -6,15 +6,15 @@ __author__ = "DV Klopfenstein"
 
 import sys
 from pmidcite.cfg import Cfg
-from pmidcite.eutils.pubmed_counts.dnld import PubMedDnld
-from pmidcite.eutils.pubmed_counts.plt import PubMedPlot
+from pmidcite.eutils.pubmed.counts.dnld import PubMedDnld
+from pmidcite.eutils.pubmed.counts.plt import PubMedPlot
 
 
 def main(dnld=False):
     """Plot the types of content and their amount in PubMed"""
     fpat_png = 'log/pubmed_content/pubmed_content_{DATE}.png'
     fout_png = 'pubmed_content_2020_01_10.png'
-    fout_py = 'src/pmidcite/eutils/pubmed_counts/dnlded_data.py'
+    fout_py = 'src/pmidcite/eutils/pubmed/counts/dnlded_data.py'
 
     cfg = Cfg()
     obj = PubMedDnld(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
