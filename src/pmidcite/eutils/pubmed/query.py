@@ -10,8 +10,10 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
+import collections as cx
 from PyBiocode.pubmed.dnld.wrpy_pmid import WrPyPMID
 from pmidcite.eutils.cmds.base import EntrezUtilities
+from pmidcite.eutils.cmds.pubmed import PubMed
 
 
 # pylint: disable=too-few-public-methods
@@ -21,8 +23,9 @@ class PubMedQuery:
     doi_pat = '{DOI}[Location ID] OR {DOI}[Secondary Source ID] OR {DOI}[Article Identifier]'
     pmid_pat = '{PMID}[PMID]'
 
-    def __init__(self):
-        self.eutils = EntrezUtilities(log=None)
+    def __init__(self, email, apikey, tool):
+        self.pubmed = PubMed(email, apikey, tool)
+        self.pubmedrw = WrPyPMID()
 
     def get_pubmed_dct(self, file_txt, **kws):
         """Download or load one PubMed text summary as a dict for one publication"""
@@ -49,7 +52,16 @@ class PubMedQuery:
     def _dnld_pubmed_by_query(self, fout_txt, query):
         """Download & load one PubMed text summary as a dict for one publication"""
         print('QUERY: {Q}'.format(Q=query))
-        dct = self.eutils.pubmed_query_fetch(query)
+        pmids = self.pubmed.dnld_query_pmids(query)
+        efetch_idxs, efetch_params = self.pubmed.epost_ids(pmids, 'pubmed', len(pmids), len(pmids), rettype='medline', retmode='text')
+        print('efetch_idxs', efetch_idxs)
+        txts = self.pubmed.dnld_texts(pmids, efetch_idxs, efetch_params)
+        for txt in txts:
+            print(txt)
+            pmid2fld2objs = self.pubmedrw.get_pmid2info_g_textblock(txt)
+            print(pmid2fld2objs)
+        return
+        #### dct = self.pubmed.pubmed_query_fetch(query)
         txt = dct['TEXT']
         if txt is None:
             return None
@@ -62,7 +74,7 @@ class PubMedQuery:
     @staticmethod
     def _get_pmiddct(fin_txt):
         """Read PubMed text summary. Return PubMed dict, which contains PMID"""
-        dct = WrPyPMID().get_pmid2info_g_text(fin_txt)
+        dct = self.pubmedrw.get_pmid2info_g_text(fin_txt)
         assert len(dct) == 1, dct
         return list(dct.values())[0]
 
