@@ -9,7 +9,7 @@ import sys
 import collections as cx
 import re
 from pmidcite.eutils.cmds.base import EntrezUtilities
-from pkgbib.eutils.esearch import ESearch
+from pmidcite.eutils.cmds.esearch import ESearch
 
 
 class PubMed(EntrezUtilities):
@@ -87,6 +87,7 @@ class PubMed(EntrezUtilities):
     def epost_ids(self, ids, database, num_ids_p_epost, retmax, **medline_text):
         """Post IDs using EPost"""
         epost_rsp = self.epost(database, ids, num_ids_p_epost=num_ids_p_epost)
+        ## print('EPOST RSP', epost_rsp)
         # Set EFetch params
         efetch_params = dict(medline_text)
         efetch_params['webenv'] = epost_rsp['webenv']
@@ -96,6 +97,14 @@ class PubMed(EntrezUtilities):
         #efetch_idxs = self._get_efetch_indices(epost_rsp, retmax, epost_rsp['count'])
         return efetch_idxs, efetch_params
 
+    def dnld_texts(self, pmids, efetch_idxs, efetch_params):
+        """Download and save one PMID PubMed entry into a text string"""
+        txts = []
+        for desc, start, pmids_exp, querykey_cur in efetch_idxs:
+            rsp_txt = self._run_efetch(start, querykey_cur, pmids_exp, desc, **efetch_params)
+            txts.append(rsp_txt)
+        return txts
+
     def _dnld_wr1_per_pmid(self, efetch_idxs, efetch_params, pmid_nt_list):
         """Download and write one PMID PubMed entry into one text file"""
         pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
@@ -104,7 +113,7 @@ class PubMed(EntrezUtilities):
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
                 ntd = pmid2nt[pmids_exp[0]]
-                #print('NNNNNNNNNNNNNNN', ntd)
+                ## print('NNNNNNNNNNNNNNN', ntd)
                 with open(ntd.file_pubmed, 'w') as prt:
                     prt.write(rsp_txt)
                     print('  {WROTE}: {TXT}'.format(
@@ -125,9 +134,9 @@ class PubMed(EntrezUtilities):
             'P':epost_rsp['num_ids_p_epost'],
             'F':num_pmids_p_efetch,
             'Qmax':epost_rsp['querykey']}
-        ##for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
-        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 0):
-            if querykey_cur == querykey_max:
+        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
+            #### if querykey_cur == querykey_max:
+            if querykey_cur == querykey_max and querykey_max != 1:
                 num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
             for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
                 desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
