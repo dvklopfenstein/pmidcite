@@ -39,6 +39,16 @@ class PubMedQuery:
             return {'pubmed_text': pubmed_txt, 'pmid2rec':pmid2rec}
         return {}
 
+    def get_pubmed_g_pmid(self, pmid, prt=None):
+        """Give a DOI, return PubMed record's text and Record object"""
+        query = self.patterns['pmid'].format(pmid=pmid)
+        pubmed_txt = self.dnld_text_g_query(query)
+        if pubmed_txt is not None:
+            pmid2dct = self.get_pmid2dct_g_txt(pubmed_txt, prt)
+            pmid2rec = {pmid:PubMedRecord(dct) for pmid, dct in pmid2dct.items()}
+            return {'pubmed_text': pubmed_txt, 'pmid2rec':pmid2rec}
+        return {}
+
     def get_prt(self):
         """Return the print stored in the E-Utils base"""
         return self.pubmed.log
