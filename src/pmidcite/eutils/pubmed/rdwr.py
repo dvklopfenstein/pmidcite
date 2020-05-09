@@ -99,7 +99,9 @@ class PubMedRdWr:
         for fld, line in fldlines:
             # Mesh Terms
             line = " ".join(line)
-            if fld == 'MH':
+            if fld == 'PMID':
+                fld2objs[fld] = int(line)
+            elif fld == 'MH':
                 self._fld_add_to_list(fld2objs, fld, line)
             elif fld in ids:  # LID and AID 'Location identifier' and 'Article identifier'
                 self._lid_add_to_dict(fld2objs, fld, line)
