@@ -4,6 +4,7 @@
 __copyright__ = "Copyright (C) 2020-present DV Klopfenstein. All rights reserved."
 __author__ = 'DV Klopfenstein'
 
+import sys
 from pmidcite.eutils.cmds.base import EntrezUtilities
 
 
@@ -36,8 +37,8 @@ class ESearch(EntrezUtilities):
     pat = 'IDs/epost={P} IDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
 
 
-    def __init__(self, email, apikey, tool):
-        super(ESearch, self).__init__(email, apikey, tool)
+    def __init__(self, email, apikey, tool, prt=sys.stdout):
+        super(ESearch, self).__init__(email, apikey, tool, prt)
 
     def esearch_ids(self, database, query, **return_params):
         """Get IDs using ESearch"""

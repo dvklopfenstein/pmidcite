@@ -21,18 +21,22 @@ class PubMed(EntrezUtilities):
     }
     pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
 
-    def __init__(self, email, apikey, tool):
-        super(PubMed, self).__init__(email, apikey, tool)
-        self.esearch = ESearch(email, apikey, tool)
+    def __init__(self, email, apikey, tool, prt=sys.stdout):
+        super(PubMed, self).__init__(email, apikey, tool, prt)
+        self.esearch = ESearch(email, apikey, tool, prt)
 
-    def dnld_query_pmids(self, query, num_ids_p_epost=10, prt=sys.stdout):
+    def dnld_query_pmids(self, query, num_ids_p_epost=10):
         """Searches an PubMed for a user query, writes resulting entries into one file."""
         # 1) Query PubMed. Get first N (num_ids_p_epost) of the total PMIDs
         rsp_dct = self.esearch.query('pubmed', query, retmax=num_ids_p_epost)
+        if rsp_dct is None:
+            if self.log:
+                self.log('No PubMed entries found')
+            return []
         tot_pmids = rsp_dct['count']
         pmids = list(rsp_dct['idlist'])
-        if rsp_dct and prt:
-            prt.write('{N:6,} PMIDs FOR QUERY({Q})\n'.format(N=tot_pmids, Q=query))
+        if rsp_dct and self.log:
+            self.log.write('{N:6,} PMIDs FOR QUERY({Q})\n'.format(N=tot_pmids, Q=query))
         # 2) Continue to download PMIDs, N (num_ids_p_epost) at a time
         kws_p = {
             'webenv': rsp_dct['webenv'],
@@ -97,7 +101,7 @@ class PubMed(EntrezUtilities):
         #efetch_idxs = self._get_efetch_indices(epost_rsp, retmax, epost_rsp['count'])
         return efetch_idxs, efetch_params
 
-    def dnld_texts(self, pmids, efetch_idxs, efetch_params):
+    def dnld_texts(self, efetch_idxs, efetch_params):
         """Download and save one PMID PubMed entry into a text string"""
         txts = []
         for desc, start, pmids_exp, querykey_cur in efetch_idxs:

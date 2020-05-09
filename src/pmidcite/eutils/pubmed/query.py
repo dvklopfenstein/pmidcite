@@ -10,69 +10,76 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
-import collections as cx
-from PyBiocode.pubmed.dnld.wrpy_pmid import WrPyPMID
-from pmidcite.eutils.cmds.base import EntrezUtilities
+import sys
+from pmidcite.eutils.pubmed.rdwr import PubMedRdWr
 from pmidcite.eutils.cmds.pubmed import PubMed
+from pubscite.record import PubMedRecord
 
 
 # pylint: disable=too-few-public-methods
 class PubMedQuery:
     """Download PubMed text summary for PMID. Print NIH iCite summary using PMID"""
 
-    doi_pat = '{DOI}[Location ID] OR {DOI}[Secondary Source ID] OR {DOI}[Article Identifier]'
-    pmid_pat = '{PMID}[PMID]'
+    patterns = {
+        'doi' : '{doi}[Location ID] OR {doi}[Secondary Source ID] OR {doi}[Article Identifier]',
+        'pmid' : '{pmid}[PMID]',
+    }
 
-    def __init__(self, email, apikey, tool):
-        self.pubmed = PubMed(email, apikey, tool)
-        self.pubmedrw = WrPyPMID()
+    def __init__(self, email, apikey, tool, prt=sys.stdout):
+        self.pubmed = PubMed(email, apikey, tool, prt)
+        self.pubmedrw = PubMedRdWr()
 
-    def get_pubmed_dct(self, file_txt, **kws):
+    def get_pubmed_g_doi(self, doi, prt=None):
+        """Give a DOI, return PubMed record's text and Record object"""
+        query = self.patterns['doi'].format(doi=doi)
+        pubmed_txt = self.dnld_text_g_query(query)
+        if pubmed_txt is not None:
+            pmid2dct = self.get_pmid2dct_g_txt(pubmed_txt, prt)
+            pmid2rec = {pmid:PubMedRecord(dct) for pmid, dct in pmid2dct.items()}
+            return {'pubmed_text': pubmed_txt, 'pmid2rec':pmid2rec}
+        return {}
+
+    def get_prt(self):
+        """Return the print stored in the E-Utils base"""
+        return self.pubmed.log
+
+    def get_pubmed_dct(self, file_txt, prt=None, **kws):
         """Download or load one PubMed text summary as a dict for one publication"""
         if os.path.exists(file_txt):
             return self._get_pmiddct(file_txt)
-        if 'pmid' in kws:
-            return self._dnld_pubmed_by_pmid(file_txt, kws['pmid'])
-        if 'doi' in kws:
-            return self._dnld_pubmed_by_doi(file_txt, kws['doi'])
-        raise RuntimeError('UNKNOWN PubMed DATA: {KWS}'.format(str(kws)))
+        for key in set(self.patterns).intersection(kws):
+            query = self.patterns[key].format(**{key:kws[key]})
+            pubmed_txt = self.dnld_text_g_query(query)
+            if pubmed_txt is not None:
+                self.wr_text(file_txt, pubmed_txt)
+                return self.get_pmid2dct_g_txt(pubmed_txt, prt)
+            print('**WARNING: NO RESULTS FOUND FOR: {Q}'.format(Q=query))
+            return {}
+        raise RuntimeError('UNKNOWN PubMed DATA: {KWS}'.format(KWS=str(kws)))
 
-    def _dnld_pubmed_by_pmid(self, fout_txt, pmid):
-        """Download & load one PubMed text summary as a dict for one publication"""
-        if pmid is not None and pmid.isdigit():
-            query = self.pmid_pat.format(PMID=pmid)
-            return self._dnld_pubmed_by_query(fout_txt, query)
-        print('PMID({PMID}) IS NOT VALID'.format(PMID=pmid))
-
-    def _dnld_pubmed_by_doi(self, fout_txt, doi):
-        """Download & load one PubMed text summary as a dict for one publication"""
-        query = self.doi_pat.format(DOI=doi)
-        return self._dnld_pubmed_by_query(fout_txt, query)
-
-    def _dnld_pubmed_by_query(self, fout_txt, query):
-        """Download & load one PubMed text summary as a dict for one publication"""
-        print('QUERY: {Q}'.format(Q=query))
+    def dnld_text_g_query(self, query):
+        """Get PubMed text, given a PubMed query"""
+        ## print('QUERY: {Q}'.format(Q=query))
         pmids = self.pubmed.dnld_query_pmids(query)
-        efetch_idxs, efetch_params = self.pubmed.epost_ids(pmids, 'pubmed', len(pmids), len(pmids), rettype='medline', retmode='text')
-        print('efetch_idxs', efetch_idxs)
-        txts = self.pubmed.dnld_texts(pmids, efetch_idxs, efetch_params)
-        for txt in txts:
-            print(txt)
-            pmid2fld2objs = self.pubmedrw.get_pmid2info_g_textblock(txt)
-            print(pmid2fld2objs)
-        return
-        #### dct = self.pubmed.pubmed_query_fetch(query)
-        txt = dct['TEXT']
-        if txt is None:
+        if not pmids:
             return None
-        assert len(dct['RSP_QUERY']['idlist']) == 1, dct['RSP_QUERY']['idlist']
-        with open(fout_txt, 'w') as prt:
-            prt.write(dct['TEXT'])
-            print('  WROTE: {TXT}'.format(TXT=fout_txt))
-        return self._get_pmiddct(fout_txt)
+        efetch_idxs, efetch_params = self.pubmed.epost_ids(
+            pmids, 'pubmed', 10, 10000, rettype='medline', retmode='text')
+        txts = self.pubmed.dnld_texts(efetch_idxs, efetch_params)
+        return '\n'.join(txts)
+
+    def get_pmid2dct_g_txt(self, pubmed_txt, prt=None):
+        """Given text containing downloaded PubMed records"""
+        return self.pubmedrw.get_pmid2info_g_textblock(pubmed_txt, prt=prt)
 
     @staticmethod
-    def _get_pmiddct(fin_txt):
+    def wr_text(fout_txt, pubmed_txt):
+        """Write PubMed record text into a file"""
+        with open(fout_txt, 'w') as prt:
+            prt.write(pubmed_txt)
+            print('  WROTE: {TXT}'.format(TXT=fout_txt))
+
+    def _get_pmiddct(self, fin_txt):
         """Read PubMed text summary. Return PubMed dict, which contains PMID"""
         dct = self.pubmedrw.get_pmid2info_g_text(fin_txt)
         assert len(dct) == 1, dct

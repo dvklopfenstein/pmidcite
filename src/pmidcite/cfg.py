@@ -110,15 +110,11 @@ class Cfg(object):
 
     def get_dir_pubmed_txt(self):
         """Get the name of the directory containg PubMed entry text files"""
-        self.cfgparser['pmidcite']['dir_pubmed_txt']
+        return self.cfgparser['pmidcite']['dir_pubmed_txt']
 
     def get_dir_icite_py(self):
         """Get the name of the directory containg PubMed entry text files"""
-        self.cfgparser['pmidcite']['dir_icite_py']
-
-    def get_dir_icite_py(self):
-        """Get the name of the directory containg PubMed entry text files"""
-        self.cfgparser['pmidcite']['dir_icite_py']
+        return self.cfgparser['pmidcite']['dir_icite_py']
 
     def _get_cfgparser(self):
         """Create a ConfigParser() filled with the default key-value"""
