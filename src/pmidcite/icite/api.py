@@ -48,7 +48,7 @@ class NIHiCiteAPI:
 
     def dnld_icites(self, pmids):
         """Run iCite on given PubMed IDs"""
-        # print('NNNNNNNNNNNNNNNNNN dnld_icites')
+        ## print('NNNNNNNNNNNNNNNNNN dnld_icites')
         if not pmids:
             return []
         num_pmids = len(pmids)
@@ -69,9 +69,10 @@ class NIHiCiteAPI:
 
     def dnld_icite(self, pmid):
         """Run iCite on given PubMed IDs"""
-        # print('111111111111111111 dnld_icite')
+        ## print('111111111111111111 dnld_icite')
         cmd = '/'.join([self.url_base, str(pmid)])
         json_dct = self._send_request(cmd)
+        ## print('111111111111111111 json_dct')
         return self._jsonpmid_to_obj(json_dct) if json_dct else None
 
     def _send_request(self, cmd):
