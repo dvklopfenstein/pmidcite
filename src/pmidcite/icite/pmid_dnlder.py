@@ -24,22 +24,41 @@ class NIHiCiteDownloader:
         self.loader = NIHiCiteLoader(self.dir_dnld)
         self.api = api                # NIHiCiteAPI
 
-    def wr_papers(self, fout_txt, force, pmid2ntpaper, mode='w', pmid2note=None):
+    #### def wr_papers(self, fout_txt, force_overwrite, pmid2ntpaper, mode='w', pmid2note=None):
+    ####     """Run iCite for user-provided PMIDs and write to a file"""
+    ####     ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers', pmid2note)
+    ####     if not pmid2ntpaper:
+    ####         return
+    ####     pmids_all = pmid2ntpaper.keys()
+    ####     pmids_new = pmids_all
+    ####     if mode == 'a':
+    ####         pmids_new = self._get_new_pmids(fout_txt, pmids_all)
+    ####         ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new)
+    ####     if pmids_new:
+    ####         ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2ntpaper, pmid2note)
+    ####         if self._do_write(fout_txt, force_overwrite):
+    ####             with open(fout_txt, mode) as prt:
+    ####                 pmids_prt = self.prt_papers(pmid2ntpaper, prt, pmid2note=pmid2note)
+    ####             print('{WR}: {TXT}'.format(
+    ####                 WR=self._msg_wrote(mode, pmids_all, pmids_prt), TXT=fout_txt))
+
+    def wr_papers(self, fout_txt, force_overwrite, pmid2icitepaper, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
-        #print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers', pmid2note)
-        if not pmid2ntpaper:
+        ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers')
+        if not pmid2icitepaper:
             return
-        pmids_all = pmid2ntpaper.keys()
+        pmids_all = pmid2icitepaper.keys()
         pmids_new = pmids_all
         if mode == 'a':
             pmids_new = self._get_new_pmids(fout_txt, pmids_all)
+            ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new)
         if pmids_new:
-            #print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2ntpaper, pmid2note)
-            if self._do_write(fout_txt, force):
+            ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2icitepaper)
+            if self._do_write(fout_txt, force_overwrite):
                 with open(fout_txt, mode) as prt:
-                    pmids_prt = self.prt_papers(pmid2ntpaper, prt, pmid2note=pmid2note)
+                    self.prt_papers(pmid2icitepaper, prt)
                 print('{WR}: {TXT}'.format(
-                    WR=self._msg_wrote(mode, pmids_all, pmids_prt), TXT=fout_txt))
+                    WR=self._msg_wrote(mode, pmids_all), TXT=fout_txt))
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
@@ -53,25 +72,33 @@ class NIHiCiteDownloader:
         NIHiCiteEntry.prt_keys(prt)
         prt.write('\n')
 
-    def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
+    #### def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
+    ####     """Print papers, including citation counts, cite_by and references list"""
+    ####     #print('PPPPPPPPPPPPPPPPPPPPPPPPPPP NIHiCiteDownloader prt_papers')
+    ####     pmids = set()
+    ####     if pmid2note is None:
+    ####         pmid2note = {}
+    ####     for pmid, paper in pmid2ntpaper.items():
+    ####         if paper is not None:
+    ####             self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
+    ####             pmids.add(pmid)
+    ####         elif pmid in pmid2note:
+    ####             prt.write('TOP {PMID} {NOTE}\n'.format(PMID=pmid, NOTE=pmid2note[pmid]))
+    ####             pmids.add(pmid)
+    ####         else:
+    ####             print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
+    ####     return pmids
+
+    def prt_papers(self, pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""
-        #print('PPPPPPPPPPPPPPPPPPPPPPPPPPP NIHiCiteDownloader prt_papers')
-        pmids = set()
-        if pmid2note is None:
-            pmid2note = {}
-        for pmid, paper in pmid2ntpaper.items():
+        for pmid, paper in pmid2icitepaper.items():
             if paper is not None:
-                self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids, pmid2note)
-                pmids.add(pmid)
-            elif pmid in pmid2note:
-                prt.write('TOP {PMID} {NOTE}\n'.format(PMID=pmid, NOTE=pmid2note[pmid]))
-                pmids.add(pmid)
+                self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
             else:
                 print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
-        return pmids
 
     # pylint: disable=too-many-arguments
-    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
+    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if prt_assc_pmids:
@@ -85,18 +112,20 @@ class NIHiCiteDownloader:
                 PMID=pmid, NAME=name if name is not None else ''))
 
     @staticmethod
+    ## def _msg_wrote(mode, pmids_req, pmids_new):
     def _msg_wrote(mode, pmids_req, pmids_new):
         """Get the 'WROTE' or 'APPENDED' message"""
         if mode == 'w':
             return '{N:6,} WROTE'.format(N=len(pmids_req))
         if mode == 'a':
-            if pmids_new:
-                return '{N:,} of {M:,} APPENDED'.format(
-                    N=len(pmids_new),
-                    M=len(pmids_req))
-            return '{N:,} of {M:,} FOUND'.format(
-                N=len(pmids_new),
-                M=len(pmids_req))
+            ## if pmids_new:
+            ##     return '{N:,} of {M:,} APPENDED'.format(
+            ##         N=len(pmids_new),
+            ##         M=len(pmids_req))
+            ## return '{N:,} of {M:,} FOUND'.format(
+            ##     N=len(pmids_new),
+            ##     M=len(pmids_req))
+            return '{N:,} FOUND'.format(M=len(pmids_req))
         raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
 
     @staticmethod
@@ -127,9 +156,9 @@ class NIHiCiteDownloader:
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, do_dnld_assc_pmids, pmid2note):
+    def get_pmid2paper(self, pmids, do_dnld_assc_pmids, pmid2note=None):
         """Get a NIHiCitePaper object for each user-specified PMID"""
-        print('NNNNNNNNNNNNNNNNNNNN pmidcite get_pmid2paper', pmids, do_dnld_assc_pmids, pmid2note)
+        ## print('NNNNNNNNNNNNNNNNNN pmidcite get_pmid2paper', pmids, do_dnld_assc_pmids, pmid2note)
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
             papers = [s_geticitepaper(p, '', do_dnld_assc_pmids, None) for p in pmids]
@@ -145,21 +174,20 @@ class NIHiCiteDownloader:
         if citeobj_top:
             if do_dnld_assc_pmids:
                 self.dnld_assc_pmids(citeobj_top)
-            paper = NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
-            return paper
-        print('No results found: {PMID} {HDR} {NOTE}'.format(
+            return NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
+        print('No NIH iCite results found: {PMID} {HDR} {NOTE}'.format(
             PMID=pmid_top,
             HDR=header if header else '',
             NOTE=note if note else ''))
-        return None
+        return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
     def dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
-        ## print('AAAAAAAAAAAAAAAA')
+        ## print('AAAAAAAAAAAAAAAA pmids_assc', pmids_assc)
         if not pmids_assc:
             return []
-        ## print('BBBBBBBBBBBBBBBB')
+        ## print('BBBBBBBBBBBBBBBB self.dnld_force', self.dnld_force)
         if self.dnld_force:
             return self.api.dnld_icites(pmids_assc)
         ## print('CCCCCCCCCCCCCCCC')
@@ -187,16 +215,20 @@ class NIHiCiteDownloader:
     def dnld_icite_pmid(self, pmid):
         """Download NIH iCite data for requested PMIDs"""
         file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
+        ## print('DDDDDDDDDDDDDDD dnld_icite_pmid force_dnld={F} {P} exists = {E}'.format(
+        ##     F=self.dnld_force, E=os.path.exists(file_pmid), P=file_pmid))
         if self.dnld_force or not os.path.exists(file_pmid):
+            ## print('DDDDDDDDDDDDDDD dnld_icite_pmid DOWNLOADING icite')
             iciteobj = self.api.dnld_icite(pmid)
+            ## print('DDDDDDDDDDDDDDD dnld_icite_pmid iciteobj', iciteobj)
             if iciteobj is not None:
                 return iciteobj
         return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
 
     @staticmethod
-    def _do_write(fout_txt, force):
+    def _do_write(fout_txt, force_overwrite):
         """Ask for a yes-no answer from the user on STDIN"""
-        if not os.path.exists(fout_txt) or force:
+        if not os.path.exists(fout_txt) or force_overwrite:
             return True
         prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
         return input(prompt_user).lower()[:1] == 'y'
