@@ -58,17 +58,17 @@ class NIHiCiteDownloader:
                 with open(fout_txt, mode) as prt:
                     self.prt_papers(pmid2icitepaper, prt)
                 print('{WR}: {TXT}'.format(
-                    WR=self._msg_wrote(mode, pmids_all), TXT=fout_txt))
+                    WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
         """Print paper keys"""
-        prt.write('\nDESCRIPTION OF PAPER LINE:\n')
-        prt.write('  ABC {ICITE_FMT}\n'.format(ICITE_FMT=NIHiCiteEntry.line_fmt()))
+        prt.write('\nKEYS TO PAPER LINE:\n')
+        prt.write('    TYP {ICITE_FMT}\n'.format(ICITE_FMT=NIHiCiteEntry.line_fmt()))
         prt.write('\n')
-        prt.write('ABC:\n')
+        prt.write('TYPe of relationship to the user-requested paper (TYP):\n')
         NIHiCitePaper.prt_keys(prt)
-        prt.write('\nNIH iCite details:\n')
+        prt.write('\nNIH iCite details:\n\n')
         NIHiCiteEntry.prt_keys(prt)
         prt.write('\n')
 
@@ -118,14 +118,14 @@ class NIHiCiteDownloader:
         if mode == 'w':
             return '{N:6,} WROTE'.format(N=len(pmids_req))
         if mode == 'a':
-            ## if pmids_new:
-            ##     return '{N:,} of {M:,} APPENDED'.format(
-            ##         N=len(pmids_new),
-            ##         M=len(pmids_req))
-            ## return '{N:,} of {M:,} FOUND'.format(
-            ##     N=len(pmids_new),
-            ##     M=len(pmids_req))
-            return '{N:,} FOUND'.format(M=len(pmids_req))
+            if pmids_new:
+                return '{N:,} of {M:,} APPENDED'.format(
+                    N=len(pmids_new),
+                    M=len(pmids_req))
+            return '{N:,} of {M:,} FOUND'.format(
+                N=len(pmids_new),
+                M=len(pmids_req))
+            # return '{N:,} FOUND'.format(M=len(pmids_req))
         raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
 
     @staticmethod

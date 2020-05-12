@@ -53,10 +53,10 @@ class NIHiCitePaper:
     @staticmethod
     def prt_keys(prt=sys.stdout):
         """Print paper keys"""
-        prt.write('  TOP: A user-requested paper\n')
-        prt.write('  CIT: A paper that cited TOP\n')
-        prt.write('  CLI: A clinical paper that cited TOP\n')
-        prt.write('  REF: A clinical paper that cited TOP\n')
+        prt.write('    TOP: A user-requested paper\n')
+        prt.write('    CIT: A paper that cited TOP\n')
+        prt.write('    CLI: A clinical paper that cited TOP\n')
+        prt.write("    REF: A paper referenced in the TOP paper's bibliography\n")
 
     def prt_summary(self, prt=sys.stdout, rpt_refs=True, sortby_cites='nih_sd', sortby_refs=None):
         """Print summary of paper"""

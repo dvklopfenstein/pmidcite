@@ -112,9 +112,8 @@ class NIHiCiteCli:
             for fin in infiles:
                 print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
 
-    @staticmethod
     #### def _run_icite(pmid2icitepaper, args, pmid2note, dnldr):
-    def _run_icite(pmid2icitepaper_all, args, dnldr):
+    def _run_icite(self, pmid2icitepaper_all, args, dnldr):
         """Print papers, including citation counts"""
         if args.print_keys:
             dnldr.prt_keys()
@@ -122,8 +121,7 @@ class NIHiCiteCli:
         prt_verbose = not args.succinct
         pmid2icitepaper = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}
         if not pmid2icitepaper:
-            print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
-                Ps=' '.join(str(p) for p in set(pmid2icitepaper_all.keys()).difference(pmid2icitepaper.keys()))))
+            self._prt_no_icite(set(pmid2icitepaper_all.keys()).difference(pmid2icitepaper.keys()))
             return
         if dct['outfile'] is None:
             dnldr.prt_papers(
@@ -135,6 +133,13 @@ class NIHiCiteCli:
             # pylint: disable=line-too-long
             #### dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'], pmid2note)
             dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'])
+
+    @staticmethod
+    def _prt_no_icite(pmids):
+        if not pmids:
+            return
+        print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
+            Ps=' '.join(str(p) for p in pmids)))
 
     def get_icite_downloader(self, force_download, no_references):
         """Get iCite downloader"""

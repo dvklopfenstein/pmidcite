@@ -27,7 +27,8 @@ class NIHiCiteEntry:
         self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
         self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else -1
 
-    def _init_nih_sd(self, nih_percentile):
+    @staticmethod
+    def _init_nih_sd(nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
         # No NIH percentile yet assigned. This paper should be checked out.
         if nih_percentile is None:
@@ -50,7 +51,7 @@ class NIHiCiteEntry:
     @staticmethod
     def line_fmt():
         """Return the format of the paper line"""
-        return 'YYYY NNNNNNNN RP HAMCc nihSD x y z au[A](First Author) Title of paper'
+        return 'PubMedID RP HAMCc % nihSD YEAR x y z au[A](First Author) Title of paper'
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
@@ -59,20 +60,20 @@ class NIHiCiteEntry:
         ## prt.write('NIH iCite line format:\n')
         ## prt.write('  YYYY NNNNNNNN RP HAMCc nih% x y z au[A](First Author) Title of paper\n\n')
         ## prt.write('NIH iCite details:\n')
-        prt.write('  NNNNNNNN: PubMed ID (PMID)\n\n')
+        prt.write('  PubMedID: PubMed ID (PMID)\n\n')
         prt.write('         R: Is a research article\n')
         prt.write('         P: iCite has calculated an initial Relative Citation Ratio (RCR) for new papers\n\n')
         prt.write('         H: Has MeSH terms in the human category\n')
         prt.write('         A: Has MeSH terms in the animal category\n')
         prt.write('         M: Has MeSH terms in the molecular/cellular biology category\n')
-        prt.write('         C: Is a clinical trial, study, or guideline\n')
-        prt.write('         %: NIH citation percentile rounded to an integer\n\n')
-        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
-        prt.write('      YYYY: The year the article was published\n')
-        prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
+        prt.write('         C: Is a clinical trial, study, or guideline\n\n')
+        prt.write('         %: NIH citation percentile rounded to an integer\n')
+        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n')
+        prt.write('      YEAR: The year the article was published\n')
+        prt.write('         c: Is cited by a clinical trial, study, or guideline\n')
         prt.write('         x: Number of unique articles that have cited the paper\n')
         prt.write('         y: Number of unique clinical articles that have cited the paper\n')
-        prt.write('         z: Number of references\n\n')
+        prt.write('         z: Number of references\n')
         prt.write('     au[A]: A is the number of authors\n')
 
     def str_md(self):
