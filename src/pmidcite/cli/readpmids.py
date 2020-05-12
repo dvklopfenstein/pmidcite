@@ -57,7 +57,7 @@ class ReadPmids:
 
     def _read_pmids(self, args, argparser):
         """Run iCite/PubMed"""
-        print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ##print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Get user-specified PMIDs
         pmids = self.rd_pmidtxts(args.infile)
         if not pmids:

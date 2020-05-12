@@ -84,7 +84,7 @@ class NIHiCiteCli:
         self.pmidcite.dir_icite_py = args.dir_icite_py
         dnldr = self.get_icite_downloader(args.force_download, args.no_references)
         pmids = get_pmids(args.pmids, args.infile)
-        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
+        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None, prt=None)
         self.run_icite(pmid2icitepaper, dnldr, args, argparser)
         # pylint:disable=line-too-long
         if args.pubmed:
@@ -94,7 +94,7 @@ class NIHiCiteCli:
     # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper, dnldr, args, argparser, pmid2note=None):
         """Run iCite/PubMed"""
-        print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ##print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.pmidcite.prt_rcfile(sys.stdout)

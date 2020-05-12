@@ -21,14 +21,15 @@ class PmidCite:
     def _init_cfgparser():
         """Init cfg parser"""
         cfgparser = Cfg(chk=False)
-        cfgparser.rd_rc()
+        cfgparser.rd_rc(prt=None)
         return cfgparser
 
     def run_pmid_file(self, fin_pmids, fout_icite, force_download):
         """Run iCite on list of PMIDs in a file"""
         pmids = read_pmids(fin_pmids)
         dnldr = self.get_icitedownloader(force_download)
-        pmid2ntpaper = dnldr.get_pmid2paper(pmids, do_dnld_assc_pmids=False, pmid2note=None)
+        pmid2ntpaper = dnldr.get_pmid2paper(
+            pmids, dnld_assc_pmids_do=False, pmid2note=None, prt=None)
         dnldr.wr_papers(fout_icite, force_download, pmid2ntpaper, 'w')
         return pmids
 

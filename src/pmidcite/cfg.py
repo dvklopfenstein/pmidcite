@@ -4,6 +4,7 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
+import sys
 import configparser
 
 
@@ -55,10 +56,11 @@ class Cfg(object):
         self.cfgparser = self._get_cfgparser()
         return self.cfgparser.read(self.cfgfile)
 
-    def rd_rc(self):
+    def rd_rc(self, prt=sys.stdout):
         """Read a configuration file"""
         if os.path.exists(self.cfgfile):
-            print('  READ: {CFG}'.format(CFG=self.cfgfile))
+            if prt:
+                prt.write('  READ: {CFG}\n'.format(CFG=self.cfgfile))
         return self.cfgparser.read(self.cfgfile)
 
     def wr_rc(self, force=False):
