@@ -24,6 +24,7 @@ def sortby_nih_sd(obj):
     return [-1*dct['nih_sd'], -1*dct['year'], -1*dct['nih_perc'], -1*dct['citation_count']]
 
 
+# pylint: disable=too-many-instance-attributes
 class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
@@ -33,17 +34,16 @@ class NIHiCitePaper:
         'year': sortby_year,
     }
 
-    # pylint: disable=too-many-instance-attributes
     def __init__(self, pmid, dirpy, header=None, note=None):
         self.pmid = pmid
         self.dirpy = dirpy
         self.hdr = header  # A header to print before a paper
         self.note = note   # A short note to print at end of cite line
-        self.icite = NIHiCiteEntry(self.load_pmid(pmid))
+        self.icite = self._init_iciteobj(self.load_pmid(pmid))  # NIH iCite object
         ## print('VVVVVVVVVVVVVVV', self.icite)
-        self.cited_by = self.load_pmids(self.icite.dct['cited_by'])
-        self.cited_by_clin = self.load_pmids(self.icite.dct['cited_by_clin'])
-        self.references = self.load_pmids(self.icite.dct['references'])
+        self.cited_by = self._init_pmids('cited_by')
+        self.cited_by_clin = self._init_pmids('cited_by_clin')
+        self.references = self._init_pmids('references')
 
     def str_line(self):
         """Return a string summarizing the the paper described herein"""
@@ -58,7 +58,7 @@ class NIHiCitePaper:
         prt.write('  CLI: A clinical paper that cited TOP\n')
         prt.write('  REF: A clinical paper that cited TOP\n')
 
-    def prt_summary(self, prt=sys.stdout, rpt_references=True, sortby_cites='nih_sd', sortby_refs=None):
+    def prt_summary(self, prt=sys.stdout, rpt_refs=True, sortby_cites='nih_sd', sortby_refs=None):
         """Print summary of paper"""
         if self.hdr:
             prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
@@ -67,14 +67,14 @@ class NIHiCitePaper:
         if self.cited_by_clin:
             prt.write('Cited by {N} Clinical papers:\n'.format(N=len(self.cited_by_clin)))
         self.prt_list(self.cited_by_clin, 'CLI', prt, sortby_cites)
-        # Citations 
+        # Citations
         if self.cited_by:
             prt.write('{N} of {M} citations downloaded:\n'.format(
                 N=len([1 for o in self.cited_by if o.dct['cited_by']]),
                 M=self.icite.dct['citation_count']))
         self.prt_list(self.cited_by, 'CIT', prt, sortby_cites)
         # References
-        if rpt_references and self.references:
+        if rpt_refs and self.references:
             prt.write('{N} of {M} References downloaded:\n'.format(
                 N=len(self.references),
                 M=len(self.icite.dct['references'])))
@@ -114,6 +114,15 @@ class NIHiCitePaper:
             if mod_icite is not None:
                 iciteobjs.append(NIHiCiteEntry(mod_icite))
         return iciteobjs
+
+    def _init_pmids(self, name):
+        """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
+        return  self.load_pmids(self.icite.dct[name]) if self.icite else []
+
+    @staticmethod
+    def _init_iciteobj(icite_dct):
+        """Initialize the top NIH iCite paper, if it exists"""
+        return NIHiCiteEntry(icite_dct) if icite_dct else None
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
