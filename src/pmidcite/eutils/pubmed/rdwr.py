@@ -169,14 +169,14 @@ class PubMedRdWr:
                 pmid2fldlines = ProcessLines(flds).process_rawlines(ifstrm)
                 pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
                 if prt:
-                    prt.write("  READ  {:>7,} pmid IDs: {} FLDS({})\n".format(
+                    prt.write("  READ  {:>7,} PubMed records {}: fields({})\n".format(
                     len(pmid2fld2objs), fin_text, " ".join(flds)))
                 if pmid2fld2objs:
                     if dochk:
                         self._chk(pmid2fld2objs)
                 return pmid2fld2objs
         else:
-            print("  READ  -- 0 -- pmid IDs: {}".format(fin_text))
+            print("  READ  -- 0 -- PubMed record {}".format(fin_text))
             return {}
 
     def get_pmid2info_g_textblock(self, textblock, flds=None, dochk=False, prt=sys.stdout):
@@ -188,7 +188,7 @@ class PubMedRdWr:
             pmid2fldlines = ProcessLines(flds).process_rawlines(textblock.split('\n'))
             pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
             if prt:
-                prt.write("  READ  {P:>7,} pmid IDs: FLDS({Fs})\n".format(
+                prt.write("  PROCESSED  {P:>7,} PubMed records: fields({Fs})\n".format(
                     P=len(pmid2fld2objs), Fs=" ".join(flds)))
             if pmid2fld2objs:
                 if dochk:
