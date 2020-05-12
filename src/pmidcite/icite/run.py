@@ -36,10 +36,11 @@ class PmidCite:
         """Print pmidcite rcfile"""
         self.cfgparser.cfgparser.write(prt)
 
-    def get_icitedownloader(self, force_download, no_references=False, prt=None):
+    def get_icitedownloader(self, force_download, no_references=False, prt_icitepy=None):
         """Create NIHiCiteDownloader"""
+        # Setting prt_icitepy to sys.stdout will cause: WROTE: ./icite/p10802651.py
         kws = {}  # TBD NIHiCiteCli
-        api = NIHiCiteAPI(self.dir_icite_py, prt, **kws)
+        api = NIHiCiteAPI(self.dir_icite_py, prt_icitepy, **kws)
         return NIHiCiteDownloader(force_download, api, not no_references)
 
 
