@@ -4,6 +4,7 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
+import sys
 from collections import namedtuple
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cli.utils import wr_pmids
@@ -25,6 +26,7 @@ class PubMedQueryToICite:
             email=cfg.get_email(),
             apikey=cfg.get_apikey(),
             tool=cfg.get_tool())
+        self._chk_dirs()
 
     def run(self, lst, dnld_idxs=None):
         """Give an list of tuples: Query PubMed for PMIDs. Download iCite, given PMIDs"""
@@ -75,6 +77,19 @@ class PubMedQueryToICite:
         if argv[1] == 'all':
             return None
         return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
+
+    def _chk_dirs(self):
+        """Check output directories for existance"""
+        not_exist = set()
+        dct = self.pmidcite.cfgparser.cfgparser['pmidcite']
+        if not os.path.exists(dct['dir_pmids']):
+            not_exist.add(dct['dir_pmids'])
+        if not os.path.exists(dct['dir_icite']):
+            not_exist.add(dct['dir_icite'])
+        if not_exist:
+            for dirname in not_exist:
+                print('**FATAL: NO DIR: {DIR}'.format(DIR=dirname))
+            sys.exit(1)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

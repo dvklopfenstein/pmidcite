@@ -20,7 +20,7 @@ def main():
     # Default is to only run the last entry in the list
     # To run all entries in the list:
     #   $ src/bin/dnld_pmids.py dnld_all
-    dnld_idx = -1 if len(sys.argv) == 1 else None
+    dnld_idx = obj.get_index(sys.argv)
     obj.run(lst, dnld_idx)
 
 
