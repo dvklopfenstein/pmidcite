@@ -4,6 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import os
 import sys
 import collections as cx
 import traceback
@@ -43,6 +44,8 @@ class NIHiCiteAPI:
 
     def __init__(self, dirpy_dnld='.', prt=None, **kws):
         self.dir_dnld = dirpy_dnld
+        if not os.path.exists(dirpy_dnld):
+            raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dirpy_dnld))
         self.prt = prt
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
 
