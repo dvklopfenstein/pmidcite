@@ -37,10 +37,14 @@ def import_mod(modulestr, log=None):
 
 def load_modpy(fin_py):
     """Load NIH iCite information from Python modules"""
-    spec = importlib.util.spec_from_file_location("module.name", fin_py)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    try:
+        spec = importlib.util.spec_from_file_location("module.name", fin_py)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+    except RuntimeError as inst:
+        print('**ERROR: UNABLE TO READ: {PY}\nMSG: {M}'.format(PY=fin_py, M=str(inst)))
+        return None
 
 
 # Copyright (C) 2019-present DV Klopfensteinr,. All rights reserved.

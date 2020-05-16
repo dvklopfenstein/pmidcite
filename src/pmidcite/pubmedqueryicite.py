@@ -26,13 +26,14 @@ class PubMedQueryToICite:
             apikey=cfg.get_apikey(),
             tool=cfg.get_tool())
 
-    def run(self, lst, dnld_idx=None):
+    def run(self, lst, dnld_idxs=None):
         """Give an list of tuples: Query PubMed for PMIDs. Download iCite, given PMIDs"""
         # Download PMIDs and NIH's iCite for only one PubMed query
         nts = self.get_nts_g_list(lst)
-        if dnld_idx is not None:
-            ntd = nts[dnld_idx]
-            self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+        if dnld_idxs is not None:
+            for idx in dnld_idxs:
+                ntd = nts[idx]
+                self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
         # Download PMIDs and NIH's iCite for all PubMed queries
         else:
             for ntd in nts:
@@ -64,6 +65,16 @@ class PubMedQueryToICite:
         """Turn a list iof tuple strings into a list of namedtuples"""
         nto = namedtuple('Nt', 'filename pubmed_query')
         return [nto._make(t) for t in lst]
+
+    @staticmethod
+    def get_index(argv):
+        """Get the index of the pubmed query to run"""
+        # If no argument was provided, run the last query in the list
+        if len(argv) == 1:
+            return [-1]
+        if argv[1] == 'all':
+            return None
+        return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
