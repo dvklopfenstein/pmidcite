@@ -98,7 +98,8 @@ class NIHiCitePaper:
         fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
         if os.path.exists(fin_py):
             mod = load_modpy(fin_py)
-            return mod.ICITE
+            if mod is not None:
+                return mod.ICITE
         return None
         ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
         ## return import_var(modstr, 'ICITE', prt)
