@@ -19,7 +19,7 @@ class PubMedRdWr:
     flds = [
         'TI',  # Title
         'LID', # Location Identifier
-        'AID', # Location Identifier
+        'AID', # Article Identifier
         'PMC', # PubMed Central Identifier
         'OWN', # Owner
         'STATUS', # Status
@@ -27,6 +27,7 @@ class PubMedRdWr:
         'AB',  # Abstract
         'JT',  # Journal Title
         'TA',  # Journal Title abbreviation
+        'PT',  # Publication Type
         'MH',  # MeSH Terms
         'FAU', # Full Author
         'AU',  # Author
@@ -72,18 +73,32 @@ class PubMedRdWr:
                 '(not yet used; reserved for possible future use)'),
     }
 
+    join_these = {
+        'TI':' ', # separate by one space when joining
+        'DP':'',  # There is only one, but convert from list to str
+        'AB':' ',
+        'JT':' ',
+        'TA':' ',
+        'AD':' ', # Author affiliation(s) Each one can be multiple lines
+    }
+
     def __init__(self):
         # These are one block of text, which may be spread over multiple lines
-        self.join_these = {
-            'TI':' ', # separate by one space when joining
-            'DP':'',  # There is only one, but convert from list to str
-            'AB':' ',
-            'JT':' ',
-            'TA':' ',
-            'AD':' ', # Author affiliation(s) Each one can be multiple lines
-        }
         self.dates = ['DP']
         self.objmh = MeshTerms()
+        self.field2fnc = {
+            'PMID': self._to_int,
+            'MH': self._fld_add_to_list,
+            # Indentifiers
+            'LID': self._lid_add_to_dict,
+            'AID': self._lid_add_to_dict,
+            # Date of Publication
+            'DP': self._init_date,
+            # Author fields
+            'FAU': self._add_author,
+            'AU': self._add_author,
+            'AD': self._add_author
+        }
 
     def _get_fldobjs_all(self, pmid2fldlines):
         """Given a list of lines in a PubMed entry, return objects."""
@@ -96,28 +111,36 @@ class PubMedRdWr:
         """Given a list of lines in a PubMed entry, return objects."""
         fld2objs = {}
         ids = set(['LID', 'AID'])
+        field2fnc = self.field2fnc
         for fld, line in fldlines:
             # Mesh Terms
             line = " ".join(line)
-            if fld == 'PMID':
-                fld2objs[fld] = int(line)
-            elif fld == 'MH':
-                self._fld_add_to_list(fld2objs, fld, line)
-            elif fld in ids:  # LID and AID 'Location identifier' and 'Article identifier'
-                self._lid_add_to_dict(fld2objs, fld, line)
-            # Date objects
-            elif fld in self.dates:
-                fld2objs[fld] = self._init_date(line)
-            # Author objects
-            elif fld in Authors.flds:
-                self._add_author(fld2objs, fld, line, pmid)
+            if fld in field2fnc:
+                field2fnc[fld](fld2objs, fld, line, pmid)
+            #### if fld == 'PMID':
+            ####     fld2objs[fld] = int(line)
+            #### elif fld == 'MH':
+            ####     self._fld_add_to_list(fld2objs, fld, line)
+            #### elif fld in ids:  # LID and AID 'Location identifier' and 'Article identifier'
+            ####     self._lid_add_to_dict(fld2objs, fld, line)
+            #### # Date objects
+            #### elif fld in self.dates:
+            ####     fld2objs[fld] = self._init_date(line)
+            #### # Author objects
+            #### elif fld in Authors.flds:
+            ####     self._add_author(fld2objs, fld, line, pmid)
             else:
                 fld2objs[fld] = line
             # Author list
             if fld == 'AU':
-                self._fld_add_to_list(fld2objs, fld, line)
+                self._fld_add_to_list(fld2objs, fld, line, pmid)
         # die
         return fld2objs
+
+    @staticmethod
+    def _to_int(fld2objs, fld, line, pmid):
+        """Add a value to a list."""
+        fld2objs[fld] = int(line)
 
     @staticmethod
     def _add_author(fld2objs, fld, line, pmid):
@@ -127,14 +150,14 @@ class PubMedRdWr:
         fld2objs['Authors'].add_fld(fld, line, pmid)
 
     @staticmethod
-    def _fld_add_to_list(fld2objs, fld, line):
+    def _fld_add_to_list(fld2objs, fld, line, pmid):
         """Add a value to a list."""
         if fld not in fld2objs:
             fld2objs[fld] = []
         fld2objs[fld].append(line)
 
     @staticmethod
-    def _lid_add_to_dict(fld2objs, fld, line):
+    def _lid_add_to_dict(fld2objs, fld, line, pmid):
         """Add a value to a list."""
         if fld not in fld2objs:
             fld2objs[fld] = {}
@@ -169,7 +192,7 @@ class PubMedRdWr:
                 pmid2fldlines = ProcessLines(flds).process_rawlines(ifstrm)
                 pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
                 if prt:
-                    prt.write("  READ  {:>7,} PubMed records {}: fields({})\n".format(
+                    prt.write("  READ  {:>7,} PubMed records {} for fields({})\n".format(
                     len(pmid2fld2objs), fin_text, " ".join(flds)))
                 if pmid2fld2objs:
                     if dochk:
@@ -188,7 +211,7 @@ class PubMedRdWr:
             pmid2fldlines = ProcessLines(flds).process_rawlines(textblock.split('\n'))
             pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
             if prt:
-                prt.write("  PROCESSED  {P:>7,} PubMed records: fields({Fs})\n".format(
+                prt.write("  PROCESSED  {P:>7,} PubMed records for fields({Fs})\n".format(
                     P=len(pmid2fld2objs), Fs=" ".join(flds)))
             if pmid2fld2objs:
                 if dochk:
@@ -282,7 +305,8 @@ class PubMedRdWr:
             #### prt.write("{VAL},\n".format(VAL=addquot(fld_val)))
             prt.write("{VAL},\n".format(VAL=''.join(["'", fld_val, "'"])))
 
-    def _init_date(self, str_date):
+    #### def _init_date(self, str_date):
+    def _init_date(self, fld2objs, fld, str_date, pmid):
         """Convert string date to datetime object."""
         # Compensate for fmts: 1993-1994, 2001 Jul 16-31, 2002 Sep 1-15, 2012 Sep-Oct
         # TBD: Use Python Template instead of multiple replace statements?
