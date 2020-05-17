@@ -86,6 +86,9 @@ class PubMed(EntrezUtilities):
         pmids = [nt.PMID for nt in pmid_nt_list]
         # pylint: disable=line-too-long
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', num_ids_p_epost, 1, **self.medline_text)
+        #### for elem in efetch_idxs:
+        ####     print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE efetch_idx', elem)
+        #### print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', efetch_params)
         self._dnld_wr1_per_pmid(efetch_idxs, efetch_params, pmid_nt_list)
 
     def epost_ids(self, ids, database, num_ids_p_epost, retmax, **medline_text):
@@ -146,7 +149,8 @@ class PubMed(EntrezUtilities):
                 desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
                 # pylint: disable=line-too-long
                 pmids_exp = pmids_cur[start:start+num_pmids_p_efetch] if pmids_cur is not None else None
-                nts.append([desc, start, pmids_exp, querykey_cur])
+                if pmids_exp:
+                    nts.append([desc, start, pmids_exp, querykey_cur])
         return nts
 
     def _run_efetch(self, start, querykey, pmids_exp, desc, **params):
