@@ -7,26 +7,28 @@ import os
 import sys
 
 
-def read_pmids(fin, prt=sys.stdout):
+def read_pmids(fin, top_cit_ref=None, prt=sys.stdout):
     """Read PMIDs from a file. One PMID per line."""
-    pmids = _str_to_int(_read_pmids(fin))
+    pmids = _str_to_int(_read_pmids(fin), top_cit_ref)
     if prt:
         prt.write('{N:6,} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
     return pmids
 
-def get_pmids(pmid_list, fin_pmids):
+def get_pmids(pmid_list, fin_pmids, top_cit_ref=None):
     """Get PMIDs from the command line or from a file"""
-    return _str_to_int(get_all(pmid_list, fin_pmids))
+    return _str_to_int(get_all(pmid_list, fin_pmids), top_cit_ref)
 
-def _str_to_int(pmids):
+def _str_to_int(pmids, top_cit_ref=None):
     """Convert a list of string PMIDs to integer PMIDs"""
     int_pmids = []
     for pmidstr in pmids:
-        if pmidstr.isdigit():
+        if isinstance(pmidstr, int):
+            int_pmids.append(pmidstr)
+        elif pmidstr.isdigit():
             int_pmids.append(int(pmidstr))
     return int_pmids
 
-def get_all(pmid_list, fin_pmids):
+def get_all(pmid_list, fin_pmids, top_cit_ref=None):
     """Get PMIDs from the command line or from a file"""
     if not pmid_list and not fin_pmids:
         return []
@@ -43,13 +45,19 @@ def get_all(pmid_list, fin_pmids):
                 print('  MISSING: {FILE}'.format(FILE=fin))
     return pmids
 
-def _read_pmids(fin):
+def _read_pmids(fin, top_cit_ref=None):
     """Read PMIDs from a file. One PMID per line."""
     pmids = []
+    if top_cit_ref is None:
+        top_cit_ref = {'TOP',}  # TOP, CIT, CLI, REF
     with open(fin) as ifstrm:
         for line in ifstrm:
             line = line.strip()
-            if line[:1] != '#':
+            if line[:1] == '#':
+                continue
+            if line[:3] in top_cit_ref:
+                line = line[4:].split(maxsplit=1)[0]
+            if line.isdigit():
                 pmids.append(line)
     return pmids
 
