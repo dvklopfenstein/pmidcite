@@ -34,11 +34,12 @@ class NIHiCitePaper:
         'year': sortby_year,
     }
 
-    def __init__(self, pmid, dirpy, header=None, note=None):
+    def __init__(self, pmid, dirpy, header=None, pmid2note=None):
         self.pmid = pmid
         self.dirpy = dirpy
         self.hdr = header  # A header to print before a paper
-        self.note = note   # A short note to print at end of cite line
+        # A short pmid2note to print at end of cite line
+        self.pmid2note = {} if pmid2note is None else pmid2note
         self.icite = self._init_iciteobj(self.load_pmid(pmid))  # NIH iCite object
         ## print('VVVVVVVVVVVVVVV', self.icite)
         self.cited_by = self._init_pmids('cited_by')
@@ -48,7 +49,11 @@ class NIHiCitePaper:
     def str_line(self):
         """Return a string summarizing the the paper described herein"""
         txt = str(self.icite)
-        return txt if not self.note else '{TXT} {NOTE}'.format(TXT=txt, NOTE=self.note)
+        if not self.pmid2note:
+            return txt
+        if self.pmid in self.pmid2note:
+            return '{TXT} {NOTE}'.format(TXT=txt, NOTE=self.pmid2note[self.pmid])
+        return txt
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
@@ -66,19 +71,19 @@ class NIHiCitePaper:
         # Citations by clinical papers
         if self.cited_by_clin:
             prt.write('Cited by {N} Clinical papers:\n'.format(N=len(self.cited_by_clin)))
-        self.prt_list(self.cited_by_clin, 'CLI', prt, sortby_cites)
+        self._prt_list(self.cited_by_clin, 'CLI', prt, sortby_cites)
         # Citations
         if self.cited_by:
             prt.write('{N} of {M} citations downloaded:\n'.format(
                 N=len([1 for o in self.cited_by if o.dct['cited_by']]),
                 M=self.icite.dct['citation_count']))
-        self.prt_list(self.cited_by, 'CIT', prt, sortby_cites)
+        self._prt_list(self.cited_by, 'CIT', prt, sortby_cites)
         # References
         if rpt_refs and self.references:
             prt.write('{N} of {M} References downloaded:\n'.format(
                 N=len(self.references),
                 M=len(self.icite.dct['references'])))
-            self.prt_list(self.references, 'REF', prt, sortby_refs)
+            self._prt_list(self.references, 'REF', prt, sortby_refs)
 
     def get_sorted(self, icites, sortby=None):
         """Get citations or references, sorted"""
@@ -86,10 +91,19 @@ class NIHiCitePaper:
             sortby = self.sortby_dct[sortby]
         return sorted(icites, key=sortby)
 
-    def prt_list(self, icites, desc, prt, sortby=None):
+    def _prt_list(self, icites, desc, prt, sortby=None):
         """Print list of NIH iCites in summary format"""
         if sortby is not None:
             icites = self.get_sorted(icites, sortby)
+        if self.pmid2note:
+            s_pmid2note = self.pmid2note
+            for icite in icites:
+                if icite.pmid in s_pmid2note:
+                    prt.write('{DESC} {iCite} {note}\n'.format(
+                        DESC=desc, iCite=str(icite), note=s_pmid2note[icite.pmid]))
+                else:
+                    prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
+            return
         for icite in icites:
             prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
 

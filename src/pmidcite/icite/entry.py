@@ -22,6 +22,7 @@ class NIHiCiteEntry:
     associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
 
     def __init__(self, icite_dct):
+        self.pmid = icite_dct['pmid']
         self.dct = icite_dct
         nih_percentile = icite_dct['nih_percentile']
         self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
@@ -89,7 +90,7 @@ class NIHiCiteEntry:
         dct = self.dct
         nih_sd = dct['nih_sd']
         return pat.format(
-            pmid=dct['pmid'],
+            pmid=self.pmid,
             year=dct['year'],
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),

@@ -151,7 +151,6 @@ class NIHiCiteDownloader:
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
-            ## print('NNNNNNNNNNNNNNNNNNNN _geticitepaper', name, pmid)
             paper = self._geticitepaper(pmid, name, dnld_assc_pmids_do, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
@@ -163,22 +162,21 @@ class NIHiCiteDownloader:
         if not pmid2note:
             papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, None, prt) for p in pmids]
         else:
-            s_p2n = pmid2note.get
-            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, s_p2n(p, ''), prt) for p in pmids]
+            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, pmid2note, prt) for p in pmids]
         # Note: if there is no iCite entry for a PMID, paper will be None
         return cx.OrderedDict(zip(pmids, papers))  # pmid2ntpaper
 
-    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, note, prt=sys.stdout):
+    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note, prt=sys.stdout):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
         if citeobj_top:
             if dnld_assc_pmids_do:
                 self._dnld_assc_pmids(citeobj_top, prt)
-            return NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
+            return NIHiCitePaper(pmid_top, self.dir_dnld, header, pmid2note)
         print('No NIH iCite results found: {PMID} {HDR} {NOTE}'.format(
             PMID=pmid_top,
             HDR=header if header else '',
-            NOTE=note if note else ''))
+            NOTE=pmid2note[pmid_top] if pmid_top in pmid2note else ''))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
     def _dnld_assc_pmids(self, icite, prt=sys.stdout):
