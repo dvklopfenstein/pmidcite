@@ -6,6 +6,7 @@ __author__ = "DV Klopfenstein"
 import os
 import sys
 from collections import namedtuple
+from pmidcite.cfg import get_cfgparser
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cli.utils import wr_pmids
 from pmidcite.icite.run import PmidCite
@@ -20,7 +21,7 @@ class PubMedQueryToICite:
         self.pmid2note = {} if pmid2note is None else pmid2note
         # Setting prt_icitepy to sys.stdout causes messages: WROTE: ./icite/p31898878.py
         self.prt_icitepy = prt_icitepy
-        self.pmidcite = PmidCite()
+        self.pmidcite = PmidCite(get_cfgparser())
         cfg = self.pmidcite.cfgparser
         self.pubmed = PubMed(
             email=cfg.get_email(),

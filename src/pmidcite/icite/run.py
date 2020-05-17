@@ -4,7 +4,6 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import sys
-from pmidcite.cfg import Cfg
 from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 from pmidcite.cli.utils import read_pmids
@@ -13,16 +12,9 @@ from pmidcite.cli.utils import read_pmids
 class PmidCite:
     """Run NIH iCite run for one PubMed ID (PMID)"""
 
-    def __init__(self):
-        self.cfgparser = self._init_cfgparser()  # Cfg
+    def __init__(self, cfgparser):
+        self.cfgparser = cfgparser  # Cfg
         self.dir_icite_py = self.cfgparser.cfgparser['pmidcite']['dir_icite_py']  # ./icite
-
-    @staticmethod
-    def _init_cfgparser():
-        """Init cfg parser"""
-        cfgparser = Cfg(chk=False)
-        cfgparser.rd_rc(prt=None)
-        return cfgparser
 
     def run_pmid_file(self, fin_pmids, fout_icite, force_download):
         """Run iCite on list of PMIDs in a file"""

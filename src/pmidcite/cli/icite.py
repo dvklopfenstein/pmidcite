@@ -8,7 +8,6 @@ import sys
 import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.run import PmidCite
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 
@@ -16,8 +15,8 @@ from pmidcite.cli.utils import get_pmids
 class NIHiCiteCli:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
-    def __init__(self):
-        self.pmidcite = PmidCite()
+    def __init__(self, pmidcite):
+        self.pmidcite = pmidcite
         cfgparser = self.pmidcite.cfgparser
         self.pubmed = PubMed(
             email=cfgparser.get_email(),

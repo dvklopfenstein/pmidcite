@@ -140,4 +140,11 @@ class Cfg(object):
         return self.dfltcfgfile
 
 
+def get_cfgparser():
+    """Init cfg parser"""
+    cfgparser = Cfg(chk=False)
+    cfgparser.rd_rc(prt=None)
+    return cfgparser
+
+
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

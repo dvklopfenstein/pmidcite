@@ -7,6 +7,7 @@ import os
 ## import sys
 import argparse
 
+from pmidcite.cfg import get_cfgparser
 ## from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.run import PmidCite
 ## from pmidcite.cli.utils import get_mode_force
@@ -20,7 +21,7 @@ class ReadPmids:
     """Read a file created by pmidcite and write simple text file of PMIDs"""
 
     def __init__(self):
-        self.pmidcite = PmidCite()
+        self.pmidcite = PmidCite(get_cfgparser())
 
     @staticmethod
     def get_argparser():
