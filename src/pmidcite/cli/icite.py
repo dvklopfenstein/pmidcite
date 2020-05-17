@@ -92,9 +92,9 @@ class NIHiCiteCli:
             self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
 
     # pylint: disable=too-many-arguments
-    def run_icite(self, pmid2icitepaper, dnldr, args, argparser, pmid2note=None):
+    def run_icite(self, pmid2icitepaper, dnldr, args, argparser):
         """Run iCite/PubMed"""
-        ##print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ## print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.pmidcite.prt_rcfile(sys.stdout)
@@ -102,7 +102,6 @@ class NIHiCiteCli:
         if not pmid2icitepaper and not args.print_keys:
             argparser.print_help()
             self._prt_infiles(args.infile)
-        #### self._run_icite(pmid2icitepaper, args, pmid2note, dnldr)
         self._run_icite(pmid2icitepaper, args, dnldr)
 
     @staticmethod
@@ -112,7 +111,6 @@ class NIHiCiteCli:
             for fin in infiles:
                 print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
 
-    #### def _run_icite(pmid2icitepaper, args, pmid2note, dnldr):
     def _run_icite(self, pmid2icitepaper_all, args, dnldr):
         """Print papers, including citation counts"""
         if args.print_keys:
@@ -125,13 +123,10 @@ class NIHiCiteCli:
             return
         if dct['outfile'] is None:
             dnldr.prt_papers(
-                #### pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose, pmid2note=pmid2note)
                 pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
             if not args.quiet:
                 dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            # pylint: disable=line-too-long
-            #### dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'], pmid2note)
             dnldr.wr_papers(dct['outfile'], dct['force_write'], pmid2icitepaper, dct['mode'])
 
     @staticmethod

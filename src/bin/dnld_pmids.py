@@ -10,16 +10,21 @@ from pmidcite.pubmedqueryicite import PubMedQueryToICite
 
 def main():
     """Download PMIDs returned from user queries. Write: ./log/pmids ./log/icite"""
-    obj = PubMedQueryToICite(force_dnld=True)
+    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
     # pylint: disable=bad-whitespace
     lst = [
-        # Output filenames   PubMed query
-        # -----------------  -----------------------------------
-        ('nih_icite.txt',    'NIH iCite'),
+        # Output filenames      PubMed query
+        # -----------------    -----------------------------------
+        ('Pascale_Gaudet.txt', 'Pascale Gaudet')
     ]
-    # Default is to only run the last entry in the list
+    # Default is to only run the last entry in the list, index = -1
+    #
     # To run all entries in the list:
-    #   $ src/bin/dnld_pmids.py dnld_all
+    #   $ src/bin/dnld_pmids.py all
+    #
+    # To run the last query:
+    #   $ src/bin/dnld_pmids.py -1
+    #
     dnld_idx = obj.get_index(sys.argv)
     obj.run(lst, dnld_idx)
 

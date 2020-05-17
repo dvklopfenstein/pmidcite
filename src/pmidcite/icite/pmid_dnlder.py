@@ -51,7 +51,7 @@ class NIHiCiteDownloader:
         pmids_new = pmids_all
         if mode == 'a':
             pmids_new = self._get_new_pmids(fout_txt, pmids_all)
-            ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new)
+            ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new, pmids_all)
         if pmids_new:
             ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2icitepaper)
             if self._do_write(fout_txt, force_overwrite):
