@@ -39,7 +39,7 @@ class Cfg(object):
 
     def __init__(self, chk=True, prt=sys.stdout):
         self.cfgfile = self._init_cfgfilename()
-        self.cfgparser = self._get_cfgparser()
+        self.cfgparser = self._get_dflt_cfgparser()
         if chk:
             self._run_chk(prt)
 
@@ -53,7 +53,7 @@ class Cfg(object):
     def set_cfg(self, cfgfile=None):
         """Set config file and initialize ConfigParser()"""
         self.cfgfile = self.dfltcfgfile if cfgfile is None else cfgfile
-        self.cfgparser = self._get_cfgparser()
+        self.cfgparser = self._get_dflt_cfgparser()
         return self.cfgparser.read(self.cfgfile)
 
     def rd_rc(self, prt=sys.stdout):
@@ -118,11 +118,11 @@ class Cfg(object):
         """Get the name of the directory containg PubMed entry text files"""
         return self.cfgparser['pmidcite']['dir_icite_py']
 
-    def _get_cfgparser(self):
+    def _get_dflt_cfgparser(self):
         """Create a ConfigParser() filled with the default key-value"""
         config = configparser.ConfigParser()
         for section, dfltdct_cur in self.dfltdct.items():
-            # print('KEY-VAL: {} {}'.format(section, dfltdct_cur))
+            ## print('KEY-VAL: {} {}'.format(section, dfltdct_cur))
             config[section] = dfltdct_cur
         return config
 
