@@ -37,14 +37,14 @@ class Cfg(object):
         },
     }
 
-    def __init__(self, chk=True):
+    def __init__(self, chk=True, prt=sys.stdout):
         self.cfgfile = self._init_cfgfilename()
         self.cfgparser = self._get_cfgparser()
         if chk:
-            self._run_chk()
+            self._run_chk(prt)
 
-    def _run_chk(self):
-        if not self.rd_rc():
+    def _run_chk(self, prt):
+        if not self.rd_rc(prt):
             self._err_notfound()
         dflt = self.cfgparser['pmidcite']
         self._chk_email(dflt)
@@ -140,10 +140,10 @@ class Cfg(object):
         return self.dfltcfgfile
 
 
-def get_cfgparser():
+def get_cfgparser(prt=sys.stdout):
     """Init cfg parser"""
-    cfgparser = Cfg(chk=False)
-    cfgparser.rd_rc(prt=None)
+    cfgparser = Cfg(chk=False, prt=prt)
+    cfgparser.rd_rc(prt=prt)
     return cfgparser
 
 
