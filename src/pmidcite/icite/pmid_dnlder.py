@@ -42,7 +42,7 @@ class NIHiCiteDownloader:
     ####             print('{WR}: {TXT}'.format(
     ####                 WR=self._msg_wrote(mode, pmids_all, pmids_prt), TXT=fout_txt))
 
-    def wr_papers(self, fout_txt, force_overwrite, pmid2icitepaper, mode='w'):
+    def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
         ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers')
         if not pmid2icitepaper:

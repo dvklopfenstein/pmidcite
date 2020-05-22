@@ -61,7 +61,7 @@ class PubMedQueryToICite:
         dnldr = self.pmidcite.get_icitedownloader(
             self.force_dnld, no_references=False, prt_icitepy=self.prt_icitepy)
         pmid2paper = dnldr.get_pmid2paper(pmids, self.verbose, self.pmid2note, prt=None)
-        dnldr.wr_papers(fout_icite, force_overwrite=True, pmid2icitepaper=pmid2paper)
+        dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 
     @staticmethod
     def get_nts_g_list(lst):
