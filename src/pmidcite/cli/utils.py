@@ -7,18 +7,18 @@ import os
 import sys
 
 
-def read_pmids(fin, top_cit_ref=None, prt=sys.stdout):
+def read_pmids(fin, prt=sys.stdout):
     """Read PMIDs from a file. One PMID per line."""
-    pmids = _str_to_int(_read_pmids(fin), top_cit_ref)
+    pmids = _str_to_int(_read_pmids(fin, top_cit_ref=None))
     if prt:
         prt.write('{N:6,} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
     return pmids
 
-def get_pmids(pmid_list, fin_pmids, top_cit_ref=None):
+def get_pmids(pmid_list, fin_pmids):
     """Get PMIDs from the command line or from a file"""
-    return _str_to_int(get_all(pmid_list, fin_pmids), top_cit_ref)
+    return _str_to_int(get_all(pmid_list, fin_pmids))
 
-def _str_to_int(pmids, top_cit_ref=None):
+def _str_to_int(pmids):
     """Convert a list of string PMIDs to integer PMIDs"""
     int_pmids = []
     for pmidstr in pmids:
@@ -38,14 +38,14 @@ def get_all(pmid_list, fin_pmids, top_cit_ref=None):
     if fin_pmids:
         for fin in fin_pmids:
             if os.path.exists(fin):
-                for pmid in _read_pmids(fin):
+                for pmid in _read_pmids(fin, top_cit_ref):
                     if pmid not in seen:
                         pmids.append(pmid)
             else:
                 print('  MISSING: {FILE}'.format(FILE=fin))
     return pmids
 
-def _read_pmids(fin, top_cit_ref=None):
+def _read_pmids(fin, top_cit_ref):
     """Read PMIDs from a file. One PMID per line."""
     pmids = []
     if top_cit_ref is None:
@@ -70,8 +70,8 @@ def read_top_pmids(pmidcite_txt, top='TOP'):
         for line in ifstrm:
             if line[:toplen] == topstr:
                 flds = line.split()
-                assert flds[1].isdigit(), '{} {}'.format(pmidcite_txt, flds)
-                pmids.add(int(flds[1]))
+                if flds[1].isdigit():
+                    pmids.add(int(flds[1]))
     return pmids
 
 def wr_pmids(fout_txt, pmids, mode='w', log=sys.stdout):
