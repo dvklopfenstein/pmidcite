@@ -63,7 +63,7 @@ class RptDatesTop:
         for fin_icite in icite_files:
             nts_file = self._get_line_numbers_one(fin_icite, prt)
             if nts_file:
-                nts_all.extend(nts_file)
+                nts_all += nts_file
         return nts_all
 
     def _get_line_numbers_one(self, icite_file, prt=sys.stdout):
@@ -85,6 +85,7 @@ class RptDatesTop:
                             lnum=lnum,
                             line=line,
                             filename=icite_file)
+                        print(ntd)
                         nts.append(ntd)
             if prt:
                 prt.write('{N:6} TOP papers READ: {FIN}'.format(N=len(nts), FIN=icite_file))

@@ -61,6 +61,7 @@ class PubMed(EntrezUtilities):
             if rsp_txt is not None:
                 with open(fout_pubmed, 'a') as prt:
                     prt.write(rsp_txt)
+                    sys.flush()
         print('  WROTE: {FILE}'.format(FILE=fout_pubmed))
 
     def _dnld_query(self, query):

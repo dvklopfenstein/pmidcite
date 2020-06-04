@@ -16,7 +16,7 @@ class ESearch(EntrezUtilities):
         # Required Parameters:
         'db',
         'term',
-        # Optional Parameters – History Server
+        # Optional Parameters - History Server
         'usehistory',
         'webenv',
         'querykey',

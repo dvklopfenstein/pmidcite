@@ -91,19 +91,19 @@ class EntrezUtilities(object):
     ####         return dct
     ####     return None
 
-    def epost(self, database, pmids, num_ids_p_epost=10):
+    def epost(self, database, ids, num_ids_p_epost=10):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
-        if not isinstance(pmids, list):
-            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs NOT A LIST'.format(pmids))
-        if not pmids:
+        if not isinstance(ids, list):
+            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs NOT A LIST'.format(ids))
+        if not ids:
             print('**NOTE: NO IDs to EPost')
             return None
         ret = {
             'num_ids_p_epost': num_ids_p_epost,
-            'qkey2ids': [pmids[:num_ids_p_epost]]
+            'qkey2ids': [ids[:num_ids_p_epost]]
         }
-        str_ids = [str(n) for n in pmids]
+        str_ids = [str(n) for n in ids]
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
@@ -111,11 +111,11 @@ class EntrezUtilities(object):
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
                 self.log.write('epost webenv: {W}\n'.format(W=rsp['webenv']))
-                self.log.write("epost querykey({Q:>6}) pmids[{N}]={Ps}\n".format(
+                self.log.write("epost querykey({Q:>6}) ids[{N}]={Ps}\n".format(
                     N=len(str_ids), Q=rsp['querykey'], Ps=id_str))
             ret['webenv'] = rsp['webenv']
             webenv = rsp['webenv']
-            num_ids = len(pmids)
+            num_ids = len(ids)
             # Load the remainder of the UIDs using epost
             for idx in range(num_ids_p_epost, num_ids, num_ids_p_epost):
                 end_pt = idx+num_ids_p_epost
@@ -124,10 +124,10 @@ class EntrezUtilities(object):
                 #print '{:3} {:3} {:3}'.format(num_ids, idx, end_pt)
                 id_str = ','.join(str_ids[idx:end_pt])
                 rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
-                ret['qkey2ids'].append(pmids[idx:idx+num_ids_p_epost])
+                ret['qkey2ids'].append(ids[idx:idx+num_ids_p_epost])
                 webenv = rsp['webenv']
                 if self.log is not None:
-                    self.log.write("epost querykey({Q:>6}) pmids[{N}]={Ps}\n".format(
+                    self.log.write("epost querykey({Q:>6}) ids[{N}]={Ps}\n".format(
                         N=end_pt-idx, Q=rsp['querykey'], Ps=id_str))
         elif 'error' in rsp:
             raise RuntimeError('**ERROR EPost: {MSG}'.format(MSG=rsp['error']))

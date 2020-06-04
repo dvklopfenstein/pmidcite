@@ -7,6 +7,8 @@ rather than clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
+* [**Setup**](#setup)
+
 ## Examples
 * [Examine one paper's citations and references]()
 * [Examine iCite results on PMIDs returned from a PubMed Query]()
@@ -23,6 +25,30 @@ src/bin/dnld_pmids.py
 grep -w TOP ./log/icite/protfnc_antibodies.txt | sort -k6
 
 ## Take a [quick tour](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [PubMed](https://pubmed.ncbi.nlm.nih.gov) 
+
+
+## Setup
+### 1. Add init file
+Add a .pmidciterc init file to a non-git managed directory, like home (~)
+```
+$ cp ./doc/.pmidciterc ~
+$ export PMIDCITECONF=~/.pmidciterc
+```
+
+### 2. Add directories
+Add directories which match those in ~/.pmidciterc:
+```
+$ mkdir [GIT_REPO]/icite
+$ mkdir [GIT_REPO]/log
+$ mkdir [GIT_REPO]/log/pubmed
+$ mkdir [GIT_REPO]/log/pmids
+$ mkdir [GIT_REPO]/log/icite
+```
+
+### 3. NCBI E-Utils API key
+If you want to download PubMed abstracts and PubMed search results using NCBI's E-Utils,
+get an NCBI API key by following instructions here:
+https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
