@@ -28,7 +28,9 @@ grep -w TOP ./log/icite/protfnc_antibodies.txt | sort -k6
 
 
 ## Setup
-### 1. Add init file
+Store your literature search in a GitHub repo.
+
+### 1. Add a pmidcite init file
 Add a .pmidciterc init file to a non-git managed directory, like home (~)
 ```
 $ cp ./doc/.pmidciterc ~
@@ -38,16 +40,16 @@ $ export PMIDCITECONF=~/.pmidciterc
 ### 2. Add directories
 Add directories which match those in ~/.pmidciterc:
 ```
-$ mkdir [GIT_REPO]/icite
-$ mkdir [GIT_REPO]/log
-$ mkdir [GIT_REPO]/log/pubmed
-$ mkdir [GIT_REPO]/log/pmids
-$ mkdir [GIT_REPO]/log/icite
+$ mkdir [GIT_REPO_PATH]/icite
+$ mkdir [GIT_REPO_PATH]/log
+$ mkdir [GIT_REPO_PATH]/log/pubmed
+$ mkdir [GIT_REPO_PATH]/log/pmids
+$ mkdir [GIT_REPO_PATH]/log/icite
 ```
 
 ### 3. NCBI E-Utils API key
 If you want to download PubMed abstracts and PubMed search results using NCBI's E-Utils,
-get an NCBI API key by following instructions here:
+get an NCBI API key by following instructions here:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 
