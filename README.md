@@ -36,6 +36,8 @@ Add a .pmidciterc init file to a non-git managed directory, like home (~)
 $ cp ./doc/.pmidciterc ~
 $ export PMIDCITECONF=~/.pmidciterc
 ```
+You will want .pmidciterc to not be managed by GitHub because it
+will contain your personal email and your own NCBI API key.
 
 ### 2. Add directories
 Add directories which match those in ~/.pmidciterc:
