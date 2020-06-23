@@ -20,6 +20,7 @@ import sys
 import traceback
 import json
 import collections as cx
+import re
 from xml.etree import ElementTree
 
 import time
@@ -36,6 +37,7 @@ class EntrezUtilities(object):
     """Helper class for Entrez E-Utilities"""
 
     cgifmt = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/{ECMD}.fcgi"
+    pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
 
     max_tries = 3
     sleep_between_tries = 15
@@ -51,6 +53,76 @@ class EntrezUtilities(object):
         """Get a list of Entrez databases"""
         # einfo: http://www.ncbi.nlm.nih.gov/books/NBK25499/
         return self.run_eutilscmd('einfo', retmode='json')
+
+    def epost_ids(self, ids, database, num_ids_p_epost, retmax, **medline_text):
+        """Post IDs using EPost"""
+        epost_rsp = self.epost(database, ids, num_ids_p_epost=num_ids_p_epost)
+        ## print('EPOST RSP', epost_rsp)
+        # Set EFetch params
+        efetch_params = dict(medline_text)
+        efetch_params['webenv'] = epost_rsp['webenv']
+        efetch_params['retmax'] = retmax  # num_ids_p_efetch
+        # Run EFetches
+        efetch_idxs = self._get_efetch_indices(epost_rsp, retmax, len(ids))
+        #efetch_idxs = self._get_efetch_indices(epost_rsp, retmax, epost_rsp['count'])
+        return efetch_idxs, efetch_params
+
+    def _get_efetch_indices(self, epost_rsp, num_pmids_p_efetch, num_pmids):
+        """Get EFetech list of: querykey_cur, pmids_cur, start"""
+        # pmids num_pmids_p_epost num_pmids_p_efetch  ->  num_efetches
+        # ----- ----------------- ------------------      ------------
+        #     5                 2                  3                 3
+        #     5                 2                  1                 5
+        nts = []
+        querykey_max = epost_rsp['querykey']
+        num_pmids_p_epost_cur = epost_rsp['num_ids_p_epost']
+        pat_val = {
+            'P':epost_rsp['num_ids_p_epost'],
+            'F':num_pmids_p_efetch,
+            'Qmax':epost_rsp['querykey']}
+        for querykey_cur, pmids_cur in enumerate(epost_rsp['qkey2ids'], 1):
+            #### if querykey_cur == querykey_max:
+            if querykey_cur == querykey_max and querykey_max != 1:
+                num_pmids_p_epost_cur = num_pmids%epost_rsp['num_ids_p_epost']
+            for start in range(0, num_pmids_p_epost_cur, num_pmids_p_efetch):
+                desc = self.pat.format(Q=querykey_cur, S=start, **pat_val)
+                # pylint: disable=line-too-long
+                pmids_exp = pmids_cur[start:start+num_pmids_p_efetch] if pmids_cur is not None else None
+                if pmids_exp:
+                    nts.append([desc, start, pmids_exp, querykey_cur])
+        return nts
+
+    def _run_efetch(self, database, start, querykey, pmids_exp, desc, **params):
+        """Get text from EFetch response"""
+        rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, db=database, **params)
+        if rsp_dct is None:
+            print('\n{DESC}\n**ERROR: DATA is None'.format(DESC=desc))
+            return None
+        rsp_txt = rsp_dct['data'].decode('utf-8')
+        err_txt = self._chk_error_str(rsp_txt)
+        if err_txt is not None:
+            print('\nURL: {URL}\n{DESC}\n**ERROR: {ERR}'.format(
+                ERR=err_txt, DESC=desc, URL=rsp_dct['url']))
+            return None
+        ## # PubMed test
+        ## pmids_downloaded = [int(i) for i in re.findall(r'PMID-\s*(\d+)', rsp_txt)]
+        ## #print(desc, pmids_downloaded, pmids_exp)
+        ## if pmids_exp:
+        ##     # pylint: disable=line-too-long
+        ##     assert pmids_downloaded == pmids_exp, '{TXT}\nDESC: {DESC}\nDL[{D}]: {DL}\nEXP[{L}]: {EXP}'.format(
+        ##         TXT=rsp_txt, DESC=desc, D=len(pmids_downloaded),
+        ##         DL=pmids_downloaded, EXP=pmids_exp, L=len(pmids_exp))
+        return rsp_txt
+
+    @staticmethod
+    def _chk_error_str(text):
+        """Check if data was correctly downloaded"""
+        p0_err = text.find('<ERROR>')
+        if p0_err < 0:
+            return None
+        msg = text[p0_err+7:]
+        p1_err = msg.find('</ERROR>')
+        return msg[:p1_err]
 
     #### def pubmed_query_fetch(self, query):
     ####     """Given a PubMed query, return results as  text"""
@@ -171,9 +243,10 @@ class EntrezUtilities(object):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        ## print(rsp_dct)
-        rcvd = self._extract_rsp(rsp_dct['data'], params.get('retmode'))
-        return rcvd
+        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        if rsp_dct is not None:
+            return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
+        return None
 
     def _mk_cgi(self, cmd, **params):
         """Get Fast Common Gateway Interface (fcgi) string, given E-utils command/parameters"""
@@ -232,7 +305,7 @@ class EntrezUtilities(object):
             prt.write('CMD: {CMD}\n'.format(CMD=cgi))
         ## sys.stdout.write('CMD: {CMD}\n'.format(CMD=cgi))  # For PubMed MISMATCHES
 
-        for i in range(self.max_tries):
+        for idx in range(self.max_tries):
             try:
                 with urlopen(cgi) as rsp:
                     assert rsp.status == 200, dir(rsp)
@@ -244,7 +317,7 @@ class EntrezUtilities(object):
                         'data': rsp.read()}
             except _URLError as exception:
                 # Reraise if the final try fails
-                if i >= self.max_tries - 1:
+                if idx >= self.max_tries - 1:
                     raise
 
                 # Reraise if the exception is triggered by a HTTP 4XX error

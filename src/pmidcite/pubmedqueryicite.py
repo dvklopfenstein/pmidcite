@@ -46,14 +46,21 @@ class PubMedQueryToICite:
         """Given a user query, return PMIDs. Then run NIH's iCite"""
         # 1) Query PubMed and download PMIDs
         pmids = self.pubmed.dnld_query_pmids(query)
-        dct = self.pmidcite.cfgparser.cfgparser['pmidcite']
-        fout_pmids = os.path.join(dct['dir_pmids'], fout_pat.format(PRE='pmids'))
-        fout_icite = os.path.join(dct['dir_icite'], fout_pat.format(PRE='icite'))
+        fout_pmids = os.path.join(self.get_dir_pmids(), fout_pat.format(PRE='pmids'))
+        fout_icite = os.path.join(self.get_dir_icite(), fout_pat.format(PRE='icite'))
         # 2) Write PubMed PMIDs into a simple text file, one PMID per line
         if fout_pmids != fout_icite:
             wr_pmids(fout_pmids, pmids)
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         self.wr_icite(fout_icite, pmids)
+
+    def get_dir_pmids(self):
+        """Get directory to store lists of PMIDs"""
+        return self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pmids']
+
+    def get_dir_icite(self):
+        """Get directory to store lists of PMIDs"""
+        return self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite']
 
     def wr_icite(self, fout_icite, pmids):
         """Run PMIDs in iCite and print results into a file"""
