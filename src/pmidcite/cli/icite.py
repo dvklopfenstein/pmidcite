@@ -38,6 +38,9 @@ class NIHiCiteCli:
             '-a', '--append_outfile',
             help='Append current citation report to an ASCII text file. Create if needed.')
         parser.add_argument(
+            '-H', '--print_header', action='store_true',
+            help='Print column headings on one line.')
+        parser.add_argument(
             '-k', '--print_keys', action='store_true',
             help='Print the keys describing the abbreviations.')
         parser.add_argument(
@@ -98,7 +101,7 @@ class NIHiCiteCli:
         if args.generate_rcfile:
             self.pmidcite.prt_rcfile(sys.stdout)
         # Get user-specified PMIDs
-        if not pmid2icitepaper and not args.print_keys:
+        if not pmid2icitepaper and not args.print_keys and not args.print_header:
             argparser.print_help()
             self._prt_infiles(args.infile)
         self._run_icite(pmid2icitepaper, args, dnldr)
@@ -114,6 +117,8 @@ class NIHiCiteCli:
         """Print papers, including citation counts"""
         if args.print_keys:
             dnldr.prt_keys()
+        if args.print_header:
+            dnldr.prt_hdr()
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         prt_verbose = not args.succinct
         pmid2icitepaper = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}

@@ -21,6 +21,20 @@ class NIHiCiteEntry:
 
     associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
 
+    hdr = pat_str.format(
+            pmid='PMID',
+            year='YR',
+            aart_type='RP',
+            aart_animal='HAMCc',
+            nih_sd='SD',
+            nih_perc='  %',
+            citation_count='  cit',
+            clin='cli',
+            references='ref',
+            A=1,
+            author1='authors',
+            title='title')
+
     def __init__(self, icite_dct):
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
@@ -62,16 +76,24 @@ class NIHiCiteEntry:
         ## prt.write('  YYYY NNNNNNNN RP HAMCc nih% x y z au[A](First Author) Title of paper\n\n')
         ## prt.write('NIH iCite details:\n')
         prt.write('  PubMedID: PubMed ID (PMID)\n\n')
+        prt.write('     RP section:\n')
+        prt.write('     ----------------------------------\n')
         prt.write('         R: Is a research article\n')
         prt.write('         P: iCite has calculated an initial Relative Citation Ratio (RCR) for new papers\n\n')
+        prt.write('     HAMCc section:\n')
+        prt.write('     ----------------------------------\n')
         prt.write('         H: Has MeSH terms in the human category\n')
         prt.write('         A: Has MeSH terms in the animal category\n')
         prt.write('         M: Has MeSH terms in the molecular/cellular biology category\n')
-        prt.write('         C: Is a clinical trial, study, or guideline\n\n')
-        prt.write('         %: NIH citation percentile rounded to an integer\n')
-        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n')
+        prt.write('         C: Is a clinical trial, study, or guideline\n')
+        prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
+        prt.write('     NIH section:\n')
+        prt.write('     ----------------------------------\n')
+        prt.write('         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD\n')
+        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
+        prt.write('     YEAR/citations/references section:\n')
+        prt.write('     ----------------------------------\n')
         prt.write('      YEAR: The year the article was published\n')
-        prt.write('         c: Is cited by a clinical trial, study, or guideline\n')
         prt.write('         x: Number of unique articles that have cited the paper\n')
         prt.write('         y: Number of unique clinical articles that have cited the paper\n')
         prt.write('         z: Number of references\n')
