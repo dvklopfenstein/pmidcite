@@ -123,7 +123,14 @@ class NIHiCiteAPI:
     def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
         dct = {}
-        if 'authors' is not None:
+        if json_dct['title'] is not None:
+            title = json_dct['title'].strip()
+            if '"' in title:
+                title = title.replace('"', "'")
+            if "\n" in title:
+                title = title.replace('\n', " ")
+            dct['title'] = title
+        if json_dct['authors'] is not None:
             dct['authors'] = json_dct['authors'].split(', ')
         yes_no = self.yes_no
         dct['is_research_article'] = yes_no[json_dct['is_research_article']]
