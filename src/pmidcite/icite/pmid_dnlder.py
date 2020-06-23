@@ -61,6 +61,11 @@ class NIHiCiteDownloader:
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     @staticmethod
+    def prt_hdr(prt=sys.stdout):
+        """Print column headers in one line"""
+        prt.write('KEY {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
+
+    @staticmethod
     def prt_keys(prt=sys.stdout):
         """Print paper keys"""
         prt.write('\nKEYS TO PAPER LINE:\n')
@@ -173,10 +178,13 @@ class NIHiCiteDownloader:
             if dnld_assc_pmids_do:
                 self._dnld_assc_pmids(citeobj_top, prt)
             return NIHiCitePaper(pmid_top, self.dir_dnld, header, pmid2note)
+        note = ''
+        if pmid2note and pmid_top in pmid2note:
+            note = pmid2note[pmid_top]
         print('No NIH iCite results found: {PMID} {HDR} {NOTE}'.format(
             PMID=pmid_top,
             HDR=header if header else '',
-            NOTE=pmid2note[pmid_top] if pmid_top in pmid2note else ''))
+            NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
     def _dnld_assc_pmids(self, icite, prt=sys.stdout):
