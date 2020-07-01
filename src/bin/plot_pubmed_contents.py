@@ -14,6 +14,7 @@ def main(dnld=False):
     """Plot the types of content and their amount in PubMed"""
     fpat_png = 'log/pubmed_content/pubmed_content_{DATE}.png'
     fout_png = 'pubmed_content_2020_01_10.png'
+    # fout_png = 'pubmed_content_2020_01_10.tiff'
     fout_py = 'src/pmidcite/eutils/pubmed/counts/dnlded_data.py'
 
     cfg = Cfg()

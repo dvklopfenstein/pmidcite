@@ -31,6 +31,67 @@ class PubMedPlot:
         self.name2cnt = name2cnt
         self.dataobj = DataMgr(self.name2cnt)
 
+    def plt_content_counts(self, fout_png):
+        """Plot pubmed content"""
+        a2n = self.name2cnt
+        xmax = a2n['all']
+        ymax = 17.5
+        # Remove automatically-added 5% axes padding
+        mpl.rcParams['axes.autolimit_mode'] = 'data'  # 'data' or 'round_numbers'
+        mpl.rcParams['axes.xmargin'] = 0
+        mpl.rcParams['axes.ymargin'] = 0
+        # Get figure and axes with axes turned off and axes whitespace removed
+        fig, axes = plt.subplots()
+        fig.set_size_inches(6.4, 1.8)
+        axes.get_xaxis().set_visible(False)
+        axes.get_yaxis().set_visible(False)
+        axes.set_frame_on(False)
+        axes.set_xlim(0, xmax+500000)
+        axes.set_ylim(0, ymax+1)
+        axes.grid(False)
+        # Add horizontal bars for: PubMed, PMC, and other
+        bbars = []
+        for xvals, yval, dct in self.dataobj.get_pubmed_colorbars(ymax-5):
+            print('XY-COORD', xvals, yval)
+            bbars.append(axes.broken_barh(xvals, yval, **dct))
+        # Add text to colorbars using xy coordinates from 'XY-COORD'
+        self._text_on_bars(axes)
+        # Add Dimension lines
+        # https://schoolworkhelper.net/technical-drawing-alphabet-of-line/
+        self._add_bounding_lines_all(xmax, ymax)
+        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2)
+        self._add_bounding_lines_pmc(ymax-6)
+        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-10, xmax)
+        self._add_bounding_lines_pmc_100(ymax-12)
+        # Add legend
+        axes.legend(loc='lower left', fontsize=8, ncol=2,
+                    bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
+                    handletextpad=.2, columnspacing=1.0, labelspacing=.2)
+        # Save figure
+        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=300)
+        print('  WROTE: {PNG}'.format(PNG=fout_png))
+
+    @staticmethod
+    def _text_on_bars(axes):
+        """Add text to colorbars using xy coordinates from 'XY-COORD'"""
+        dct_txt = {'va':'bottom'}
+        # bar text: MEDLINE
+        # XY-COORD [(       0, 22956376)] (11.5, 1.8)
+        # XY-COORD [(22956376,   558119)] (11.5, 1.8)
+        # XY-COORD [(23514495,  3505412)] (11.5, 1.8)
+        axes.text(22956376*.67, 11.5, 'MEDLINE', fontsize=9, color='white', ha='center', **dct_txt)
+        axes.text(22956376*.89, 11.5, 'database', fontsize=9, color='white', ha='center', **dct_txt)
+        axes.text(22956376 + 558119 + 3505412*.32, 11.5, '(db)', fontsize=9, color='white', ha='center', **dct_txt)
+        # bar text: PMC
+        # XY-COORD [(23378342,  136153)] (9.5, 1.8)
+        # XY-COORD [(23514495, 3505412)] (9.5, 1.8)
+        # XY-COORD [(27019907, 1687687)] (9.5, 1.8)
+        axes.text(23514495 + 3505412*.65, 9.5, 'PMC', fontsize=9, color='white', ha='center', **dct_txt)
+        axes.text(27019907 + 1687687/2.0, 9.5, 'db', fontsize=9, color='white', ha='center', **dct_txt)
+        # bar text: other
+        # XY-COORD [(28707594, 1819828)] (5.5, 1.8)
+        axes.text(28707594+ 1819828/2.0, 5.7, 'Other', fontsize=7, color='black', va='bottom', ha='center')
+
     def chk_content_counts(self):
         """Check the content typename and the count of that type"""
         a2n = self.name2cnt
@@ -161,43 +222,6 @@ class PubMedPlot:
         plt.arrow(pmc_x0+1600000, yval-5, -1600000, 0, **self.arrow_p)
         plt.arrow(pmc_xn-1600000, yval-5, 1600000, 0, **self.arrow_p)
         plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-5), ha='center', va='center')
-
-    def plt_content_counts(self, fout_png):
-        """Plot pubmed content"""
-        a2n = self.name2cnt
-        xmax = a2n['all']
-        ymax = 17.5
-        # Remove automatically-added 5% axes padding
-        mpl.rcParams['axes.autolimit_mode'] = 'data'  # 'data' or 'round_numbers'
-        mpl.rcParams['axes.xmargin'] = 0
-        mpl.rcParams['axes.ymargin'] = 0
-        # Get figure and axes with axes turned off and axes whitespace removed
-        fig, axes = plt.subplots()
-        fig.set_size_inches(6.4, 1.8)
-        axes.get_xaxis().set_visible(False)
-        axes.get_yaxis().set_visible(False)
-        axes.set_frame_on(False)
-        axes.set_xlim(0, xmax+500000)
-        axes.set_ylim(0, ymax+1)
-        axes.grid(False)
-        # Add horizontal bars for: PubMed, PMC, and other
-        bbars = []
-        for xvals, yval, dct in self.dataobj.get_pubmed_colorbars(ymax-5):
-            bbars.append(axes.broken_barh(xvals, yval, **dct))
-        # Add Dimension lines
-        # https://schoolworkhelper.net/technical-drawing-alphabet-of-line/
-        self._add_bounding_lines_all(xmax, ymax)
-        self._add_bounding_lines_medline(a2n['medline_n_inprocess'], ymax-2)
-        self._add_bounding_lines_pmc(ymax-6)
-        self._add_bounding_lines_other(a2n['all_ml0_pmc0'], ymax-10, xmax)
-        self._add_bounding_lines_pmc_100(ymax-12)
-        # Add legend
-        axes.legend(loc='lower left', fontsize=8, ncol=2,
-                    bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
-                    handletextpad=.2, columnspacing=1.0, labelspacing=.2)
-        # Save figure
-        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=300)
-        print('  WROTE: {PNG}'.format(PNG=fout_png))
 
 
 # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
