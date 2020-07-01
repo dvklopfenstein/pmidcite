@@ -100,10 +100,10 @@ class DataMgr:
             ## ([(0, a2n['all'])],                ( 0, 2), {'facecolors':'k', **par}),
             # MEDLINE
             ([(0,        a2n['ml_pmc0'].count)], (yval-1, 1.8), {'label':'MEDLINE', 'facecolors':'tab:blue', **par}),
-            ([(xvals[0], a2n['ip'].count)],      (yval-1, 1.8), {'label':'MEDLINE in process', 'facecolors':'tab:cyan', **par}),
+            ([(xvals[0], a2n['ip'].count)],      (yval-1, 1.8), {'label':'MEDLINE in process', 'facecolors':'lawngreen', **par}),
             ([(xvals[2], a2n['ml_pmc1'].count)], (yval-1, 1.8), {'facecolors':'tab:blue', **par}),
             # PMC
-            ([(xvals[1], a2n['pmc_ip1'].count)], (yval-3, 1.8), {'facecolors':'tab:cyan', **par}),
+            ([(xvals[1], a2n['pmc_ip1'].count)], (yval-3, 1.8), {'facecolors':'lawngreen', **par}),
             ([(xvals[2], a2n['pmc_ml1'].count)], (yval-3, 1.8), {'facecolors':'tab:blue', **par}),
             ([(xvals[3], a2n['pmc_ml0'].count)], (yval-3, 1.8), {'label':'PMC Only', 'facecolors':'brown', **par}),
             # Other
