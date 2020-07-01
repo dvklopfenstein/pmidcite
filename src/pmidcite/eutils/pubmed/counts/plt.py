@@ -74,7 +74,7 @@ class PubMedPlot:
     @staticmethod
     def _text_on_bars(axes):
         """Add text to colorbars using xy coordinates from 'XY-COORD'"""
-        dct_txt = {'va':'bottom'}
+        dct_txt = {'va':'bottom', 'fontweight':'bold'}
         # bar text: MEDLINE
         # XY-COORD [(       0, 22956376)] (11.5, 1.8)
         # XY-COORD [(22956376,   558119)] (11.5, 1.8)
@@ -90,7 +90,7 @@ class PubMedPlot:
         axes.text(27019907 + 1687687/2.0, 9.5, 'db', fontsize=9, color='white', ha='center', **dct_txt)
         # bar text: other
         # XY-COORD [(28707594, 1819828)] (5.5, 1.8)
-        axes.text(28707594+ 1819828/2.0, 5.7, 'Other', fontsize=7, color='black', va='bottom', ha='center')
+        axes.text(28707594+ 1819828/2.0, 5.7, 'Other', fontsize=6.3, color='black', ha='center', **dct_txt)
 
     def chk_content_counts(self):
         """Check the content typename and the count of that type"""
@@ -142,10 +142,10 @@ class PubMedPlot:
         plt.plot((0, 0), (ymax-12, ymax+1), color='k', linewidth=0.4)        # LEFT  PubMed LINE
         plt.plot((xend, xend), (ymax-12, ymax+1), color='k', linewidth=0.4)  # RIGHT PubMed LINE
         plt.arrow(7200000, ymax, -7300000, 0, **self.arrow_p)
-        plt.arrow(23800000, ymax, xend-23800000, 0, **self.arrow_p)
+        plt.arrow(26100000, ymax, xend-26100000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['PubMed']
         txt = '~{N:4.1f} million (M) citations in PubMed'.format(N=round(ntd.count/1000000.0, 1))
-        plt.annotate(txt, (7400000, ymax-.5))
+        plt.annotate(txt, (7400000, ymax-.5), fontweight='bold')
 
     def _add_bounding_lines_medline(self, xend, yval):
         """Add bounding lines"""
