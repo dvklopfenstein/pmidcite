@@ -86,8 +86,8 @@ class PubMedPlot:
         # XY-COORD [(23378342,  136153)] (9.5, 1.8)
         # XY-COORD [(23514495, 3505412)] (9.5, 1.8)
         # XY-COORD [(27019907, 1687687)] (9.5, 1.8)
-        axes.text(23514495 + 3505412*.65, 9.5, 'PMC', fontsize=9, color='white', ha='center', **dct_txt)
-        axes.text(27019907 + 1687687/2.0, 9.5, 'db', fontsize=9, color='white', ha='center', **dct_txt)
+        axes.text(23514495 + 3505412*.66, 9.5, 'PMC', fontsize=9, color='white', ha='center', **dct_txt)
+        axes.text(27019907 + 1687687*.43, 9.5, 'db', fontsize=9, color='white', ha='center', **dct_txt)
         # bar text: other
         # XY-COORD [(28707594, 1819828)] (5.5, 1.8)
         axes.text(28707594+ 1819828/2.0, 5.7, 'Other', fontsize=6.3, color='black', ha='center', **dct_txt)
