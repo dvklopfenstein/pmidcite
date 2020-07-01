@@ -63,7 +63,7 @@ class NIHiCiteDownloader:
     @staticmethod
     def prt_hdr(prt=sys.stdout):
         """Print column headers in one line"""
-        prt.write('KEY {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
+        prt.write('TYP {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
 
     @staticmethod
     def prt_keys(prt=sys.stdout):

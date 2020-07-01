@@ -31,7 +31,7 @@ class NIHiCiteEntry:
             citation_count='  cit',
             clin='cli',
             references='ref',
-            A=1,
+            A=0,
             author1='authors',
             title='title')
 
@@ -87,7 +87,7 @@ class NIHiCiteEntry:
         prt.write('         M: Has MeSH terms in the molecular/cellular biology category\n')
         prt.write('         C: Is a clinical trial, study, or guideline\n')
         prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
-        prt.write('     NIH section:\n')
+        prt.write('     NIH section, based on Relative Citation Ratio (RCR):\n')
         prt.write('     ----------------------------------\n')
         prt.write('         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD\n')
         prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
