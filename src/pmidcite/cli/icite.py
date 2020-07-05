@@ -3,7 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-## import os
+import os
 import sys
 import argparse
 
@@ -90,8 +90,9 @@ class NIHiCiteCli:
         self.run_icite(pmid2icitepaper, dnldr, args, argparser)
         # pylint:disable=line-too-long
         if args.pubmed:
-            pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, args.dir_pubmed_txt)
-            self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
+            if not os.path.exists(args.dir_pubmed_txt):
+                raise RuntimeError('**ERROR: NO OUTPUT DIRECTORY: {DIR}'.format(DIR=args.dir_pubmed_txt))
+            self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
 
     # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper, dnldr, args, argparser):

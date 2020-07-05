@@ -5,6 +5,7 @@ __author__ = "DV Klopfenstein"
 
 import argparse
 
+import os
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cfg import Cfg
 from pmidcite.cli.utils import get_pmids
@@ -54,6 +55,9 @@ class DnldPubMed:
         print('{N} PMIDs'.format(N=len(pmids)))
         # 2) Download PubMed entries.
         if pmids:
+            if not os.path.exists(args.dir_pubmed_txt):
+                raise RuntimeError('**ERROR: NO OUTPUT DIR: {DIR}'.format(
+                    DIR=args.dir_pubmed_txt))
             self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
 
     @staticmethod
