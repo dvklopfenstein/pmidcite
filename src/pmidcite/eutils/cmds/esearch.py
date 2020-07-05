@@ -70,24 +70,29 @@ class ESearch(EntrezUtilities):
             E=tot_pmids, A=len(set(pmids)))
         return pmids
 
-    def dnld_wr1_per_pmid(self, pmid_nt_list, database, num_ids_p_epost=10, **params):
-        """Download and write one PubMed text file entry per PMID"""
-        # Get filenames to store PubMed entry information, one PMID per file
-        # Use function, get_pmid_nt_list, to get nts w/flds: PMID fout_pubmed fout_exists
-        if not pmid_nt_list:
-            return
-        # Run EPost
-        pmids = [nt.PMID for nt in pmid_nt_list]
-        # pylint: disable=line-too-long
-        efetch_idxs, efetch_params = self.epost_ids(pmids, database, num_ids_p_epost, 1, **params)
-        #### for elem in efetch_idxs:
-        ####     print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE efetch_idx', elem)
-        #### print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', efetch_params)
-        self.dnld_wr1_per_id(database, efetch_idxs, efetch_params, pmid_nt_list)
+    #### REPLACED WITH dnld_wr1_per_id
+    #### def dnld_wr1_per_pmid(self, pmid_nt_list, database, num_ids_p_epost=10, **params):
+    ####     """Download and write one PubMed text file entry per PMID"""
+    ####     # Get filenames to store PubMed entry information, one PMID per file
+    ####     # Use function, get_pmid_nt_list, to get nts w/flds: PMID fout_pubmed fout_exists
+    ####     if not pmid_nt_list:
+    ####         return
+    ####     # Run EPost
+    ####     print(pmid_nt_list)
+    ####     pmids = [nt.PMID for nt in pmid_nt_list]
+    ####     # pylint: disable=line-too-long
+    ####     efetch_idxs, efetch_params = self.epost_ids(pmids, database, num_ids_p_epost, 1, **params)
+    ####     #### for elem in efetch_idxs:
+    ####     ####     print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE efetch_idx', elem)
+    ####     #### print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', efetch_params)
+    ####     self.dnld_wr1_per_id(database, efetch_idxs, efetch_params, pmid_nt_list)
 
     def dnld_wr1_per_id(self, database, efetch_idxs, efetch_params, pmid_nt_list):
         """Download and write one PMID PubMed entry into one text file"""
+        if not pmid_nt_list:
+            return
         pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
+        print('PPPPPPPPPPPPPPPPPPPPPPP', pmid2nt)
         for desc, start, pmids_exp, querykey_cur in efetch_idxs:
             rsp_txt = self._run_efetch(database, start, querykey_cur, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
