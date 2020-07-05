@@ -100,6 +100,7 @@ class NIHiCiteCli:
         # Print rcfile initialization file
         if args.generate_rcfile:
             self.pmidcite.prt_rcfile(sys.stdout)
+            return
         # Get user-specified PMIDs
         if not pmid2icitepaper and not args.print_keys and not args.print_header:
             argparser.print_help()
