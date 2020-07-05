@@ -92,7 +92,6 @@ class ESearch(EntrezUtilities):
         if not pmid_nt_list:
             return
         pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
-        print('PPPPPPPPPPPPPPPPPPPPPPP', pmid2nt)
         for desc, start, pmids_exp, querykey_cur in efetch_idxs:
             rsp_txt = self._run_efetch(database, start, querykey_cur, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
