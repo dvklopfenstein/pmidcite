@@ -53,9 +53,8 @@ class DnldPubMed:
         pmids = self._get_pmids(args, argparser)
         print('{N} PMIDs'.format(N=len(pmids)))
         # 2) Download PubMed entries.
-        #    nt flds: PMID fout_pubmed fout_exists
-        pmid_nt_list = self.pubmed.get_pmid_nt_list(pmids, args.force_download, args.dir_pubmed_txt)
-        self.pubmed.dnld_wr1_per_pmid(pmid_nt_list)
+        if pmids:
+            self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
 
     @staticmethod
     def _get_pmids(args, argparser):
