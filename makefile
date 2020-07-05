@@ -22,6 +22,9 @@ TESTS := \
 pytest:
 	python3 -m pytest $(TESTS)
 
+ver:
+	git describe --tags --dirty --always
+
 clean:
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
