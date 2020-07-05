@@ -33,8 +33,8 @@ class PubMed(EntrezUtilities):
             os.system('rm {FILE}'.format(FILE=fout_pubmed))
         if not efetch_idxs:
             return
-        for desc, start, pmids_exp, querykey_cur in efetch_idxs:
-            rsp_txt = self._run_efetch('pubmed', start, querykey_cur, pmids_exp, desc, **efetch_params)
+        for desc, start, pmids_exp, querykey in efetch_idxs:
+            rsp_txt = self._run_efetch('pubmed', start, querykey, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
                 with open(fout_pubmed, 'a') as prt:
                     prt.write(rsp_txt)
@@ -48,6 +48,9 @@ class PubMed(EntrezUtilities):
 
     def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt):
         """Download and write one PubMed text file entry per PMID"""
+        if not os.path.exists(dir_pubmed_txt):
+            raise RuntimeError('**ERROR: NO OUTPUT DIR: {DIR}'.format(
+                DIR=dir_pubmed_txt))
         pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt)
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', 10, 1, **self.medline_text)
         self.esearch.dnld_wr1_per_id('pubmed', efetch_idxs, efetch_params, pmid_nt_list)
@@ -55,8 +58,8 @@ class PubMed(EntrezUtilities):
     def dnld_texts(self, efetch_idxs, efetch_params):
         """Download and save one PMID PubMed entry into a text string"""
         txts = []
-        for desc, start, pmids_exp, querykey_cur in efetch_idxs:
-            rsp_txt = self._run_efetch('pubmed', start, querykey_cur, pmids_exp, desc, **efetch_params)
+        for desc, start, pmids_exp, querykey in efetch_idxs:
+            rsp_txt = self._run_efetch('pubmed', start, querykey, pmids_exp, desc, **efetch_params)
             txts.append(rsp_txt)
         return txts
 
