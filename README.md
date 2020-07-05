@@ -2,8 +2,8 @@
 Augment your literature search 
 from the command-line to link 
 citation data from [**NIH's iCite**](https://icite.od.nih.gov)
-and [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
-rather than clicking and clicking on
+with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
+rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
@@ -33,7 +33,18 @@ Store your literature search in a GitHub repo.
 ### 1. Add a pmidcite init file
 Add a .pmidciterc init file to a non-git managed directory, like home (~)
 ```
-$ cp ./doc/.pmidciterc ~
+$ icite --generate-rcfile | tee ~/.pmidciterc
+[pmidcite]
+email = name@email.edu
+apikey = long_hex_digit
+tool = scripts
+dir_icite_py = .
+dir_pubmed_txt = .
+dir_pmids = .
+dir_icite = .
+```
+
+```
 $ export PMIDCITECONF=~/.pmidciterc
 ```
 You will want .pmidciterc to not be managed by GitHub because it
@@ -53,6 +64,9 @@ $ mkdir [GIT_REPO_PATH]/log/icite
 If you want to download PubMed abstracts and PubMed search results using NCBI's E-Utils,
 get an NCBI API key by following instructions here:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
+
+Set the `apikey` value in the config file: `~/.pmidciterc`
+
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
