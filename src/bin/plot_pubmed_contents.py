@@ -12,7 +12,7 @@ from pmidcite.eutils.pubmed.counts.plt import PubMedPlot
 
 def main(dnld=False):
     """Plot the types of content and their amount in PubMed"""
-    fpat_png = 'log/pubmed_content/pubmed_content_{DATE}.png'
+    ## fpat_png = 'log/pubmed_content/pubmed_content_{DATE}.png'
     fout_pngs = [
         'pubmed_content_2020_01_10.png',
         'pubmed_content_2020_01_10.tiff'
