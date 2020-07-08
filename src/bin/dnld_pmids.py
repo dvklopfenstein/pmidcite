@@ -15,7 +15,7 @@ def main():
     queries = [
         # Output filenames      PubMed query
         # -----------------    -----------------------------------
-        ('systematic_review.txt', 'systematic review AND "how to"[TI]')
+        ('systematic_review.txt', 'systematic review AND "how to"[TI]'),
     ]
     # Default is to only run the last entry in the list, index = -1
     #
