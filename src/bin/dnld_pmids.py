@@ -9,7 +9,7 @@ from pmidcite.pubmedqueryicite import PubMedQueryToICite
 
 
 def main():
-    """Download PMIDs returned from user queries. Write: ./log/pmids ./log/icite"""
+    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
     # pylint: disable=bad-whitespace
     queries = [
         # Output filenames         PubMed query
