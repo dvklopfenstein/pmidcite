@@ -1,17 +1,27 @@
+# pmidcite (icite): Link citation data from NIH's iCite with PubMed IDs
 [pmidcite]
 
-# NCBI E-Utils needs: email, apikey, and tool
+# NCBI E-Utils needs: email, apikey, and tool to download PubMed records.
 # Learn more about registering for a NCBI API key here:
 # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 email = you@univ.edu
 apikey = [LONG_HEX_API]
 tool = scripts
 
-# Store PubMed citation data in various sub-directories
+# Store PubMed citation data in a directory that is not version-managed
+# because thousands of citation records will be downloaded from NIH's iCite.
 dir_icite_py = ./icite
+
+# Store records downloaded form PubMed in its own directory for easy access.
 dir_pubmed_txt = ./log/pubmed
 
-# For downloading longer lists of PMIDs into a file and running iCite
+# dir_pmids:
+# Store files containing longer lists of PMIDs in its own directory.
+# Longer lists of PMIDs are downloaded either from the PubMed GUI
+# or by running a PubMed query from the dnld_pmids.py script.
+#
+# dir_icite:
+# Store icite information run on a file containing PMIDs in 
+# its own directory for easy access.
 dir_pmids = ./log/pmids
 dir_icite = ./log/icite
-

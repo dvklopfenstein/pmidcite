@@ -105,6 +105,7 @@ class NIHiCiteDownloader:
     # pylint: disable=too-many-arguments
     def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
+        #### print('PPPPPPPPPPPPPPPPPPPPPPPP', paper, pmid, name)
         if paper is not None:
             if prt_assc_pmids:
                 #print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX paper.prt_summary')
