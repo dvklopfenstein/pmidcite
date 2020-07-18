@@ -24,24 +24,6 @@ class NIHiCiteDownloader:
         self.loader = NIHiCiteLoader(self.dir_dnld)
         self.api = api                # NIHiCiteAPI
 
-    #### def wr_papers(self, fout_txt, force_overwrite, pmid2ntpaper, mode='w', pmid2note=None):
-    ####     """Run iCite for user-provided PMIDs and write to a file"""
-    ####     ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers', pmid2note)
-    ####     if not pmid2ntpaper:
-    ####         return
-    ####     pmids_all = pmid2ntpaper.keys()
-    ####     pmids_new = pmids_all
-    ####     if mode == 'a':
-    ####         pmids_new = self._get_new_pmids(fout_txt, pmids_all)
-    ####         ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new)
-    ####     if pmids_new:
-    ####         ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2ntpaper, pmid2note)
-    ####         if self._do_write(fout_txt, force_overwrite):
-    ####             with open(fout_txt, mode) as prt:
-    ####                 pmids_prt = self.prt_papers(pmid2ntpaper, prt, pmid2note=pmid2note)
-    ####             print('{WR}: {TXT}'.format(
-    ####                 WR=self._msg_wrote(mode, pmids_all, pmids_prt), TXT=fout_txt))
-
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
         ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers')
@@ -76,23 +58,6 @@ class NIHiCiteDownloader:
         prt.write('\nNIH iCite details:\n\n')
         NIHiCiteEntry.prt_keys(prt)
         prt.write('\n')
-
-    #### def prt_papers(self, pmid2ntpaper, prt=sys.stdout, prt_assc_pmids=True, pmid2note=None):
-    ####     """Print papers, including citation counts, cite_by and references list"""
-    ####     #print('PPPPPPPPPPPPPPPPPPPPPPPPPPP NIHiCiteDownloader prt_papers')
-    ####     pmids = set()
-    ####     if pmid2note is None:
-    ####         pmid2note = {}
-    ####     for pmid, paper in pmid2ntpaper.items():
-    ####         if paper is not None:
-    ####             self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
-    ####             pmids.add(pmid)
-    ####         elif pmid in pmid2note:
-    ####             prt.write('TOP {PMID} {NOTE}\n'.format(PMID=pmid, NOTE=pmid2note[pmid]))
-    ####             pmids.add(pmid)
-    ####         else:
-    ####             print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
-    ####     return pmids
 
     def prt_papers(self, pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""

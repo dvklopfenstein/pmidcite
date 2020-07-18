@@ -9,7 +9,10 @@ apikey = [LONG_HEX_API]
 tool = scripts
 
 # Store PubMed citation data in a directory that is not version-managed
-# because thousands of citation records will be downloaded from NIH's iCite.
+# because thousands of citation records will be downloaded from NIH's iCite
+# and stored in Python modules.
+# 
+# Be sure to add a __init__.py file to the ./icite directory
 dir_icite_py = ./icite
 
 # Store records downloaded form PubMed in its own directory for easy access.
