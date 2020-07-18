@@ -155,7 +155,7 @@ class NIHiCiteCli:
     def _wr_papers(self, pmid2icitepaper, dnldr):
         """Write one icite report per PMID into dir_icite/PMID.txt"""
         for pmid, paper in pmid2icitepaper.items():
-            fout_txt = os.path.join(self.pmidcite.dir_icite_py, '{PMID}.txt'.format(PMID=pmid))
+            fout_txt = os.path.join(self.pmidcite.dir_icite, '{PMID}.txt'.format(PMID=pmid))
             with open(fout_txt, 'w') as prt:
                 dnldr.prt_papers({pmid:paper}, prt, prt_assc_pmids=True)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))

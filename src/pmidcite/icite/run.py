@@ -14,6 +14,7 @@ class PmidCite:
 
     def __init__(self, cfgparser):
         self.cfgparser = cfgparser  # Cfg
+        self.dir_icite = self.cfgparser.cfgparser['pmidcite']['dir_icite']  # ./log/icite
         self.dir_icite_py = self.cfgparser.cfgparser['pmidcite']['dir_icite_py']  # ./icite
 
     def run_pmid_file(self, fin_pmids, fout_icite, force_download):
