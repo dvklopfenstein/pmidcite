@@ -34,13 +34,13 @@ class NIHiCitePaper:
         'year': sortby_year,
     }
 
-    def __init__(self, pmid, dirpy, header=None, pmid2note=None):
+    def __init__(self, pmid, pmid2icite, header=None, pmid2note=None):
         self.pmid = pmid
-        self.dirpy = dirpy
+        self.pmid2icite = pmid2icite
         self.hdr = header  # A header to print before a paper
         # A short pmid2note to print at end of cite line
         self.pmid2note = {} if pmid2note is None else pmid2note
-        self.icite = self._init_iciteobj(self.load_pmid(pmid))  # NIH iCite object
+        self.icite = pmid2icite.get(pmid)
         ## print('VVVVVVVVVVVVVVV', self.icite)
         self.cited_by = self._init_pmids('cited_by')
         self.cited_by_clin = self._init_pmids('cited_by_clin')
@@ -132,12 +132,10 @@ class NIHiCitePaper:
 
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
-        return  self.load_pmids(self.icite.dct[name]) if self.icite else []
-
-    @staticmethod
-    def _init_iciteobj(icite_dct):
-        """Initialize the top NIH iCite paper, if it exists"""
-        return NIHiCiteEntry(icite_dct) if icite_dct else None
+        if self.icite is None:
+            return []
+        s_pmid2icite = self.pmid2icite
+        return set(s_pmid2icite[pmid] for pmid in self.icite.dct[name] if pmid in s_pmid2icite)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
