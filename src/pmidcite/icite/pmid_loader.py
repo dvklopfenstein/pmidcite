@@ -15,9 +15,10 @@ from pmidcite.icite.entry import NIHiCiteEntry
 class NIHiCiteLoader:
     """Load iCite citations that are stored as a dict in a Python module"""
 
-    def __init__(self, dir_icitepy, icitepypat='p{PMID}.py'):
+    def __init__(self, dir_icitepy, icitepypat='p{PMID}.py', prt=sys.stdout):
         self.dir_dnld = dir_icitepy  # e.g., ./icite
         self.icitepypat = icitepypat
+        self.prt = prt
 
     def load_icites(self, pmids, prt=sys.stdout):
         """Load multiple NIH iCite data from Python modules"""
@@ -31,14 +32,14 @@ class NIHiCiteLoader:
             iciteobj = s_load_icite(file_pmid)
             if iciteobj is not None:
                 icites.append(iciteobj)
-        if prt:
-            prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
+        if self.prt:
+            self.prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
                 N=len(icites), P=len(pmids)))
         return icites
 
-    def load_icite_mods_all(self, pmidstrs_top):
+    def load_icite_mods_all(self, pmids_top):
         """Load iCite all connected NIHiCiteEntry"""
-        icites_top = self.load_icites(pmidstrs_top)
+        icites_top = self.load_icites(pmids_top)
         pmids_top = set(o.dct['pmid'] for o in icites_top)
         pmids_linked = self._get_pmids_linked(icites_top)
         icites_linked = self.load_icites(pmids_linked.difference(pmids_top))
