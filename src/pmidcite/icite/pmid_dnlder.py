@@ -21,7 +21,7 @@ class NIHiCiteDownloader:
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
         self.dir_dnld = api.dir_dnld  # e.g., ./icite
-        self.loader = NIHiCiteLoader(self.dir_dnld)
+        self.loader = NIHiCiteLoader(self.dir_dnld, prt=None)
         self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
@@ -143,7 +143,9 @@ class NIHiCiteDownloader:
         if citeobj_top:
             if dnld_assc_pmids_do:
                 self._dnld_assc_pmids(citeobj_top, prt)
-            return NIHiCitePaper(pmid_top, self.dir_dnld, header, pmid2note)
+            icites = self.loader.load_icite_mods_all([pmid_top])
+            pmid2icite = {o.dct['pmid']:o for o in icites}
+            return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
         note = ''
         if pmid2note and pmid_top in pmid2note:
             note = pmid2note[pmid_top]
@@ -153,6 +155,11 @@ class NIHiCiteDownloader:
             NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
+    @staticmethod
+    def _init_iciteobj(icite_dct):
+        """Initialize the top NIH iCite paper, if it exists"""
+        return NIHiCiteEntry(icite_dct) if icite_dct else None
+
     def _dnld_assc_pmids(self, icite, prt=sys.stdout):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
@@ -161,6 +168,7 @@ class NIHiCiteDownloader:
             return []
         ## print('BBBBBBBBBBBBBBBB self.dnld_force', self.dnld_force)
         if self.dnld_force:
+            ## print('FORCE DOWNLOAD')
             return self.api.dnld_icites(pmids_assc)
         ## print('CCCCCCCCCCCCCCCC')
         pmids_missing = self._get_pmids_missing(pmids_assc)
