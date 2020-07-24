@@ -50,7 +50,10 @@ class PubMedQueryToICite:
         fout_icite = os.path.join(self.get_dir_icite(), fout_pat.format(PRE='icite'))
         # 2) Write PubMed PMIDs into a simple text file, one PMID per line
         if fout_pmids != fout_icite:
-            wr_pmids(fout_pmids, pmids)
+            if pmids:
+                wr_pmids(fout_pmids, pmids)
+            else:
+                print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         self.wr_icite(fout_icite, pmids)
 
