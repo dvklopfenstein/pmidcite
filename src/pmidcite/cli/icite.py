@@ -150,7 +150,8 @@ class NIHiCiteCli:
         else:
             if not args.quiet:
                 dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
-            dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
+            if dct['outfile'] is not None:
+                dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
 
     def _wr_papers(self, pmid2icitepaper, dnldr):
         """Write one icite report per PMID into dir_icite/PMID.txt"""
