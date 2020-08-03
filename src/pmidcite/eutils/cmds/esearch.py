@@ -155,13 +155,14 @@ class ESearch(EntrezUtilities):
                 print('{I} FFFFFFFFFFFF {K:20} {V}'.format(I=idx, K=key, V=val))
 
     @staticmethod
-    def get_pmid_nt_list(ids, database, force_download, dir_pubmed):
+    def get_pmid_nt_list(ids, database, force_download, dir_pubmed, pmid2name=None):
         """Get list of database entries. PubMed ex: Title, abstract, authors, journal, MeSH"""
         nts = []
         ntobj = cx.namedtuple('Nt', 'PMID file_pubmed file_exists')
         for id_val in ids:
+            name = pmid2name[id_val] if pmid2name and id_val in pmid2name else id_val
             # Get filename, pubmed_PMID.txt
-            file_db = os.path.join(dir_pubmed, '{DB}_{ID}.txt'.format(DB=database, ID=id_val))
+            file_db = os.path.join(dir_pubmed, '{DB}_{ID}.txt'.format(DB=database, ID=name))
             file_exists = os.path.exists(file_db)
             if not file_exists or force_download:
                 ntd = ntobj(PMID=id_val, file_pubmed=file_db, file_exists=file_exists)

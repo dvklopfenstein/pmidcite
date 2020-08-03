@@ -46,12 +46,12 @@ class PubMed(EntrezUtilities):
         dct = self.run_eutilscmd('esearch', db='pubmed', term=query, retmode='json')
         return dct
 
-    def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt):
+    def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt, pmid2name=None):
         """Download and write one PubMed text file entry per PMID"""
         if not os.path.exists(dir_pubmed_txt):
             raise RuntimeError('**ERROR: NO OUTPUT DIR: {DIR}'.format(
                 DIR=dir_pubmed_txt))
-        pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt)
+        pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt, pmid2name)
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', 10, 1, **self.medline_text)
         self.esearch.dnld_wr1_per_id('pubmed', efetch_idxs, efetch_params, pmid_nt_list)
 
@@ -69,10 +69,10 @@ class PubMed(EntrezUtilities):
         return 'IDs/epost={P} IDs/efetch={F} querykey({Q}) start({S})'.format(
             P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey, S=start)
 
-    def get_pmid_nt_list(self, pmids, force_download, dir_pubmed):
+    def get_pmid_nt_list(self, pmids, force_download, dir_pubmed, pmid2name=None):
         """Get list of PubMed entries: Title, abstract, authors, journal, MeSH"""
         # [Nt(PMID=31614060, file_pubmed='./log/pubmed/pubmed_31614060.txt', file_exists=False)]
-        return self.esearch.get_pmid_nt_list(pmids, 'pubmed', force_download, dir_pubmed)
+        return self.esearch.get_pmid_nt_list(pmids, 'pubmed', force_download, dir_pubmed, pmid2name)
 
 
 
