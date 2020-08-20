@@ -8,8 +8,8 @@ import os
 import datetime
 
 import re
-from PyBiocode.mesh.terms import MeshTerms
-from PyBiocode.pubmed.authors import Authors
+from pmidcite.eutils.mesh.terms import MeshTerms
+from pmidcite.eutils.pubmed.authors import Authors
 
 
 class PubMedRdWr:
