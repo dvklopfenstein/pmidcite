@@ -14,7 +14,7 @@ rather than clicking and clicking and clicking on
 
 ## To Cite
 
-_If you use **pmidcite** in your literature search, please cite the following peer-reviewd Letter-to-the-Editor:
+_If you use **pmidcite** in your literature search, please cite the following peer-reviewd Letter-to-the-Editor_:
 
 Klopfenstein DV and Dampier W [Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools](???)
 _Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
