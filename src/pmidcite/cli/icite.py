@@ -66,8 +66,8 @@ class NIHiCiteCli:
             '-R', '--no_references', action='store_true',
             help='Print the list of citations, but not the list of references.')
         parser.add_argument(
-            '-s', '--succinct', action='store_true',
-            help="Print one line for each PMID provided by user. Don't add lines per cite or ref.")
+            '-v', '--verbose', action='store_true', default=False,
+            help="Print all citing papers and references for each PMID provided by user.")
         parser.add_argument(
             '-q', '--quiet', action='store_true',
             help='Quiet mode; Do not echo the paper report to screen.')
@@ -90,6 +90,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
+        ## print('ICITE ARGS', args)
         self.pmidcite.dir_icite_py = args.dir_icite_py
         dnldr = self.get_icite_downloader(args.force_download, args.no_references)
         pmids = get_pmids(args.pmids, args.infile)
@@ -143,7 +144,7 @@ class NIHiCiteCli:
     def run_icite_wr(pmid2icitepaper, args, dnldr):
         """Print papers, including citation counts"""
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
-        prt_verbose = not args.succinct
+        prt_verbose = args.verbose
         if dct['outfile'] is None and not args.O:
             dnldr.prt_papers(
                 pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
