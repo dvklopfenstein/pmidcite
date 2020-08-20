@@ -5,8 +5,8 @@ __author__ = "DV Klopfenstein"
 
 import sys
 import collections as cx
-from PyBiocode.dnld.mesh.descriptors import nts as nts_mesh_desc
-from dvkbiodnld.data.mesh.qualifiers import NTS as nts_mesh_qual
+from pmidcite.eutils.pubmed.descriptors import nts as nts_mesh_desc
+from pmidcite.eutils.pubmed.qualifiers import NTS as nts_mesh_qual
 
 class MeshTerms(object):
   """Manage MeSH descriptors or qualifiers stored in Python modules."""

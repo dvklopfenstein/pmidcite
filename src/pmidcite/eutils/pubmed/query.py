@@ -12,8 +12,8 @@ __author__ = "DV Klopfenstein"
 import os
 import sys
 from pmidcite.eutils.pubmed.rdwr import PubMedRdWr
+from pmidcite.eutils.pubmed.record import PubMedRecord
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pubscite.record import PubMedRecord
 
 
 # pylint: disable=too-few-public-methods
