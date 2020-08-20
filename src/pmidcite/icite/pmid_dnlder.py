@@ -26,16 +26,13 @@ class NIHiCiteDownloader:
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
-        ## print('WWWWWWWWWWWWWWWWWWWWWWWWWWW NIHiCiteDownloader wr_papers')
         if not pmid2icitepaper:
             return
         pmids_all = pmid2icitepaper.keys()
         pmids_new = pmids_all
         if mode == 'a':
             pmids_new = self._get_new_pmids(fout_txt, pmids_all)
-            ## print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa pmids_new', pmids_new, pmids_all)
         if pmids_new:
-            ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPP', pmid2icitepaper)
             if self._do_write(fout_txt, force_overwrite):
                 with open(fout_txt, mode) as prt:
                     self.prt_papers(pmid2icitepaper, prt)
@@ -70,10 +67,8 @@ class NIHiCiteDownloader:
     # pylint: disable=too-many-arguments
     def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
-        #### print('PPPPPPPPPPPPPPPPPPPPPPPP', paper, pmid, name)
         if paper is not None:
             if prt_assc_pmids:
-                #print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX paper.prt_summary')
                 paper.prt_summary(prt, self.rpt_references, sortby_cites='nih_sd', sortby_refs=None)
                 prt.write('\n')
             else:
@@ -128,7 +123,6 @@ class NIHiCiteDownloader:
 
     def get_pmid2paper(self, pmids, dnld_assc_pmids_do, pmid2note=None, prt=sys.stdout):
         """Get a NIHiCitePaper object for each user-specified PMID"""
-        ## print('NNNNNNNNNNNNNNNNNN pmidcite get_pmid2paper', pmids, dnld_assc_pmids_do, pmid2note)
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
             papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, None, prt) for p in pmids]
@@ -163,24 +157,16 @@ class NIHiCiteDownloader:
     def _dnld_assc_pmids(self, icite, prt=sys.stdout):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
-        ## print('AAAAAAAAAAAAAAAA pmids_assc', pmids_assc)
         if not pmids_assc:
             return []
-        ## print('BBBBBBBBBBBBBBBB self.dnld_force', self.dnld_force)
         if self.dnld_force:
-            ## print('FORCE DOWNLOAD')
             return self.api.dnld_icites(pmids_assc)
-        ## print('CCCCCCCCCCCCCCCC')
         pmids_missing = self._get_pmids_missing(pmids_assc)
-        ## print('{N} PMIDs assc'.format(N=len(pmids_assc)))
-        ## print('{N} PMIDs missing'.format(N=len(pmids_missing)))
         if pmids_missing:
             objs_missing = self.api.dnld_icites(pmids_missing)
             pmids_load = pmids_assc.difference(pmids_missing)
             objs_dnlded = self.loader.load_icites(pmids_load, prt)
-            ## print('{N} PMIDs loaded'.format(N=len(pmids_load)))
             return objs_missing + objs_dnlded
-        ## print('DDDDDDDDDDDDDDDD', prt)
         return self.loader.load_icites(pmids_assc, prt)
 
     def _get_pmids_missing(self, pmids_all):
@@ -195,12 +181,8 @@ class NIHiCiteDownloader:
     def dnld_icite_pmid(self, pmid):
         """Download NIH iCite data for requested PMIDs"""
         file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
-        ## print('DDDDDDDDDDDDDDD dnld_icite_pmid force_dnld={F} {P} exists = {E}'.format(
-        ##     F=self.dnld_force, E=os.path.exists(file_pmid), P=file_pmid))
         if self.dnld_force or not os.path.exists(file_pmid):
-            ## print('DDDDDDDDDDDDDDD dnld_icite_pmid DOWNLOADING icite')
             iciteobj = self.api.dnld_icite(pmid)
-            ## print('DDDDDDDDDDDDDDD dnld_icite_pmid iciteobj', iciteobj)
             if iciteobj is not None:
                 return iciteobj
         return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
