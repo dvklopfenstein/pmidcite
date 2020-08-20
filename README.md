@@ -9,9 +9,9 @@ rather than clicking and clicking and clicking on
 
 * ***pmidcite**
   * [**Quick start**](#quick-start)
-    * [**Get citation counts, given PMIDs**]()
-    * [**Query PubMed and download the citation data from a script or a file of PMIDs**]()
-    * [**Get citation data for PMIDs listed in a file**]()
+    * [**Get citation counts, given PMIDs**](#get-citation-counts-given-pmids)
+    * [**Query PubMed and download the citation data**](#query-pubmed-and-download-the-citation-data)
+    * [**Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downlaoded-from-pubmed)
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
@@ -26,7 +26,7 @@ $ icite 26032263 -H
 TYP PMID     RP HAMCc   % SD YR   cit cli ref au[00](authors) title
 TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making literature reviews more reliable through application of lessons from systematic reviews.
 ```
-The first line is the header (-H).    
+The first line is the column headers (-H).    
 The second line is the citation data from NIH's iCite database.
 The citation counts are in the `cit` column.
 
@@ -75,10 +75,10 @@ NIH iCite details:
 ```
 
 ### Query PubMed and download the citation data
-Query PubMed and download the citation data from the script, `src/bin/dnld_pmids.py'.
+Query PubMed and download the citation data from the script, `src/bin/dnld_pmids.py`.    
 **NOTE:** Copy `src/bin/dnld_pmids.py` to your project repo. Don't modify the pmidcite example.
 
-#### 1. Add your query to the script
+#### 1. Add your query to your `dnld_pmids.py` script
 ```
     queries = [
         # Output filenames   PubMed query
@@ -104,14 +104,14 @@ TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic 
 ```
 
 #### 4. Get citation data using PMIDs downlaoded from PubMed
-Note that the PubMed query using NIH E-utils from the `src/bin/dnld_pmids.py' script
+Note that the PubMed query using NIH E-utils from the `src/bin/dnld_pmids.py` script
 will often be slightly different than the query run on the PubMed website.
 PubMed has been alerted.
 
 So you may also want to view citation data on PMID PubMed query results
-downloaded (Save->All results, Format=PMID) from the PubMed website:
+downloaded from the PubMed website (Save->All results, Format=PMID):
 ```
-$ icite -i /cygdrive/c/Users/note2/Downloads/pmid-OrcinusOrc-set.txt
+$ icite -i pmid-OrcinusOrc-set.txt
 TOP 30123694 RP HA...  17 2 2018     1  0   6 au[07](Paul Tixier) Killer whale (<i>Orcinus orca</i>) interactions with blue-eye trevalla (<i>Hyperoglyphe antarctica</i>) longline fisheries.
 TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
 TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
