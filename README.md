@@ -1,30 +1,34 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
-Augment your literature search 
-from the command-line to link 
+Augment your PubMed literature search 
+from the command-line by linking
 citation data from [**NIH's iCite**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* [**Setup**](#setup)
+* [**_pmidcite_ Setup**](#setup)
+* [**_pmidcite_ Documentation**](???)
+* Take a [quick tour](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [PubMed](https://pubmed.ncbi.nlm.nih.gov) 
 
-## Examples
-* [Examine one paper's citations and references]()
-* [Examine iCite results on PMIDs returned from a PubMed Query]()
 
-### Examine one paper's citations and references.
-`icite 32260091 | sort -k1,1 -k6`
+## To Cite
 
-### Examine iCite results on PMIDs returned from a PubMed Query
-#### Script contents
-src/bin/dnld_pmids.py
-#### Run script
-src/bin/dnld_pmids.py
-#### Examine iCite results on PMIDs returned from a PubMed Query
-grep -w TOP ./log/icite/protfnc_antibodies.txt | sort -k6
+_If you use **pmidcite** in your literature search, please cite the following peer-reviewd Letter-to-the-Editor:
 
-## Take a [quick tour](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [PubMed](https://pubmed.ncbi.nlm.nih.gov) 
+Klopfenstein DV and Dampier W [Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools](???)
+_Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
+
+_and please cite the paper announcing NIH's iCite citation data_:
+
+Hutchins B ... Santangelo G [The NIH Open Citation Collection: A public access, broad coverage resource](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
+_PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
+
+_Please consider reading and citing the paper which inspired the creation of **pmidcite**_:
+
+Gusenbauer M and Haddaway N [Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
+_Research Synthesis Methods_ | 2019 | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
+
 
 
 ## Setup
