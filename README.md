@@ -165,19 +165,19 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 _If you use **pmidcite** in your literature search, please cite the following peer-reviewed Letter-to-the-Editor_:
 
-[Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools](???)    
+[**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools**](???)    
 Klopfenstein DV and Dampier W    
 _Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
 
 _And please cite the paper announcing NIH's iCite citation data_:
 
-[The NIH Open Citation Collection: A public access, broad coverage resource](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
+[**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins B ... Santangelo G    
 _PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
 _Please consider reading and citing the paper which inspired the creation of **pmidcite**_:
 
-[Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
+[**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
 _Research Synthesis Methods_ | 2019 | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
 
