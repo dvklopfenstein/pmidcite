@@ -23,7 +23,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     packages=['pmidcite',],
     package_dir={'pmidcite': 'src/pmidcite'},
-    scripts=glob('src/bin/*.py',
+    scripts=glob('src/bin/*.py'),
     classifiers=[
         'Programming Language :: Python',
         'Environment :: Console',
