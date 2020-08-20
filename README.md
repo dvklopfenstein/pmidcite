@@ -110,7 +110,7 @@ PubMed has been alerted.
 
 So you may also want to view citation data on PMID PubMed query results
 downloaded from the PubMed website:    
-Save->All results, Format=PMID
+*Save->All results, Format=PMID*
 ```
 $ icite -i pmid-OrcinusOrc-set.txt
 TOP 30123694 RP HA...  17 2 2018     1  0   6 au[07](Paul Tixier) Killer whale (<i>Orcinus orca</i>) interactions with blue-eye trevalla (<i>Hyperoglyphe antarctica</i>) longline fisheries.
