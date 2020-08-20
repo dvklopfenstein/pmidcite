@@ -140,8 +140,8 @@ dir_icite = .
 ```
 $ export PMIDCITECONF=~/.pmidciterc
 ```
-You will want .pmidciterc to not be managed by GitHub because it
-will contain your personal email and your own NCBI API key.
+You will want `.pmidciterc` to **not** be managed by GitHub because it
+will contain your personal email and your private NCBI API key.
 
 ### 2. Add directories
 Add directories which match those in ~/.pmidciterc:
