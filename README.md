@@ -7,7 +7,7 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* ***pmidcite**
+* ***pmidcite***
   * [**Quick start**](#quick-start)
     * [**Get citation counts, given PMIDs**](#get-citation-counts-given-pmids)
     * [**Query PubMed and download the citation data**](#query-pubmed-and-download-the-citation-data)
@@ -109,7 +109,8 @@ will often be slightly different than the query run on the PubMed website.
 PubMed has been alerted.
 
 So you may also want to view citation data on PMID PubMed query results
-downloaded from the PubMed website (Save->All results, Format=PMID):
+downloaded from the PubMed website:    
+Save->All results, Format=PMID
 ```
 $ icite -i pmid-OrcinusOrc-set.txt
 TOP 30123694 RP HA...  17 2 2018     1  0   6 au[07](Paul Tixier) Killer whale (<i>Orcinus orca</i>) interactions with blue-eye trevalla (<i>Hyperoglyphe antarctica</i>) longline fisheries.
@@ -120,7 +121,7 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 
 ## Setup
-Store your literature search in a GitHub repo.
+Save your literature search in a GitHub repo.
 
 ### 1. Add a pmidcite init file
 Add a .pmidciterc init file to a non-git managed directory, like home (~)
@@ -164,19 +165,21 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 _If you use **pmidcite** in your literature search, please cite the following peer-reviewed Letter-to-the-Editor_:
 
-Klopfenstein DV and Dampier W [Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools](???)
+[Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools](???)    
+Klopfenstein DV and Dampier W    
 _Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
 
 _And please cite the paper announcing NIH's iCite citation data_:
 
-Hutchins B ... Santangelo G [The NIH Open Citation Collection: A public access, broad coverage resource](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
+[The NIH Open Citation Collection: A public access, broad coverage resource](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
+Hutchins B ... Santangelo G    
 _PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
 _Please consider reading and citing the paper which inspired the creation of **pmidcite**_:
 
-Gusenbauer M and Haddaway N [Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
+[Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
+Gusenbauer M and Haddaway N    
 _Research Synthesis Methods_ | 2019 | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
-
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
