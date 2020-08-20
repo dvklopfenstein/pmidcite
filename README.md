@@ -95,7 +95,7 @@ src/bin/dnld_pmids.py
      3 WROTE: ./log/icite/Orcinus_Orca_Type_D.txt
 ```
 
-#### 3. Examine the citation and pubmed data, sorting by year in column 7
+#### 3. Examine the citation and pubmed data, sorting by year (column 7)
 ```
 $ grep TOP ./log/icite/Orcinus_Orca_Type_D.txt | sort -k7
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
