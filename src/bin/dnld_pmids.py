@@ -12,9 +12,10 @@ def main():
     """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
     # pylint: disable=bad-whitespace
     queries = [
-        # Output filenames         PubMed query
-        # -----------------       -----------------------------------
-        ('systematic_review.txt', 'systematic review AND "how to"[TI]'),
+        # Output filenames               PubMed query
+        # -----------------              -----------------------------------
+        ('systematic_review.txt',        'systematic review AND "how to"[TI]'),
+        ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
     ]
 
     # By default, only the last entry in the list is run.
