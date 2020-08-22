@@ -110,25 +110,12 @@ class PubMedRdWr:
     def _get_fldobjs_one(self, fldlines, pmid):
         """Given a list of lines in a PubMed entry, return objects."""
         fld2objs = {}
-        ids = set(['LID', 'AID'])
         field2fnc = self.field2fnc
         for fld, line in fldlines:
             # Mesh Terms
             line = " ".join(line)
             if fld in field2fnc:
                 field2fnc[fld](fld2objs, fld, line, pmid)
-            #### if fld == 'PMID':
-            ####     fld2objs[fld] = int(line)
-            #### elif fld == 'MH':
-            ####     self._fld_add_to_list(fld2objs, fld, line)
-            #### elif fld in ids:  # LID and AID 'Location identifier' and 'Article identifier'
-            ####     self._lid_add_to_dict(fld2objs, fld, line)
-            #### # Date objects
-            #### elif fld in self.dates:
-            ####     fld2objs[fld] = self._init_date(line)
-            #### # Author objects
-            #### elif fld in Authors.flds:
-            ####     self._add_author(fld2objs, fld, line, pmid)
             else:
                 fld2objs[fld] = line
             # Author list
@@ -137,6 +124,7 @@ class PubMedRdWr:
         # die
         return fld2objs
 
+    # pylint: disable=unused-argument
     @staticmethod
     def _to_int(fld2objs, fld, line, pmid):
         """Add a value to a list."""
@@ -305,7 +293,7 @@ class PubMedRdWr:
             #### prt.write("{VAL},\n".format(VAL=addquot(fld_val)))
             prt.write("{VAL},\n".format(VAL=''.join(["'", fld_val, "'"])))
 
-    #### def _init_date(self, str_date):
+    # pylint: disable=too-many-statements
     def _init_date(self, fld2objs, fld, str_date, pmid):
         """Convert string date to datetime object."""
         # Compensate for fmts: 1993-1994, 2001 Jul 16-31, 2002 Sep 1-15, 2012 Sep-Oct
@@ -341,27 +329,27 @@ class PubMedRdWr:
                         #print "WAS", str_date
                         mtch = re.match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
                         if mtch:
-                            return datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
+                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
                         mtch = re.match(r'(\d{4} \S{3})\w?\s*-', str_date)
                         if mtch:
-                            return datetime.datetime.strptime(mtch.group(1), "%Y %b")
+                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
                         # 2016 09-10  ->  2016 10
                         mtch = re.match(r'(\d{4} \d{2})\s*-', str_date)
                         if mtch:
-                            return datetime.datetime.strptime(mtch.group(1), "%Y %m")
+                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %m")
                         raise Exception("UNRECOGNIZED FORMAT {}".format(str_date))
         elif "/" in str_date:
             mtch = re.match(r'(\d{4} \w{3})/', str_date)
             if mtch:
-                return datetime.datetime.strptime(mtch.group(1), "%Y %b")
+                fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
             raise Exception("UNRECOGNIZED FORMAT {}".format(str_date))
         else:
             # Apr 2017
             mtch = re.match(r'(\w{3} \d{4})', str_date)
             if mtch:
-                return datetime.datetime.strptime(mtch.group(1), "%b %Y")
+                fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%b %Y")
         #print locale.getlocale()
-        # return datetime object
+        # fld2objs[fld] = datetime object
         date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
             print("STRING DATE({})".format(str_date))
@@ -370,7 +358,7 @@ class PubMedRdWr:
             date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
             raise Exception("BAD FORMAT ({})".format(str_date))
-        return datetime.datetime.strptime(str_date, date_str)
+        fld2objs[fld] = datetime.datetime.strptime(str_date, date_str)
 
 # pylint: disable=too-few-public-methods
 class ProcessLines:
