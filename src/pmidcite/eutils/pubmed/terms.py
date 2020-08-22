@@ -5,7 +5,7 @@ __author__ = "DV Klopfenstein"
 
 import sys
 import collections as cx
-from pmidcite.eutils.pubmed.descriptors import nts as nts_mesh_desc
+from pmidcite.eutils.pubmed.descriptors import UI2NT
 from pmidcite.eutils.pubmed.qualifiers import NTS as nts_mesh_qual
 
 class MeshTerms(object):
@@ -13,10 +13,10 @@ class MeshTerms(object):
 
   def __init__(self):
     # nt: MH MN UI;    Ex 'Abdomen', set(['A01.923.047']), 'D000005'
-    self.mh2nt = {nt.MH:nt for nt in nts_mesh_desc}
+    self.mh2nt = {nt.MH:nt for nt in UI2NT.values()}
     # nt: SH QA QE MS; Ex 'agonists', 'AG', 'AGON', 'Used with ...
     self.sh2nt = {nt.SH:nt for nt in nts_mesh_qual}
-    assert len(self.mh2nt) == len(nts_mesh_desc)
+    assert len(self.mh2nt) == len(UI2NT)
     assert len(self.sh2nt) == len(nts_mesh_qual)
 
   def mrg_starred_mesh(self, mhphrase2cnt): # phrase_list):

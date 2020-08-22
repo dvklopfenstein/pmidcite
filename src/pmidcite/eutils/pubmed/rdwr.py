@@ -8,7 +8,7 @@ import os
 import datetime
 
 import re
-from pmidcite.eutils.mesh.terms import MeshTerms
+from pmidcite.eutils.pubmed.terms import MeshTerms
 from pmidcite.eutils.pubmed.authors import Authors
 
 
