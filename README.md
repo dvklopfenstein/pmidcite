@@ -163,7 +163,7 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## To Cite
 
-_If you use **pmidcite** in your literature search, please cite the following two papers:
+_If you use **pmidcite** in your literature search, please cite the following two papers_:
 
 [**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualities of 28 search tools**](???)    
 Klopfenstein DV and Dampier W    
