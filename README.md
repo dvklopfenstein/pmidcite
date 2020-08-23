@@ -26,12 +26,12 @@ $ icite 26032263 -H
 TYP PMID     RP HAMCc   % SD YR   cit cli ref au[00](authors) title
 TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making literature reviews more reliable through application of lessons from systematic reviews.
 ```
-* The first line is the column headers (-H).    
+* The first line is the column headers (`-H`).    
 * The second line is the citation data from NIH's iCite database.    
-* The citation counts, 16, are under the `cit` column header.    
+* The citation counts, `16`, are under the `cit` column header.    
 
-The [group number](#citation-group-numbers), 2, under column header, SD, indicates that the paper has a good citation rate,
-specifically it is in the 68% percentile (under the "%" column header) compared to its peers.
+The [group number](#citation-group-numbers), `2`, under column header, `SD`, indicates that the paper has a good citation rate,
+specifically it is in the `68%` percentile (under the `%` column header) compared to its peers.
 
 #### Get the key for the column headers
 ```
