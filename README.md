@@ -31,7 +31,7 @@ TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making litera
 * The citation count, `16`, is under the `cit` column header.    
 
 The [**group number**](#citation-group-numbers), `2`, under column header, `SD`, indicates that the paper has a good citation rate,
-specifically it is in the `68%` percentile (`%` column) compared to its peers.
+specifically it is in the `68th` percentile (`%` column) compared to its peers.
 
 #### Get the key for the column headers
 ```
