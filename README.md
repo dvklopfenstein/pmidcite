@@ -11,7 +11,7 @@ rather than clicking and clicking and clicking on
   * [**Quick start**](#quick-start)
     * [**Get citation counts, given PMIDs**](#get-citation-counts-given-pmids)
     * [**Query PubMed and download the citation data**](#query-pubmed-and-download-the-citation-data)
-    * [**Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downlaoded-from-pubmed)
+    * [**Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
@@ -28,7 +28,7 @@ TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making litera
 ```
 The first line is the column headers (-H).    
 The second line is the citation data from NIH's iCite database.
-The citation counts are in the `cit` column.
+The citation counts (16) are under the `cit` column.
 
 #### Get the key for the column headers
 ```
@@ -81,7 +81,7 @@ Query PubMed and download the citation data from the script, `src/bin/dnld_pmids
 #### 1. Add your query to your `dnld_pmids.py` script
 ```
     queries = [
-        # Output filenames   PubMed query
+        # Output filename     PubMed query
         # -----------------  -----------------------------------
         ('killer_whale.txt', 'Orcinus Orca Type D'),
     ]
@@ -89,13 +89,13 @@ Query PubMed and download the citation data from the script, `src/bin/dnld_pmids
 
 #### 2. Run the script
 ```
-src/bin/dnld_pmids.py
+$ src/bin/dnld_pmids.py
      3 IDs FOR pubmed QUERY(Orcinus Orca Type D)
      3 WROTE: ./log/pmids/Orcinus_Orca_Type_D.txt
      3 WROTE: ./log/icite/Orcinus_Orca_Type_D.txt
 ```
 
-#### 3. Examine the citation and pubmed data, sorting by year (column 7)
+#### 3. Examine the citation and pubmed data, sorting by year (column 7; -k7)
 ```
 $ grep TOP ./log/icite/Orcinus_Orca_Type_D.txt | sort -k7
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
@@ -103,13 +103,13 @@ TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whal
 TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
 ```
 
-#### 4. Get citation data using PMIDs downlaoded from PubMed
-Note that the PubMed query using NIH E-utils from the `src/bin/dnld_pmids.py` script
+#### 4. Get citation data using PMIDs downloaded from PubMed
+Note that the PubMed query using NIH E-Utils from the `dnld_pmids.py` script
 will often be slightly different than the query run on the PubMed website.
 PubMed has been alerted.
 
-So you may also want to view citation data on PMID PubMed query results
-downloaded from the PubMed website:    
+Consequently, you may also want to view citation data on PMID PubMed query results
+downloaded from the PubMed website into a file like `pmid-OrcinusOrc-set.txt`:    
 *Save->All results, Format=PMID*
 ```
 $ icite -i pmid-OrcinusOrc-set.txt
@@ -163,19 +163,17 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## To Cite
 
-_If you use **pmidcite** in your literature search, please cite the following peer-reviewed Letter-to-the-Editor_:
+_If you use **pmidcite** in your literature search, please cite the following two papers:
 
-[**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualitiesof 28 search tools**](???)    
+[**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualities of 28 search tools**](???)    
 Klopfenstein DV and Dampier W    
 _Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
-
-_And please cite the paper announcing NIH's iCite citation data_:
 
 [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins B ... Santangelo G    
 _PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
-_Please consider reading and citing the paper which inspired the creation of **pmidcite**_:
+_And please consider reading and citing the paper which inspired the creation of **pmidcite**_:
 
 [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
