@@ -76,6 +76,10 @@ NIH iCite details:
      au[A]: A is the number of authors
 ```
 #### Citation group numbers
+The ***pmidcite*** citation rate group numbers, 0 through 4, 
+are determined using the NIH citation rate percentile.
+If the NIH has not yet determined a citation rate for new papers,
+the ***pmidcite*** group number is -1.
 ![cite group](/doc/images/nih_perc_groups.png)
 
 ### Query PubMed and download the citation data
