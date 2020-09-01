@@ -3,11 +3,11 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
-import sys
+#### import os
+from sys import stdout
 # from pmidcite.utils_module import import_var
-from pmidcite.utils_module import load_modpy
-from pmidcite.icite.entry import NIHiCiteEntry
+#### from pmidcite.utils_module import load_modpy
+#### from pmidcite.icite.entry import NIHiCiteEntry
 
 
 def sortby_year(obj):
@@ -21,7 +21,10 @@ def sortby_cite(obj):
 def sortby_nih_sd(obj):
     """Sort lists of iCite items"""
     dct = obj.dct
-    return [-1*dct['nih_sd'], -1*dct['year'], -1*dct['nih_perc'], -1*dct['citation_count']]
+    return [-1*dct['nih_sd'], -1*dct['year'], -1*dct['nih_perc'],
+            -1*dct['citation_count'] + -1*dct['num_clin'],
+            -1*dct['num_refs'],
+            -1*dct['pmid']]
 
 
 # pylint: disable=too-many-instance-attributes
@@ -56,14 +59,14 @@ class NIHiCitePaper:
         return txt
 
     @staticmethod
-    def prt_keys(prt=sys.stdout):
+    def prt_keys(prt=stdout):
         """Print paper keys"""
         prt.write('    TOP: A user-requested paper\n')
         prt.write('    CIT: A paper that cited TOP\n')
         prt.write('    CLI: A clinical paper that cited TOP\n')
         prt.write("    REF: A paper referenced in the TOP paper's bibliography\n")
 
-    def prt_summary(self, prt=sys.stdout, rpt_refs=True, sortby_cites='nih_sd', sortby_refs=None):
+    def prt_summary(self, prt=stdout, rpt_refs=True, sortby_cites='nih_sd', sortby_refs='nih_sd'):
         """Print summary of paper"""
         if self.hdr:
             prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
@@ -82,11 +85,13 @@ class NIHiCitePaper:
         if rpt_refs and self.references:
             prt.write('{N} of {M} References downloaded:\n'.format(
                 N=len(self.references),
-                M=len(self.icite.dct['references'])))
+                M=self.icite.dct['num_refs']))
             self._prt_list(self.references, 'REF', prt, sortby_refs)
 
     def get_sorted(self, icites, sortby=None):
         """Get citations or references, sorted"""
+        if sortby is None:
+            return icites
         if sortby in self.sortby_dct:
             sortby = self.sortby_dct[sortby]
         return sorted(icites, key=sortby)
@@ -107,28 +112,28 @@ class NIHiCitePaper:
         for icite in icites:
             prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
 
-    def load_pmid(self, pmid):
-        """Load NIH iCite data for one PMID from a Python module"""
-        fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
-        if os.path.exists(fin_py):
-            mod = load_modpy(fin_py)
-            if mod is not None:
-                return mod.ICITE
-        return None
-        ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
-        ## return import_var(modstr, 'ICITE', prt)
+    #### def load_pmid(self, pmid):
+    ####     """Load NIH iCite data for one PMID from a Python module"""
+    ####     fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
+    ####     if os.path.exists(fin_py):
+    ####         mod = load_modpy(fin_py)
+    ####         if mod is not None:
+    ####             return mod.ICITE
+    ####     return None
+    ####     ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
+    ####     ## return import_var(modstr, 'ICITE', prt)
 
-    def load_pmids(self, pmids):
-        """Load NIH iCite data for many PMID from a Python module"""
-        iciteobjs = []
-        if not pmids:
-            return iciteobjs
-        load_pmid = self.load_pmid
-        for pmid in pmids:
-            mod_icite = load_pmid(pmid)
-            if mod_icite is not None:
-                iciteobjs.append(NIHiCiteEntry(mod_icite))
-        return iciteobjs
+    #### def load_pmids(self, pmids):
+    ####     """Load NIH iCite data for many PMID from a Python module"""
+    ####     iciteobjs = []
+    ####     if not pmids:
+    ####         return iciteobjs
+    ####     load_pmid = self.load_pmid
+    ####     for pmid in pmids:
+    ####         mod_icite = load_pmid(pmid)
+    ####         if mod_icite is not None:
+    ####             iciteobjs.append(NIHiCiteEntry(mod_icite))
+    ####     return iciteobjs
 
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
