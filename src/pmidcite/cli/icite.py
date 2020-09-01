@@ -69,9 +69,6 @@ class NIHiCiteCli:
             '-v', '--verbose', action='store_true', default=False,
             help="Print all citing papers and references for each PMID provided by user.")
         parser.add_argument(
-            '-q', '--quiet', action='store_true',
-            help='Quiet mode; Do not echo the paper report to screen.')
-        parser.add_argument(
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         parser.add_argument(
@@ -149,7 +146,7 @@ class NIHiCiteCli:
             dnldr.prt_papers(
                 pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
         else:
-            if not args.quiet:
+            if args.verbose:
                 dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
             if dct['outfile'] is not None:
                 dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
