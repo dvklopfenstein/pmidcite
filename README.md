@@ -1,7 +1,7 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 Augment your PubMed literature search 
 from the command-line by linking
-citation data from [**NIH's iCite**](https://icite.od.nih.gov)
+data downloaded from [**NIH's Open Citation Collection (NIH-OCC), iCite**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
@@ -9,9 +9,11 @@ rather than clicking and clicking and clicking on
 
 * ***pmidcite***
   * [**Quick start**](#quick-start)
-    * [**Get citation counts, given PMIDs**](#get-citation-counts-given-pmids)
-    * [**Query PubMed and download the citation data**](#query-pubmed-and-download-the-citation-data)
-    * [**Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
+    * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
+    * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
+    * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
+    * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
+    * [**5) Create ASCII plots**](#5-create-ascii-plots)
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
@@ -19,15 +21,15 @@ rather than clicking and clicking and clicking on
 
 ## Quick start
 
-### Get citation counts, given PMIDs:
+### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
 ```
 $ icite 26032263 -H
 TYP PMID     RP HAMCc   % SD YR   cit cli ref au[00](authors) title
 TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making literature reviews more reliable through application of lessons from systematic reviews.
 ```
-* The first line is the column headers (`-H`).    
-* The second line is the citation data from NIH's iCite database.    
+* The first line (`TYP PMID ...`) contains the column headers (`-H`).    
+* The second line (`TOP ...`) is the citation data from NIH's iCite database.    
 * The citation count, `16`, is under the `cit` column header.    
 
 The [**group number**](#citation-group-numbers), `2` (`SD` column) indicates that the paper has a good citation rate,
@@ -38,7 +40,7 @@ specifically it is in the `68th` percentile (`%` column) compared to its peers.
 $ icite -k
 
 KEYS TO PAPER LINE:
-    TYP PubMedID RP HAMCc % nihSD YEAR x y z au[A](First Author) Title of paper
+    TYP PubMedID RP HAMCc % SD YEAR x y z au[A](First Author) Title of paper
 
 TYPe of relationship to the user-requested paper (TYP):
     TOP: A user-requested paper
@@ -66,7 +68,7 @@ NIH iCite details:
      NIH section, based on Relative Citation Ratio (RCR):
      ----------------------------------
          %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD
-     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
+        SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
 
      YEAR/citations/references section:
      ----------------------------------
@@ -77,13 +79,55 @@ NIH iCite details:
      au[A]: A is the number of authors
 ```
 #### Citation group numbers
-The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4**, 
-are determined using the [NIH relative citation rate](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
+The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
+are determined using the [NIH Relative Citation Rate (RCR)](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
 If the NIH has not yet determined a citation rate for new papers,
 the ***pmidcite*** group number is **-1**.
 ![cite group](/doc/images/nih_perc_groups.png)
 
-### Query PubMed and download the citation data
+### 2) Sort citation counts, given PMIDs
+Sort the citations (`CIT`) of the paper with PMID `26032263' first by citation group (`2` and `i`), then by year.
+
+The citation group shown contains:
+  * `i` New paper and not yet rated. The `i` variable will be set at a later date
+  * `2` These papers are performing well
+
+Sort options:
+  * `-k6`: sort starting with the 6th column containing citation group, then by all text to the right.
+  * `-r`: reverse the sort so the newest papers are at the top
+
+```
+$ icite 26032263 -v | grep CIT | sort -k6 -r
+CIT 32557171 .. H....  -1 i 2020     0  0  21 au[05](Jillian Knox) Usage, definition, and measurement of coexistence, tolerance and acceptance in wildlife conservation research in Africa.
+CIT 32317639 R. HA...  -1 i 2020     0  0   8 au[09](Trevor J Krabbenhoft) FiCli, the Fish and Climate Change Database, informs climate adaptation and management for freshwater fishes.
+CIT 30285277 R. .....  -1 i 2019     2  0  14 au[02](Neal R Haddaway) Predicting the time needed for environmental systematic reviews and systematic maps.
+CIT 30055022 .. HA...  -1 i 2019     1  0  12 au[04](Hillary Smith) Hunting for common ground between wildlife governance and commons scholarship.
+CIT 31598307 R. HA...  -1 i 2019     1  0  12 au[02](Igor Khorozyan) How long do anti-predator interventions remain effective? Patterns, thresholds and uncertainty.
+CIT 31024221 R. .....  -1 i 2019     0  0   7 au[02](Micah G Bennett) MEASURING LOTIC ECOSYSTEM RESPONSES TO NUTRIENTS: A Mismatch that Limits the Synthesis and Application of Experimental Studies to Management.
+CIT 29488217 .P .A...  76 2 2018     7  0  64 au[03](Nicole V Coggan) A global database and 'state of the field' review of research into ecosystem engineering by land animals.
+CIT 29514874 .P .A...  47 2 2018     3  0  38 au[02](Kelly D Hannan) Aquatic acidification: a mechanism underpinning maintained oxygen transport and performance in fish experiencing elevated carbon dioxide conditions.
+CIT 28642071 .. H....  75 2 2017    11  0  80 au[05](Ora Oudgenoeg-Paz) The link between motor and cognitive development in children born preterm and/or with low birth weight: A review of current evidence.
+CIT 28061344 R. .....  70 2 2017     8  0  54 au[03](Maria Cristina Mangano) Monitoring of persistent organic pollutants in the polar regions: knowledge gaps &amp; gluts through evidence mapping.
+CIT 28042667 R. H....  53 2 2017     8  0  20 au[02](Martin J Westgate) The difficulties of systematic reviews.
+CIT 29451529 .. H....  56 2 2016     9  0  20 au[01](Jennifer A Byrne) Improving the peer review of narrative literature reviews.
+CIT 26984257 R. .....  46 2 2016     9  0   9 au[04](Neal R Haddaway) The benefits of systematic mapping to evidence-based environmental management.
+CIT 27617203 .. .....  43 2 2016     5  0  40 au[02](Neal R Haddaway) On the benefits of systematic reviews for wildlife parasitology.
+```
+
+#### Other sort examples
+We suggest starting with the `-k6` sort option because in 2018 Fiorini et al., the creaters of PubMed's "best match" relevance sort ordering in PubMed,
+found that the most important document features to feed into the PubMed sorting algorithm are publication year and past usage.
+
+Using the `-k6` argument to `sort` the citation group (usage group) does two things:
+  * First, it highlightis the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
+  * Second, it shows the newest papers first in each usage group, highlighting them profoundly.
+
+We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th colum, seen with values `-1`, `76`, etc. because 
+only seeing the best performing papers first might bias the paper chosen for further examination 
+to only the best performing papers regardless of publication year.
+
+
+### 3) Query PubMed and download the citation data
 Query PubMed and download the citation data from the script, `src/bin/dnld_pmids.py`.    
 **NOTE:** Copy `src/bin/dnld_pmids.py` to your project repo. Don't modify the pmidcite example.
 
@@ -127,6 +171,11 @@ TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic 
 TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
 ```
+
+
+
+### 5) Create ASCII plots
+The code used to create the scatter plots is adapted from https://github.com/dzerbino/ascii_plots for use with *pmidcite*.
 
 
 ## Setup
@@ -174,19 +223,26 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 _If you use **pmidcite** in your literature search, please cite the following two papers_:
 
-[**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualities of 28 search tools**](???)    
+1. [**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualities of 28 search tools**](???)    
 Klopfenstein DV and Dampier W    
 _Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
 
-[**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
-Hutchins B ... Santangelo G    
+2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
+Hutchins BI ... Santangelo GM    
 _PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
 _And please consider reading and citing the paper which inspired the creation of **pmidcite**_:
 
-[**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
+3. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
 _Research Synthesis Methods_ | 2019 | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
+
+_Mentioned in this README are these outstanding papers_:
+
+4. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
+Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.    
+_PLoS Biology_ | 2016 | [DOI: 10.1371/journal.pbio.1002541](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
+
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
