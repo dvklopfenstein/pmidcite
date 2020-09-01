@@ -22,18 +22,18 @@ class NIHiCiteEntry:
     associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
 
     hdr = pat_str.format(
-            pmid='PMID',
-            year='YR',
-            aart_type='RP',
-            aart_animal='HAMCc',
-            nih_sd='SD',
-            nih_perc='  %',
-            citation_count='  cit',
-            clin='cli',
-            references='ref',
-            A=0,
-            author1='authors',
-            title='title')
+        pmid='PMID',
+        year='YR',
+        aart_type='RP',
+        aart_animal='HAMCc',
+        nih_sd='SD',
+        nih_perc='  %',
+        citation_count='  cit',
+        clin='cli',
+        references='ref',
+        A=0,
+        author1='authors',
+        title='title')
 
     def __init__(self, icite_dct):
         self.pmid = icite_dct['pmid']
@@ -41,6 +41,9 @@ class NIHiCiteEntry:
         nih_percentile = icite_dct['nih_percentile']
         self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
         self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else -1
+        self.dct['num_auth'] = len(icite_dct['authors'])
+        self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
+        self.dct['num_refs'] = len(icite_dct['references'])
 
     @staticmethod
     def _init_nih_sd(nih_percentile):
@@ -119,9 +122,9 @@ class NIHiCiteEntry:
             nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
             nih_perc=dct['nih_perc'],
             citation_count=dct['citation_count'],
-            clin=len(dct['cited_by_clin']),
-            references=len(dct['references']),
-            A=len(dct['authors']),
+            clin=dct['num_clin'],
+            references=dct['num_refs'],
+            A=dct['num_auth'],
             author1=dct['authors'][0] if dct['authors'] else '',
             title=dct['title'],
         )
