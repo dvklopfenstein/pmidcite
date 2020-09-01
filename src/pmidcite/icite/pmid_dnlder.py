@@ -4,7 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import sys
+from sys import stdout
 import os
 import collections as cx
 
@@ -40,12 +40,12 @@ class NIHiCiteDownloader:
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     @staticmethod
-    def prt_hdr(prt=sys.stdout):
+    def prt_hdr(prt=stdout):
         """Print column headers in one line"""
         prt.write('TYP {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
 
     @staticmethod
-    def prt_keys(prt=sys.stdout):
+    def prt_keys(prt=stdout):
         """Print paper keys"""
         prt.write('\nKEYS TO PAPER LINE:\n')
         prt.write('    TYP {ICITE_FMT}\n'.format(ICITE_FMT=NIHiCiteEntry.line_fmt()))
@@ -56,7 +56,7 @@ class NIHiCiteDownloader:
         NIHiCiteEntry.prt_keys(prt)
         prt.write('\n')
 
-    def prt_papers(self, pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=True):
+    def prt_papers(self, pmid2icitepaper, prt=stdout, prt_assc_pmids=True):
         """Print papers, including citation counts, cite_by and references list"""
         for pmid, paper in pmid2icitepaper.items():
             if paper is not None:
@@ -65,11 +65,13 @@ class NIHiCiteDownloader:
                 print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
 
     # pylint: disable=too-many-arguments
-    def prt_paper(self, paper, pmid, name, prt=sys.stdout, prt_assc_pmids=True):
+    def prt_paper(self, paper, pmid, name, prt=stdout, prt_assc_pmids=True):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if prt_assc_pmids:
-                paper.prt_summary(prt, self.rpt_references, sortby_cites='nih_sd', sortby_refs=None)
+                paper.prt_summary(prt, self.rpt_references,
+                                  sortby_cites='nih_sd',
+                                  sortby_refs='nih_sd')
                 prt.write('\n')
             else:
                 prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
@@ -121,7 +123,7 @@ class NIHiCiteDownloader:
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids_do, pmid2note=None, prt=sys.stdout):
+    def get_pmid2paper(self, pmids, dnld_assc_pmids_do, pmid2note=None, prt=stdout):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
@@ -131,7 +133,7 @@ class NIHiCiteDownloader:
         # Note: if there is no iCite entry for a PMID, paper will be None
         return cx.OrderedDict(zip(pmids, papers))  # pmid2ntpaper
 
-    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note, prt=sys.stdout):
+    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note, prt=stdout):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
         if citeobj_top:
@@ -154,7 +156,7 @@ class NIHiCiteDownloader:
         """Initialize the top NIH iCite paper, if it exists"""
         return NIHiCiteEntry(icite_dct) if icite_dct else None
 
-    def _dnld_assc_pmids(self, icite, prt=sys.stdout):
+    def _dnld_assc_pmids(self, icite, prt=stdout):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
         if not pmids_assc:
