@@ -69,7 +69,7 @@ class NIHiCiteEntry:
     @staticmethod
     def line_fmt():
         """Return the format of the paper line"""
-        return 'PubMedID RP HAMCc % nihSD YEAR x y z au[A](First Author) Title of paper'
+        return 'PubMedID RP HAMCc % SD YEAR x y z au[A](First Author) Title of paper'
 
     @staticmethod
     def prt_keys(prt=sys.stdout):
@@ -93,7 +93,7 @@ class NIHiCiteEntry:
         prt.write('     NIH section, based on Relative Citation Ratio (RCR):\n')
         prt.write('     ----------------------------------\n')
         prt.write('         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD\n')
-        prt.write('     nihSD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
+        prt.write('        SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
         prt.write('     YEAR/citations/references section:\n')
         prt.write('     ----------------------------------\n')
         prt.write('      YEAR: The year the article was published\n')
