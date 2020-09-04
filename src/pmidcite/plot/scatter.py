@@ -3,8 +3,9 @@
 __copyright__ = "Copyright (C) 2013-present, Authored by Daniel Zerbino. All rights reserved."
 __copyright__ = "Copyright (C) 2020-present, Adapted by DV Klopfenstein. All rights reserved."
 
+from itertools import chain
 import sys
-from os import environ
+from collections import Counter
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -15,7 +16,8 @@ class AsciiScatter:
     scale = r' .\'\`^",:;Il!i><~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
     scale_range = len(scale) - 1
 
-    width = int(environ['COLUMNS']) if 'COLUMNS' in environ else 80
+    def __init__(self, width=80):
+        self.width = width
 
     def _asciify(self, val, max_val):
         #return str(int(self.scale_range * val / max_val))
@@ -24,26 +26,26 @@ class AsciiScatter:
     def _asciifyline(self, line, max_val):
         return map(lambda val: self._asciify(val, max_val), line)
 
-    def _asciifyarray(self, array, max_val, min_x, max_x, min_y, max_y):
+    def _asciifyarray(self, array, **kws):
         width = self.width
+        min_x, max_x, min_y, max_y = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y']]
+        max_val = max(chain(*array))
         print("".join("-" for i in range(width + 2)) + " " + str(max_y))
         for line in array:
             print('|' + ''.join(self._asciifyline(line, max_val)) + "|")
         print("".join("-" for i in range(width + 2)) + " " + str(min_y))
         print("%-10.6f" % min_x + "".join(" " for i in range(width + 2 - 20)) + "%10.6f" % max_x)
 
-    def _empty_line(self):
-        return [0 for i in range(self.width)]
+    def run(self, xydata):
+        """Create an ASCII plot, given XY data"""
+        minmax = self._get_minmax(xydata)
+        txtdata = self._get_xy_scaled(xydata, **minmax)
+        self._asciifyarray(txtdata, **minmax)
 
-    def _empty_array(self):
-        return [self._empty_line() for i in range(self.width//3)]
-
-    def run(self):
-        pairs = []
-        min_x = None
-        max_x = None
-        min_y = None
-        max_y = None
+    @staticmethod
+    def read_stdin_floats():
+        """Get (x, y) points from stdin"""
+        xydata = []
         for line in sys.stdin:
             try:
                 xval, yval = map(locale.atof, line.strip().split())
@@ -54,29 +56,34 @@ class AsciiScatter:
                 continue
             if xval == locale.atof("-Inf") or yval == locale.atof("-Inf"):
                 continue
+            xydata.append((xval, yval))
+        return xydata
 
-            if min_x is None or xval < min_x:
-                min_x = xval
-            if min_y is None or yval < min_y:
-                min_y = yval
-            if max_x is None or xval > max_x:
-                max_x = xval
-            if max_y is None or yval > max_y:
-                max_y = yval
-            pairs.append((xval, yval))
-
-        span_x = max_x - min_x
-        span_y = max_y - min_y
-        max_val = None
-        array = self._empty_array()
-        for X, Y in pairs:
-            scaled_x = int((self.width - 1) * (X - min_x) / span_x)
-            scaled_y = int((self.width//3 - 1) * (max_y - Y) / span_y)
+    def _get_xy_scaled(self, xydata, **kws):
+        """Scale XY values to fit in ASCII width"""
+        width = self.width
+        min_x, max_y, span_x, span_y = [kws[k] for k in ['min_x', 'max_y', 'span_x', 'span_y']]
+        array = [[0]*width for i in range(width//3)]
+        for xval, yval in xydata:
+            scaled_x = int((width - 1) * (xval - min_x) / span_x)
+            scaled_y = int((width//3 - 1) * (max_y - yval) / span_y)
             array[scaled_y][scaled_x] += 1
-            if max_val is None or array[scaled_y][scaled_x] > max_val:
-                max_val = array[scaled_y][scaled_x]
+        return array
 
-        self._asciifyarray(array, max_val, min_x, max_x, min_y, max_y)
+    @staticmethod
+    def _get_minmax(xydata):
+        """Get min and max data from XY xydata"""
+        if not xydata:
+            return {}
+        xvals, yvals = zip(*xydata)
+        min_x = min(xvals)
+        max_x = max(xvals)
+        min_y = min(yvals)
+        max_y = max(yvals)
+        return {
+            'min_x': min_x, 'max_x': max_x, 'span_x': max_x - min_x,
+            'min_y': min_y, 'max_y': max_y, 'span_y': max_y - min_y,
+        }
 
 
 # Copyright (C) 2013-present, Authored by Daniel Zerbino. All rights reserved.
