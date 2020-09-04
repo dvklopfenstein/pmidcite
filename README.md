@@ -7,7 +7,7 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* ***pmidcite***
+* ***pmidcite***, on the command line
   * [**Quick start**](#quick-start)
     * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
     * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
@@ -17,7 +17,8 @@ rather than clicking and clicking and clicking on
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
-* Take a [quick tour](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [PubMed](https://pubmed.ncbi.nlm.nih.gov) 
+* ***pmidcite***, the library
+* Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 ## Quick start
 
@@ -129,7 +130,7 @@ to only the best performing papers regardless of publication year.
 
 ### 3) Query PubMed and download the citation data
 Query PubMed and download the citation data from the script, `src/bin/dnld_pmids.py`.    
-**NOTE:** Copy `src/bin/dnld_pmids.py` to your project repo. Don't modify the pmidcite example.
+**NOTE:** Copy `dnld_pmids.py` to your project repo. Don't modify the pmidcite repo.
 
 #### 1. Add your query to your `dnld_pmids.py` script
 ```
@@ -148,7 +149,7 @@ $ src/bin/dnld_pmids.py
      3 WROTE: ./log/icite/Orcinus_Orca_Type_D.txt
 ```
 
-#### 3. Examine the citation and pubmed data, sorting by year (column 7; -k7)
+#### 3. Examine the citation and pubmed data, sorting by year (column 7; `-k7`)
 ```
 $ grep TOP ./log/icite/Orcinus_Orca_Type_D.txt | sort -k7
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
@@ -156,7 +157,7 @@ TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whal
 TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
 ```
 
-#### 4. Get citation data using PMIDs downloaded from PubMed
+#### 4) Get citation data using PMIDs downloaded from PubMed
 Note that the PubMed query using NIH E-Utils from the `dnld_pmids.py` script
 will often be slightly different than the query run on the PubMed website.
 PubMed has been alerted.
@@ -175,7 +176,8 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 
 ### 5) Create ASCII plots
-The code used to create the scatter plots is adapted from https://github.com/dzerbino/ascii_plots for use with *pmidcite*.
+The code which creates the scatter plots is adapted for use with *pmidcite* from https://github.com/dzerbino/ascii_plots.
+
 
 
 ## Setup
