@@ -13,61 +13,71 @@ locale.setlocale(locale.LC_ALL, '')
 class AsciiScatter:
     """ASCII scatter plot adapted from https://github.com/dzerbino/ascii_plots"""
 
-    scale = r' .\'\`^",:;Il!i><~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
-    scale_range = len(scale) - 1
+    scale = r' 0123456789abcdef!@#$%^&*(ABCDEFGHIJKLMNOPQRSTUVWXYZ-=_+{}[]|\:";<>,./?'
 
     def __init__(self, width=80):
         self.width = width
 
-    def _asciify(self, val, max_val):
-        #return str(int(self.scale_range * val / max_val))
-        return self.scale[int(self.scale_range * val / max_val)]
-
-    def _asciifyline(self, line, max_val):
-        return map(lambda val: self._asciify(val, max_val), line)
-
-    def _asciifyarray(self, array, **kws):
-        width = self.width
-        min_x, max_x, min_y, max_y = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y']]
-        max_val = max(chain(*array))
-        print("".join("-" for i in range(width + 2)) + " " + str(max_y))
-        for line in array:
-            print('|' + ''.join(self._asciifyline(line, max_val)) + "|")
-        print("".join("-" for i in range(width + 2)) + " " + str(min_y))
-        print("%-10.6f" % min_x + "".join(" " for i in range(width + 2 - 20)) + "%10.6f" % max_x)
-
     def run(self, xydata):
         """Create an ASCII plot, given XY data"""
         minmax = self._get_minmax(xydata)
-        txtdata = self._get_xy_scaled(xydata, **minmax)
-        self._asciifyarray(txtdata, **minmax)
+        cnts_2d = self._get_xy_scaled(xydata, **minmax)
+        self._asciifyarray(cnts_2d, **minmax)
 
     @staticmethod
-    def read_stdin_floats():
+    def read_stdin_ints():
         """Get (x, y) points from stdin"""
         xydata = []
         for line in sys.stdin:
-            try:
-                xval, yval = map(locale.atof, line.strip().split())
-            except RuntimeError:
-                continue
-
-            if xval == locale.atof("Inf") or yval == locale.atof("Inf"):
-                continue
-            if xval == locale.atof("-Inf") or yval == locale.atof("-Inf"):
-                continue
-            xydata.append((xval, yval))
+            line = line.strip()
+            lst = line.split()
+            if len(lst) == 2 and lst[0].isdigit() and lst[1].isdigit():
+                xydata.append((int(lst[0]), int(lst[1])))
         return xydata
+
+    def _asciify_2d(self, array_2d, max_val):
+        chrs_2d = []
+        letter2cnt = {}
+        scale = self.scale
+        scale_range = len(self.scale) - 1
+        for array_1d in array_2d:
+            chrs_1d = []
+            for cnt in array_1d:
+                scale_idx = int(scale_range * cnt/ max_val)
+                letter = scale[scale_idx]
+                letter2cnt[letter] = cnt
+                chrs_1d.append(letter)
+            chrs_2d.append(chrs_1d)
+        return {'chrs_2d':chrs_2d, 'letter2cnt':letter2cnt}
+
+    def _asciifyarray(self, array_2d, **kws):
+        width = self.width
+        min_x, max_x, min_y, max_y = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y']]
+        max_val = max(chain(*array_2d))
+        print("".join("-" for i in range(width + 2)) + " " + str(max_y))
+        dct = self._asciify_2d(array_2d, max_val)
+        for chrs_1d in dct['chrs_2d']:
+            print('|' + ''.join(chrs_1d) + "|")
+        print("".join("-" for i in range(width + 2)) + " " + str(min_y))
+        print(str(min_x) + " "*width + str(max_x))
+        self._prt_key(dct['letter2cnt'])
+
+    def _prt_key(self, letter2cnt):
+        """Print the counts and the letter that represents it"""
+        for letter, cnt in sorted(letter2cnt.items(), key=lambda t: t[1]):
+            print(letter, cnt)
+        ##for letter in self.scale:
 
     def _get_xy_scaled(self, xydata, **kws):
         """Scale XY values to fit in ASCII width"""
         width = self.width
         min_x, max_y, span_x, span_y = [kws[k] for k in ['min_x', 'max_y', 'span_x', 'span_y']]
         array = [[0]*width for i in range(width//3)]
-        for xval, yval in xydata:
-            scaled_x = int((width - 1) * (xval - min_x) / span_x)
-            scaled_y = int((width//3 - 1) * (max_y - yval) / span_y)
-            array[scaled_y][scaled_x] += 1
+        for xval, yval in sorted(xydata, key=lambda t: t[0]):
+            pos_x = int(round((width - 1) * (xval - min_x) / span_x))
+            pos_y = int(round((width//3 - 1) * (max_y - yval) / span_y))
+            print('X({}) Y({:3}) -> {} {:2}'.format(xval, yval, pos_x, pos_y))
+            array[pos_y][pos_x] += 1
         return array
 
     @staticmethod

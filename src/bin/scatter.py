@@ -12,7 +12,7 @@ from pmidcite.plot.scatter import AsciiScatter
 def main():
     """ASCII scatter plot adapted from https://github.com/dzerbino/ascii_plots"""
     obj = AsciiScatter()
-    xydata = obj.read_stdin_floats()
+    xydata = obj.read_stdin_ints()
     obj.run(xydata)
 
 
