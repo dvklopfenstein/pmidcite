@@ -17,7 +17,10 @@ rather than clicking and clicking and clicking on
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
-* ***pmidcite***, the library
+* ***pmidcite*, the Python library**:
+  * [**Download NIH-OCC citation data**]()
+  * [**Download or import existing NIH-OCC citation data**]()
+  * [**Print citation and reference data for a paper**]()
 * Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 ## Quick start

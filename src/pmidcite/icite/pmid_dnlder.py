@@ -123,22 +123,23 @@ class NIHiCiteDownloader:
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids_do=True, pmid2note=None, prt=stdout):
+    def get_pmid2paper(self, pmids, dnld_assc_pmids_do=True, pmid2note=None):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         s_geticitepaper = self._geticitepaper
+        # Arg, dnld_assc_pmids_do, causes iCite data to be downloaded if needed, or loaded
         if not pmid2note:
-            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, None, prt) for p in pmids]
+            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, None) for p in pmids]
         else:
-            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, pmid2note, prt) for p in pmids]
+            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, pmid2note) for p in pmids]
         # Note: if there is no iCite entry for a PMID, paper will be None
         return cx.OrderedDict(zip(pmids, papers))  # pmid2ntpaper
 
-    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note, prt=stdout):
+    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note):
         """Print summary for each user-specified PMID"""
         citeobj_top = self.get_icite(pmid_top)  # NIHiCiteEntry
         if citeobj_top:
             if dnld_assc_pmids_do:
-                self._dnld_assc_pmids(citeobj_top, prt)
+                self._dnld_assc_pmids(citeobj_top)
             icites = self.loader.load_icite_mods_all([pmid_top])
             pmid2icite = {o.dct['pmid']:o for o in icites}
             return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
@@ -156,6 +157,7 @@ class NIHiCiteDownloader:
         """Initialize the top NIH iCite paper, if it exists"""
         return NIHiCiteEntry(icite_dct) if icite_dct else None
 
+    def _dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
         if not pmids_assc:
@@ -166,9 +168,9 @@ class NIHiCiteDownloader:
         if pmids_missing:
             objs_missing = self.api.dnld_icites(pmids_missing)
             pmids_load = pmids_assc.difference(pmids_missing)
-            objs_dnlded = self.loader.load_icites(pmids_load, prt)
+            objs_dnlded = self.loader.load_icites(pmids_load)
             return objs_missing + objs_dnlded
-        return self.loader.load_icites(pmids_assc, prt)
+        return self.loader.load_icites(pmids_assc)
 
     def _get_pmids_missing(self, pmids_all):
         """Get PMIDs that have not yet been downloaded"""

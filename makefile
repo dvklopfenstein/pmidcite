@@ -29,3 +29,4 @@ ver:
 clean:
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
+	rm -f src/tests/icite/*.py
