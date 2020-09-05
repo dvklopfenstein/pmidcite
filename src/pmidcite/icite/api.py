@@ -4,8 +4,9 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
-import sys
+from os.path import exists
+from os.path import join
+from sys import stdout
 import collections as cx
 import traceback
 import requests
@@ -44,14 +45,13 @@ class NIHiCiteAPI:
 
     def __init__(self, dirpy_dnld='.', prt=None, **kws):
         self.dir_dnld = dirpy_dnld
-        if not os.path.exists(dirpy_dnld):
+        if not exists(dirpy_dnld):
             raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dirpy_dnld))
         self.prt = prt
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
 
     def dnld_icites(self, pmids):
         """Run iCite on given PubMed IDs"""
-        ## print('NNNNNNNNNNNNNNNNNN dnld_icites')
         if not pmids:
             return []
         num_pmids = len(pmids)
@@ -72,10 +72,8 @@ class NIHiCiteAPI:
 
     def dnld_icite(self, pmid):
         """Run iCite on given PubMed IDs"""
-        ## print('111111111111111111 dnld_icite')
         cmd = '/'.join([self.url_base, str(pmid)])
         json_dct = self._send_request(cmd)
-        ## print('111111111111111111 json_dct')
         return self._jsonpmid_to_obj(json_dct) if json_dct else None
 
     def _send_request(self, cmd):
@@ -115,7 +113,7 @@ class NIHiCiteAPI:
 
     def _jsonpmid_to_obj(self, json_dct):
         """Given a PMID json dict, return a NIHiCiteEntry object"""
-        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=json_dct['pmid'])
+        file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=json_dct['pmid']))
         adj_dct = self._adjust_jsondct(json_dct)
         self._wrpy(file_pmid, adj_dct)
         return NIHiCiteEntry(adj_dct)
@@ -155,7 +153,7 @@ class NIHiCiteAPI:
                 self.prt.write('  WROTE: {PY}\n'.format(PY=fout_py))
 
     @staticmethod
-    def prt_dct(dct, prt=sys.stdout):
+    def prt_dct(dct, prt=stdout):
         """Print NIH iCite data as a dict"""
         iciteobj = NIHiCiteEntry(dct)
         prt.write('"""Write data downloaded for NIH iCite data"""\n\n')

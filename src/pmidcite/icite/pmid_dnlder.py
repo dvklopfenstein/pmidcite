@@ -5,7 +5,8 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 from sys import stdout
-import os
+from os.path import exists
+from os.path import join
 import collections as cx
 
 from pmidcite.cli.utils import read_top_pmids
@@ -53,7 +54,7 @@ class NIHiCiteDownloader:
         prt.write('TYPe of relationship to the user-requested paper (TYP):\n')
         NIHiCitePaper.prt_keys(prt)
         prt.write('\nNIH iCite details:\n\n')
-        NIHiCiteEntry.prt_keys(prt)
+        NIHiCiteEntry.prt_key_desc(prt)
         prt.write('\n')
 
     def prt_papers(self, pmid2icitepaper, prt=stdout, prt_assc_pmids=True):
@@ -80,7 +81,6 @@ class NIHiCiteDownloader:
                 PMID=pmid, NAME=name if name is not None else ''))
 
     @staticmethod
-    ## def _msg_wrote(mode, pmids_req, pmids_new):
     def _msg_wrote(mode, pmids_req, pmids_new):
         """Get the 'WROTE' or 'APPENDED' message"""
         if mode == 'w':
@@ -99,7 +99,7 @@ class NIHiCiteDownloader:
     @staticmethod
     def _get_new_pmids(pmidcite_txt, pmids):
         """Get PMIDs which are not already fully analyzed in pmidcite.txt"""
-        if not os.path.exists(pmidcite_txt):
+        if not exists(pmidcite_txt):
             return pmids
         pmids_old = read_top_pmids(pmidcite_txt)
         return [p for p in pmids if p not in pmids_old]
@@ -123,7 +123,7 @@ class NIHiCiteDownloader:
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids_do, pmid2note=None, prt=stdout):
+    def get_pmid2paper(self, pmids, dnld_assc_pmids_do=True, pmid2note=None, prt=stdout):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         s_geticitepaper = self._geticitepaper
         if not pmid2note:
@@ -135,7 +135,7 @@ class NIHiCiteDownloader:
 
     def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note, prt=stdout):
         """Print summary for each user-specified PMID"""
-        citeobj_top = self.dnld_icite_pmid(pmid_top)  # NIHiCiteEntry
+        citeobj_top = self.get_icite(pmid_top)  # NIHiCiteEntry
         if citeobj_top:
             if dnld_assc_pmids_do:
                 self._dnld_assc_pmids(citeobj_top, prt)
@@ -156,7 +156,6 @@ class NIHiCiteDownloader:
         """Initialize the top NIH iCite paper, if it exists"""
         return NIHiCiteEntry(icite_dct) if icite_dct else None
 
-    def _dnld_assc_pmids(self, icite, prt=stdout):
         """Download PMID iCite data for PMIDs associated with icite paper"""
         pmids_assc = icite.get_assc_pmids()
         if not pmids_assc:
@@ -175,15 +174,24 @@ class NIHiCiteDownloader:
         """Get PMIDs that have not yet been downloaded"""
         pmids_missing = set()
         for pmid_cur in pmids_all:
-            file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid_cur)
-            if not os.path.exists(file_pmid):
+            file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=pmid_cur))
+            if not exists(file_pmid):
                 pmids_missing.add(pmid_cur)
         return pmids_missing
 
-    def dnld_icite_pmid(self, pmid):
-        """Download NIH iCite data for requested PMIDs"""
-        file_pmid = '{DIR}/p{PMID}.py'.format(DIR=self.dir_dnld, PMID=pmid)
-        if self.dnld_force or not os.path.exists(file_pmid):
+    def get_icites(self, pmids):
+        """Load or download NIH iCite data for requested PMIDs"""
+        icites = []
+        for pmid in pmids:
+            icite = self.get_icite(pmid)
+            if icite is not None:
+                icites.append(icite)
+        return icites
+
+    def get_icite(self, pmid):
+        """Load or download NIH iCite data for requested PMID"""
+        file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=pmid))
+        if self.dnld_force or not exists(file_pmid):
             iciteobj = self.api.dnld_icite(pmid)
             if iciteobj is not None:
                 return iciteobj
@@ -192,7 +200,7 @@ class NIHiCiteDownloader:
     @staticmethod
     def _do_write(fout_txt, force_overwrite):
         """Ask for a yes-no answer from the user on STDIN"""
-        if not os.path.exists(fout_txt) or force_overwrite:
+        if not exists(fout_txt) or force_overwrite:
             return True
         prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
         return input(prompt_user).lower()[:1] == 'y'

@@ -3,7 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import sys
+from sys import stdout
 from os.path import join
 from os.path import exists
 from importlib.util import spec_from_file_location
@@ -15,12 +15,12 @@ from pmidcite.icite.entry import NIHiCiteEntry
 class NIHiCiteLoader:
     """Load iCite citations that are stored as a dict in a Python module"""
 
-    def __init__(self, dir_icitepy, icitepypat='p{PMID}.py', prt=sys.stdout):
+    def __init__(self, dir_icitepy, icitepypat='p{PMID}.py', prt=stdout):
         self.dir_dnld = dir_icitepy  # e.g., ./icite
         self.icitepypat = icitepypat
         self.prt = prt
 
-    def load_icites(self, pmids, prt=sys.stdout):
+    def load_icites(self, pmids):
         """Load multiple NIH iCite data from Python modules"""
         if not pmids:
             return []

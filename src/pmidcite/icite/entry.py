@@ -4,7 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import sys
+from sys import stdout
 
 
 class NIHiCiteEntry:
@@ -66,14 +66,19 @@ class NIHiCiteEntry:
         #  2.1% +3 SD: Very high citation rate
         return 4
 
+    def prt_keys(self, prt=stdout):
+        """Print paper keys, including header line"""
+        prt.write('{COLS}\n\n'.format(COLS=self.line_fmt()))
+        self.prt_key_desc(prt)
+
     @staticmethod
     def line_fmt():
         """Return the format of the paper line"""
         return 'PubMedID RP HAMCc % SD YEAR x y z au[A](First Author) Title of paper'
 
     @staticmethod
-    def prt_keys(prt=sys.stdout):
-        """Print paper keys"""
+    def prt_key_desc(prt=stdout):
+        """Print paper key description"""
         # pylint: disable=line-too-long
         ## prt.write('NIH iCite line format:\n')
         ## prt.write('  YYYY NNNNNNNN RP HAMCc nih% x y z au[A](First Author) Title of paper\n\n')
@@ -162,7 +167,7 @@ class NIHiCiteEntry:
         lst.append('c' if dct['cited_by_clin'] else '.')
         return ''.join(lst)
 
-    def prt_dct(self, prt=sys.stdout):
+    def prt_dct(self, prt=stdout):
         """Print full NIH iCite dictionary"""
         prt.write('{STR}\n'.format(STR=self.str_dct()))
 

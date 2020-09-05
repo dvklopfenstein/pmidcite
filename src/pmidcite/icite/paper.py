@@ -3,11 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-#### import os
 from sys import stdout
-# from pmidcite.utils_module import import_var
-#### from pmidcite.utils_module import load_modpy
-#### from pmidcite.icite.entry import NIHiCiteEntry
 
 
 def sortby_year(obj):
@@ -44,7 +40,6 @@ class NIHiCitePaper:
         # A short pmid2note to print at end of cite line
         self.pmid2note = {} if pmid2note is None else pmid2note
         self.icite = pmid2icite.get(pmid)
-        ## print('VVVVVVVVVVVVVVV', self.icite)
         self.cited_by = self._init_pmids('cited_by')
         self.cited_by_clin = self._init_pmids('cited_by_clin')
         self.references = self._init_pmids('references')
@@ -111,29 +106,6 @@ class NIHiCitePaper:
             return
         for icite in icites:
             prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
-
-    #### def load_pmid(self, pmid):
-    ####     """Load NIH iCite data for one PMID from a Python module"""
-    ####     fin_py = '{DIR}/p{PMID}.py'.format(DIR=self.dirpy, PMID=pmid)
-    ####     if os.path.exists(fin_py):
-    ####         mod = load_modpy(fin_py)
-    ####         if mod is not None:
-    ####             return mod.ICITE
-    ####     return None
-    ####     ## modstr = '{MODDIR}.p{PMID}'.format(MODDIR=self.moddir, PMID=pmid)
-    ####     ## return import_var(modstr, 'ICITE', prt)
-
-    #### def load_pmids(self, pmids):
-    ####     """Load NIH iCite data for many PMID from a Python module"""
-    ####     iciteobjs = []
-    ####     if not pmids:
-    ####         return iciteobjs
-    ####     load_pmid = self.load_pmid
-    ####     for pmid in pmids:
-    ####         mod_icite = load_pmid(pmid)
-    ####         if mod_icite is not None:
-    ####             iciteobjs.append(NIHiCiteEntry(mod_icite))
-    ####     return iciteobjs
 
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
