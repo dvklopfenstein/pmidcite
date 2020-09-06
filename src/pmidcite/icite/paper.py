@@ -114,5 +114,9 @@ class NIHiCitePaper:
         s_pmid2icite = self.pmid2icite
         return set(s_pmid2icite[pmid] for pmid in self.icite.dct[name] if pmid in s_pmid2icite)
 
+    def __str__(self):
+        """Get the line containing data downloaded from NIH iCite for only the featured paper"""
+        return self.str_line()
+
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

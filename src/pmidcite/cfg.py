@@ -3,7 +3,9 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
+from os import environ
+from os.path import exists
+from os.path import basename
 import sys
 import configparser
 
@@ -37,14 +39,14 @@ class Cfg(object):
         },
     }
 
-    def __init__(self, chk=True, prt=sys.stdout):
+    def __init__(self, chk=True, prt=sys.stdout, prt_fullname=True):
         self.cfgfile = self._init_cfgfilename()
         self.cfgparser = self._get_dflt_cfgparser()
         if chk:
-            self._run_chk(prt)
+            self._run_chk(prt, prt_fullname)
 
-    def _run_chk(self, prt):
-        if not self.rd_rc(prt):
+    def _run_chk(self, prt, prt_fullname):
+        if not self.rd_rc(prt, prt_fullname):
             self._err_notfound()
         dflt = self.cfgparser['pmidcite']
         self._chk_email(dflt)
@@ -56,16 +58,17 @@ class Cfg(object):
         self.cfgparser = self._get_dflt_cfgparser()
         return self.cfgparser.read(self.cfgfile)
 
-    def rd_rc(self, prt=sys.stdout):
+    def rd_rc(self, prt=sys.stdout, prt_fullname=True):
         """Read a configuration file"""
-        if os.path.exists(self.cfgfile):
+        if exists(self.cfgfile):
             if prt:
-                prt.write('  READ: {CFG}\n'.format(CFG=self.cfgfile))
+                cfgfile = self.cfgfile if prt_fullname else basename(self.cfgfile)
+                prt.write('  READ: {CFG}\n'.format(CFG=cfgfile))
         return self.cfgparser.read(self.cfgfile)
 
     def wr_rc(self, force=False):
         """Write a sample configuration with default values set"""
-        if not os.path.exists(self.cfgfile) or force:
+        if not exists(self.cfgfile) or force:
             with open(self.cfgfile, 'w') as prt:
                 self.cfgparser.write(prt)
                 print('  WROTE: {CFG}'.format(CFG=self.cfgfile))
@@ -92,11 +95,12 @@ class Cfg(object):
 
     def _err_notfound(self):
         """Report the config file was not found"""
+        cfgfile = environ['PMIDCITECONF'] if 'PMIDCITECONF' in environ else self.cfgfile
         msg = ('E-Utils CONFIG FILE NOT FOUND: {CFG}\n'
                'Generate {CFG} with:\n    '
                "$ python3 -c 'from pmidcite.cfg import Cfg; Cfg(chk=False).wr_rc(force=True)'\n"
                'To ensure your API key is not made public, add {CFG} to the .gitignore')
-        raise RuntimeError(msg.format(CFG=self.cfgfile))
+        raise RuntimeError(msg.format(CFG=cfgfile))
 
     def get_email(self):
         """Get email"""
@@ -128,13 +132,13 @@ class Cfg(object):
 
     def _init_cfgfilename(self):
         """Get the configuration filename"""
-        if 'PMIDCITECONF' in os.environ:
-            cfgfile = os.environ['PMIDCITECONF']
-            if os.path.exists(cfgfile):
+        if 'PMIDCITECONF' in environ:
+            cfgfile = environ['PMIDCITECONF']
+            if exists(cfgfile):
                 return cfgfile
             print('**WARNING: NO pmidcite CONFIG FILE FOUND AT PMIDCITECONF={F}'.format(
                 F=cfgfile))
-        if not os.path.exists(self.dfltcfgfile):
+        if not exists(self.dfltcfgfile):
             print('**WARNING: NO pmidcite CONFIG FILE FOUND: {F}'.format(
                 F=self.dfltcfgfile))
         return self.dfltcfgfile

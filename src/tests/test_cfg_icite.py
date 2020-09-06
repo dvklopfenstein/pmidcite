@@ -17,7 +17,7 @@ def test_cfg_icite():
     system('rm -f {CFG}'.format(CFG=file_cfg))
 
     # Check that test configuration file was removed
-    obj = Cfg()
+    obj = Cfg(prt_fullname=False)
     obj.set_cfg(file_cfg)
     assert not obj.rd_rc()
 
