@@ -91,7 +91,7 @@ class NIHiCiteCli:
         self.pmidcite.dir_icite_py = args.dir_icite_py
         dnldr = self.get_icite_downloader(args.force_download, args.no_references)
         pmids = get_pmids(args.pmids, args.infile)
-        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None, prt=None)
+        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
         self.run_icite(pmid2icitepaper, dnldr, args, argparser)
         # pylint:disable=line-too-long
         if args.pubmed:

@@ -22,7 +22,7 @@ class PmidCite:
         pmids = read_pmids(fin_pmids)
         dnldr = self.get_icitedownloader(force_download)
         pmid2ntpaper = dnldr.get_pmid2paper(
-            pmids, dnld_assc_pmids_do=False, pmid2note=None, prt=None)
+            pmids, dnld_assc_pmids_do=False, pmid2note=None)
         dnldr.wr_papers(fout_icite, pmid2ntpaper, force_download, 'w')
         return pmids
 

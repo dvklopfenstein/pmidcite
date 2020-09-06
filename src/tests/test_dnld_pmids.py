@@ -11,7 +11,7 @@ def test_dnld_pmids():
     pmids1 = PMIDS[:97]
     cfg = Cfg()
     eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
-    rsp_epost = eutils.epost('pubmed', pmids1, step=10)
+    rsp_epost = eutils.epost('pubmed', pmids1, num_ids_p_epost=10)
     print(rsp_epost)
     #querykey_max = rsp_epost['querykey']
     webenv = rsp_epost['webenv']

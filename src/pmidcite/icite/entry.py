@@ -40,9 +40,10 @@ class NIHiCiteEntry:
         self.dct = icite_dct
         nih_percentile = icite_dct['nih_percentile']
         self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
-        self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else -1
+        self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else 999
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
+        self.dct['total_cites'] = icite_dct['citation_count'] + len(icite_dct['cited_by_clin'])
         self.dct['num_refs'] = len(icite_dct['references'])
 
     @staticmethod
@@ -97,7 +98,7 @@ class NIHiCiteEntry:
         prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
         prt.write('     NIH section, based on Relative Citation Ratio (RCR):\n')
         prt.write('     ----------------------------------\n')
-        prt.write('         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD\n')
+        prt.write('         %: NIH citation percentile rounded to an integer. 999 means "not determined" or TBD\n')
         prt.write('        SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
         prt.write('     YEAR/citations/references section:\n')
         prt.write('     ----------------------------------\n')
@@ -179,6 +180,10 @@ class NIHiCiteEntry:
                 val = '[{N}] {LST}'.format(N=len(val), LST=', '.join(str(e) for e in val))
             txt.append('{K:27} {V}'.format(K=key, V=val))
         return '\n'.join(txt)
+
+    def __lt__(self, rhs):
+        """Default sort by PMID"""
+        return self.pmid < rhs.pmid
 
 
 # Copyright (C) 2019-present DV Klopfensteinr,. All rights reserved.

@@ -7,7 +7,7 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* ***pmidcite***, on the command line
+* ***pmidcite** on the command line**:
   * [**Quick start**](#quick-start)
     * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
     * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
@@ -17,10 +17,11 @@ rather than clicking and clicking and clicking on
   * [**Setup**](#setup)
   * [**Documentation**](???)
   * [**To cite**](#to-cite)
-* ***pmidcite*, the Python library**:
+* ***pmidcite*, the Python library**
   * [**Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
   * [**Download or import existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
   * [**Print citation and reference data for a paper**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
+  * [**Show how to sort NIH iCite entries in various ways**]()
 * Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 ## Quick start
@@ -71,7 +72,7 @@ NIH iCite details:
 
      NIH section, based on Relative Citation Ratio (RCR):
      ----------------------------------
-         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD
+         %: NIH citation percentile rounded to an integer. 999 means "not determined" or TBD
         SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
 
      YEAR/citations/references section:
@@ -86,11 +87,11 @@ NIH iCite details:
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
 are determined using the [NIH Relative Citation Rate (RCR)](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
 If the NIH has not yet determined a citation rate for new papers,
-the ***pmidcite*** group number is **-1**.
+the ***pmidcite*** group number is **i**.
 ![cite group](/doc/images/nih_perc_groups.png)
 
 ### 2) Sort citation counts, given PMIDs
-Sort the citations (`CIT`) of the paper with PMID `26032263' first by citation group (`2` and `i`), then by year.
+Sort the citations (`CIT`) of the paper with PMID `26032263` first by citation group (`2` and `i`), then by year.
 
 The citation group shown contains:
   * `i` New paper and not yet rated. The `i` variable will be set at a later date
@@ -102,12 +103,12 @@ Sort options:
 
 ```
 $ icite 26032263 -v | grep CIT | sort -k6 -r
-CIT 32557171 .. H....  -1 i 2020     0  0  21 au[05](Jillian Knox) Usage, definition, and measurement of coexistence, tolerance and acceptance in wildlife conservation research in Africa.
-CIT 32317639 R. HA...  -1 i 2020     0  0   8 au[09](Trevor J Krabbenhoft) FiCli, the Fish and Climate Change Database, informs climate adaptation and management for freshwater fishes.
-CIT 30285277 R. .....  -1 i 2019     2  0  14 au[02](Neal R Haddaway) Predicting the time needed for environmental systematic reviews and systematic maps.
-CIT 30055022 .. HA...  -1 i 2019     1  0  12 au[04](Hillary Smith) Hunting for common ground between wildlife governance and commons scholarship.
-CIT 31598307 R. HA...  -1 i 2019     1  0  12 au[02](Igor Khorozyan) How long do anti-predator interventions remain effective? Patterns, thresholds and uncertainty.
-CIT 31024221 R. .....  -1 i 2019     0  0   7 au[02](Micah G Bennett) MEASURING LOTIC ECOSYSTEM RESPONSES TO NUTRIENTS: A Mismatch that Limits the Synthesis and Application of Experimental Studies to Management.
+CIT 32557171 .. H....  999 i 2020     0  0  21 au[05](Jillian Knox) Usage, definition, and measurement of coexistence, tolerance and acceptance in wildlife conservation research in Africa.
+CIT 32317639 R. HA...  999 i 2020     0  0   8 au[09](Trevor J Krabbenhoft) FiCli, the Fish and Climate Change Database, informs climate adaptation and management for freshwater fishes.
+CIT 30285277 R. .....  999 i 2019     2  0  14 au[02](Neal R Haddaway) Predicting the time needed for environmental systematic reviews and systematic maps.
+CIT 30055022 .. HA...  999 i 2019     1  0  12 au[04](Hillary Smith) Hunting for common ground between wildlife governance and commons scholarship.
+CIT 31598307 R. HA...  999 i 2019     1  0  12 au[02](Igor Khorozyan) How long do anti-predator interventions remain effective? Patterns, thresholds and uncertainty.
+CIT 31024221 R. .....  999 i 2019     0  0   7 au[02](Micah G Bennett) MEASURING LOTIC ECOSYSTEM RESPONSES TO NUTRIENTS: A Mismatch that Limits the Synthesis and Application of Experimental Studies to Management.
 CIT 29488217 .P .A...  76 2 2018     7  0  64 au[03](Nicole V Coggan) A global database and 'state of the field' review of research into ecosystem engineering by land animals.
 CIT 29514874 .P .A...  47 2 2018     3  0  38 au[02](Kelly D Hannan) Aquatic acidification: a mechanism underpinning maintained oxygen transport and performance in fish experiencing elevated carbon dioxide conditions.
 CIT 28642071 .. H....  75 2 2017    11  0  80 au[05](Ora Oudgenoeg-Paz) The link between motor and cognitive development in children born preterm and/or with low birth weight: A review of current evidence.
@@ -126,7 +127,7 @@ Using the `-k6` argument to `sort` the citation group (usage group) does two thi
   * First, it highlightis the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
   * Second, it shows the newest papers first in each usage group, highlighting them profoundly.
 
-We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th colum, seen with values `-1`, `76`, etc. because 
+We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th colum, seen with values `999`, `76`, etc. because 
 only seeing the best performing papers first might bias the paper chosen for further examination 
 to only the best performing papers regardless of publication year.
 
@@ -157,7 +158,7 @@ $ src/bin/dnld_pmids.py
 $ grep TOP ./log/icite/Orcinus_Orca_Type_D.txt | sort -k7
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
 TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
-TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
+TOP 31461780 R. .A...  999 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
 ```
 
 #### 4) Get citation data using PMIDs downloaded from PubMed
@@ -171,7 +172,7 @@ downloaded from the PubMed website into a file like `pmid-OrcinusOrc-set.txt`:
 ```
 $ icite -i pmid-OrcinusOrc-set.txt
 TOP 30123694 RP HA...  17 2 2018     1  0   6 au[07](Paul Tixier) Killer whale (<i>Orcinus orca</i>) interactions with blue-eye trevalla (<i>Hyperoglyphe antarctica</i>) longline fisheries.
-TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
+TOP 31461780 R. .A...  999 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
 TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
 TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
 ```
@@ -230,23 +231,23 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer 2020: Evaluating Retrieval Qualities of 28 search tools**](???)    
 Klopfenstein DV and Dampier W    
-_Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??????????????????](???)
+_Research Synthesis Methods_ | 2020 | [DOI: 10.1038/??
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
-_PLoS Biology_ | 2019 | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
+_PLoS Biology_ | 2019 | PMID: [31600197](https://pubmed.ncbi.nlm.nih.gov/31600197) | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
 _And please consider reading and citing the paper which inspired the creation of **pmidcite**_:
 
 3. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
-_Research Synthesis Methods_ | 2019 | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
+_Research Synthesis Methods_ | 2019 | PMID: [31614060](https://pubmed.ncbi.nlm.nih.gov/31614060) | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
 
-_Mentioned in this README are these outstanding papers_:
+_Mentioned in this README is this outstanding paper_:
 
 4. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
 Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.    
-_PLoS Biology_ | 2016 | [DOI: 10.1371/journal.pbio.1002541](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
+_PLoS Biology_ | 2016 | PMID: [27599104](https://pubmed.ncbi.nlm.nih.gov/27599104) | [DOI: 10.1371/journal.pbio.1002541](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
 
 
 
