@@ -1,4 +1,4 @@
-
+PYTHON = python3
 
 findpy:
 	find src -regextype posix-extended -regex ".*[a-z]+.py"
@@ -29,16 +29,19 @@ ver:
 
 # -----------------------------------------------------------------------------
 upgrade:
-	python3 -m pip install --upgrade pip
-	python3 -m pip install --upgrade setuptools wheel twine
-	python3 -m pip install --upgrade distutils
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install --upgrade setuptools wheel twine
+	$(PYTHON) -m pip install --upgrade distutils
 
-# 
+# https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
+# # universal wheels are pure Python
 sdist:
 	# python3 -m pip install --user --upgrade setuptools wheel
 	make clean_dist
-	python3 setup.py sdist
+	$(PYTHON) setup.py sdist
+	$(PYTHON) setup.py bdist_wheel --universal
 	ls -lh dist
+	twine check dist/*
 
 clean_dist:
 	rm -rf dist build 

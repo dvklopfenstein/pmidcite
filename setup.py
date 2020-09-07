@@ -5,8 +5,9 @@
 from os.path import abspath
 from os.path import dirname
 from os.path import join
-from distutils.core import setup
-import versioneer
+# from distutils.core import setup
+from setuptools import setup
+# import versioneer
 from glob import glob
 
 def get_long_description():
@@ -18,12 +19,10 @@ def get_long_description():
 
 setup(
     name='pmidcite',
-    version=versioneer.get_version(),
+    ## version=versioneer.get_version(),
+    version='v0.0.2',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
-    # https://packaging.python.org/guides/making-a-pypi-friendly-readme/
-    long_description=get_long_description(),
-    long_description_content_type='text/markdown',
     cmdclass=versioneer.get_cmdclass(),
     packages=[
         'pmidcite',
@@ -60,5 +59,8 @@ setup(
     ],
     url='http://github.com/dvklopfenstein/pmidcite',
     description="Augment's a PubMed literature search with citation data from NIH's iCite.",
+    # https://packaging.python.org/guides/making-a-pypi-friendly-readme/
+    long_description=get_long_description(),
+    long_description_content_type='text/markdown',
     # install_requires=['docopt'],
 )
