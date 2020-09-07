@@ -180,9 +180,8 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 
 ### 5) Create ASCII plots
-This will be made more user friendly.
-
 For now, to get a scatter plot of publication year vs. citation count for a list of papers, do as shown below.
+This will be made more user friendly.
 
 Columns 7 and 8 contain the year and the citation count.
 ```
