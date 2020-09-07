@@ -28,6 +28,10 @@ ver:
 
 
 # -----------------------------------------------------------------------------
+
+vim_ver:
+	vim -p setup.py src/pmidcite/__version__.py
+
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
 	$(PYTHON) -m pip install --upgrade setuptools wheel twine

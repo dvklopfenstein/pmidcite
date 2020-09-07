@@ -7,16 +7,15 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* ***pmidcite*, on the command line**:
-  * [**Quick start**](#quick-start)
-    * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
-    * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
-    * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
-    * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
-    * [**5) Create ASCII plots**](#5-create-ascii-plots)
+* ***pmidcite*, setup**:
   * [**Setup**](#setup)
-  * [**Documentation**](???)
   * [**How to cite**](#how-to-cite)
+* ***pmidcite*, on the command line**:
+  * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
+  * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
+  * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
+  * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
+  * [**5) Create ASCII plots**](#5-create-ascii-plots)
 * ***pmidcite*, the Python library**
   * [**Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
   * [**Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
