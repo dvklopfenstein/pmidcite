@@ -181,7 +181,47 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 
 ### 5) Create ASCII plots
-The code which creates the scatter plots is adapted for use with *pmidcite* from https://github.com/dzerbino/ascii_plots.
+This will be made more user friendly.
+
+For now, to get a scatter plot of publication year vs. citation count for a list of papers, do as shown below.
+
+Columns 7 and 8 contain the year and the citation count.
+```
+$ grep TOP log/icite/Osbourn_Anne2.txt | awk '{print $7 " " $8}' | scatter.py
+-------------------------------------------------------------------------------------------- 282
+|                                                                1                         |
+|                                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                              1                                                           |
+|                                                                                          |
+|               1                                                                          |
+|                                                                                          |
+|                                                                                          |
+|                                                           1                              |
+|          1                                                     1                         |
+|1                                  1                                                      |
+|                                                                                          |
+|                                                      1                                   |
+|                    1                   1                                                 |
+|                                            1                   1                         |
+|                                            1              1    1                         |
+|     1                             1                                 1                    |
+|                    1              1                  1    1                              |
+|                              1             1              1                              |
+|     1              1              1    1        2    2                                   |
+|                                        1                            1    2               |
+|                                                           1    2    1    1         1     |
+|1    1                                  1   2    1    1              3    1    4          |
+|               1         1    1         1   1    3    1    1    1              5          |
+|          2         2                                           1    1    2    1    7    3|
+-------------------------------------------------------------------------------------------- 0
+2002                                                                                          2020
+```
 
 
 
