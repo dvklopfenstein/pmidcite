@@ -24,7 +24,7 @@ rather than clicking and clicking and clicking on
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
 * Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
-## Quick start
+## Command Line Interface (CLI)
 
 ### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
