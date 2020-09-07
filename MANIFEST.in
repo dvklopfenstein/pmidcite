@@ -1,2 +1,3 @@
 include versioneer.py
 include src/pmidcite/_version.py
+include README.md

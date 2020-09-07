@@ -26,6 +26,23 @@ pytest:
 ver:
 	git describe --tags --dirty --always
 
+
+# -----------------------------------------------------------------------------
+upgrade:
+	python3 -m pip install --upgrade pip
+	python3 -m pip install --upgrade setuptools wheel twine
+	python3 -m pip install --upgrade distutils
+
+# 
+sdist:
+	# python3 -m pip install --user --upgrade setuptools wheel
+	make clean_dist
+	python3 setup.py sdist
+	ls -lh dist
+
+clean_dist:
+	rm -rf dist build 
+
 clean:
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
