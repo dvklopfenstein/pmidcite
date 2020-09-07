@@ -7,7 +7,7 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
 *Cited by N* links.
 
-* ***pmidcite*, setup**:
+* ***pmidcite***:
   * [**Setup**](#setup)
   * [**How to cite**](#how-to-cite)
 * ***pmidcite*, on the command line**:
