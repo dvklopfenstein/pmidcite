@@ -220,7 +220,7 @@ $ mkdir [GIT_REPO_PATH]/log/icite
 
 ### 3. NCBI E-Utils API key
 If you want to download PubMed abstracts and PubMed search results using NCBI's E-Utils,
-get an NCBI API key by following instructions here:    
+get an NCBI API key using these instructions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 Set the `apikey` value in the config file: `~/.pmidciterc`
