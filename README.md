@@ -187,7 +187,7 @@ For now, to get a scatter plot of publication year vs. citation count for a list
 
 Columns 7 and 8 contain the year and the citation count.
 ```
-$ grep TOP log/icite/Osbourn_Anne2.txt | awk '{print $7 " " $8}' | scatter.py
+$ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
 -------------------------------------------------------------------------------------------- 282
 |                                                                1                         |
 |                                                                                          |
