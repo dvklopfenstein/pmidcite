@@ -8,6 +8,7 @@ rather than clicking and clicking and clicking on
 *Cited by N* links.
 
 * ***pmidcite***:
+  * [**Installation**](#installation)
   * [**Setup**](#setup)
   * [**How to cite**](#how-to-cite)
 * ***pmidcite*, on the command line**:
@@ -222,6 +223,9 @@ $ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
 ```
 
 
+
+## Installation
+```pip install pmidcite```
 
 ## Setup
 Save your literature search in a GitHub repo.
