@@ -38,12 +38,13 @@ class NIHiCiteEntry:
     def __init__(self, icite_dct):
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
-        nih_percentile = icite_dct['nih_percentile']
-        self.dct['nih_sd'] = self._init_nih_sd(nih_percentile)
-        self.dct['nih_perc'] = round(nih_percentile) if nih_percentile is not None else 999
+        nih_perc = icite_dct['nih_percentile']
+        total_cites = icite_dct['citation_count'] + len(icite_dct['cited_by_clin'])
+        self.dct['nih_sd'] = self._init_nih_sd(nih_perc)
+        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + total_cites
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
-        self.dct['total_cites'] = icite_dct['citation_count'] + len(icite_dct['cited_by_clin'])
+        self.dct['total_cites'] = total_cites
         self.dct['num_refs'] = len(icite_dct['references'])
 
     @staticmethod
@@ -98,7 +99,7 @@ class NIHiCiteEntry:
         prt.write('         c: Is cited by a clinical trial, study, or guideline\n\n')
         prt.write('     NIH section, based on Relative Citation Ratio (RCR):\n')
         prt.write('     ----------------------------------\n')
-        prt.write('         %: NIH citation percentile rounded to an integer. 999 means "not determined" or TBD\n')
+        prt.write('         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD\n')
         prt.write('        SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD\n\n')
         prt.write('     YEAR/citations/references section:\n')
         prt.write('     ----------------------------------\n')
@@ -120,13 +121,14 @@ class NIHiCiteEntry:
         """Return one-line string describing NIH iCite entry"""
         dct = self.dct
         nih_sd = dct['nih_sd']
+        nih_perc = dct['nih_perc']
         return pat.format(
             pmid=self.pmid,
             year=dct['year'],
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
             nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
-            nih_perc=dct['nih_perc'],
+            nih_perc=nih_perc if nih_perc <= 100 else '-1',
             citation_count=dct['citation_count'],
             clin=dct['num_clin'],
             references=dct['num_refs'],
