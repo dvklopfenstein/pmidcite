@@ -128,7 +128,7 @@ class NIHiCiteEntry:
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
             nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
-            nih_perc=nih_perc if nih_perc <= 100 else '-1',
+            nih_perc=nih_perc if nih_perc <= 100 else ' -1',
             citation_count=dct['citation_count'],
             clin=dct['num_clin'],
             references=dct['num_refs'],
