@@ -39,13 +39,13 @@ class NIHiCiteEntry:
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
-        total_cites = icite_dct['citation_count'] + len(icite_dct['cited_by_clin'])
         self.dct['nih_sd'] = self._init_nih_sd(nih_perc)
-        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + total_cites
+        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + self.dct['citation_count']
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
-        self.dct['total_cites'] = total_cites
+        self.dct['num_cite'] = len(icite_dct['cited_by'])
         self.dct['num_refs'] = len(icite_dct['references'])
+        assert self.dct['citation_count'] == len(set(self.dct['cited_by_clin'] + self.dct['cited_by']))
 
     @staticmethod
     def _init_nih_sd(nih_percentile):

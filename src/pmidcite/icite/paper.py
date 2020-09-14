@@ -44,6 +44,10 @@ class NIHiCitePaper:
         self.cited_by_clin = self._init_pmids('cited_by_clin')
         self.references = self._init_pmids('references')
 
+    def get_icite(self):
+        """Get NIHiCiteEntry for this paper"""
+        return self.pmid2icite[self.pmid]
+
     def str_line(self):
         """Return a string summarizing the the paper described herein"""
         txt = str(self.icite)

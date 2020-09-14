@@ -4,7 +4,7 @@ from the command-line by linking citation
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC), iCite**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
-[**Google Scholar**](https://twitter.com/CT_Bergstrom/status/1170465764832231427)'s
+[**Google Scholar**](/doc/images/README.md#google-scholar)
 *Cited by N* links.
 
 * ***pmidcite***:
@@ -181,7 +181,7 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 
 ### 5) Create ASCII plots
-To get a scatter plot of publication year vs. citation count for a list of papers, do as shown below.
+Create a scatter plot of publication year vs. citation count for a list of papers.
 This will be made more user friendly.
 
 Columns 7 and 8 contain the year and the citation count.
