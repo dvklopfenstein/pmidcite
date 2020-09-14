@@ -283,7 +283,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## PubMed vs Google Scholar
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="600"/>
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" align="middle" width="450"/>
 
 ### PubMed implements all five Boeker critera[1]:
 
@@ -326,13 +326,13 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | [DOI: *Coming soon*]()
+2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | [DOI: *Coming soon*]()
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
 2019 | _PLoS Biology_ | PMID: [31600197](https://pubmed.ncbi.nlm.nih.gov/31600197) | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
-_And please consider reading and citing the paper [3] which inspired the creation of **pmidcite** and the response to our paper [4]_:
+_And please consider reading and citing the paper [3] which inspired the creation of **pmidcite** and their response to our paper [4]_:
 
 3. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
@@ -340,9 +340,9 @@ Gusenbauer M and Haddaway N
 
 4. [**What every Researcher should know about Searching – Clarified Concepts, Search Advice, and an Agenda to improve Finding in Academia**](???)    
 Gusenbauer M and Haddaway N    
-2020 | _Research Synthesis Methods_ | [DOI: *Coming soom*]()
+2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | [DOI: *Coming soom*]()
 
-_Mentioned in this README are these outstanding papers_:
+_Mentioned in this README are also these outstanding papers_:
 
 5. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
 Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.    
