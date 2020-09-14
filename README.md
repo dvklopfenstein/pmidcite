@@ -54,7 +54,7 @@ augment their PubMed search results using
 the *pmidcite* scripts and library,
 which download citation data from the
 NIH-OCC database using NIH's `iCite'' API.
-We have found PubMed plus NIH-OCC citatation data combined using *pmidcite* is a "Better" experience than using Google Scholar
+We have found PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar
 if your research is in the health sciences and you can work from the command line.
 
 
