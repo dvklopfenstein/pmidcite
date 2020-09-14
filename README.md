@@ -98,11 +98,12 @@ NIH iCite details:
          z: Number of references
      au[A]: A is the number of authors
 ```
-#### Citation group numbers
+#### Citation group numbers [1]
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
 are determined using the [NIH Relative Citation Rate (RCR)](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
 If the NIH has not yet determined a citation rate for new papers,
 the ***pmidcite*** group number is **i**.
+
 ![cite group](/doc/images/nih_perc_groups.png)
 
 ### 2) Sort citation counts, given PMIDs
@@ -282,9 +283,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## PubMed vs Google Scholar
-![GS v PubMed](/doc/images/Search_Features_GS_v_PubMed.png)
-
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="500"/>
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="600"/>
 
 ### Figure description from our commentary [1]:
 In late October 2013, Boeker et al. recommended
