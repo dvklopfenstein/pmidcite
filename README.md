@@ -11,7 +11,7 @@ rather than clicking and clicking and clicking on
   * [**Installation**](#installation)
   * [**Setup**](#setup)
   * [**How to cite**](#how-to-cite)
-* ***pmidcite*, on the command line**:
+* [***pmidcite*, on the command line**](#command-line-interface-cli):
   * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
   * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
   * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
