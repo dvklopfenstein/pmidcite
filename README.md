@@ -336,7 +336,7 @@ Klopfenstein DV and Dampier W
 Hutchins BI ... Santangelo GM    
 2019 | _PLoS Biology_ | PMID: [31600197](https://pubmed.ncbi.nlm.nih.gov/31600197) | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
-_And please consider reading and citing the paper [3] which inspired the creation of **pmidcite** and their response to our paper [4]_:
+_And please consider reading and citing the paper [3] which inspired the creation of **pmidcite** and the authors' response to our paper [4]_:
 
 3. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
