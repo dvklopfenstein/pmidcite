@@ -144,7 +144,7 @@ NIH iCite details:
      YEAR/citations/references section:
      ----------------------------------
       YEAR: The year the article was published
-         x: Number of unique articles that have cited the paper
+         x: Total of all unique articles that have cited the paper, including clinical articles
          y: Number of unique clinical articles that have cited the paper
          z: Number of references
      au[A]: A is the number of authors
