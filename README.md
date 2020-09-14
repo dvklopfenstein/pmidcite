@@ -149,11 +149,11 @@ NIH iCite details:
          z: Number of references
      au[A]: A is the number of authors
 ```
-#### Citation group numbers
+#### Citation group numbers [1]
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
 are determined using the *NIH Relative Citation Rate (RCR)* [5] percentile.
 If the NIH has not yet determined a citation rate for new papers,
-the ***pmidcite*** group number is **i** [1].
+the ***pmidcite*** group number is **i**.
 
 ![cite group](/doc/images/nih_perc_groups.png)
 
