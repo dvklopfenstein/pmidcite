@@ -7,6 +7,8 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README.md#google-scholar)
 *Cited by N* links.
 
+* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
+* [**What is in PubMed?**](#what-is-in-pubmed)
 * ***pmidcite***:
   * [**Installation**](#installation)
   * [**Setup**](#setup)
@@ -23,8 +25,6 @@ rather than clicking and clicking and clicking on
   * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
   * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
-* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
-* [**What is in PubMed?**](#what-is-in-pubmed)
 
 
 
