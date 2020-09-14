@@ -24,7 +24,7 @@ rather than clicking and clicking and clicking on
   * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
 * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
-* Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
+* [**What is in PubMed?**](#what-is-in-pubmed)
 
 ## Command Line Interface (CLI)
 
@@ -98,11 +98,11 @@ NIH iCite details:
          z: Number of references
      au[A]: A is the number of authors
 ```
-#### Citation group numbers [1]
+#### Citation group numbers
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
 are determined using the [NIH Relative Citation Rate (RCR)](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
 If the NIH has not yet determined a citation rate for new papers,
-the ***pmidcite*** group number is **i**.
+the ***pmidcite*** group number is **i** [1].
 
 ![cite group](/doc/images/nih_perc_groups.png)
 
@@ -285,7 +285,7 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 ## PubMed vs Google Scholar
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="600"/>
 
-### Figure description from our commentary [1]:
+### Figure description [1]:
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
@@ -299,6 +299,24 @@ to evaluate the extremely popular GS implementation of this feature
 against the PubMed implementation
 and compare PubMed and GS's support for the search tools below
 using the 2013 foundational Boeker advice [5].
+
+
+## What is in PubMed?
+<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="800"/>
+
+### Figure description [1]:
+
+PubMed is a search interface and toolset used to access databases like
+MEDLINE and PubMed Central (PMC) as well as additional content
+like books and articles published before the 1960s.
+Over 30.5 million article records are accessible through the PubMed interface.
+The databases, MEDLINE and PMC, are separate entities whose combined articles
+comprise 94% of all of the coverage indexed by PubMed ([1] S2).
+MEDLINE is a highly selective database started in the 1960s.
+PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the reader.
+
+* Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
+
 
 
 ## How to Cite
