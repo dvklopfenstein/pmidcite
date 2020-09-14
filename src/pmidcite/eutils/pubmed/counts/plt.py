@@ -68,7 +68,7 @@ class PubMedPlot:
                     bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
                     handletextpad=.2, columnspacing=1.0, labelspacing=.2)
         # Save figure
-        plt.savefig(fout_png, bbox_inches='tight', pad_inched=0, dpi=300)
+        plt.savefig(fout_png, bbox_inches='tight', pad_inches=0, dpi=300)
         print('  WROTE: {PNG}'.format(PNG=fout_png))
 
     @staticmethod
