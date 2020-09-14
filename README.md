@@ -4,7 +4,7 @@ from the command-line by linking citation
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC), iCite**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
-[**Google Scholar**](/doc/images/README.md#google-scholar)
+[**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
 * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
