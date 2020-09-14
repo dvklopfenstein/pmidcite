@@ -26,6 +26,57 @@ rather than clicking and clicking and clicking on
 * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
 * [**What is in PubMed?**](#what-is-in-pubmed)
 
+
+
+## PubMed vs Google Scholar (GS)
+<p align="center">
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
+</p>
+
+### PubMed implements all five Boeker critera[1]:
+
+In late October 2013, Boeker et al. recommended
+that a scientific search interface contain
+five integrated search criteria. 
+The 2013 Boeker guidance greatly influenced the Gusenbauer study [3],
+which expanded the Boeker list from five search criteria to twenty-seven
+for their study of twenty-eight search tools.
+
+The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6]. 
+We add "Forward citation search" to the Boeker list
+to evaluate the extremely popular GS implementation of this feature
+against the PubMed implementation
+and compare PubMed and GS's support for the search tools below
+using the 2013 foundational Boeker advice [6].
+
+Command-line users can immediately
+augment their PubMed search results using
+the *pmidcite* scripts and library,
+which download citation data from the
+NIH-OCC database using NIH's `iCite'' API.
+We have found PubMed plus NIH-OCC citatation data combined using *pmidcite* is a "Better" experience than using Google Scholar
+if your research is in the health sciences and you can work from the command line.
+
+
+## What is in PubMed?
+<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
+
+### PubMed indexes about 30.5 million documents [1]:
+
+PubMed is a search interface and toolset used to access databases like
+MEDLINE and PubMed Central (PMC) as well as additional content
+like books and articles published before the 1960s.
+Over 30.5 million article records are accessible through the PubMed interface.
+The databases, MEDLINE and PMC, are separate entities whose combined articles
+comprise 94% of all of the coverage indexed by PubMed ([1] S2).
+MEDLINE is a highly selective database started in the 1960s.
+PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the reader.
+
+Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
+
+
+
+
 ## Command Line Interface (CLI)
 
 A Command-Line Interface (CLI) can be preferable 
@@ -284,43 +335,6 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 
 
-## PubMed vs Google Scholar (GS)
-<p align="center">
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
-</p>
-
-### PubMed implements all five Boeker critera[1]:
-
-In late October 2013, Boeker et al. recommended
-that a scientific search interface contain
-five integrated search criteria. 
-The 2013 Boeker guidance greatly influenced the Gusenbauer study [3],
-which expanded the Boeker list from five search criteria to twenty-seven
-for their study of twenty-eight search tools.
-
-The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6]. 
-We add "Forward citation search" to the Boeker list
-to evaluate the extremely popular GS implementation of this feature
-against the PubMed implementation
-and compare PubMed and GS's support for the search tools below
-using the 2013 foundational Boeker advice [6].
-
-
-## What is in PubMed?
-<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
-
-### PubMed indexes about 30.5 million documents [1]:
-
-PubMed is a search interface and toolset used to access databases like
-MEDLINE and PubMed Central (PMC) as well as additional content
-like books and articles published before the 1960s.
-Over 30.5 million article records are accessible through the PubMed interface.
-The databases, MEDLINE and PMC, are separate entities whose combined articles
-comprise 94% of all of the coverage indexed by PubMed ([1] S2).
-MEDLINE is a highly selective database started in the 1960s.
-PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the reader.
-
-Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 
 
