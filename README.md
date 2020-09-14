@@ -284,7 +284,9 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 ## PubMed vs Google Scholar
 ![GS v PubMed](/doc/images/Search_Features_GS_v_PubMed.png)
 
-### From [our commentary [1]:
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="200"/>
+
+### Figure description from our commentary [1]:
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
