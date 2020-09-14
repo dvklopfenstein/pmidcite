@@ -100,7 +100,7 @@ NIH iCite details:
 ```
 #### Citation group numbers
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
-are determined using the [NIH Relative Citation Rate (RCR)](https://pubmed.ncbi.nlm.nih.gov/27599104/) percentile.
+are determined using the *NIH Relative Citation Rate (RCR)* [5] percentile.
 If the NIH has not yet determined a citation rate for new papers,
 the ***pmidcite*** group number is **i** [1].
 
@@ -294,12 +294,12 @@ The 2013 Boeker guidance greatly influenced the Gusenbauer study [3],
 which expanded the Boeker list from five search criteria to twenty-seven
 for their study of twenty-eight search tools.
 
-The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [5]. 
+The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6]. 
 We add "Forward citation search" to the Boeker list
 to evaluate the extremely popular GS implementation of this feature
 against the PubMed implementation
 and compare PubMed and GS's support for the search tools below
-using the 2013 foundational Boeker advice [5].
+using the 2013 foundational Boeker advice [6].
 
 
 ## What is in PubMed?
@@ -316,7 +316,7 @@ comprise 94% of all of the coverage indexed by PubMed ([1] S2).
 MEDLINE is a highly selective database started in the 1960s.
 PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the reader.
 
-* Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
+Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 
 
@@ -326,26 +326,30 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | [DOI: 10.1038/??
+2020 | _Research Synthesis Methods_ | [DOI: *Coming soon*]()
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
 2019 | _PLoS Biology_ | PMID: [31600197](https://pubmed.ncbi.nlm.nih.gov/31600197) | [DOI: 10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
 
-_And please consider reading and citing the paper which inspired the creation of **pmidcite**_:
+_And please consider reading and citing the paper [3] which inspired the creation of **pmidcite** and the response to our paper [4]_:
 
 3. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
 2019 | _Research Synthesis Methods_ | PMID: [31614060](https://pubmed.ncbi.nlm.nih.gov/31614060) | [DOI:10.1002/jrsm.1378](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)
 
-_Mentioned in this README is this outstanding paper_:
+4. [**What every Researcher should know about Searching – Clarified Concepts, Search Advice, and an Agenda to improve Finding in Academia**](???)    
+Gusenbauer M and Haddaway N    
+2020 | _Research Synthesis Methods_ | [DOI: *Coming soom*]()
 
-4. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
+_Mentioned in this README are these outstanding papers_:
+
+5. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
 Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.    
 2016 | _PLoS Biology_ | PMID: [27599104](https://pubmed.ncbi.nlm.nih.gov/27599104) | [DOI: 10.1371/journal.pbio.1002541](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
 
-5. [**Google Scholar as replacement for systematic literature searches: good relative recall and precision are not enough**](https://pubmed.ncbi.nlm.nih.gov/24160679/)
-Boeker M et al.
+6. [**Google Scholar as replacement for systematic literature searches: good relative recall and precision are not enough**](https://pubmed.ncbi.nlm.nih.gov/24160679/)    
+Boeker M et al.    
 2013 | BMC Medical Research Methodology | PMID: [24160679](https://pubmed.ncbi.nlm.nih.gov/24160679) | [DOI:10.1186/1471-2288-13-131](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-13-131)
 
 
