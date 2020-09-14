@@ -23,6 +23,7 @@ rather than clicking and clicking and clicking on
   * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
   * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
+* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
 * Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 ## Command Line Interface (CLI)
@@ -33,12 +34,12 @@ processing can be automated from a script;
 time-consuming mouse clicking is reduced; and
 more data can be seen at once on a text screen
 than in a browser, giving the researcher 
-a better overall impression of the full set of information.
+a better overall impression of the full set of information [1].
 
 Linux and Mac users already work from the command line.
 Windows users can get that Linux-like command line feeling
 while still running native Windows programs by
-downloading Cygwin from https://www.cygwin.com/
+downloading Cygwin from https://www.cygwin.com/ [1].
 
 ### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
@@ -280,6 +281,24 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
+## PubMed vs Google Scholar
+![GS v PubMed](/doc/images/Search_Features_GS_v_PubMed.png)
+
+### From [our commentary [1]:
+In late October 2013, Boeker et al. recommended
+that a scientific search interface contain
+five integrated search criteria. 
+The 2013 Boeker guidance greatly influenced the Gusenbauer study [3],
+which expanded the Boeker list from five search criteria to twenty-seven
+for their study of twenty-eight search tools.
+
+The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [5]. 
+We add "Forward citation search" to the Boeker list
+to evaluate the extremely popular GS implementation of this feature
+against the PubMed implementation
+and compare PubMed and GS's support for the search tools below
+using the 2013 foundational Boeker advice [5].
+
 
 ## How to Cite
 
@@ -304,6 +323,10 @@ _Mentioned in this README is this outstanding paper_:
 4. [**Relative Citation Ratio (RCR): A New Metric That Uses Citation Rates to Measure Influence at the Article Level**](https://pubmed.ncbi.nlm.nih.gov/27599104/)    
 Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.    
 2016 | _PLoS Biology_ | PMID: [27599104](https://pubmed.ncbi.nlm.nih.gov/27599104) | [DOI: 10.1371/journal.pbio.1002541](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
+
+5. [**Google Scholar as replacement for systematic literature searches: good relative recall and precision are not enough**](https://pubmed.ncbi.nlm.nih.gov/24160679/)
+Boeker M et al.
+2013 | BMC Medical Research Methodology | PMID: [24160679](https://pubmed.ncbi.nlm.nih.gov/24160679) | [DOI:10.1186/1471-2288-13-131](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-13-131)
 
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

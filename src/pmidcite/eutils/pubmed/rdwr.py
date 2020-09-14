@@ -327,9 +327,11 @@ class PubMedRdWr:
                     else:
                         # 1983 Jul 28-Aug 3   ->   1983 Aug 3
                         #print "WAS", str_date
-                        mtch = re.match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
+                        mtch = re.match(r'(\d{4} \S{3}) ', str_date)
+                        ## mtch = re.match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
                         if mtch:
-                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
+                            ## fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
+                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
                         mtch = re.match(r'(\d{4} \S{3})\w?\s*-', str_date)
                         if mtch:
                             fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
@@ -337,12 +339,12 @@ class PubMedRdWr:
                         mtch = re.match(r'(\d{4} \d{2})\s*-', str_date)
                         if mtch:
                             fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %m")
-                        raise Exception("UNRECOGNIZED FORMAT {}".format(str_date))
+                        raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
         elif "/" in str_date:
             mtch = re.match(r'(\d{4} \w{3})/', str_date)
             if mtch:
                 fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
-            raise Exception("UNRECOGNIZED FORMAT {}".format(str_date))
+            raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
         else:
             # Apr 2017
             mtch = re.match(r'(\w{3} \d{4})', str_date)
