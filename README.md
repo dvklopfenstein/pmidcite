@@ -285,7 +285,8 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 ## PubMed vs Google Scholar
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="600"/>
 
-### Figure description [1]:
+### PubMed implements all five Boeker critera[1]:
+
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
@@ -302,9 +303,9 @@ using the 2013 foundational Boeker advice [5].
 
 
 ## What is in PubMed?
-<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="800"/>
+<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
-### Figure description [1]:
+### PubMed indexes about 30.5 million documents [1]:
 
 PubMed is a search interface and toolset used to access databases like
 MEDLINE and PubMed Central (PMC) as well as additional content
