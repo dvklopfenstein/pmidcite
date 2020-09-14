@@ -44,7 +44,7 @@ for their study of twenty-eight search tools.
 
 The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6]. 
 We add "Forward citation search" to the Boeker list
-to evaluate the extremely popular GS implementation of this feature
+to evaluate the extremely popular GS implementation of this feature through its ubiquitously featured "Cited by N" links
 against the PubMed implementation
 and compare PubMed and GS's support for the search tools below
 using the 2013 foundational Boeker advice [6].
@@ -53,7 +53,7 @@ Command-line users can immediately
 augment their PubMed search results using
 the *pmidcite* scripts and library,
 which download citation data from the
-NIH-OCC database using NIH's `iCite'' API.
+NIH-OCC database using NIH's "iCite" API.
 We have found PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar
 if your research is in the health sciences and you can work from the command line.
 
