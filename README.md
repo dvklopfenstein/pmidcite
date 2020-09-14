@@ -283,7 +283,9 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## PubMed vs Google Scholar
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" align="center" width="450"/>
+<p align="center">
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
+</p>
 
 ### PubMed implements all five Boeker critera[1]:
 
