@@ -23,7 +23,7 @@ rather than clicking and clicking and clicking on
   * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
   * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
-* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
+* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
 * [**What is in PubMed?**](#what-is-in-pubmed)
 
 ## Command Line Interface (CLI)
@@ -282,7 +282,9 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
-## PubMed vs Google Scholar
+
+
+## PubMed vs Google Scholar (GS)
 <p align="center">
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
 </p>
