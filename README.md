@@ -27,6 +27,19 @@ rather than clicking and clicking and clicking on
 
 ## Command Line Interface (CLI)
 
+A Command-Line Interface (CLI) can be preferable 
+to a Graphical User Interface (GUI) because: 
+processing can be automated from a script;
+time-consuming mouse clicking is reduced; and
+more data can be seen at once on a text screen
+than in a browser, giving the researcher 
+a better overall impression of the full set of information.
+
+Linux and Mac users already work from the command line.
+Windows users can get that Linux-like command line feeling
+while still running native Windows programs by
+downloading Cygwin from https://www.cygwin.com/
+
 ### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
 ```
