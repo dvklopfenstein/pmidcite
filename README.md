@@ -38,7 +38,7 @@ rather than clicking and clicking and clicking on
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
-The 2013 Boeker guidance greatly influenced the Gusenbauer study [3],
+The 2013 Boeker guidance [6] greatly i[6] nfluenced the Gusenbauer study [3],
 which expanded the Boeker list from five search criteria to twenty-seven
 for their study of twenty-eight search tools.
 
@@ -106,7 +106,7 @@ TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making litera
 The [**group number**](#citation-group-numbers), `2` (`SD` column) indicates that the paper has a good citation rate,
 specifically it is in the `68th` percentile (`%` column) compared to its peers.
 
-#### Get the key for the column headers
+#### Column header key (`-k`)
 ```
 $ icite -k
 
@@ -161,7 +161,7 @@ the ***pmidcite*** group number is **i**.
 Sort the citations (`CIT`) of the paper with PMID `26032263` first by citation group (`2` and `i`), then by year.
 
 The citation group shown contains:
-  * `i` New paper and not yet rated. The `i` variable will be set at a later date
+  * `i` New paper and not yet rated. The `i` variable will be set at a later date by the NIH
   * `2` These papers are performing well
 
 Sort options:
@@ -187,14 +187,14 @@ CIT 27617203 .. .....  43 2 2016     5  0  40 au[02](Neal R Haddaway) On the ben
 ```
 
 #### Other sort examples
-We suggest starting with the `-k6` sort option because in 2018 Fiorini et al., the creaters of PubMed's "best match" relevance sort ordering in PubMed,
+We suggest starting with the `-k6` sort option because in 2018 Fiorini et al. [7], the creaters of PubMed's "best match" relevance sort ordering in PubMed,
 found that the most important document features to feed into the PubMed sorting algorithm are publication year and past usage.
 
 Using the `-k6` argument to `sort` the citation group (usage group) does two things:
-  * First, it highlightis the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
+  * First, it highlights the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
   * Second, it shows the newest papers first in each usage group, highlighting them profoundly.
 
-We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th colum, seen with values `-1`, `76`, etc. because 
+We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th column, seen with values `-1`, `76`, etc. because 
 only seeing the best performing papers first might bias the paper chosen for further examination 
 to only the best performing papers regardless of publication year.
 
@@ -370,5 +370,8 @@ Hutchins BI, Xin Yuan, Anderson JM, and Santangelo, George M.
 Boeker M et al.    
 2013 | BMC Medical Research Methodology | PMID: [24160679](https://pubmed.ncbi.nlm.nih.gov/24160679) | [DOI:10.1186/1471-2288-13-131](https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/1471-2288-13-131)
 
+7. [**Best Match: New relevance search for PubMed**](https://pubmed.ncbi.nlm.nih.gov/30153250/)    
+Fiorini N ... Lu Zhiyong    
+2018 | PLoS Biology | PMID: [30153250](https://pubmed.ncbi.nlm.nih.gov/30153250) | [DOI:10.1371/journal.pbio.2005343](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005343)    
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
