@@ -53,7 +53,7 @@ Command-line users can immediately
 augment their PubMed search results using
 the *pmidcite* scripts and library,
 which download citation data from the
-NIH-OCC database using NIH's "iCite" Application Programming Interface (API).
+National Institutes of Health Open Citation Collection (NIH-OCC) database using NIH's "iCite" Application Programming Interface (API).
 We have found PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar
 if your research is in the health sciences and you can work from the command line.
 
