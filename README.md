@@ -38,7 +38,7 @@ rather than clicking and clicking and clicking on
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
-The 2013 Boeker guidance [6] greatly i[6] nfluenced the Gusenbauer study [3],
+The 2013 Boeker guidance [6] greatly influenced the Gusenbauer study [3],
 which expanded the Boeker list from five search criteria to twenty-seven
 for their study of twenty-eight search tools.
 
