@@ -7,7 +7,8 @@ import sys
 import os
 import datetime
 
-import re
+from re import match
+from re import search
 from pmidcite.eutils.pubmed.terms import MeshTerms
 from pmidcite.eutils.pubmed.authors import Authors
 
@@ -293,6 +294,13 @@ class PubMedRdWr:
             #### prt.write("{VAL},\n".format(VAL=addquot(fld_val)))
             prt.write("{VAL},\n".format(VAL=''.join(["'", fld_val, "'"])))
 
+    date_patterns = [
+        (r'(\d{4} \S{3} \d{1,2})\s*-', '%Y %b %d'),
+        (r'(\d{4} \S{3})\w?\s*-', "%Y %b"),
+        (r'(\d{4} \d{2})\s*-', "%Y %m"),
+        (r'(\d{4} \w{3}) - \w{3}\b', '%Y %b'),
+    ]
+
     # pylint: disable=too-many-statements
     def _init_date(self, fld2objs, fld, str_date, pmid):
         """Convert string date to datetime object."""
@@ -316,38 +324,44 @@ class PubMedRdWr:
                 str_date = str_date[0:8]
             else:
                 # "2002 Sep 1-15" -> "2002 Sep 15"
-                mtch = re.match(r'(\d{4} \w{3}) \d{1,2}-(\d{1,2})', str_date)
+                mtch = match(r'(\d{4} \w{3}) \d{1,2}-(\d{1,2})', str_date)
                 if mtch:
                     str_date = ' '.join([mtch.group(1), mtch.group(2)])
                 else:
                     # "1993-1994" -> "1994"
-                    mtch = re.match(r'\d{4}-(\d{4})', str_date)
+                    mtch = match(r'\d{4}-(\d{4})', str_date)
                     if mtch:
                         str_date = mtch.group(1)
                     else:
                         # 1983 Jul 28-Aug 3   ->   1983 Aug 3
                         #print "WAS", str_date
-                        mtch = re.match(r'(\d{4} \S{3}) ', str_date)
-                        ## mtch = re.match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
-                        if mtch:
-                            ## fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
-                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
-                        mtch = re.match(r'(\d{4} \S{3})\w?\s*-', str_date)
-                        if mtch:
-                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
-                        # 2016 09-10  ->  2016 10
-                        mtch = re.match(r'(\d{4} \d{2})\s*-', str_date)
-                        if mtch:
-                            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %m")
-                        raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
+                        dateobj = self._matched(self.date_patterns, str_date)
+                        if str_date == '2019 Nov - Dec':
+                            print('SSSSSSSSSSSSSSSSSSSSSSSSSSS({})'.format(str_date), dateobj)
+                        if dateobj:
+                            fld2objs[fld] = dateobj
+                        else:
+                            raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
+
+                        #### mtch = match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
+                        #### if mtch:
+                        ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
+                        #### mtch = match(r'(\d{4} \S{3})\w?\s*-', str_date)
+                        #### if mtch:
+                        ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
+                        #### # 2016 09-10  ->  2016 10
+                        #### mtch = match(r'(\d{4} \d{2})\s*-', str_date)
+                        #### if mtch:
+                        ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %m")
+                        #### raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
         elif "/" in str_date:
-            mtch = re.match(r'(\d{4} \w{3})/', str_date)
+            mtch = match(r'(\d{4} \w{3})/', str_date)
             if mtch:
                 fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
             raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
         else:
             # Apr 2017
-            mtch = re.match(r'(\w{3} \d{4})', str_date)
+            mtch = match(r'(\w{3} \d{4})', str_date)
             if mtch:
                 fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%b %Y")
         #print locale.getlocale()
@@ -355,12 +369,22 @@ class PubMedRdWr:
         date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
             print("STRING DATE({})".format(str_date))
-            mtch = re.search(r'(\d{4}) \d+th (\S+)', str_date) # "2016 20th Oct"
-            str_date = "{YEAR} {Mon}".format(YEAR=mtch.group(1), Mon=mtch.group(2))
-            date_str = self._lendate2fmt.get(len(str_date), None)
+            mtch = search(r'(\d{4}) \d+th (\S+)', str_date) # "2016 20th Oct"
+            if mtch:
+                str_date = "{YEAR} {Mon}".format(YEAR=mtch.group(1), Mon=mtch.group(2))
+                date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
             raise Exception("BAD FORMAT ({})".format(str_date))
         fld2objs[fld] = datetime.datetime.strptime(str_date, date_str)
+
+    @staticmethod
+    def _matched(patterns, date_str):
+        """Return True if any of the date-string matched any patterns"""
+        for pattern, datefmt in patterns:
+            mtch = match(pattern, date_str)
+            if mtch:
+                return datetime.datetime.strptime(mtch.group(1), datefmt)
+        return None
 
 # pylint: disable=too-few-public-methods
 class ProcessLines:

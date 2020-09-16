@@ -33,7 +33,7 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
 </p>
 
-### PubMed implements all five Boeker critera[1]:
+### PubMed implements all five Boeker criteria [1]:
 
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
@@ -55,7 +55,7 @@ the *pmidcite* scripts and library,
 which download citation data from the
 National Institutes of Health Open Citation Collection (NIH-OCC) database using NIH's "iCite" Application Programming Interface (API).
 We have found PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar
-if your research is in the health sciences and you are open to working from the command line.
+if your research is in the health sciences and you are amenable to consider working from the [command line](#command-line-interface-cli).
 
 
 ## What is in PubMed?
@@ -70,7 +70,7 @@ Over 30.5 million article records are accessible through the PubMed interface.
 The databases, MEDLINE and PMC, are separate entities whose combined articles
 comprise 94% of all of the coverage indexed by PubMed ([1] S2).
 MEDLINE is a highly selective database started in the 1960s.
-PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the reader.
+PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the researcher.
 
 Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
@@ -344,7 +344,7 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | [DOI: *Coming soon*]()
+2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | [DOI: 10.1002/jrsm.1456]()
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
