@@ -31,7 +31,7 @@ class PubMedPlot:
         self.name2cnt = name2cnt
         self.dataobj = DataMgr(self.name2cnt)
 
-    def plt_content_counts(self, fout_png):
+    def plt_content_counts(self, fout_png, dpi=800):
         """Plot pubmed content"""
         a2n = self.name2cnt
         xmax = a2n['all']
@@ -68,7 +68,7 @@ class PubMedPlot:
                     bbox_to_anchor=(0.015, 0.0), borderaxespad=0.1,
                     handletextpad=.2, columnspacing=1.0, labelspacing=.2)
         # Save figure
-        plt.savefig(fout_png, bbox_inches='tight', pad_inches=0, dpi=300)
+        plt.savefig(fout_png, bbox_inches='tight', pad_inches=0, dpi=dpi)
         print('  WROTE: {PNG}'.format(PNG=fout_png))
 
     @staticmethod
