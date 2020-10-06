@@ -40,12 +40,22 @@ class NIHiCiteEntry:
         self.dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
         self.dct['nih_sd'] = self._init_nih_sd(nih_perc)
+        # pylint: disable=line-too-long
         self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + self.dct['citation_count']
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
         self.dct['num_cite'] = len(icite_dct['cited_by'])
         self.dct['num_refs'] = len(icite_dct['references'])
-        assert self.dct['citation_count'] == len(set(self.dct['cited_by_clin'] + self.dct['cited_by']))
+        # 29718114
+        if self.dct['citation_count'] != len(set(self.dct['cited_by_clin'] + self.dct['cited_by'])):
+            self._warning_cnts()
+
+    def _warning_cnts(self):
+        """Print warning about count mismatch"""
+        msg = ('**WARNING: {pmid} '
+               'CITATION_COUNT({citation_count}) != '
+               'CITED_BY_CLIN({cited_by_clin}) + CITED_BY({cited_by})')
+        print(msg.format(**self.dct))
 
     @staticmethod
     def _init_nih_sd(nih_percentile):
