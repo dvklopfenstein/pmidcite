@@ -15,7 +15,8 @@ def main(dnld=False):
     ## fpat_png = 'log/pubmed_content/pubmed_content_{DATE}.png'
     fout_pngs = [
         'pubmed_content_2020_01_10.png',
-        'pubmed_content_2020_01_10.tiff'
+        'pubmed_content_2020_01_10.tiff',
+        'pubmed_content_2020_01_10.pdf',
     ]
     fout_py = 'src/pmidcite/eutils/pubmed/counts/dnlded_data.py'
 
@@ -29,7 +30,7 @@ def main(dnld=False):
     # Plot PubMed content
     plt = PubMedPlot(name2cnt)
     for fout_png in fout_pngs:
-        plt.plt_content_counts(fout_png)
+        plt.plt_content_counts(fout_png, dpi=800)
     for name, ntd in plt.dataobj.pltdata_pubmed.items():
         print(' {N:10,} {P:5.1f}% {NAME}'.format(NAME=name, N=ntd.count, P=ntd.perc))
 
