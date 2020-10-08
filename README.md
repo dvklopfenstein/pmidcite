@@ -344,7 +344,7 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | DOI: *Coming soon* https://www.doi.org/10.1002/jrsm.1456
+2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | DOI: http://dx.doi.org/10.1002/jrsm.1456 
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
