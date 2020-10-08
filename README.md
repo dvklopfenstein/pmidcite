@@ -344,7 +344,11 @@ _If you use **pmidcite** in your literature search, please cite the following tw
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | DOI: http://dx.doi.org/10.1002/jrsm.1456 
+2020 | _Research Synthesis Methods_ | PMID: *Coming soon* | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456)
+  * [Manuscript](/doc/paper/JRSM_1456_iCite_main.pdf) with original text box formatting
+  * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
+  * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
+  * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)
 
 2. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
