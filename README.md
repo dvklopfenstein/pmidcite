@@ -340,7 +340,7 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## How to Cite
 
-_If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (citation data). Please consider reading and citing paper 2 (improving search for all):
+_If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (citation data). Please consider reading and citing paper 2 (improving search for all):_
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)
 Klopfenstein DV and Dampier W    
