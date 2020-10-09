@@ -345,10 +345,6 @@ _If you use **pmidcite** in your research, please paper cite 1 (pmidcite) and pa
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
 2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456)
-  * [**Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with original text box formatting
-    * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
-    * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
-    * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)
 
 2. Response to our commentary: [**What every Researcher should know about Searching – Clarified Concepts, Search Advice, and an Agenda to improve Finding in Academia**)(https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457)
 Gusenbauer M and Haddaway N    
@@ -383,5 +379,11 @@ Boeker M et al.
 8. [**Best Match: New relevance search for PubMed**](https://pubmed.ncbi.nlm.nih.gov/30153250/)    
 Fiorini N ... Lu Zhiyong    
 2018 | PLoS Biology | PMID: [30153250](https://pubmed.ncbi.nlm.nih.gov/30153250) | DOI: [10.1371/journal.pbio.2005343](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005343)    
+
+## PDFs of our paper
+  * [**Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with original text box formatting
+    * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
+    * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
+    * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)S
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
