@@ -340,15 +340,15 @@ Set the `apikey` value in the config file: `~/.pmidciterc`
 
 ## How to Cite
 
-_If you use **pmidcite** in your research, please paper cite 1 (pmidcite) and paper 3 (citation data). Please read and consider citing paper 2 (improving search for all):
+_If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (citation data). Please consider reading and citing paper 2 (improving search for all):
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](???)    
 Klopfenstein DV and Dampier W    
 2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456)
 
-2. Response to our commentary: [**What every Researcher should know about Searching – Clarified Concepts, Search Advice, and an Agenda to improve Finding in Academia**)(https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457)
+2. Response to our commentary: [**What every Researcher should know about Searching – Clarified Concepts, Search Advice, and an Agenda to improve Finding in Academia**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457)    
 Gusenbauer M and Haddaway N    
-2020 _Research Synthesis Methods_ | PMID: [33031639](https://pubmed.ncbi.nlm.nih.gov/33031639/) | DOI: [10.1002/jrsm.1457](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457)
+2020 | _Research Synthesis Methods_ | PMID: [33031639](https://pubmed.ncbi.nlm.nih.gov/33031639/) | DOI: [10.1002/jrsm.1457](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457)
 
 3. [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
