@@ -34,7 +34,7 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
 </p>
 
-### PubMed implements all five Boeker criteria [6](#references):
+### PubMed implements all five Boeker criteria [[6]](#references):
 
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
