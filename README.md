@@ -1,8 +1,8 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 Augment your PubMed literature search 
 from the command-line by linking 
-data downloaded from [**NIH's Open Citation Collection (NIH-OCC), iCite**](https://icite.od.nih.gov)
-(scientific influence, translation, and citation counts)
+data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov),
+which includes scientific influence, translation, and citation counts,
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
