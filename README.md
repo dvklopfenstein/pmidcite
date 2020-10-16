@@ -381,7 +381,7 @@ Fiorini N ... Lu Zhiyong
 2018 | PLoS Biology | PMID: [30153250](https://pubmed.ncbi.nlm.nih.gov/30153250) | DOI: [10.1371/journal.pbio.2005343](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005343)    
 
 ## PDFs of our paper
-  * [**Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with original text box formatting
+  * [**Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with the original text box formatting
   * **Supplemental Material**
     * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
     * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
