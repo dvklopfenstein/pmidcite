@@ -34,21 +34,21 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
 </p>
 
-### PubMed implements all five Boeker criteria [6]:
+### PubMed implements all five Boeker criteria [6](#references):
 
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
-The 2013 Boeker guidance [6] greatly influenced the Gusenbauer study [4],
+The 2013 Boeker guidance [6] greatly influenced the Gusenbauer study [4](#references),
 which expanded the Boeker list from five search criteria to twenty-seven
 for their study of twenty-eight search tools.
 
-The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6]. 
+The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [6](#references). 
 We add "Forward citation search" to the Boeker list
 to evaluate the extremely popular GS implementation of this feature through its ubiquitously featured "Cited by N" links
 against the PubMed implementation
 and compare PubMed and GS's support for the search tools below
-using the 2013 foundational Boeker advice [6].
+using the 2013 foundational Boeker advice [6](#references).
 
 Command-line users can immediately
 augment their PubMed search results using
@@ -62,14 +62,14 @@ if your research is in the health sciences and you are amenable to consider work
 ## What is in PubMed?
 <img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
-### PubMed indexes about 30.5 million documents [1]:
+### PubMed indexes about 30.5 million documents [1](#how-to-cite):
 
 PubMed is a search interface and toolset used to access databases like
 MEDLINE and PubMed Central (PMC) as well as additional content
 like books and articles published before the 1960s.
 Over 30.5 million article records are accessible through the PubMed interface.
 The databases, MEDLINE and PMC, are separate entities whose combined articles
-comprise 94% of all of the coverage indexed by PubMed ([1] S2).
+comprise 94% of all of the coverage indexed by PubMed ([1](#how-to-cite) S2).
 MEDLINE is a highly selective database started in the 1960s.
 PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the researcher.
 
@@ -86,12 +86,12 @@ processing can be automated from a script;
 time-consuming mouse clicking is reduced; and
 more data can be seen at once on a text screen
 than in a browser, giving the researcher 
-a better overall impression of the full set of information [1].
+a better overall impression of the full set of information [1](#how-to-cite).
 
 Linux and Mac users already work from the command line.
 Windows users can get that Linux-like command line feeling
 while still running native Windows programs by
-downloading Cygwin from https://www.cygwin.com/ [1].
+downloading Cygwin from https://www.cygwin.com/ [1](#how-to-cite).
 
 ### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
@@ -150,9 +150,9 @@ NIH iCite details:
          z: Number of references
      au[A]: A is the number of authors
 ```
-#### Citation group numbers [1]
+#### Citation group numbers [1](#how-to-cite)
 The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
-are determined using the *NIH Relative Citation Rate (RCR)* [5] percentile.
+are determined using the *NIH Relative Citation Rate (RCR)* [5](#references) percentile.
 If the NIH has not yet determined a citation rate for new papers,
 the ***pmidcite*** group number is **i**.
 
@@ -188,7 +188,7 @@ CIT 27617203 .. .....  43 2 2016     5  0  40 au[02](Neal R Haddaway) On the ben
 ```
 
 #### Other sort examples
-We suggest starting with the `-k6` sort option because in 2018 Fiorini et al. [7], the creaters of PubMed's "best match" relevance sort ordering in PubMed,
+We suggest starting with the `-k6` sort option because in 2018 Fiorini et al. [7](#references), the creaters of PubMed's "best match" relevance sort ordering in PubMed,
 found that the most important document features to feed into the PubMed sorting algorithm are publication year and past usage.
 
 Using the `-k6` argument to `sort` the citation group (usage group) does two things:
