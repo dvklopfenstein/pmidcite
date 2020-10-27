@@ -14,9 +14,9 @@ https://twitter.com/CT_Bergstrom/status/1170465764832231427
 https://www.pmid2cite.com/ looks useful for non-CLI (Command Line Interface) researchers,
 but it is unclear who created it.
 
-There is no "About Us" or "Our Team" section:
+There is no "About Us" or "Our Team" section.
+And when you click on the [privacy policy](https://www.iubenda.com/privacy-policy/87688178), this appears:
 
-When you click on the [privacy policy](https://www.iubenda.com/privacy-policy/87688178)
 ![pmid2cite.com](pmid2cite_com.png)
 
 
