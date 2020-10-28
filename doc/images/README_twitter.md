@@ -1,7 +1,7 @@
 # Out in the field
 
 * [Comments regarding Google Scholar](#google-scholar)
-* [Who is running pmid2cite?](#who-created-pmid2citecom)
+* [Who is running pmid2cite.com?](#who-created-pmid2citecom)
 
 
 ## Google Scholar
