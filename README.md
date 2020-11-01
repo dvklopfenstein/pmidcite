@@ -8,6 +8,7 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
+## Table of Contents
 * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
 * [**What is in PubMed?**](#what-is-in-pubmed)
 * ***pmidcite***:
