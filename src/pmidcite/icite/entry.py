@@ -50,6 +50,18 @@ class NIHiCiteEntry:
         if self.dct['citation_count'] != len(set(self.dct['cited_by_clin'] + self.dct['cited_by'])):
             self._warning_cnts()
 
+    def get_au1_lastname(self):
+        """Get the last name of the first author"""
+        aus = self.dct['authors']
+        if aus:
+            flds = aus[0].split()
+            return flds[-1]
+        return None
+
+    def get_year(self):
+        """Get the publication year"""
+        return self.dct.get('year')
+
     def _warning_cnts(self):
         """Print warning about count mismatch"""
         msg = ('**WARNING: {pmid} '
