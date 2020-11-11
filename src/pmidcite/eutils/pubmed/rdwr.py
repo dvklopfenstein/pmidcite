@@ -324,9 +324,11 @@ class PubMedRdWr:
                 str_date = str_date[0:8]
             else:
                 # "2002 Sep 1-15" -> "2002 Sep 15"
-                mtch = match(r'(\d{4} \w{3}) \d{1,2}-(\d{1,2})', str_date)
+                #### mtch = match(r'(\d{4} \w{3}) \d{1,2}-(\d{1,2})', str_date)
+                mtch = match(r'(\d{4} \w{3}) \d{1,2}-', str_date)
                 if mtch:
-                    str_date = ' '.join([mtch.group(1), mtch.group(2)])
+                    #### str_date = ' '.join([mtch.group(1), mtch.group(2)])
+                    str_date = mtch.group(1)
                 else:
                     # "1993-1994" -> "1994"
                     mtch = match(r'\d{4}-(\d{4})', str_date)
@@ -336,8 +338,8 @@ class PubMedRdWr:
                         # 1983 Jul 28-Aug 3   ->   1983 Aug 3
                         #print "WAS", str_date
                         dateobj = self._matched(self.date_patterns, str_date)
-                        if str_date == '2019 Nov - Dec':
-                            print('SSSSSSSSSSSSSSSSSSSSSSSSSSS({})'.format(str_date), dateobj)
+                        ## if str_date == '1984 May 31-Jun 6':
+                        ##     print('SSSSSSSSSSSSSSSSSSSSSSSSSSS({})'.format(str_date), dateobj)
                         if dateobj:
                             fld2objs[fld] = dateobj
                         else:
@@ -368,7 +370,7 @@ class PubMedRdWr:
         # fld2objs[fld] = datetime object
         date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
-            print("STRING DATE({})".format(str_date))
+            ## print("STRING DATE({})".format(str_date))
             mtch = search(r'(\d{4}) \d+th (\S+)', str_date) # "2016 20th Oct"
             if mtch:
                 str_date = "{YEAR} {Mon}".format(YEAR=mtch.group(1), Mon=mtch.group(2))
