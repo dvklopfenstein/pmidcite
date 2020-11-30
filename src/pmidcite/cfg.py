@@ -14,6 +14,7 @@ import configparser
 class Cfg(object):
     """Manage pmidcite Configuration"""
 
+    envvar = 'PMIDCITECONF'
     dfltcfgfile = '.pmidciterc'
 
     dfltdct = {
@@ -39,11 +40,35 @@ class Cfg(object):
         },
     }
 
-    def __init__(self, chk=True, prt=sys.stdout, prt_fullname=True):
+    def __init__(self, check=True, prt=sys.stdout, prt_fullname=True):
         self.cfgfile = self._init_cfgfilename()
         self.cfgparser = self._get_dflt_cfgparser()
-        if chk:
+        if check:
             self._run_chk(prt, prt_fullname)
+
+    def get_email(self):
+        """Get email"""
+        return self.cfgparser['pmidcite']['email']
+
+    def get_apikey(self):
+        """Get API Key"""
+        return self.cfgparser['pmidcite']['apikey']
+
+    def get_tool(self):
+        """Get tool name"""
+        return self.cfgparser['pmidcite']['tool']
+
+    def get_dir_pubmed_txt(self):
+        """Get the name of the directory containg PubMed entry text files"""
+        return self.cfgparser['pmidcite']['dir_pubmed_txt']
+
+    def get_dir_icite_py(self):
+        """Get the name of the directory containg PubMed entry text files"""
+        return self.cfgparser['pmidcite']['dir_icite_py']
+
+    def get_dir_icite(self):
+        """Get the name of the directory containg PubMed entry text files"""
+        return self.cfgparser['pmidcite']['dir_icite']
 
     def _run_chk(self, prt, prt_fullname):
         if not self.rd_rc(prt, prt_fullname):
@@ -64,6 +89,7 @@ class Cfg(object):
             if prt:
                 cfgfile = self.cfgfile if prt_fullname else basename(self.cfgfile)
                 prt.write('  READ: {CFG}\n'.format(CFG=cfgfile))
+        # Returns a list containing configuration file names
         return self.cfgparser.read(self.cfgfile)
 
     def wr_rc(self, force=False):
@@ -95,36 +121,12 @@ class Cfg(object):
 
     def _err_notfound(self):
         """Report the config file was not found"""
-        cfgfile = environ['PMIDCITECONF'] if 'PMIDCITECONF' in environ else self.cfgfile
+        cfgfile = environ[self.envvar] if self.envvar in environ else self.cfgfile
         msg = ('E-Utils CONFIG FILE NOT FOUND: {CFG}\n'
                'Generate {CFG} with:\n    '
-               "$ python3 -c 'from pmidcite.cfg import Cfg; Cfg(chk=False).wr_rc(force=True)'\n"
+               "$ python3 -c 'from pmidcite.cfg import Cfg; Cfg(check=False).wr_rc(force=True)'\n"
                'To ensure your API key is not made public, add {CFG} to the .gitignore')
         raise RuntimeError(msg.format(CFG=cfgfile))
-
-    def get_email(self):
-        """Get email"""
-        return self.cfgparser['pmidcite']['email']
-
-    def get_apikey(self):
-        """Get API Key"""
-        return self.cfgparser['pmidcite']['apikey']
-
-    def get_tool(self):
-        """Get tool name"""
-        return self.cfgparser['pmidcite']['tool']
-
-    def get_dir_pubmed_txt(self):
-        """Get the name of the directory containg PubMed entry text files"""
-        return self.cfgparser['pmidcite']['dir_pubmed_txt']
-
-    def get_dir_icite_py(self):
-        """Get the name of the directory containg PubMed entry text files"""
-        return self.cfgparser['pmidcite']['dir_icite_py']
-
-    def get_dir_icite(self):
-        """Get the name of the directory containg PubMed entry text files"""
-        return self.cfgparser['pmidcite']['dir_icite']
 
     def _get_dflt_cfgparser(self):
         """Create a ConfigParser() filled with the default key-value"""
@@ -136,12 +138,12 @@ class Cfg(object):
 
     def _init_cfgfilename(self):
         """Get the configuration filename"""
-        if 'PMIDCITECONF' in environ:
-            cfgfile = environ['PMIDCITECONF']
+        if self.envvar in environ:
+            cfgfile = environ[self.envvar]
             if exists(cfgfile):
                 return cfgfile
-            print('**WARNING: NO pmidcite CONFIG FILE FOUND AT PMIDCITECONF={F}'.format(
-                F=cfgfile))
+            print('**WARNING: NO pmidcite CONFIG FILE FOUND AT {ENVVAR}={F}'.format(
+                F=cfgfile, ENVVAR=self.envvar))
         if not exists(self.dfltcfgfile):
             print('**WARNING: NO pmidcite CONFIG FILE FOUND: {F}'.format(
                 F=self.dfltcfgfile))
@@ -150,7 +152,7 @@ class Cfg(object):
 
 def get_cfgparser(prt=sys.stdout):
     """Init cfg parser"""
-    cfgparser = Cfg(chk=False, prt=prt)
+    cfgparser = Cfg(check=False, prt=prt)
     cfgparser.rd_rc(prt=prt)
     return cfgparser
 
