@@ -29,10 +29,11 @@ ver:
 
 # -----------------------------------------------------------------------------
 
-# Increase the version number:
+# 1) Increase the version number:
 vim_ver:
 	vim -p src/pmidcite/__version__.py setup.py
 
+# 2) Create wheel - Check PyPi packages are up-to-date: make upgrade
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # universal wheels are pure Python
 sdist:
@@ -42,6 +43,10 @@ sdist:
 	$(PYTHON) setup.py bdist_wheel --universal
 	ls -lh dist
 	twine check dist/*
+
+# 3) Upload wheel to PyPi
+upload:
+	twine upload dist/* --verbose
 
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
