@@ -47,12 +47,13 @@ setup(
         'pmidcite.plot': 'src/pmidcite/plot',
     },
     scripts=glob('src/bin/*.py'),
+    # https://pypi.org/classifiers/
     classifiers=[
         'Programming Language :: Python',
         'Environment :: Console',
         'Intended Audience :: Science/Research',
         'Development Status :: 4 - Beta',
-        'License :: OSI Approved :: GNU General Public License v3 or later (LGPLv3+)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
