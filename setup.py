@@ -20,7 +20,7 @@ def get_long_description():
 setup(
     name='pmidcite',
     ## version=versioneer.get_version(),
-    version='v0.0.3',
+    version='v0.0.4',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),

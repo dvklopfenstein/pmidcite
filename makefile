@@ -29,16 +29,12 @@ ver:
 
 # -----------------------------------------------------------------------------
 
+# Increase the version number:
 vim_ver:
-	vim -p setup.py src/pmidcite/__version__.py
-
-upgrade:
-	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install --upgrade setuptools wheel twine
-	$(PYTHON) -m pip install --upgrade distutils
+	vim -p src/pmidcite/__version__.py setup.py
 
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
-# # universal wheels are pure Python
+# universal wheels are pure Python
 sdist:
 	# python3 -m pip install --user --upgrade setuptools wheel
 	make clean_dist
@@ -46,6 +42,11 @@ sdist:
 	$(PYTHON) setup.py bdist_wheel --universal
 	ls -lh dist
 	twine check dist/*
+
+upgrade:
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install --upgrade setuptools wheel twine
+	$(PYTHON) -m pip install --upgrade distutils
 
 clean_dist:
 	rm -rf dist build 
