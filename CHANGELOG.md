@@ -2,7 +2,9 @@
 
 ### Summary
 
-* [**Release 2020-12-02 v0.0.4**]()
+* [**Release 2020-12-02 v0.0.4**](#release-2020-12-02-v004)
+  * Added to Documentation in README
+  * Added convenience get functions
 
 
 
