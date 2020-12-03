@@ -45,10 +45,8 @@ class NIHiCiteEntry:
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
         self.dct['num_cite'] = len(icite_dct['cited_by'])
+        self.dct['num_cites_all'] = len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
         self.dct['num_refs'] = len(icite_dct['references'])
-        # 29718114
-        if self.dct['citation_count'] != len(set(self.dct['cited_by_clin'] + self.dct['cited_by'])):
-            self._warning_cnts()
 
     def get_au1_lastname(self):
         """Get the last name of the first author"""
@@ -62,12 +60,21 @@ class NIHiCiteEntry:
         """Get the publication year"""
         return self.dct.get('year')
 
-    def _warning_cnts(self):
-        """Print warning about count mismatch"""
-        msg = ('**WARNING: {pmid} '
-               'CITATION_COUNT({citation_count}) != '
-               'CITED_BY_CLIN({cited_by_clin}) + CITED_BY({cited_by})')
-        print(msg.format(**self.dct))
+    def prt_cite_cnts(self):
+        """Print cite counts. NIH's citation_count includes only cited_by, not cited_by_clin"""
+        # 29718114 10077608
+        # pylint: disable=line-too-long
+        # if self.dct['citation_count'] != len(set(self.dct['cited_by'])):
+        # if self.dct['citation_count'] != len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
+        cited_by_clin = set(self.dct['cited_by_clin'])
+        cited_by = set(self.dct['cited_by'])
+        num_exp = len(cited_by_clin.union(cited_by))
+        msg = ('**NOTE: {pmid:9}=PMID '
+               '{citation_count:6,}=CITATION_COUNT '
+               '{num_clin:6,}=CITED_BY_CLIN '
+               '{num_cite:6,}=CITED_BY;   '
+               '{num_exp:6,}=CITED_BY_CLIN.union(CITED_BY)')
+        print(msg.format(num_exp=num_exp, **self.dct))
 
     @staticmethod
     def _init_nih_sd(nih_percentile):
