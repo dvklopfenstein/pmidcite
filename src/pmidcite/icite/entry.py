@@ -11,11 +11,11 @@ class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
     pat_str = ('{pmid:8} {aart_type} {aart_animal} '
-               '{nih_perc:3} {nih_sd} {year} {citation_count:5} {clin:2} {references:3} '
+               '{nih_perc:3} {nih_sd} {year} {num_cites_all:5} {clin:2} {references:3} '
                'au[{A:02}]({author1}) {title}'
               )
     pat_md = ('{year}|{pmid:8}|{aart_type}|{aart_animal}|'
-              '{citation_count:>5}|{clin:>4}|{references:>4}|'
+              '{num_cites_all:>5}|{clin:>4}|{references:>4}|'
               '{A:2}|{author1:16}|{title}'
              )
 
@@ -28,7 +28,7 @@ class NIHiCiteEntry:
         aart_animal='HAMCc',
         nih_sd='SD',
         nih_perc='  %',
-        citation_count='  cit',
+        num_cites_all='  cit',
         clin='cli',
         references='ref',
         A=0,
@@ -41,11 +41,11 @@ class NIHiCiteEntry:
         nih_perc = icite_dct['nih_percentile']
         self.dct['nih_sd'] = self._init_nih_sd(nih_perc)
         # pylint: disable=line-too-long
-        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + self.dct['citation_count']
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
         self.dct['num_cite'] = len(icite_dct['cited_by'])
         self.dct['num_cites_all'] = len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
+        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + self.dct['num_cites_all']
         self.dct['num_refs'] = len(icite_dct['references'])
 
     def get_au1_lastname(self):
@@ -62,18 +62,17 @@ class NIHiCiteEntry:
 
     def prt_cite_cnts(self):
         """Print cite counts. NIH's citation_count includes only cited_by, not cited_by_clin"""
-        # 29718114 10077608
         # pylint: disable=line-too-long
         # if self.dct['citation_count'] != len(set(self.dct['cited_by'])):
         # if self.dct['citation_count'] != len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
         cited_by_clin = set(self.dct['cited_by_clin'])
         cited_by = set(self.dct['cited_by'])
         num_exp = len(cited_by_clin.union(cited_by))
-        msg = ('**NOTE: {pmid:9}=PMID '
-               '{citation_count:6,}=CITATION_COUNT '
-               '{num_clin:6,}=CITED_BY_CLIN '
-               '{num_cite:6,}=CITED_BY;   '
-               '{num_exp:6,}=CITED_BY_CLIN.union(CITED_BY)')
+        msg = ('**NOTE: {pmid:9}=pmid '
+               '{citation_count:6,}=citation_count '
+               '{num_clin:6,}=cited_by_clin '
+               '{num_cite:6,}=cited_by;   '
+               '{num_exp:6,}=cited_by_clin.union(cited_by)')
         print(msg.format(num_exp=num_exp, **self.dct))
 
     @staticmethod
@@ -158,7 +157,7 @@ class NIHiCiteEntry:
             aart_animal=self.get_aart_translation(),
             nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
             nih_perc=nih_perc if nih_perc <= 100 else ' -1',
-            citation_count=dct['citation_count'],
+            num_cites_all=dct['num_cites_all'],
             clin=dct['num_clin'],
             references=dct['num_refs'],
             A=dct['num_auth'],
