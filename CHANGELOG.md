@@ -2,11 +2,17 @@
 
 ### Summary
 
+* [**Release 2020-12-03 v0.0.5**](#release-2020-12-03-v005)
+  * The 1st citation count in icite line contains any clinical citations
 * [**Release 2020-12-02 v0.0.4**](#release-2020-12-02-v004)
   * Added to Documentation in README
   * Added convenience get functions
 
 
+
+Release 2020-12-03 v0.0.5
+-------------------------------------
+* The 1st citation count in icite line contains any clinical citations
 
 Release 2020-12-02 v0.0.4
 -------------------------------------
