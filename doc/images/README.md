@@ -5,6 +5,9 @@ https://twitter.com/CT_Bergstrom/status/1170465764832231427
 ![Google Scholar](Google_Scholar.png)     
 ![Google Scholar](Google_Scholar2.png)    
 
+## PubMed vs. Google Scholar
+![PM v GS](Search_Features_GS_v_PubMed.png)
+
 ## NIH Percentile groups
 ![NIH percentile](nih_perc_groups.png)
 
