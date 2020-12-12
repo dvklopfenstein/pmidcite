@@ -30,9 +30,9 @@ rather than clicking and clicking and clicking on
 
 
 
-## PubMed vs Google Scholar (GS)
+## PubMed vs Google Scholar
 <p align="center">
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="600"/>
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
 ### PubMed implements all five Boeker criteria [[6]](#references):
@@ -46,7 +46,7 @@ for their study of twenty-eight search tools.
 
 The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [[6]](#references). 
 We add "Forward citation search" to the Boeker list
-to evaluate the extremely popular GS implementation of this feature through its ubiquitously featured "Cited by N" links
+to evaluate the extremely popular Google Scholar (GS) implementation of this feature through its ubiquitously featured "Cited by N" links
 against the PubMed implementation
 and compare PubMed and GS's support for the search tools below
 using the 2013 foundational Boeker advice [[6]](#references).
