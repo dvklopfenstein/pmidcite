@@ -32,7 +32,7 @@ rather than clicking and clicking and clicking on
 
 ## PubMed vs Google Scholar (GS)
 <p align="center">
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="450"/>
+<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="GS vs PubMed" width="500"/>
 </p>
 
 ### PubMed implements all five Boeker criteria [[6]](#references):
