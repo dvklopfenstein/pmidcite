@@ -43,7 +43,8 @@ class NIHiCiteAPI:
     flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
     yes_no = {'Yes':True, 'No':False}
 
-    def __init__(self, dirpy_dnld='.', prt=None, **kws):
+    def __init__(self, nihgrouper, dirpy_dnld='.', prt=None, **kws):
+        self.nihgrouper = nihgrouper
         self.dir_dnld = dirpy_dnld
         if not exists(dirpy_dnld):
             raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dirpy_dnld))
@@ -116,7 +117,7 @@ class NIHiCiteAPI:
         file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=json_dct['pmid']))
         adj_dct = self._adjust_jsondct(json_dct)
         self._wrpy(file_pmid, adj_dct)
-        return NIHiCiteEntry(adj_dct)
+        return NIHiCiteEntry(adj_dct, self.nihgrouper.get_group(adj_dct['nih_percentile']))
 
     def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
@@ -152,10 +153,9 @@ class NIHiCiteAPI:
             if self.prt:
                 self.prt.write('  WROTE: {PY}\n'.format(PY=fout_py))
 
-    @staticmethod
-    def prt_dct(dct, prt=stdout):
+    def prt_dct(self, dct, prt=stdout):
         """Print NIH iCite data as a dict"""
-        iciteobj = NIHiCiteEntry(dct)
+        iciteobj = NIHiCiteEntry(dct, self.nihgrouper.get_group(dct['nih_percentile']))
         prt.write('"""Write data downloaded for NIH iCite data"""\n\n')
         prt.write('# pylint: disable=line-too-long\n')
         prt.write('# DESC: {DESC}\n'.format(DESC=str(iciteobj)))

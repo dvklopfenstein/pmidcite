@@ -35,11 +35,11 @@ class NIHiCiteEntry:
         author1='authors',
         title='title')
 
-    def __init__(self, icite_dct):
+    def __init__(self, icite_dct, nih_group):
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
-        self.dct['nih_sd'] = self._init_nih_sd(nih_perc)
+        self.dct['nih_sd'] = nih_group
         # pylint: disable=line-too-long
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
@@ -75,26 +75,26 @@ class NIHiCiteEntry:
                '{num_exp:6,}=cited_by_clin.union(cited_by)')
         print(msg.format(num_exp=num_exp, **self.dct))
 
-    @staticmethod
-    def _init_nih_sd(nih_percentile):
-        """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
-        # No NIH percentile yet assigned. This paper should be checked out.
-        if nih_percentile is None:
-            return 5
-        #  2.1% -3 SD: Very low citation rate
-        if nih_percentile < 2.1:
-            return 0
-        # 13.6% -2 SD: Low citation rate
-        if nih_percentile < 15.7:
-            return 1
-        # 68.2% -1 SD to +1 SD: Average citation rate
-        if nih_percentile < 83.9:
-            return 2
-        # 13.6% +2 SD: High citation rate
-        if nih_percentile < 97.5:
-            return 3
-        #  2.1% +3 SD: Very high citation rate
-        return 4
+    #### @staticmethod
+    #### def _init_nih_sd(nih_percentile):
+    ####     """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
+    ####     # No NIH percentile yet assigned. This paper should be checked out.
+    ####     if nih_percentile is None:
+    ####         return 5
+    ####     #  2.1% -3 SD: Very low citation rate
+    ####     if nih_percentile < 2.1:
+    ####         return 0
+    ####     # 13.6% -2 SD: Low citation rate
+    ####     if nih_percentile < 15.7:
+    ####         return 1
+    ####     # 68.2% -1 SD to +1 SD: Average citation rate
+    ####     if nih_percentile < 83.9:
+    ####         return 2
+    ####     # 13.6% +2 SD: High citation rate
+    ####     if nih_percentile < 97.5:
+    ####         return 3
+    ####     #  2.1% +3 SD: Very high citation rate
+    ####     return 4
 
     def prt_keys(self, prt=stdout):
         """Print paper keys, including header line"""

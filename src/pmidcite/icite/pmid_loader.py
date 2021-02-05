@@ -15,7 +15,8 @@ from pmidcite.icite.entry import NIHiCiteEntry
 class NIHiCiteLoader:
     """Load iCite citations that are stored as a dict in a Python module"""
 
-    def __init__(self, dir_icitepy, icitepypat='p{PMID}.py', prt=stdout):
+    def __init__(self, nih_grouper, dir_icitepy, icitepypat='p{PMID}.py', prt=stdout):
+        self.nih_grouper = nih_grouper
         self.dir_dnld = dir_icitepy  # e.g., ./icite
         self.icitepypat = icitepypat
         self.prt = prt
@@ -45,14 +46,13 @@ class NIHiCiteLoader:
         icites_linked = self.load_icites(pmids_linked.difference(pmids_top))
         return icites_top + icites_linked
 
-    @staticmethod
-    def load_icite(file_pmid):
+    def load_icite(self, file_pmid):
         """Load NIH iCite information from Python modules"""
         if exists(file_pmid):
             spec = spec_from_file_location("module.name", file_pmid)
             mod = module_from_spec(spec)
             spec.loader.exec_module(mod)
-            return NIHiCiteEntry(mod.ICITE)
+            return NIHiCiteEntry(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
         return None
 
     @staticmethod

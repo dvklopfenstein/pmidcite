@@ -10,6 +10,7 @@ from os import system
 from os.path import getmtime
 from glob import glob
 import sys
+from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
@@ -23,7 +24,8 @@ class ICiteTester:
 
     def __init__(self):
         self.dir_icite = DIR_ICITE
-        self.api = NIHiCiteAPI(self.dir_icite, prt=sys.stdout)
+        nihgrouper = NihGrouper()
+        self.api = NIHiCiteAPI(nihgrouper, self.dir_icite, prt=sys.stdout)
         self.icite_files = join(self.dir_icite, '*.py')
 
     def rm_icitefiles(self):

@@ -65,11 +65,14 @@ class PubMedQueryToICite:
         """Get directory to store lists of PMIDs"""
         return self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite']
 
-    def wr_icite(self, fout_icite, pmids):
+    def wr_icite(self, fout_icite, pmids, grouperobj=None):
         """Run PMIDs in iCite and print results into a file"""
         # Get NIHiCiteDownloader object
         dnldr = self.pmidcite.get_icitedownloader(
-            self.force_dnld, no_references=False, prt_icitepy=self.prt_icitepy)
+            self.force_dnld,
+            grouperobj=grouperobj,
+            no_references=False,
+            prt_icitepy=self.prt_icitepy)
         pmid2paper = dnldr.get_pmid2paper(pmids, self.verbose, self.pmid2note)
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 

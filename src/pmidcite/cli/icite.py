@@ -10,6 +10,7 @@ import argparse
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
+from pmidcite.icite.nih_grouper import NihGrouper
 
 
 class NIHiCiteCli:
@@ -75,6 +76,18 @@ class NIHiCiteCli:
             '--dir_pubmed_txt', default=dir_pubmed_txt,
             help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
         parser.add_argument(
+            '-1', metavar='VAL1', dest='min1', default=2.1, type=float,
+            help='Minimum NIH percentile to be placed in group 1 (default: 2.1)')
+        parser.add_argument(
+            '-2', metavar='VAL2', dest='min2', default=15.7, type=float,
+            help='Minimum NIH percentile to be placed in group 2 (default: 15.7)')
+        parser.add_argument(
+            '-3', metavar='VAL3', dest='min3', default=83.9, type=float,
+            help='Minimum NIH percentile to be placed in group 3 (default: 83.9)')
+        parser.add_argument(
+            '-4', metavar='VAL4', dest='min4', default=97.5, type=float,
+            help='Minimum NIH percentile to be placed in group 4 (default: 97.5)')
+        parser.add_argument(
             '--md', action='store_true',
             help='Print using markdown table format.')
         parser.add_argument(
@@ -89,7 +102,8 @@ class NIHiCiteCli:
         args = argparser.parse_args()
         ## print('ICITE ARGS', args)
         self.pmidcite.dir_icite_py = args.dir_icite_py
-        dnldr = self.get_icite_downloader(args.force_download, args.no_references)
+        groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
+        dnldr = self.get_icite_downloader(groupobj, args.force_download, args.no_references)
         pmids = get_pmids(args.pmids, args.infile)
         pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
         self.run_icite(pmid2icitepaper, dnldr, args, argparser)
@@ -166,13 +180,17 @@ class NIHiCiteCli:
         print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
             Ps=' '.join(str(p) for p in pmids)))
 
-    def get_icite_downloader(self, force_download, no_references):
+    def get_icite_downloader(self, grouperobj, force_download, no_references):
         """Get iCite downloader"""
-        return self.pmidcite.get_icitedownloader(force_download, no_references, prt_icitepy=None)
+        return self.pmidcite.get_icitedownloader(
+            force_download,
+            grouperobj,
+            no_references,
+            prt_icitepy=None)
 
-    #def _get_pmid2icitepaper(self, pmids, args):
+    #def _get_pmid2icitepaper(self, pmids, grouperobj, args):
     #    """Get pmid2icitepaper"""
-    #    dnldr = self.pmidcite.get_icitedownloader(args.force_download, args.no_references, prt=None)
+    #    dnldr = self.pmidcite.get_icitedownloader(args.force_download, grouperobj, args.no_references, prt=None)
     #    if args.print_keys:
     #        dnldr.prt_keys()
     #    dct = get_outfile(args.outfile, args.append_outfile, args.force_write)

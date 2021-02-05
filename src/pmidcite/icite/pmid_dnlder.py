@@ -22,7 +22,8 @@ class NIHiCiteDownloader:
         self.rpt_references = rpt_references
         self.dnld_force = force_dnld
         self.dir_dnld = api.dir_dnld  # e.g., ./icite
-        self.loader = NIHiCiteLoader(self.dir_dnld, prt=None)
+        self.nihgrouper = api.nihgrouper
+        self.loader = NIHiCiteLoader(self.nihgrouper, self.dir_dnld, prt=None)
         self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
@@ -152,10 +153,11 @@ class NIHiCiteDownloader:
             NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
-    @staticmethod
-    def _init_iciteobj(icite_dct):
+    def _init_iciteobj(self, icite_dct):
         """Initialize the top NIH iCite paper, if it exists"""
-        return NIHiCiteEntry(icite_dct) if icite_dct else None
+        if icite_dct:
+            return NIHiCiteEntry(icite_dct, self.nihgrouper.get_group(icite_dct['nih_percentile']))
+        return None
 
     def _dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""
