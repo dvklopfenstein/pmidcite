@@ -61,14 +61,14 @@ def _read_pmids(fin, top_cit_ref):
                 pmids.append(line)
     return pmids
 
-def read_top_pmids(pmidcite_txt, top='TOP'):
+def read_top_pmids(pmidcite_txt, topset=None):
     """Get PMIDs already found in pmidcite.txt"""
     pmids = set()
+    if topset is None:
+        topset = {'TOP',}
     with open(pmidcite_txt) as ifstrm:
-        topstr = '{TOP} '.format(TOP=top)
-        toplen = len(topstr)
         for line in ifstrm:
-            if line[:toplen] == topstr:
+            if line[:3] in topset:
                 flds = line.split()
                 if flds[1].isdigit():
                     pmids.add(int(flds[1]))
@@ -87,6 +87,12 @@ def mk_outname_pmids(fin):
     outdir, outname = os.path.split(fin)
     basename, ext = os.path.splitext(outname)
     return os.path.join(outdir, '{BASE}_pmids{EXT}'.format(BASE=basename, EXT=ext))
+
+def mk_outname_icite(fin):
+    """Given input file, return output file for PMIDs"""
+    outdir, outname = os.path.split(fin)
+    basename, ext = os.path.splitext(outname)
+    return os.path.join(outdir, '{BASE}_icite{EXT}'.format(BASE=basename, EXT=ext))
 
 def get_outfile(outfile, append_outfile, force_write):
     """Given arguments, return outfile"""

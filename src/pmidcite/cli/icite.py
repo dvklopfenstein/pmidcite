@@ -75,18 +75,7 @@ class NIHiCiteCli:
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
             help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
-        parser.add_argument(
-            '-1', metavar='VAL1', dest='min1', default=2.1, type=float,
-            help='Minimum NIH percentile to be placed in group 1 (default: 2.1)')
-        parser.add_argument(
-            '-2', metavar='VAL2', dest='min2', default=15.7, type=float,
-            help='Minimum NIH percentile to be placed in group 2 (default: 15.7)')
-        parser.add_argument(
-            '-3', metavar='VAL3', dest='min3', default=83.9, type=float,
-            help='Minimum NIH percentile to be placed in group 3 (default: 83.9)')
-        parser.add_argument(
-            '-4', metavar='VAL4', dest='min4', default=97.5, type=float,
-            help='Minimum NIH percentile to be placed in group 4 (default: 97.5)')
+        self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
         parser.add_argument(
             '--md', action='store_true',
             help='Print using markdown table format.')
@@ -182,11 +171,8 @@ class NIHiCiteCli:
 
     def get_icite_downloader(self, grouperobj, force_download, no_references):
         """Get iCite downloader"""
-        return self.pmidcite.get_icitedownloader(
-            force_download,
-            grouperobj,
-            no_references,
-            prt_icitepy=None)
+        # pylint: disable=line-too-long
+        return self.pmidcite.get_icitedownloader(force_download, grouperobj, no_references, prt_icitepy=None)
 
     #def _get_pmid2icitepaper(self, pmids, grouperobj, args):
     #    """Get pmid2icitepaper"""

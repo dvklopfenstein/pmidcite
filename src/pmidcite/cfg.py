@@ -9,6 +9,8 @@ from os.path import basename
 import sys
 import configparser
 
+from pmidcite.icite.nih_grouper import NihGrouper
+
 
 # pylint: disable=useless-object-inheritance
 class Cfg(object):
@@ -37,6 +39,12 @@ class Cfg(object):
             'dir_pmids': '.',
             # Run NIH's iCite on a set of PMIDs and store results in a file
             'dir_icite': '.',
+
+            # NIH Group divisions
+            'group1_min': '2.1',
+            'group2_min': '15.7',
+            'group3_min': '83.9',
+            'group4_min': '97.5',
         },
     }
 
@@ -69,6 +77,15 @@ class Cfg(object):
     def get_dir_icite(self):
         """Get the name of the directory containg PubMed entry text files"""
         return self.cfgparser['pmidcite']['dir_icite']
+
+    def get_nihgrouper(self):
+        """Get an NIH Grouper with default values from the cfg file"""
+        cfg = self.cfgparser['pmidcite']
+        return NihGrouper(
+            float(cfg['group1_min']),
+            float(cfg['group2_min']),
+            float(cfg['group3_min']),
+            float(cfg['group4_min']))
 
     def _run_chk(self, prt, prt_fullname):
         if not self.rd_rc(prt, prt_fullname):

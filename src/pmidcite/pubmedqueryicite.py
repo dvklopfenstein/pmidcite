@@ -70,7 +70,7 @@ class PubMedQueryToICite:
         # Get NIHiCiteDownloader object
         dnldr = self.pmidcite.get_icitedownloader(
             self.force_dnld,
-            grouperobj=grouperobj,
+            grouperobj,
             no_references=False,
             prt_icitepy=self.prt_icitepy)
         pmid2paper = dnldr.get_pmid2paper(pmids, self.verbose, self.pmid2note)
