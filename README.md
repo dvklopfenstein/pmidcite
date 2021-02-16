@@ -36,8 +36,6 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
-#### PubMed implements all of Boeker's search criteria and Google Scholar does not [[6]](#references):
-
 In late October 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria. 
 PubMed implements all five criteria, while Google did not in 2013 or today.
 
@@ -50,8 +48,6 @@ PubMed citation data from the NIG combined using *pmidcite* is a "Better" experi
 
 ### What is in PubMed?
 <img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
-
-#### PubMed indexes about 30.5 million documents [[1]](#how-to-cite):
 
 PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
 * **MEDLINE**: a highly selective database started in the 1960s
