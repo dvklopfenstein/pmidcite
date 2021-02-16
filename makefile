@@ -28,7 +28,6 @@ ver:
 
 
 # -----------------------------------------------------------------------------
-
 # 1) Increase the version number:
 vim_ver:
 	vim -p src/pmidcite/__version__.py setup.py
@@ -48,6 +47,8 @@ sdist:
 upload:
 	twine upload dist/* --verbose
 
+#
+# -----------------------------------------------------------------------------
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
 	$(PYTHON) -m pip install --upgrade setuptools wheel twine
