@@ -9,8 +9,9 @@ rather than clicking and clicking and clicking on
 *Cited by N* links.
 
 ## Table of Contents
-* [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
-* [**What is in PubMed?**](#what-is-in-pubmed)
+* **Welcome**
+  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
+  * [**What is in PubMed?**](#what-is-in-pubmed)
 * ***pmidcite***:
   * [**Installation**](#installation)
   * [**Setup**](#setup)
@@ -35,29 +36,15 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
-### PubMed implements all five Boeker criteria [[6]](#references):
+### PubMed implements all of Boeker's criteria and Google Scholar does not [[6]](#references):
 
 In late October 2013, Boeker et al. recommended
 that a scientific search interface contain
 five integrated search criteria. 
-The 2013 Boeker guidance [[6]](#references) greatly influenced the Gusenbauer study [[4]](#references),
-which expanded the Boeker list from five search criteria to twenty-seven
-for their study of twenty-eight search tools.
 
-The requirements for search interfaces are mandatory not only for structured scientific literature retrieval like systematic reviews, but also in any research that needs to provide a comprehensive literature review [[6]](#references). 
-We add "Forward citation search" to the Boeker list
-to evaluate the extremely popular Google Scholar (GS) implementation of this feature through its ubiquitously featured "Cited by N" links
-against the PubMed implementation
-and compare PubMed and GS's support for the search tools below
-using the 2013 foundational Boeker advice [[6]](#references).
-
-Command-line users can immediately
-augment their PubMed search results using
-the *pmidcite* scripts and library,
-which download citation data from the
-National Institutes of Health Open Citation Collection (NIH-OCC) database using NIH's "iCite" Application Programming Interface (API).
-We have found PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar
-if your research is in the health sciences and you are amenable to consider working from the [command line](#command-line-interface-cli).
+If your research is in the health sciences and you are amenable to consider working from the [command line](#command-line-interface-cli),
+PubMed plus NIH-OCC citation data combined using *pmidcite* is a "Better" experience than using Google Scholar,
+even with its highly popular "*Cited by N*" implementation of the forward citation search.
 
 
 ## What is in PubMed?
@@ -65,27 +52,22 @@ if your research is in the health sciences and you are amenable to consider work
 
 ### PubMed indexes about 30.5 million documents [[1]](#how-to-cite):
 
-PubMed is a search interface and toolset used to access databases like
-MEDLINE and PubMed Central (PMC) as well as additional content
+PubMed is a search interface and toolset used to access over 30.5 million article records from databases like
+MEDLINE, a highly selective database started in the 1960s, and 
+PubMed Central (PMC), an open-access database for full-text papers that are free of cost,
+as well as additional content
 like books and articles published before the 1960s.
-Over 30.5 million article records are accessible through the PubMed interface.
-The databases, MEDLINE and PMC, are separate entities whose combined articles
-comprise 94% of all of the coverage indexed by PubMed ([[1]](#how-to-cite) S2).
-MEDLINE is a highly selective database started in the 1960s.
-PMC, started in 2000, is an open-access database for full-text papers that are free of cost to the researcher.
 
 Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
-
-
 
 
 ## Command Line Interface (CLI)
 
 A Command-Line Interface (CLI) can be preferable 
 to a Graphical User Interface (GUI) because: 
-processing can be automated from a script;
-time-consuming mouse clicking is reduced; and
-more data can be seen at once on a text screen
+* processing can be automated from a script;
+* time-consuming mouse clicking is reduced; and
+* more data can be seen at once on a text screen
 than in a browser, giving the researcher 
 a better overall impression of the full set of information [[1]](#how-to-cite).
 
