@@ -46,15 +46,13 @@ But if your research is in the health sciences and you are amenable to consider 
 PubMed citation data from the NIH combined using *pmidcite* is a "Better" experience than using Google Scholar.
 
 
-### What is in PubMed?
+### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
 <img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
 PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
 * **MEDLINE**: a highly selective database started in the 1960s
 * **PubMed Central (PMC)**: an open-access database for full-text papers that are free of cost
 * Additional content like books and articles published before the 1960s
-
-Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) 
 
 
 ## Command Line Interface (CLI)
