@@ -43,7 +43,7 @@ Google's highly popular implementation of the forward citation search through th
 is a better experience than PubMed's implentation of the forward citation search.
 
 But if your research is in the health sciences and you are amenable to consider working from the [command line](#command-line-interface-cli),
-PubMed citation data from the NIH combined using *pmidcite* is a "Better" experience than using Google Scholar.
+using PubMed with citation data downloaded from the NIH using *pmidcite* is a "Better" experience than using Google Scholar.
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
