@@ -10,7 +10,7 @@ rather than clicking and clicking and clicking on
 
 ## Table of Contents
 * **Welcome**
-  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
+  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
   * [**What is in PubMed?**](#what-is-in-pubmed--take-a-quick-tour)
 * ***pmidcite***:
   * [**Installation**](#installation)
