@@ -11,7 +11,7 @@ rather than clicking and clicking and clicking on
 ## Table of Contents
 * **Welcome**
   * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar-gs)
-  * [**What is in PubMed?**](#what-is-in-pubmed)
+  * [**What is in PubMed?**](#what-is-in-pubmed--take-a-quick-tour)
 * ***pmidcite***:
   * [**Installation**](#installation)
   * [**Setup**](#setup)
