@@ -42,8 +42,10 @@ PubMed implements all five criteria, while Google did not in 2013 or today.
 Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
 is a better experience than PubMed's implentation of the forward citation search.
 
-But if your research is in the health sciences and you are amenable to consider working from the [command line](#command-line-interface-cli),
-using PubMed plus citation data downloaded from the NIH using *pmidcite* is a "Better" experience than using Google Scholar.
+But if your research is in the health sciences and
+you are amenable to consider working from the [command line](#command-line-interface-cli),
+using PubMed plus citation data
+downloaded from the NIH using *pmidcite* is a "Better" experience than using Google Scholar.
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
