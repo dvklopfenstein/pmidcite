@@ -332,7 +332,7 @@ Klopfenstein DV and Dampier W
 Gusenbauer M and Haddaway N    
 2020 | _Research Synthesis Methods_ | PMID: [33031639](https://pubmed.ncbi.nlm.nih.gov/33031639/) | DOI: [10.1002/jrsm.1457](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1457) | [pdf](/doc/paper/jrsm.1457.pdf)
 
-3. The data used by *pmidcite*: Scientific Influence, Translation, and Citation counts:    
+3. The data used by *pmidcite* -- Scientific Influence, Translation, and Citation counts:    
 [**The NIH Open Citation Collection: A public access, broad coverage resource**](https://pubmed.ncbi.nlm.nih.gov/31600197/)    
 Hutchins BI ... Santangelo GM    
 2019 | _PLoS Biology_ | PMID: [31600197](https://pubmed.ncbi.nlm.nih.gov/31600197) | DOI: [10.1371/journal.pbio.3000385](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000385)    
