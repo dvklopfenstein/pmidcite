@@ -339,7 +339,7 @@ Hutchins BI ... Santangelo GM
 
 ## References
 
-_Please consider reading and citing the paper [4] which inspired the creation of **pmidcite** and the authors' response to our paper [2]_:
+_Please consider reading and citing the paper [4] which inspired the creation of **pmidcite** [1] and the authors' response to our paper [2]_:
 
 4. [**Which Academic Search Systems are Suitable for Systematic Reviews or Meta-Analyses? Evaluating Retrieval Qualities of Google Scholar, PubMed and 26 other Resources**](https://pubmed.ncbi.nlm.nih.gov/31614060/)    
 Gusenbauer M and Haddaway N    
