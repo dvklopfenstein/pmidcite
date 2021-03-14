@@ -44,7 +44,7 @@ is a better experience than PubMed's implentation of the forward citation search
 
 If your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
-using PubMed plus citation data (including ranking among a paper's co-citation network)
+using PubMed plus citation data (including a paper's ranking among its co-citation network)
 downloaded from the NIH using *pmidcite* is a "Better" experience than using Google Scholar.
 
 
