@@ -4,7 +4,7 @@ from the command-line by linking
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov),
 which includes scientific influence, translation, citation counts, and
 ranking of a paper among other papers in its co-citation network
-with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
+using [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
@@ -21,15 +21,11 @@ Google's highly popular implementation of the forward citation search through th
 is a better experience than PubMed's implentation of the forward citation search.
 
 If your research is in the health sciences and
-you are amenable to consider working from the [command line](#command-line-interface-cli)
-using the PubMed web interface plus citation data (including a paper's ranking among its co-citation network)
-downloaded from the NIH using,
-*pmidcite* is a "Better" experience than using Google Scholar.
+you are amenable to consider working from the [command line](#command-line-interface-cli),
+then you can use *pmidcite* on the command line alongside the PubMed search experience in your browser.
 
-[The paper](/doc/paper/JRSM_1456_iCite_main.pdf),
-along with its associated open-source project (this project) plus the PubMed search interface on the web,
-provides a better forward citation search experience than either PubMed alone or Google Scholar.
-
+Using the PubMed web interface plus citation data (including a paper's ranking among its co-citation network)
+downloaded from the NIH using, *pmidcite* is a "Better" experience than using Google Scholar.
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
