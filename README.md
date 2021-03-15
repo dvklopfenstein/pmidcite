@@ -2,35 +2,13 @@
 Augment your PubMed literature search 
 from the command-line by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov),
-which includes scientific influence, translation, and citation counts,
+which includes scientific influence, translation, citation counts, and
+ranking of a paper among other papers in its co-citation network
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
-## Table of Contents
-* **Welcome**
-  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
-  * [**What is in PubMed?**](#what-is-in-pubmed--take-a-quick-tour)
-* ***pmidcite***:
-  * [**Installation**](#installation)
-  * [**Setup**](#setup)
-  * [**How to cite**](#how-to-cite)
-* [***pmidcite*, on the command line**](#command-line-interface-cli):
-  * [**1) Get citation counts, given PMIDs**](#1-get-citation-counts-given-pmids)
-  * [**2) Sort citation counts, given PMIDs**](#2-sort-citation-counts-given-pmids)
-  * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
-  * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
-  * [**5) Create ASCII plots**](#5-create-ascii-plots)
-* ***pmidcite*, the Python library**
-  * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
-  * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
-  * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
-  * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
-  * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
-
-
-## Welcome
 ### PubMed vs Google Scholar
 <p align="center">
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
@@ -43,9 +21,15 @@ Google's highly popular implementation of the forward citation search through th
 is a better experience than PubMed's implentation of the forward citation search.
 
 If your research is in the health sciences and
-you are amenable to consider working from the [command line](#command-line-interface-cli),
-using PubMed plus citation data (including a paper's ranking among its co-citation network)
-downloaded from the NIH using *pmidcite* is a "Better" experience than using Google Scholar.
+you are amenable to consider working from the [command line](#command-line-interface-cli)
+using the PubMed web interface plus citation data (including a paper's ranking among its co-citation network)
+downloaded from the NIH using,
+*pmidcite* is a "Better" experience than using Google Scholar.
+
+[The paper](/doc/paper/JRSM_1456_iCite_main.pdf),
+along with its associated open-source project (this project) plus the PubMed search interface on the web,
+provides a better forward citation search experience than either PubMed alone or Google Scholar.
+
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
@@ -55,6 +39,27 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * **MEDLINE**: a highly selective database started in the 1960s
 * **PubMed Central (PMC)**: an open-access database for full-text papers that are free of cost
 * Additional content like books and articles published before the 1960s
+
+## Table of Contents
+* **Welcome**
+  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
+  * [**What is in PubMed?**](#what-is-in-pubmed--take-a-quick-tour)
+* ***pmidcite***:
+  * [**Installation**](#installation)
+  * [**Setup**](#setup)
+  * [**How to cite**](#how-to-cite)
+* [***pmidcite*, on the command line**](#command-line-interface-cli):
+  * [**1) Get citation counts and ranking in the paper's co-citation network, given PMIDs**](#1-get-citation-counts-given-pmids)
+  * [**2) Sort citation counts and ranking in the paper's co-citation network, given PMIDs**](#2-sort-citation-counts-given-pmids)
+  * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
+  * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
+  * [**5) Create ASCII plots**](#5-create-ascii-plots)
+* ***pmidcite*, the Python library**
+  * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
+  * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
+  * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
+  * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
+  * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
 
 
 ## Command Line Interface (CLI)
