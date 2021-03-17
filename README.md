@@ -22,7 +22,7 @@ is a "Better" experience than PubMed's implementation of their forward citation 
 
 But if your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
-then consider using *pmidcite* on the command line alongside using PubMed in the web browser.
+then please consider using *pmidcite* on the command line alongside using PubMed in the web browser.
 
 Viewing citation data (including a paper's ranking among its co-citation network)
 downloaded from the NIH using *pmidcite* alongside the PubMed web interfase 
