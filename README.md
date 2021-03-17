@@ -14,18 +14,19 @@ rather than clicking and clicking and clicking on
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
-In late October 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria. 
+In 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria. 
 PubMed implements all five criteria, while Google did not in 2013 or today.
 
 Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
-is a better experience than PubMed's implentation of the forward citation search.
+is a "Better" experience than PubMed's implentation of their forward citation search.
 
 If your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
-then you can use *pmidcite* on the command line alongside the PubMed search experience in your browser.
+then you might want to consider using *pmidcite* on the command line alongside the PubMed browser search experience.
 
-Using the PubMed web interface plus citation data (including a paper's ranking among its co-citation network)
-downloaded from the NIH using, *pmidcite* is a "Better" experience than using Google Scholar.
+Viewing citation data (including a paper's ranking among its co-citation network)
+downloaded from the NIH using *pmidcite* alongside the PubMed web interfase 
+is a "Better" experience than using Google Scholar.
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
@@ -37,13 +38,6 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content like books and articles published before the 1960s
 
 ## Table of Contents
-* **Welcome**
-  * [**PubMed vs Google Scholar**](#pubmed-vs-google-scholar)
-  * [**What is in PubMed?**](#what-is-in-pubmed--take-a-quick-tour)
-* ***pmidcite***:
-  * [**Installation**](#installation)
-  * [**Setup**](#setup)
-  * [**How to cite**](#how-to-cite)
 * [***pmidcite*, on the command line**](#command-line-interface-cli):
   * [**1) Get citation counts and ranking in the paper's co-citation network, given PMIDs**](#1-get-citation-counts-given-pmids)
   * [**2) Sort citation counts and ranking in the paper's co-citation network, given PMIDs**](#2-sort-citation-counts-given-pmids)
@@ -56,6 +50,11 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
   * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
   * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
   * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
+* ***pmidcite***:
+  * [**Installation**](#installation)
+  * [**Setup**](#setup)
+  * [**How to cite**](#how-to-cite)
+* [**Referenced**](#references)
 
 
 ## Command Line Interface (CLI)
