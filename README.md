@@ -25,7 +25,7 @@ you are amenable to consider working from the [command line](#command-line-inter
 then please consider using *pmidcite* on the command line alongside using PubMed in the web browser.
 
 Viewing citation data (including a paper's ranking among its co-citation network)
-downloaded from the NIH using *pmidcite* alongside the PubMed web interfase 
+downloaded from the NIH using *pmidcite* alongside the PubMed web interface 
 is a "Better" experience than using Google Scholar.
 
 
