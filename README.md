@@ -18,7 +18,7 @@ In 2013, Boeker et al. recommended that a scientific search interface contain fi
 PubMed implements all five criteria, while Google did not in 2013 or today.
 
 Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
-is a "Better" experience than PubMed's implentation of their forward citation search.
+is a "Better" experience than PubMed's implementation of their forward citation search.
 
 If your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
