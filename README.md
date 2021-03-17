@@ -20,7 +20,7 @@ PubMed implements all five criteria, while Google did not in 2013 or today.
 Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
 is a "Better" experience than PubMed's implementation of their forward citation search.
 
-If your research is in the health sciences and
+But if your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
 then you might want to consider using *pmidcite* on the command line alongside using PubMed in your web browser.
 
