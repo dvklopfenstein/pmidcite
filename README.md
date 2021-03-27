@@ -15,18 +15,16 @@ rather than clicking and clicking and clicking on
 </p>
 
 In 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria. 
-PubMed implements all five criteria, while Google did not in 2013 or today.
+PubMed implements all five, while Google did not in 2013 or today.
 
 Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
-is a "Better" experience than the PubMed "forward citation search" implementation.
+is a "Better" experience than the PubMed's "forward citation search" implementation.
 
 But if your research is in the health sciences and
 you are amenable to consider working from the [command line](#command-line-interface-cli),
-consider using *pmidcite* on the command line alongside using PubMed in the web browser.
-
-Viewing citation data (including a paper's ranking among its co-citation network)
-downloaded from the NIH using *pmidcite* alongside the PubMed web interface 
-is a "Better" experience than using Google Scholar.
+you can use PubMed in your browser plus
+citation data downloaded from the NIH using the command-line  using *pmidcite*.
+The NIH's citation data includes a paper's ranking among its co-citation network.
 
 
 ### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
