@@ -60,7 +60,7 @@ class NIHiCitePaper:
     @staticmethod
     def prt_keys(prt=stdout):
         """Print paper keys"""
-        prt.write('    TOP: A user-requested paper\n')
+        prt.write('    TOP: The paper requested by the researcher\n')
         prt.write('    CIT: A paper that cited TOP\n')
         prt.write('    CLI: A clinical paper that cited TOP\n')
         prt.write("    REF: A paper referenced in the TOP paper's bibliography\n")

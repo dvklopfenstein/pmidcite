@@ -59,14 +59,14 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 
 A Command-Line Interface (CLI) can be preferable 
 to a Graphical User Interface (GUI) because: 
-* processing can be automated from a script;
-* time-consuming mouse clicking is reduced; and
+* processing can be automated from a script
+* time-consuming mouse clicking is reduced
 * more data can be seen at once on a text screen
 than in a browser, giving the researcher 
-a better overall impression of the full set of information [[1]](#how-to-cite).
+a better overall impression of the full set of information [[1]](#how-to-cite)
 
-Linux and Mac users already work from the command line.
-Windows users can get that Linux-like command line feeling
+Researchers who use Linux or Mac already work from the command line.
+Researchers who use Windows can get that Linux-like command line feeling
 while still running native Windows programs by
 downloading Cygwin from https://www.cygwin.com/ [[1]](#how-to-cite).
 
@@ -91,8 +91,8 @@ $ icite -k
 KEYS TO PAPER LINE:
     TYP PubMedID RP HAMCc % SD YEAR x y z au[A](First Author) Title of paper
 
-TYPe of relationship to the user-requested paper (TYP):
-    TOP: A user-requested paper
+TYPe of relationship to the researcher-requested paper (TYP):
+    TOP: The paper requested by the researcher
     CIT: A paper that cited TOP
     CLI: A clinical paper that cited TOP
     REF: A paper referenced in the TOP paper's bibliography
@@ -226,7 +226,7 @@ TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological,
 
 ### 5) Create ASCII plots
 Create a scatter plot of publication year vs. citation count for a list of papers.
-This will be made more user friendly.
+This will be made friendlier.
 
 Columns 7 and 8 contain the year and the citation count.
 ```
@@ -357,12 +357,12 @@ Boeker M et al.
 Fiorini N ... Lu Zhiyong    
 2018 | PLoS Biology | PMID: [30153250](https://pubmed.ncbi.nlm.nih.gov/30153250) | DOI: [10.1371/journal.pbio.2005343](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005343)    
 
-## PDFs of our paper
-  * [**Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with the original text box formatting
-  * **Supplemental Material**
-    * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
-    * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
-    * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)S
+## [PDFs](/doc/paper/JRSM_1456_iCite_main.pdf)
+  * [**PMIDCITE Manuscript**](/doc/paper/JRSM_1456_iCite_main.pdf) with the original text box formatting
+    * **Supplemental Material**
+      * [S1. *pmidcite* information](/doc/paper/JRSM_1456_iCite_supp1_CitedByN.pdf)
+      * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
+      * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)S
   * [**Gusenbauer's Response**](/doc/paper/jrsm.1457.pdf)
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
