@@ -46,6 +46,10 @@ class NIHiCiteLoader:
         icites_linked = self.load_icites(pmids_linked.difference(pmids_top))
         return icites_top + icites_linked
 
+    def get_file_pmid(self, pmid):
+        """Get the name of the icite file for one PMID"""
+        return join(self.dir_dnld, self.icitepypat.format(PMID=pmid))
+
     def load_icite(self, file_pmid):
         """Load NIH iCite information from Python modules"""
         if exists(file_pmid):
@@ -54,6 +58,11 @@ class NIHiCiteLoader:
             spec.loader.exec_module(mod)
             return NIHiCiteEntry(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
         return None
+
+    def load_pmid(self, pmid):
+        """Get NIHiCiteEntry for a PMID"""
+        fin_py = self.get_file_pmid(pmid)
+        return self.load_icite(fin_py)
 
     @staticmethod
     def _get_pmids_linked(icites_top):

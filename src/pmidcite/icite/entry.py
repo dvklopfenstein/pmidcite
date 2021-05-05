@@ -10,10 +10,15 @@ from sys import stdout
 class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    pat_str = ('{pmid:8} {aart_type} {aart_animal} '
+    fields = ['pmid', 'aart_type', 'aart_animal', 'nih_perc', 'nih_sd', 'year',
+              'num_cites_all', 'clin', 'references',
+              'A', 'author1', 'title']
+
+    pat_pre = ('{pmid:8} {aart_type} {aart_animal} '
                '{nih_perc:3} {nih_sd} {year} {num_cites_all:5} {clin:2} {references:3} '
-               'au[{A:02}]({author1}) {title}'
               )
+    pat_str = pat_pre + 'au[{A:02}]({author1}) {title}'
+
     pat_md = ('{year}|{pmid:8}|{aart_type}|{aart_animal}|'
               '{num_cites_all:>5}|{clin:>4}|{references:>4}|'
               '{A:2}|{author1:16}|{title}'
@@ -39,13 +44,14 @@ class NIHiCiteEntry:
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
-        self.dct['nih_sd'] = nih_group
+        self.dct['nih_sd'] = nih_group  # 0 - 5
         # pylint: disable=line-too-long
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
         self.dct['num_cite'] = len(icite_dct['cited_by'])
-        self.dct['num_cites_all'] = len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
-        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + self.dct['num_cites_all']
+        num_cites_all = len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
+        self.dct['num_cites_all'] = num_cites_all
+        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
         self.dct['num_refs'] = len(icite_dct['references'])
 
     def get_au1_lastname(self):
@@ -74,27 +80,6 @@ class NIHiCiteEntry:
                '{num_cite:6,}=cited_by;   '
                '{num_exp:6,}=cited_by_clin.union(cited_by)')
         print(msg.format(num_exp=num_exp, **self.dct))
-
-    #### @staticmethod
-    #### def _init_nih_sd(nih_percentile):
-    ####     """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
-    ####     # No NIH percentile yet assigned. This paper should be checked out.
-    ####     if nih_percentile is None:
-    ####         return 5
-    ####     #  2.1% -3 SD: Very low citation rate
-    ####     if nih_percentile < 2.1:
-    ####         return 0
-    ####     # 13.6% -2 SD: Low citation rate
-    ####     if nih_percentile < 15.7:
-    ####         return 1
-    ####     # 68.2% -1 SD to +1 SD: Average citation rate
-    ####     if nih_percentile < 83.9:
-    ####         return 2
-    ####     # 13.6% +2 SD: High citation rate
-    ####     if nih_percentile < 97.5:
-    ####         return 3
-    ####     #  2.1% +3 SD: Very high citation rate
-    ####     return 4
 
     def prt_keys(self, prt=stdout):
         """Print paper keys, including header line"""

@@ -79,13 +79,17 @@ class ESearch(EntrezUtilities):
             rsp_txt = self._run_efetch(database, start, querykey_cur, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
-                ntd = pmid2nt[pmids_exp[0]]
-                ## print('NNNNNNNNNNNNNNN', ntd)
-                with open(ntd.file_pubmed, 'w') as prt:
-                    prt.write(rsp_txt)
-                    print('  {WROTE}: {TXT}'.format(
-                        WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
-                        TXT=ntd.file_pubmed))
+                pmid = pmids_exp[0]
+                if pmid in pmid2nt:
+                    ntd = pmid2nt[pmid]
+                    ## print('NNNNNNNNNNNNNNN', ntd)
+                    with open(ntd.file_pubmed, 'w') as prt:
+                        prt.write(rsp_txt)
+                        print('  {WROTE}: {TXT}'.format(
+                            WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
+                            TXT=ntd.file_pubmed))
+                else:
+                    print('**WARNING: NOT DOWNLOADING {PMID}: UNKNOWN FILENAME'.format(PMID=pmid))
 
     @staticmethod
     def _get_num_querykeys(num_ids_p_epost, num_pmids):

@@ -56,9 +56,9 @@ def _read_pmids(fin, top_cit_ref):
             if line[:1] == '#':
                 continue
             if line[:3] in top_cit_ref:
-                line = line[4:].split(maxsplit=1)[0]
-            if line.isdigit():
-                pmids.append(line)
+                pmid = pmid[4:].split(maxsplit=1)[0]
+                if pmid.isdigit():
+                    pmids.append(pmid)
     return pmids
 
 def read_top_pmids(pmidcite_txt, topset=None):
