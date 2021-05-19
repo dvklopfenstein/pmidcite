@@ -19,6 +19,7 @@ def main():
         '../pmidcite/doc/images/nih_perc_groups.png',
         '../bibliometrics/doc/nih_perc_groups.tiff',
         '../bibliometrics/doc/nih_perc_groups.pdf',
+        '../bibliometrics/doc/nih_perc_groups.pdf',
     ]
 
     vlines = [-3, -2, -1, 1, 2, 3]

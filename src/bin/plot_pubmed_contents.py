@@ -17,6 +17,7 @@ def main(dnld=False):
         'pubmed_content_2020_01_10.png',
         'pubmed_content_2020_01_10.tiff',
         'pubmed_content_2020_01_10.pdf',
+        'pubmed_content_2020_01_10.pdf',
     ]
     fout_py = 'src/pmidcite/eutils/pubmed/counts/dnlded_data.py'
 
