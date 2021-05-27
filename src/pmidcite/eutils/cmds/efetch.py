@@ -14,7 +14,8 @@ class EFetch(CommandBase):
     """Fetch and write text"""
 
     # pylint: disable=too-many-arguments
-    def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100, **kws):
+    #### def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100, **kws):
+    def __init__(self, rettype='medline', retmode='text', batch_size=100, **kws):
         kws_base = {k:v for k, v in kws.items() if k in CommandBase.exp_kws}
         print('FFFFFFFFFFFFFFFFFFFF', kws_base)
         super(EFetch, self).__init__(**kws_base)
