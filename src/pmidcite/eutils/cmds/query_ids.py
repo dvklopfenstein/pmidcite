@@ -60,6 +60,9 @@ class QueryIDs(EntrezUtilities):
 
     def get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
         """Download PMIDs, N (num_ids_p_epost) at a time"""
+        ## print('WWWWWWWWWWWWWWWWWWWWW pmidcite/eutils/cmds/query_ids.py', rsp_dct)
+        if not rsp_dct:
+            return []
         ids = list(rsp_dct['idlist'])
         kws_p = {
             'webenv': rsp_dct['webenv'],
@@ -67,7 +70,7 @@ class QueryIDs(EntrezUtilities):
             'retmax': num_ids_p_epost,
         }
         tot_ids = rsp_dct['count']
-        print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
+        ## print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
         for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_ids)):
             rsp_dct = self.query(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
             if rsp_dct:
