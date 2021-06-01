@@ -40,6 +40,7 @@ class PubMedQueryToICite:
         # Download PMIDs and NIH's iCite for all PubMed queries
         else:
             for ntd in nts:
+                ## print('QQQQQQQQQQQQQQQQ pmidcite/pubmedqueryicite.py', ntd.pubmed_query)
                 self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
 
     def querypubmed_runicite(self, fout_pat, query):
@@ -55,7 +56,8 @@ class PubMedQueryToICite:
             else:
                 print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
-        self.wr_icite(fout_icite, pmids)
+        if pmids:
+            self.wr_icite(fout_icite, pmids)
 
     def get_dir_pmids(self):
         """Get directory to store lists of PMIDs"""
