@@ -365,4 +365,4 @@ Fiorini N ... Lu Zhiyong
       * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)S
   * [**Gusenbauer's Response**](/doc/paper/jrsm.1457.pdf)
 
-Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein. All rights reserved.
