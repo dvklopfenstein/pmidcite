@@ -1,4 +1,4 @@
-## Welcome to [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+## [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 
 Augment your PubMed literature search 
 from the command-line by linking 
@@ -15,33 +15,25 @@ rather than clicking and clicking and clicking on
 <img src="images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
+In 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria.
+PubMed implements all five, while Google did not in 2013 or today.
 
-```markdown
-Syntax highlighted code block
+Google's highly popular implementation of the forward citation search through their ubiquitous "Cited by N" links
+is a "Better" experience than the PubMed's "forward citation search" implementation.
 
-# Header 1
-## Header 2
-### Header 3
+But if your research is in the health sciences and
+you are amenable to consider working from the [command line](#command-line-interface-cli),
+you can use PubMed in your browser plus
+citation data downloaded from the NIH using the command-line  using *pmidcite*.
+The NIH's citation data includes a paper's ranking among its co-citation network.
 
-- Bulleted
-- List
+### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
+<img src="images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
-1. Numbered
-2. List
+PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
+* **MEDLINE**: a highly selective database started in the 1960s
+* **PubMed Central (PMC)**: an open-access database for full-text papers that are free of cost
+* Additional content like books and articles published before the 1960s
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/dvklopfenstein/pmidcite/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 
 Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
