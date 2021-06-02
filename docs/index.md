@@ -1,4 +1,4 @@
-## [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+## [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 
 Augment your PubMed literature search 
 from the command-line by linking 
@@ -27,7 +27,8 @@ you can use PubMed in your browser plus
 citation data downloaded from the NIH using the command-line  using *pmidcite*.
 The NIH's citation data includes a paper's ranking among its co-citation network.
 
-### What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
+### What is in PubMed?
+Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html) of [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)     
 <img src="images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
 PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
