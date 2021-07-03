@@ -9,6 +9,24 @@ from os.path import join
 from setuptools import setup
 # import versioneer
 from glob import glob
+from pathlib import PurePosixPath
+
+
+NAME = 'pmidcite'
+
+PACKAGES = [
+    'pmidcite',
+    'pmidcite.cli',
+    'pmidcite.eutils',
+    'pmidcite.eutils.cmds',
+    'pmidcite.eutils.pubmed',
+    'pmidcite.eutils.pubmed.counts',
+    'pmidcite.eutils.pubmed.mesh',
+    'pmidcite.icite',
+    'pmidcite.plot',
+]
+
+PACKAGE_DIRS = {p:join('src', PurePosixPath(*p.split('.'))) for p in PACKAGES}
 
 def get_long_description():
     """Return the contents of the README.md as a string"""
@@ -18,34 +36,14 @@ def get_long_description():
 
 
 setup(
-    name='pmidcite',
+    name=NAME,
     ## version=versioneer.get_version(),
-    version='v0.0.6',
+    version='0.0.7',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
-    packages=[
-        'pmidcite',
-        'pmidcite.cli',
-        'pmidcite.eutils',
-        'pmidcite.eutils.cmds',
-        'pmidcite.eutils.pubmed',
-        'pmidcite.eutils.pubmed.counts',
-        'pmidcite.eutils.pubmed.mesh',
-        'pmidcite.icite',
-        'pmidcite.plot',
-    ],
-    package_dir={
-        'pmidcite': 'src/pmidcite',
-        'pmidcite.cli': 'src/pmidcite/cli',
-        'pmidcite.eutils': 'src/pmidcite/eutils',
-        'pmidcite.eutils.cmds': 'src/pmidcite/eutils/cmds',
-        'pmidcite.eutils.pubmed': 'src/pmidcite/eutils/pubmed',
-        'pmidcite.eutils.pubmed.counts': 'src/pmidcite/eutils/pubmed/counts',
-        'pmidcite.eutils.pubmed.mesh': 'src/pmidcite/eutils/pubmed/mesh',
-        'pmidcite.icite': 'src/pmidcite/icite',
-        'pmidcite.plot': 'src/pmidcite/plot',
-    },
+    packages=PACKAGES,
+    package_dir=PACKAGE_DIRS,
     scripts=glob('src/bin/*.py'),
     # https://pypi.org/classifiers/
     classifiers=[
