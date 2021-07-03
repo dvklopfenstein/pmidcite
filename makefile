@@ -26,6 +26,9 @@ pytest:
 ver:
 	git describe --tags --dirty --always
 
+chk:
+	chk_py
+
 
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
@@ -47,7 +50,7 @@ sdist:
 upload:
 	twine upload dist/* --verbose
 
-#
+
 # -----------------------------------------------------------------------------
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
@@ -62,3 +65,5 @@ clean:
 	rm -f test_icite.cfg
 	rm -f src/tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
+	rm -f notebooks/icite
+	rm -f src/tests/icite
