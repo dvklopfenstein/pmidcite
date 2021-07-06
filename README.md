@@ -10,7 +10,35 @@ rather than clicking and clicking and clicking on
 *Cited by N* links.
 
 ## Usage
+### Download citations from the command line
 ![Starting usage](doc/images/pmidcite0.png)
+
+### Download citations for all papers returned from a PubMed search
+Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search.
+
+There are two PubMed searches in this example:
+  * `systematic review AND "how to"[TI]`
+  * `Orcinus Orca Type D`
+
+The PubMed search results are saved to a file where they can be grepped and sorted.
+
+
+```
+def main():
+    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
+    queries = [
+        # Output filenames               PubMed query
+        # -----------------              -----------------------------------
+        ('systematic_review.txt',        'systematic review AND "how to"[TI]'),
+        ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
+    ]
+
+    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    dnld_idx = obj.get_index(sys.argv)
+    obj.run(queries, dnld_idx)
+```
+
+
 
 ### PubMed vs Google Scholar
 <p align="center">
