@@ -10,7 +10,7 @@ rather than clicking and clicking and clicking on
 *Cited by N* links.
 
 ## Usage
-![doc/images/pmidcite0.png](Starting usage)
+![Starting usage](doc/images/pmidcite0.png)
 
 ### PubMed vs Google Scholar
 <p align="center">
