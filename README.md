@@ -12,6 +12,12 @@ rather than clicking and clicking and clicking on
 ## Usage
 ### Download citations from the command line
 ![Starting usage](doc/images/pmidcite0.png)
+The NIH percentile NIH's ranking of a paper among its co-citation group.
+
+The NIH percentile grouping is part of this project and helps to place lower performing papers in groups 0 or 1 at the back of a sorted list so the better performing papers in groups 2, 3, and 4 are easier to see. 
+
+New papers appear at the beginning of a sorted list, no matter how many citations they have to better find the latest discoveries.
+
 
 ### Download citations for all papers returned from a PubMed search
 Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
