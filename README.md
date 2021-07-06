@@ -14,7 +14,7 @@ rather than clicking and clicking and clicking on
 ![Starting usage](doc/images/pmidcite0.png)
 The NIH percentile NIH's ranking of a paper among its co-citation group.
 
-The NIH percentile grouping is part of this project and helps to place lower performing papers in groups 0 or 1 at the back of a sorted list so the better performing papers in groups 2, 3, and 4 are easier to see. 
+The NIH percentile (`%`) grouping is part of this project and helps to place lower performing papers in groups 0 or 1 at the back of a sorted list so the better performing papers in groups 2, 3, and 4 are easier to see. 
 
 New papers appear at the beginning of a sorted list, no matter how many citations they have to better find the latest discoveries.
 
@@ -108,7 +108,7 @@ downloading Cygwin from https://www.cygwin.com/ [[1]](#how-to-cite).
 Quickly get the number of citations for a research paper with PMID, 26032263:
 ```
 $ icite 26032263 -H
-TYP PMID     RP HAMCc   % SD YR   cit cli ref au[00](authors) title
+TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
 TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making literature reviews more reliable through application of lessons from systematic reviews.
 ```
 * The first line (`TYP PMID ...`) contains the column headers (`-H`).    
@@ -123,7 +123,7 @@ specifically it is in the `68th` percentile (`%` column) compared to its peers.
 $ icite -k
 
 KEYS TO PAPER LINE:
-    TYP PubMedID RP HAMCc % SD YEAR x y z au[A](First Author) Title of paper
+    TYP PubMedID RP HAMCc % G YEAR x y z au[A](First Author) Title of paper
 
 TYPe of relationship to the researcher-requested paper (TYP):
     TOP: The paper requested by the researcher
@@ -151,7 +151,7 @@ NIH iCite details:
      NIH section, based on Relative Citation Ratio (RCR):
      ----------------------------------
          %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD
-        SD: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
+         G: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
 
      YEAR/citations/references section:
      ----------------------------------
