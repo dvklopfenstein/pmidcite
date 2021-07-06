@@ -1,13 +1,17 @@
 #!/usr/bin/env python
+"""Plot NIH percentile groups for citation data from a paper's cocitation network"""
 
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
+
+
+# pylint: disable=wrong-import-position
+import math
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib import colors
-import numpy as np
 import scipy.stats as stats
-import math
+from pmidcite.plot.nih_perc import PltNihVals
+## from pmidcite.cfg import Cfg
 
 MU = 0
 VARIANCE = 1
@@ -19,73 +23,31 @@ def main():
         '../pmidcite/doc/images/nih_perc_groups.png',
         '../bibliometrics/doc/nih_perc_groups.tiff',
         '../bibliometrics/doc/nih_perc_groups.pdf',
+        'nih_perc_groups.svg',
         '../bibliometrics/doc/nih_perc_groups.pdf',
     ]
 
     vlines = [-3, -2, -1, 1, 2, 3]
-    xvals = np.linspace(MU - 3*SIGMA, MU + 3*SIGMA, 120)
-    yvals = stats.norm.pdf(xvals, MU, SIGMA)
-    x2y = {xvals:stats.norm.pdf(xvals, MU, SIGMA) for xvals in vlines}
+    probabilities = [round(stats.norm.cdf(z)*100, 2) for z in vlines[1:-1]]
+    pltr = PltNihVals(probabilities)
+    ## pltr = PltNihVals(Cfg().get_nihgrouper().get_list())
+    pltr.prt_vals()
 
     fig, axes = plt.subplots(1, 1)
-    axes.plot(xvals, yvals, color='k')
-    for xval in vlines:
-        plt.vlines(xval, ymin=0, ymax=x2y[xval])
-    plt.hlines(0, xmin=-3, xmax=3)
-
-    # Fill with color
-    colors = _get_colors('gist_rainbow')
-    _fill_between(axes, -3, -2, colors[0])
-    _fill_between(axes, -2, -1, colors[1])
-    _fill_between(axes, -1, 1, colors[2])
-    _fill_between(axes, 1, 2, colors[3])
-    _fill_between(axes, 2, 3, colors[4])
-
-    # Add text
-    # 0) Lowest
-    plt.text(-2.01, -.003, '0', fontsize=22, ha='right', va='bottom', fontweight='bold')
-    # 1) Low
-    kwtxt = {'ha':'center', 'va':'center', 'fontweight':'bold'}
-    plt.text(-1.24, .12, '1', fontsize=25, **kwtxt)
-    plt.text(-1.5, .03, 'Low\n14%', fontsize=15, **kwtxt)
-    # 2) Good
-    plt.text(0, .35, '2', fontsize=25, **kwtxt)
-    plt.text(0, .03, 'Good\n68%', fontsize=15, **kwtxt)
-    # 3) Better
-    plt.text(1.24, .12, '3', fontsize=25, **kwtxt)
-    plt.text(1.5, .03, 'High\n14%', fontsize=15, **kwtxt)
-    # 4) Best
-    plt.text(2.01, -.003, '4', fontsize=22, ha='left', va='bottom', fontweight='bold')
-
-    plt.xlabel('Standard Deviation lines')
-    plt.ylabel('Distribution')
-
-    axes.annotate('2%', fontsize=15, xy=(2.5, 0.02),
-            xycoords='data', xytext=(2.7, .07),
-            arrowprops=dict(arrowstyle="->",
-                            color = 'black'), **kwtxt)
-    axes.annotate('2%', fontsize=15, xy=(-2.5, 0.02),
-            xycoords='data', xytext=(-2.7, .07),
-            arrowprops=dict(arrowstyle="->",
-                            color = 'black'), **kwtxt)
+    pltr.plt_lines(axes)
+    pltr.colorfill_groups(axes)
+    pltr.add_text_groups(axes)
+    pltr.anno_groupmin(axes)
+    axes.set_xlabel('Standard Deviations', fontsize=15)
+    axes.set_ylabel('Distribution of co-citation network', fontsize=15)
 
     for fout_img in fout_imgs:
+        fig.tight_layout()
         plt.savefig(fout_img, dpi=800)
         print('WROTE: {IMG}'.format(IMG=fout_img))
-
-def _get_colors(colormap):
-    """Get colors"""
-    cmap = cm.get_cmap(colormap)
-    norm = colors.Normalize(vmin=0, vmax=4)
-    scalarmap = cm.ScalarMappable(norm=norm, cmap=cmap)
-    return [scalarmap.to_rgba(n) for n in range(5)]
-
-def _fill_between(axes, xval0, xval1, facecolor):
-    """Color between standard deviation lines"""
-    xvals = np.linspace(xval0, xval1, 20)
-    yvals = stats.norm.pdf(xvals, MU, SIGMA)
-    axes.fill_between(xvals, yvals, facecolor=facecolor, alpha=.4)
 
 
 if __name__ == '__main__':
     main()
+
+# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.

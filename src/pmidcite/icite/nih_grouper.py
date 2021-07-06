@@ -67,17 +67,21 @@ class NihGrouper:
         """Add NIH grouper arguments to the parser"""
         # pylint: disable=line-too-long
         parser.add_argument(
-            '-1', metavar='MIN1', dest='min1', default=self.min1, type=float,
+            '-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
             help='Minimum NIH percentile to be placed in group 1 (default: {D})'.format(D=self.min1))
         parser.add_argument(
-            '-2', metavar='MIN2', dest='min2', default=self.min2, type=float,
+            '-2', metavar='group2_min', dest='min2', default=self.min2, type=float,
             help='Minimum NIH percentile to be placed in group 2 (default: {D})'.format(D=self.min2))
         parser.add_argument(
-            '-3', metavar='MIN3', dest='min3', default=self.min3, type=float,
+            '-3', metavar='group3_min', dest='min3', default=self.min3, type=float,
             help='Minimum NIH percentile to be placed in group 3 (default: {D})'.format(D=self.min3))
         parser.add_argument(
-            '-4', metavar='MIN4', dest='min4', default=self.min4, type=float,
+            '-4', metavar='group4_min', dest='min4', default=self.min4, type=float,
             help='Minimum NIH percentile to be placed in group 4 (default: {D})'.format(D=self.min4))
+
+    def get_list(self):
+        """Get the dividing values as a list"""
+        return [self.min1, self.min2, self.min3, self.min4]
 
 
 # Copyright (C) 2021-present DV Klopfenstein. All rights reserved.

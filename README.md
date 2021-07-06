@@ -9,6 +9,9 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
+## Usage
+![doc/images/pmidcite0.png](Starting usage)
+
 ### PubMed vs Google Scholar
 <p align="center">
 <img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>

@@ -1,16 +1,18 @@
 """Plot groups in the NIH percentile map showing how well a paper is doing among its peers"""
 
-__copyright__ = "Copyright (C) 2020-present, Adapted by DV Klopfenstein. All rights reserved."
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
 
+import math
+from sys import stdout
+
+# pylint: disable=wrong-import-position
 import matplotlib as mpl
 mpl.use('agg')
-import matplotlib.pyplot as plt
+## import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import colors
 import numpy as np
 import scipy.stats as stats
-import math
-from sys import stdout
 
 
 class PltNihPercentile:
@@ -40,7 +42,10 @@ class PltNihPercentile:
         cmap = cm.get_cmap(colormap)
         norm = colors.Normalize(vmin=0, vmax=4)
         scalarmap = cm.ScalarMappable(norm=norm, cmap=cmap)
-        return [scalarmap.to_rgba(n) for n in range(5)]
+        rgbas = [scalarmap.to_rgba(n) for n in range(5)]
+        for idx, rgba in enumerate(rgbas):
+            print(idx, mpl.colors.rgb2hex(rgba))
+        return rgbas
 
     def fill_between(self, axes, xval0, xval1, facecolor):
         """Color between standard deviation lines"""
@@ -52,28 +57,26 @@ class PltNihPercentile:
 class PltNihVals(PltNihPercentile):
     """Plot groups in the NIH percentile map showing how well a paper is doing among its peers"""
 
-    obj = PltNihPercentile()
 
-    def __init__(self, group_dividers):
-        self.percentiles = group_dividers  # List of dividers w/values from 0 to 1
+    def __init__(self, group_mins):
+        self.group_mins = group_mins  # List of dividers w/values from 0 to 1
         # https://stackoverflow.com/questions/20864847/probability-to-z-score-and-vice-versa
-        self.zscores = [stats.norm.ppf(v) for v in group_dividers]
+        self.zscores = [stats.norm.ppf(v/100) for v in group_mins]
         self.vlines_x = [-3] + self.zscores + [3]
         self.vlines_y = [stats.norm.pdf(x, self.MU, self.SIGMA) for x in self.vlines_x]
 
     def prt_vals(self, prt=stdout):
         """Print values and their z-scores"""
-        for perc, zscore in zip(self.percentiles, self.zscores):
+        for perc, zscore in zip(self.group_mins, self.zscores):
             prt.write('{PERC:5.3f} {Z}\n'.format(PERC=perc, Z=zscore))
 
     def get_group_percentages(self):
         """Get the percentage that each group represents"""
-        vals = [self.percentiles[0],
-                self.percentiles[1] - self.percentiles[0],
-                self.percentiles[2] - self.percentiles[1],
-                self.percentiles[3] - self.percentiles[2],
-                1.0 - self.percentiles[3]]
-        return [100*v for v in vals]
+        return [self.group_mins[0],
+                self.group_mins[1] - self.group_mins[0],
+                self.group_mins[2] - self.group_mins[1],
+                self.group_mins[3] - self.group_mins[2],
+                100 - self.group_mins[3]]
 
     def plt_lines(self, axes):
         """Plot the lines bordering the normal distribution and the group dividers"""
@@ -84,19 +87,17 @@ class PltNihVals(PltNihPercentile):
 
     def colorfill_groups(self, axes, colormap='gist_rainbow'):
         """Fill each nih percentile group with a color from the colormap"""
-        colors = self.get_colors('gist_rainbow')
-        for idx, color in enumerate(colors):
+        color_list = self.get_colors(colormap)
+        for idx, color in enumerate(color_list):
             self.fill_between(axes, self.vlines_x[idx], self.vlines_x[idx+1], color)
 
     def add_text_groups(self, axes):
         """Add text describing groups and content"""
         group_percs = self.get_group_percentages()
-        print(group_percs)
-        vals = [int(round(v)) for v in group_percs]
+        kwtxt = {'ha':'center', 'va':'center', 'fontweight':'bold'}
         # 0) Lowest
         axes.text(-2.01, -.003, '0', fontsize=22, ha='right', va='bottom', fontweight='bold')
         # 1) Low
-        kwtxt = {'ha':'center', 'va':'center', 'fontweight':'bold'}
         axes.text(-1.24, .12, '1', fontsize=25, **kwtxt)
         axes.text(-1.5, .03, 'Low\n{:2.0f}%'.format(group_percs[1]), fontsize=15, **kwtxt)
         # 2) Good
@@ -109,22 +110,31 @@ class PltNihVals(PltNihPercentile):
         axes.text(2.01, -.003, '4', fontsize=22, ha='left', va='bottom', fontweight='bold')
 
         axes.annotate('{:2.0f}%'.format(group_percs[0]), fontsize=15, xy=(2.5, 0.02),
-                xycoords='data', xytext=(2.7, .07),
-                arrowprops=dict(arrowstyle="->",
-                                color = 'black'), **kwtxt)
+                      xycoords='data', xytext=(2.7, .07),
+                      arrowprops=dict(arrowstyle="->", color='black'), **kwtxt)
         axes.annotate('{:2.0f}%'.format(group_percs[4]), fontsize=15, xy=(-2.5, 0.02),
-                xycoords='data', xytext=(-2.7, .07),
-                arrowprops=dict(arrowstyle="->",
-                                color = 'black'), **kwtxt)
-
+                      xycoords='data', xytext=(-2.7, .07),
+                      arrowprops=dict(arrowstyle="->", color='black'), **kwtxt)
 
     def anno_groupmin(self, axes):
         """Add group_minN annotations"""
-        axes.annotate('{:2.0f}%'.format(group_percs[0]), fontsize=15, xy=(2.5, 0.02),
-        xycoords='data', xytext=(2.7, .07),
-        arrowprops=dict(arrowstyle="->",
-                        color = 'black'), **kwtxt)
+        kws = {
+            'xycoords':'data',
+            'fontsize':12,
+            'va':'center',
+            'arrowprops':dict(arrowstyle="->", color='black', linestyle='dotted'),
+        }
+        axes.annotate('group1_min={}'.format(self.group_mins[0]),
+                      xytext=(-3, 0.30), xy=(self.vlines_x[1], self.vlines_y[1]), ha='left', **kws)
+
+        axes.annotate('group2_min={}'.format(self.group_mins[1]),
+                      xytext=(-3, 0.38), xy=(self.vlines_x[2], self.vlines_y[2]), ha='left', **kws)
+
+        axes.annotate('group3_min={}'.format(self.group_mins[2]),
+                      xytext=(3, 0.38), xy=(self.vlines_x[3], self.vlines_y[3]), ha='right', **kws)
+
+        axes.annotate('group4_min={}'.format(self.group_mins[3]),
+                      xytext=(3, 0.30), xy=(self.vlines_x[4], self.vlines_y[4]), ha='right', **kws)
 
 
-
-# Copyright (C) 2020-present, Adapted for pmidcite by DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
