@@ -4,13 +4,15 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import os
-import sys
+from sys import stdout
 import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
+from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 
 class NIHiCiteCli:
@@ -50,7 +52,7 @@ class NIHiCiteCli:
             help='Write current citation report to an ASCII text file.')
         parser.add_argument(
             '-O', action='store_true',
-            help="Write each PMIDs' iCite report to <dir_icite>/PMID.txt")
+            help="Write each PMIDs' iCite report with citations/references to <dir_icite>/PMID.txt")
         parser.add_argument(
             '-f', '--force_write', action='store_true',
             help='if an existing outfile file exists, overwrite it.')
@@ -89,43 +91,45 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
-        ## print('ICITE ARGS', args)
+        ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self.pmidcite.dir_icite_py = args.dir_icite_py
-        groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-        dnldr = self.get_icite_downloader(groupobj, args.force_download, args.no_references)
+        # Print rcfile initialization file
+        if args.generate_rcfile:
+            prt_rcfile(stdout)
+        # Print the keys and/or the header
+        if args.print_keys:
+            NIHiCiteDownloader.prt_keys()
+        if args.print_header:
+            NIHiCiteDownloader.prt_hdr()
+        # Get user-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
-        pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
-        self.run_icite(pmid2icitepaper, dnldr, args, argparser)
-        # pylint:disable=line-too-long
-        if args.pubmed:
-            self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
+        if pmids:
+            # Begin to initialize citation/PMID cli
+            groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
+            dnldr = self.get_icite_downloader(groupobj, args.force_download, args.no_references)
+            pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
+            self.run_icite(pmid2icitepaper, dnldr, args, argparser)
+            if args.pubmed:
+                self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
 
     # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper_all, dnldr, args, argparser):
         """Run iCite/PubMed"""
-        pmid2icitepaper_cur = self.run_icite_pre(pmid2icitepaper_all, dnldr, args, argparser)
+        pmid2icitepaper_cur = self.run_icite_pre(pmid2icitepaper_all, args, argparser)
         if not pmid2icitepaper_cur:
             return
+        # Write the report with citations and references for each PMID into its own file
         if args.O:
             self._wr_papers(pmid2icitepaper_cur, dnldr)
+        # Write the succinct report each PMID to the screen
         else:
             self.run_icite_wr(pmid2icitepaper_cur, args, dnldr)
 
-    def run_icite_pre(self, pmid2icitepaper_all, dnldr, args, argparser):
+    def run_icite_pre(self, pmid2icitepaper_all, args, argparser):
         """Run iCite/PubMed"""
-        ## print('ICITE ARGS: ../pmidcite/src/pmidcite/cli/icite.py', args)
-        # Print rcfile initialization file
-        if args.generate_rcfile:
-            self.pmidcite.prt_rcfile(sys.stdout)
-            return {}
-        # Get user-specified PMIDs
         if not pmid2icitepaper_all and not args.print_keys and not args.print_header:
             argparser.print_help()
             self._prt_infiles(args.infile)
-        if args.print_keys:
-            dnldr.prt_keys()
-        if args.print_header:
-            dnldr.prt_hdr()
         pmid2icitepaper_cur = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}
         if not pmid2icitepaper_cur:
             # pylint: disable=line-too-long
@@ -147,10 +151,10 @@ class NIHiCiteCli:
         prt_verbose = args.verbose
         if dct['outfile'] is None and not args.O:
             dnldr.prt_papers(
-                pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+                pmid2icitepaper, prt=stdout, prt_assc_pmids=prt_verbose)
         else:
             if args.verbose:
-                dnldr.prt_papers(pmid2icitepaper, prt=sys.stdout, prt_assc_pmids=prt_verbose)
+                dnldr.prt_papers(pmid2icitepaper, prt=stdout, prt_assc_pmids=prt_verbose)
             if dct['outfile'] is not None:
                 dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
 
