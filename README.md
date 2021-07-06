@@ -14,15 +14,13 @@ rather than clicking and clicking and clicking on
 ![Starting usage](doc/images/pmidcite0.png)
 
 ### Download citations for all papers returned from a PubMed search
-Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search.
+Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
 
 There are two PubMed searches in this example:
   * `systematic review AND "how to"[TI]`
   * `Orcinus Orca Type D`
 
-The PubMed search results are saved to a file where they can be grepped and sorted.
-
-
+The PubMed search results are saved to specified filenames such as `systematic_review.txt` to be grepped and sorted.
 ```
 def main():
     """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
