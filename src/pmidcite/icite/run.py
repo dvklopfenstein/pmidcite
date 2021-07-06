@@ -28,7 +28,7 @@ class PmidCite:
 
     def prt_rcfile(self, prt=sys.stdout):
         """Print pmidcite rcfile"""
-        self.cfgparser.cfgparser.write(prt)
+        self.cfgparser.prt_rcfile_dflt(prt)
 
     # pylint: disable=line-too-long
     def get_icitedownloader(self, force_download, nih_grouper=None, no_references=False, prt_icitepy=None):
