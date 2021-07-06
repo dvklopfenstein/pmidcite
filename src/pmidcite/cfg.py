@@ -6,7 +6,8 @@ __author__ = "DV Klopfenstein"
 from os import environ
 from os.path import exists
 from os.path import basename
-import sys
+from sys import stdout
+from sys import argv
 import configparser
 
 from pmidcite.icite.nih_grouper import NihGrouper
@@ -21,18 +22,8 @@ class Cfg(object):
 
     dfltdct = {
         'pmidcite' : {
-
-            # Entrez utilities
-            'email': 'name@email.edu',
-            # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
-            'apikey': 'long_hex_digit',
-            'tool': 'scripts',
-
             # Information downloaded from NIH iCite stored in a Python module
             'dir_icite_py': '.',
-
-            # Directory for abstracts downloaded from PubMed
-            'dir_pubmed_txt': '.',
 
             # Used by PubMedQueryToICite:
             # Directory for files containing PMIDs downloaded from PubMed
@@ -45,10 +36,19 @@ class Cfg(object):
             'group2_min': '15.7',
             'group3_min': '83.9',
             'group4_min': '97.5',
+
+            # Entrez utilities
+            'email': 'name@university.edu',
+            # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
+            'apikey': 'LONG_HEX_NCBI_API_KEY',
+            'tool': 'scripts',
+
+            # Directory for abstracts downloaded from PubMed
+            'dir_pubmed_txt': '.',
         },
     }
 
-    def __init__(self, check=True, prt=sys.stdout, prt_fullname=True):
+    def __init__(self, check=True, prt=stdout, prt_fullname=True):
         self.cfgfile = self._init_cfgfilename()
         self.cfgparser = self._get_dflt_cfgparser()
         if check:
@@ -100,7 +100,7 @@ class Cfg(object):
         self.cfgparser = self._get_dflt_cfgparser()
         return self.cfgparser.read(self.cfgfile)
 
-    def rd_rc(self, prt=sys.stdout, prt_fullname=True):
+    def rd_rc(self, prt=stdout, prt_fullname=True):
         """Read a configuration file"""
         if exists(self.cfgfile):
             if prt:
@@ -153,6 +153,11 @@ class Cfg(object):
             config[section] = dfltdct_cur
         return config
 
+    def prt_rcfile_dflt(self, prt=stdout):
+        """Print default rcfile"""
+        cfgparser = self._get_dflt_cfgparser()
+        cfgparser.write(prt)
+
     def _init_cfgfilename(self):
         """Get the configuration filename"""
         if self.envvar in environ:
@@ -167,7 +172,7 @@ class Cfg(object):
         return self.dfltcfgfile
 
 
-def get_cfgparser(prt=sys.stdout):
+def get_cfgparser(prt=stdout):
     """Init cfg parser"""
     cfgparser = Cfg(check=False, prt=prt)
     cfgparser.rd_rc(prt=prt)

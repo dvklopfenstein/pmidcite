@@ -274,7 +274,7 @@ $ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
 ## Setup
 Save your literature search in a GitHub repo.
 
-### 1. Add a pmidcite init file
+### 1. Add a [pmidcite init file](doc/example_cfg/.pmidciterc)
 Add a .pmidciterc init file to a non-git managed directory, like home (~)
 ```
 $ icite --generate-rcfile | tee ~/.pmidciterc
