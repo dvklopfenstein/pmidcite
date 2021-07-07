@@ -3,8 +3,6 @@
 Augment your PubMed literature search 
 from the command-line by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov),
-which includes scientific influence, translation, citation counts, and
-ranking of a paper among other papers in its co-citation network
 using [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs),
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
