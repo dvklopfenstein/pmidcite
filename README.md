@@ -1,7 +1,7 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 Augment a PubMed literature search by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
-with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
+for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
