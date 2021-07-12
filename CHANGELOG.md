@@ -20,6 +20,8 @@ Release 2021-07-12 v0.0.9
 Release 2021-07-16 v0.0.8
 -------------------------------------
 * Made grouping of papers customizable by the researcher
+* Added image showing how to read the output of icite
+![Starting usage](doc/images/pmidcite0.png)
 
 Release 2020-12-03 v0.0.5
 -------------------------------------
