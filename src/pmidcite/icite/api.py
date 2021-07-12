@@ -12,6 +12,7 @@ import traceback
 import requests
 
 from pmidcite.icite.entry import NIHiCiteEntry
+from pmidcite.icite.nih_grouper import NihGrouper
 
 
 class NIHiCiteAPI:

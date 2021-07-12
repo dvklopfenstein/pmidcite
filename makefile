@@ -17,11 +17,12 @@ pylint:
 	chmod 755 tmp_pylint
 	tmp_pylint
 
-TESTS := \
-    src/tests/test_cfg_icite.py
+#### TESTS := \
+####     src/tests/test_cfg_icite.py
 
 pytest:
-	python3 -m pytest $(TESTS)
+	python3.8 --version; python3.8 -m pytest -v src/tests | tee pytest.log
+	#### python3 -m pytest $(TESTS)
 
 ver:
 	git describe --tags --dirty --always
@@ -66,5 +67,6 @@ clean:
 	rm -f test_icite.cfg
 	rm -f src/tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
+	rm -f icite
 	rm -f notebooks/icite
 	rm -f src/tests/icite

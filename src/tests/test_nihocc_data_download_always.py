@@ -16,17 +16,21 @@
 
 # In[1]:
 
-import sys
+from os import mkdir
+from os.path import exists
+from sys import stdout
 from pmidcite.icite.api import NIHiCiteAPI
-#### from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.icite.nih_grouper import NihGrouper
 
 
 def test_nihocc_data_download_always():
     """Test notebook"""
     # prt=None will suppress the "WROTE: ./icite/p22882545.py" messages
-    
-    #### grpr = NihGrouper()
-    api = NIHiCiteAPI('./icite', prt=sys.stdout)
+    dir_icite = './icite'
+    if not exists(dir_icite):
+        mkdir(dir_icite)
+    grpr = NihGrouper()
+    api = NIHiCiteAPI(grpr, dir_icite, prt=stdout)
 
 
     # ## 2) Download NIH-OCC data for one PMID
