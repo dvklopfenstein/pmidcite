@@ -1,52 +1,47 @@
 #!/usr/bin/env python3
 """Test notebook"""
 # coding: utf-8
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long,too-many-locals
 
 # # Query PubMed
 # You will need to either set your email, apikey, and tool in the `.pmidciterc` file. See the setup setion in the main ***pmidcite*** README.md
 
 # In[1]:
 
-
+from os import mkdir
+from os import system
+from os.path import exists
 from pmidcite.cfg import Cfg
 from pmidcite.eutils.cmds.pubmed import PubMed
+from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.icite.api import NIHiCiteAPI
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+
 
 def test_query_pubmed():
     """Test notebook"""
     cfg = Cfg(prt_fullname=False)
 
-
     # ## Instantiate a PubMed object
-
     # In[2]:
-
-
     pmobj = PubMed(
         email=cfg.get_email(),
         apikey=cfg.get_apikey(),
         tool=cfg.get_tool())
 
-
     # ## Query PubMed, download PMIDs
-
     # In[3]:
-
-
     pubmed_query = 'Orcinus Orca Type D'
     pmids = pmobj.dnld_query_pmids(pubmed_query)
 
-
     # ## Print NIH citation data for the papers
-
     # In[4]:
-
-
-    from pmidcite.icite.api import NIHiCiteAPI
-    from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
-
     force_download = False
-    api = NIHiCiteAPI(cfg.get_dir_icite_py())
+    dir_icite = './icite'
+    if not exists(dir_icite):
+        mkdir(dir_icite)
+    grpr = NihGrouper()
+    api = NIHiCiteAPI(grpr, cfg.get_dir_icite_py(), prt=None)
     dnldr = NIHiCiteDownloader(force_download, api)
     pmid2paper = dnldr.get_pmid2paper(pmids)
     for paper in pmid2paper.values():
@@ -55,25 +50,18 @@ def test_query_pubmed():
 
     # ## Download the PubMed abstract
     # Download the PubMed abstract for the newest paper
-
     # In[5]:
-
-
     paper_chosen = sorted(pmid2paper.values(), key=lambda o: o.icite.dct['year'])[0]
     print(paper_chosen)
 
-
     # In[6]:
-
-
-    pmobj.dnld_wr1_per_pmid([paper_chosen.pmid], force_download, dir_pubmed_txt=".")
-
+    pmid2nt = pmobj.dnld_wr1_per_pmid([paper_chosen.pmid], force_download, dir_pubmed_txt=".")
+    for pmid, data in pmid2nt.items():
+        print('PMID', pmid, data)
 
     # In[7]:
-
-
-    fpm = './pubmed_{PMID}.txt'.format(PMID=paper_chosen.pmid)
-    get_ipython().system('cat $fpm')
+    file_pubmed = './pubmed_{PMID}.txt'.format(PMID=paper_chosen.pmid)
+    system('cat {TXT}'.format(TXT=file_pubmed))
 
 
 if __name__ == '__main__':

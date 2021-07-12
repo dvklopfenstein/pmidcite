@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Test notebook"""
 # coding: utf-8
+# pylint: disable=line-too-long
 
 # # Download citation data from NIH-OCC
 # NIH-OCC: Nation Institute of Health's Open Citation Collection https://icite.od.nih.gov/
@@ -16,13 +17,19 @@
 # In[1]:
 
 
-import sys
+from os import mkdir
+from os.path import exists
+from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.api import NIHiCiteAPI
 
-def print_paper_all_refs_cites():
+def test_print_paper_all_refs_cites():
     """Test notebook"""
 
-    api = NIHiCiteAPI('./icite', prt=None)
+    dir_icite = './icite'
+    if not exists(dir_icite):
+        mkdir(dir_icite)
+    grpr = NihGrouper()
+    api = NIHiCiteAPI(grpr, dir_icite, prt=None)
 
 
     # ## 2) Load the NIH Downloader
@@ -54,6 +61,6 @@ def print_paper_all_refs_cites():
 
 
 if __name__ == '__main__':
-    print_paper_all_refs_cites()
+    test_print_paper_all_refs_cites()
 
 # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Test notebook"""
 # coding: utf-8
 
@@ -17,12 +17,18 @@
 # In[1]:
 
 
-import sys
+from os import mkdir
+from os.path import exists
+from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.api import NIHiCiteAPI
 
-def print_paper_all_refs_cites():
+def test_print_paper_all_refs_cites():
     """Test notebook"""
-    api = NIHiCiteAPI('./icite', prt=None)
+    dir_icite = './icite'
+    if not exists(dir_icite):
+        mkdir(dir_icite)
+    grpr = NihGrouper()
+    api = NIHiCiteAPI(grpr, dir_icite, prt=None)
 
 
     # ## 2) Load the NIH Downloader
@@ -86,7 +92,7 @@ def print_paper_all_refs_cites():
     # In[6]:
 
 
-    nih_cites = sorted(all_cites, key=lambda o: [o.dct['year'], o.dct['total_cites']], reverse=True)
+    nih_cites = sorted(all_cites, key=lambda o: [o.dct['year'], o.dct['num_cites_all']], reverse=True)
     for nih_entry in nih_cites:
         print(nih_entry)
 
@@ -101,6 +107,9 @@ def print_paper_all_refs_cites():
     print('\n{N} key-value pairs in an NIH entry:\n'.format(N=len(nih_entry.dct)))
     for key, value in nih_entry.dct.items():
         print("{KEY:>27} {VAL}".format(KEY=key, VAL=value))
+
+if __name__ == '__main__':
+    test_print_paper_all_refs_cites()
 
 
 # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.

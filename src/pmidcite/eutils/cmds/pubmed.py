@@ -53,7 +53,7 @@ class PubMed(EntrezUtilities):
                 DIR=dir_pubmed_txt))
         pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt, pmid2name)
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', 10, 1, **self.medline_text)
-        self.esearch.dnld_wr1_per_id('pubmed', efetch_idxs, efetch_params, pmid_nt_list)
+        return self.esearch.dnld_wr1_per_id('pubmed', efetch_idxs, efetch_params, pmid_nt_list)
 
     def dnld_texts(self, efetch_idxs, efetch_params):
         """Download and save one PMID PubMed entry into a text string"""

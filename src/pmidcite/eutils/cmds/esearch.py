@@ -76,23 +76,26 @@ class ESearch(EntrezUtilities):
     def dnld_wr1_per_id(self, database, efetch_idxs, efetch_params, pmid_nt_list):
         """Download and write one PMID PubMed entry into one text file"""
         if not pmid_nt_list:
-            return
+            return {}
         pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
         for desc, start, pmids_exp, querykey_cur in efetch_idxs:
-            rsp_txt = self._run_efetch(database, start, querykey_cur, pmids_exp, desc, **efetch_params)
+            rsp_txt = self._run_efetch(
+                database, start, querykey_cur, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
                 pmid = pmids_exp[0]
                 if pmid in pmid2nt:
                     ntd = pmid2nt[pmid]
-                    ## print('NNNNNNNNNNNNNNN', ntd)
-                    with open(ntd.file_pubmed, 'w') as prt:
-                        prt.write(rsp_txt)
-                        print('  {WROTE}: {TXT}'.format(
-                            WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
-                            TXT=ntd.file_pubmed))
-                else:
-                    print('**WARNING: NOT DOWNLOADING {PMID}: UNKNOWN FILENAME'.format(PMID=pmid))
+                    if ntd.download:
+                        ## print('NNNNNNNNNNNNNNN', ntd)
+                        with open(ntd.file_pubmed, 'w') as prt:
+                            prt.write(rsp_txt)
+                            print('  {WROTE}: {TXT}'.format(
+                                WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
+                                TXT=ntd.file_pubmed))
+                    else:
+                        print('**WARNING: NOT DOWNLOADING: {PMID}'.format(PMID=pmid))
+        return pmid2nt
 
     #### @staticmethod
     #### def _get_num_querykeys(num_ids_p_epost, num_pmids):
@@ -105,14 +108,14 @@ class ESearch(EntrezUtilities):
     def esearch_ids(self, database, query, **return_params):
         """Get IDs using ESearch"""
         # Run query to find matching IDs. Get webenv for ID list
-        rsp_0 = self.query(database, query, **return_params)
+        rsp_0 = self.queryids.query(database, query, **return_params)
         idlist = list(rsp_0['idlist'])
         webenv = rsp_0['webenv']
         retmax = rsp_0['retmax']
         #self._prt_rsp(rsp_0, 0)
         num_iter = self._get_num_iterations(rsp_0['count'], rsp_0['retmax'])
         for querykey_cur in range(1, num_iter):
-            rsp_i = self.query(
+            rsp_i = self.queryids.query(
                 database, query, WebEnv=webenv, retstart=querykey_cur*retmax, retmax=retmax)
             idlist.extend(rsp_i['idlist'])
             # self._prt_rsp(rsp_i, querykey_cur)
@@ -165,16 +168,20 @@ class ESearch(EntrezUtilities):
     def get_pmid_nt_list(ids, database, force_download, dir_pubmed, pmid2name=None):
         """Get list of database entries. PubMed ex: Title, abstract, authors, journal, MeSH"""
         nts = []
-        ntobj = cx.namedtuple('Nt', 'PMID file_pubmed file_exists')
+        ntobj = cx.namedtuple('Nt', 'PMID file_pubmed file_exists download')
         for id_val in ids:
             name = pmid2name[id_val] if pmid2name and id_val in pmid2name else id_val
             # Get filename, pubmed_PMID.txt
             file_db = os.path.join(dir_pubmed, '{DB}_{ID}.txt'.format(DB=database, ID=name))
             file_exists = os.path.exists(file_db)
-            if not file_exists or force_download:
-                ntd = ntobj(PMID=id_val, file_pubmed=file_db, file_exists=file_exists)
-                nts.append(ntd)
-            else:
+            download = not file_exists or force_download
+            ntd = ntobj(
+                PMID=id_val,
+                file_pubmed=file_db,
+                file_exists=file_exists,
+                download=download)
+            nts.append(ntd)
+            if not download:
                 print('**NOTE: EXISTS: {TXT}'.format(TXT=file_db))
         return nts
 

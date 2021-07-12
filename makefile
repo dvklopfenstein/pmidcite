@@ -13,7 +13,7 @@ cfg:
 
 # -----------------------------------------------------------------------------
 pylint:
-	@git status -uno | perl -ne 'if (/(\S+.py)/) {printf "echo $$1\npylint -r no %s\n", $$1}' | tee tmp_pylint
+	@git status -uno | perl -ne 'if (/(\S+\.py)/) {printf "echo $$1\npylint -r no %s\n", $$1}' | tee tmp_pylint
 	chmod 755 tmp_pylint
 	tmp_pylint
 
@@ -63,10 +63,13 @@ clean_dist:
 	rm -rf dist build 
 
 clean:
+	rm -f p*.py
+	rm -f pubmed_*.txt
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
 	rm -f src/tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
-	rm -f icite
-	rm -f notebooks/icite
-	rm -f src/tests/icite
+	rm -f notebooks/p*.py
+	rm -rf notebooks/icite
+	rm -rf ./icite
+	rm -rf src/tests/icite

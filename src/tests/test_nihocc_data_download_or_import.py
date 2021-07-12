@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Test notebook"""
 # pylint: disable=line-too-long
 # coding: utf-8
@@ -17,13 +17,20 @@
 # In[1]:
 
 
-import sys
+from os import mkdir
+from os.path import exists
+from sys import stdout
 from pmidcite.icite.api import NIHiCiteAPI
+from pmidcite.icite.nih_grouper import NihGrouper
 
 def test_nihocc_data_download_or_import():
     """Test notebook"""
 
-    api = NIHiCiteAPI('./icite', prt=sys.stdout)
+    dir_icite = './icite'
+    if not exists(dir_icite):
+        mkdir(dir_icite)
+    grpr = NihGrouper()
+    api = NIHiCiteAPI(grpr, dir_icite, prt=stdout)
 
 
     # ## 2) Load the NIH Downloader
