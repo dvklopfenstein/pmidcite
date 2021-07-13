@@ -13,6 +13,10 @@
   * Added convenience get functions
 
 
+Release 2021-07-13 v0.0.10
+-------------------------------------
+* Add script, icite (like icite.py)
+
 Release 2021-07-12 v0.0.9
 -------------------------------------
 * Updated all notebooks to use the new customizable paper grouping using the NIH's co-citation network data
