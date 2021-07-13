@@ -12,9 +12,14 @@ rather than clicking and clicking and clicking on
 ![Starting usage](doc/images/pmidcite0.png)
 The NIH percentile (`%`) is NIH's ranking of a paper among its co-citation group.
 
-The NIH percentile (`G`) grouping is part of this project and helps to place lower performing papers in groups `0` or `1` at the back of a sorted list so the better performing papers in groups `2`, `3`, and `4` are easier to see. 
+The NIH percentile (`G`) grouping is part of this project and helps to
+highlight the better performing papers in groups `2`, `3`, and `4` by
+placing them at the front of a sorted list and the
+lower performing papers in groups `0` or `1` at the back.
 
-New papers appear at the beginning of a sorted list, no matter how many citations they have to better facilitate researchers in finding the latest discoveries.
+New papers appear at the beginning of a sorted list,
+no matter how many citations they have to
+better facilitate researchers in finding the latest discoveries.
 
 
 ### Download citations for all papers returned from a PubMed search
@@ -39,6 +44,10 @@ def main():
     dnld_idx = obj.get_index(sys.argv)
     obj.run(queries, dnld_idx)
 ```
+
+To have better access to PubMed search results, 
+get n NCBI API key using these instuctions:    
+https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 
 ## PubMed vs Google Scholar
