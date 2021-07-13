@@ -44,7 +44,7 @@ setup(
     ## cmdclass=versioneer.get_cmdclass(),
     packages=PACKAGES,
     package_dir=PACKAGE_DIRS,
-    scripts=glob('src/bin/*.py'),
+    scripts=list(glob('src/bin/*.py')) + ['scr/bin/icite'],
     # https://pypi.org/classifiers/
     classifiers=[
         'Programming Language :: Python',
