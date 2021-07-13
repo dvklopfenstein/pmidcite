@@ -38,13 +38,14 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.10',
+    version='0.0.11',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
     packages=PACKAGES,
     package_dir=PACKAGE_DIRS,
-    scripts=list(glob('src/bin/*.py')) + ['scr/bin/icite'],
+    # https://stackoverflow.com/questions/18787036/difference-between-entry-points-console-scripts-and-scripts-in-setup-py
+    scripts=glob('src/bin/*.py'),
     # https://pypi.org/classifiers/
     classifiers=[
         'Programming Language :: Python',
