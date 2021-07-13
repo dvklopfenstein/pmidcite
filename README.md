@@ -197,10 +197,10 @@ CIT 27617203 .. .....  43 2 2016     5  0  40 au[02](Neal R Haddaway) On the ben
 ```
 
 #### Other sort examples
-We suggest starting with the `-k6` sort option because in 2018 Fiorini et al. [[7]](#references), the creaters of PubMed's "best match" relevance sort ordering in PubMed,
+In 2018 Fiorini et al. [[7]](#references), the creaters of PubMed's "best match" relevance sort ordering in PubMed,
 found that the most important document features to feed into the PubMed sorting algorithm are publication year and past usage.
 
-Using the `-k6` argument to `sort` the citation group (usage group) does two things:
+Mimic this by using the `-k6` argument to `sort` the citation group (usage group), which does two things:
   * First, it highlights the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
   * Second, it shows the newest papers first in each usage group, highlighting them profoundly.
 
@@ -226,8 +226,8 @@ Query PubMed and download the citation data from the script, `src/bin/dnld_pmids
 ```
 $ src/bin/dnld_pmids.py
      3 IDs FOR pubmed QUERY(Orcinus Orca Type D)
-     3 WROTE: ./log/pmids/Orcinus_Orca_Type_D.txt
-     3 WROTE: ./log/icite/Orcinus_Orca_Type_D.txt
+     3 WROTE: ./log/pmids/killer_whale.txt
+     3 WROTE: ./log/icite/killer_whale.txt
 ```
 
 #### 3. Examine the citation and pubmed data, sorting by year (column 7; `-k7`)
@@ -323,8 +323,8 @@ dir_icite = .
 ```
 $ export PMIDCITECONF=~/.pmidciterc
 ```
-You will want `.pmidciterc` to **not** be managed by GitHub because it
-will contain your personal email and your private NCBI API key.
+Do not version manage the `.pmidciterc` using a tool like GitHub because it
+contains your personal email and your private NCBI API key.
 
 ### 2. Add directories
 Add directories which match those in ~/.pmidciterc:
@@ -337,7 +337,7 @@ $ mkdir [GIT_REPO_PATH]/log/icite
 ```
 
 ### 3. NCBI E-Utils API key
-If you want to download PubMed abstracts and PubMed search results using NCBI's E-Utils,
+To download PubMed abstracts and PubMed search results using NCBI's E-Utils,
 get an NCBI API key using these instructions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
