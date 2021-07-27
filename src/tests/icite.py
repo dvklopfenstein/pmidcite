@@ -6,6 +6,7 @@ __author__ = "DV Klopfenstein"
 
 from os import system
 from os import mkdir
+from os import environ
 from os.path import join
 from os.path import dirname
 from os.path import abspath
@@ -13,6 +14,8 @@ from os.path import exists
 from os.path import getmtime
 from glob import glob
 from sys import stdout
+from datetime import timedelta
+from timeit import default_timer
 from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
@@ -20,6 +23,21 @@ from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 DIR_TEST = dirname(abspath(__file__))
 DIR_ICITE = join(DIR_TEST, "./icite")
 DIR_REPO = join(DIR_TEST, "../..")
+DL = environ.get('DLCYG')
+
+def get_dnld_files(glob_pattern):
+    """Get the filenames of downloaded files matching the researcher's glob pattern"""
+    return glob(join(DL, glob_pattern))
+
+def get_filename_test(basename):
+    """Get the full filename of a test file, basename"""
+    return join(DIR_TEST, basename)
+
+def prt_hms(tic, msg, prt=stdout):
+    """Print elapsed time including Hours, Minutes, and seconds with a user message."""
+    hms = str(timedelta(seconds=(default_timer()-tic)))
+    prt.write("{HMS}: {MSG}\n".format(HMS=hms, MSG=msg))
+    return default_timer()
 
 class ICiteTester:
     """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
