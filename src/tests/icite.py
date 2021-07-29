@@ -21,6 +21,7 @@ from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 DIR_TEST = dirname(abspath(__file__))
+DIR_TESTDATA = join(DIR_TEST, "data")
 DIR_ICITE = join(DIR_TEST, "./icite")
 DIR_REPO = join(DIR_TEST, "../..")
 DL = environ.get('DLCYG')
@@ -32,6 +33,10 @@ def get_dnld_files(glob_pattern):
 def get_filename_test(basename):
     """Get the full filename of a test file, basename"""
     return join(DIR_TEST, basename)
+
+def get_filename_testdata(basename):
+    """Get the full filename of a test file, basename"""
+    return join(DIR_TESTDATA, basename)
 
 def prt_hms(tic, msg, prt=stdout):
     """Print elapsed time including Hours, Minutes, and seconds with a user message."""

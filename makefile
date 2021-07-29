@@ -71,5 +71,8 @@ clean:
 	rm -f notebooks/pubmed_*.txt
 	rm -f notebooks/p*.py
 	rm -rf notebooks/icite
-	rm -rf ./icite
 	rm -rf src/tests/icite
+	make clobber_icite
+
+clobber_icite:
+	rm -rf ./icite
