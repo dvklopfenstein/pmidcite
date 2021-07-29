@@ -61,7 +61,7 @@ class NIHiCiteCli:
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
         parser.add_argument(
             '--dir_icite_py', default=dir_icite_py,
-            help='Write PMID iCite information into directory (default={D})'.format(D=dir_icite_py))
+            help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(D=dir_icite_py))
         parser.add_argument(
             '--dir_icite', default=dir_icite,
             help='Write PMID icite reports into directory (default={D})'.format(D=dir_icite))
@@ -104,6 +104,8 @@ class NIHiCiteCli:
         # Get user-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
         if pmids:
+            if len(pmids) > 10:
+                print('PROCESSING {N:,} PMIDs'.format(N=len(pmids)))
             # Begin to initialize citation/PMID cli
             groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
             dnldr = self.get_icite_downloader(groupobj, args.force_download, args.no_references)
