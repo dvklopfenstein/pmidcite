@@ -3,11 +3,14 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
-import sys
+from os.path import exists
+from os.path import split
+from os.path import splitext
+from os.path import join
+from sys import stdout
 
 
-def read_pmids(fin, prt=sys.stdout):
+def read_pmids(fin, prt=stdout):
     """Read PMIDs from a file. One PMID per line."""
     pmids = _str_to_int(_read_pmids(fin, top_cit_ref=None))
     if prt:
@@ -37,7 +40,7 @@ def get_all(pmid_list, fin_pmids, top_cit_ref=None):
     seen = set(pmids)
     if fin_pmids:
         for fin in fin_pmids:
-            if os.path.exists(fin):
+            if exists(fin):
                 for pmid in _read_pmids(fin, top_cit_ref):
                     if pmid not in seen:
                         pmids.append(pmid)
@@ -53,12 +56,14 @@ def _read_pmids(fin, top_cit_ref):
     with open(fin) as ifstrm:
         for line in ifstrm:
             line = line.strip()
-            if line[:1] == '#':
+            if line[:1] == '#' or line == '':
                 continue
             if line[:3] in top_cit_ref:
                 pmid = pmid[4:].split(maxsplit=1)[0]
                 if pmid.isdigit():
                     pmids.append(pmid)
+            elif line.isdigit():
+                pmids.append(line)
     return pmids
 
 def read_top_pmids(pmidcite_txt, topset=None):
@@ -74,7 +79,7 @@ def read_top_pmids(pmidcite_txt, topset=None):
                     pmids.add(int(flds[1]))
     return pmids
 
-def wr_pmids(fout_txt, pmids, mode='w', log=sys.stdout):
+def wr_pmids(fout_txt, pmids, mode='w', log=stdout):
     """Write PMIDs into a text file, one PMID per line"""
     with open(fout_txt, mode) as prt:
         for pmid in pmids:
@@ -84,15 +89,15 @@ def wr_pmids(fout_txt, pmids, mode='w', log=sys.stdout):
 
 def mk_outname_pmids(fin):
     """Given input file, return output file for PMIDs"""
-    outdir, outname = os.path.split(fin)
-    basename, ext = os.path.splitext(outname)
-    return os.path.join(outdir, '{BASE}_pmids{EXT}'.format(BASE=basename, EXT=ext))
+    outdir, outname = split(fin)
+    basename, ext = splitext(outname)
+    return join(outdir, '{BASE}_pmids{EXT}'.format(BASE=basename, EXT=ext))
 
 def mk_outname_icite(fin):
     """Given input file, return output file for PMIDs"""
-    outdir, outname = os.path.split(fin)
-    basename, ext = os.path.splitext(outname)
-    return os.path.join(outdir, '{BASE}_icite{EXT}'.format(BASE=basename, EXT=ext))
+    outdir, outname = split(fin)
+    basename, ext = splitext(outname)
+    return join(outdir, '{BASE}_icite{EXT}'.format(BASE=basename, EXT=ext))
 
 def get_outfile(outfile, append_outfile, force_write):
     """Given arguments, return outfile"""
