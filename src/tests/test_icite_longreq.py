@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Test long request to https://icite.od.nih.gov/api/pubs"""
+"""TBD: Test long request to https://icite.od.nih.gov/api/pubs"""
 
 
 def test_icite_longreq():
-    """Test long request to https://icite.od.nih.gov/api/pubs"""
+    """TBD: Test long request to https://icite.od.nih.gov/api/pubs"""
     pmid = 17717599
     ## die
 
