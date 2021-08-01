@@ -32,21 +32,37 @@ class NIHiCiteCli:
         dir_icite_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite_py']
         dir_icite = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite']
         dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        # - PMIDs ----------------------------------------------------------------------------
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
         parser.add_argument(
             '-i', '--infile', nargs='*',
             help='Read PMIDs from a file containing one PMID per line.')
-        parser.add_argument(
-            '-a', '--append_outfile',
-            help='Append current citation report to an ASCII text file. Create if needed.')
+        # - help -----------------------------------------------------------------------------
         parser.add_argument(
             '-H', '--print_header', action='store_true',
             help='Print column headings on one line.')
         parser.add_argument(
             '-k', '--print_keys', action='store_true',
             help='Print the keys describing the abbreviations.')
+        # - verbosity ------------------------------------------------------------------------
+        parser.add_argument(
+            '-v', '--verbose', action='store_true', default=False,
+            help='Load and print the list of citations and references for each paper.')
+        parser.add_argument(
+            '-c', '--load_citations', action='store_true', default=False,
+            help='Load and print the list of citations for each paper.')
+        parser.add_argument(
+            '-r', '--load_references', action='store_true', default=False,
+            help='Load and print the list of references for each paper.')
+        parser.add_argument(
+            '-R', '--no_references', action='store_true',
+            help='Print the list of citations, but not the list of references.')
+        # - output ---------------------------------------------------------------------------
+        parser.add_argument(
+            '-a', '--append_outfile',
+            help='Append current citation report to an ASCII text file. Create if needed.')
         parser.add_argument(
             '-o', '--outfile',
             help='Write current citation report to an ASCII text file.')
@@ -59,6 +75,12 @@ class NIHiCiteCli:
         parser.add_argument(
             '-D', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        # - abstracts -------------------------------------------------------------------------
+        parser.add_argument(
+            '-p', '--pubmed', action='store_true',
+            help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
+        self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
+        # - directories ----------------------------------------------------------------------
         parser.add_argument(
             '--dir_icite_py', default=dir_icite_py,
             help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(D=dir_icite_py))
@@ -66,21 +88,13 @@ class NIHiCiteCli:
             '--dir_icite', default=dir_icite,
             help='Write PMID icite reports into directory (default={D})'.format(D=dir_icite))
         parser.add_argument(
-            '-R', '--no_references', action='store_true',
-            help='Print the list of citations, but not the list of references.')
-        parser.add_argument(
-            '-v', '--verbose', action='store_true', default=False,
-            help="Print all citing papers and references for each PMID provided by user.")
-        parser.add_argument(
-            '-p', '--pubmed', action='store_true',
-            help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
-        parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
             help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
-        self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
+        # ------------------------------------------------------------------------------------
         parser.add_argument(
             '--md', action='store_true',
             help='Print using markdown table format.')
+        # - initialization -------------------------------------------------------------------
         parser.add_argument(
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
@@ -113,6 +127,8 @@ class NIHiCiteCli:
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
             if args.pubmed:
                 self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
+        elif not (args.generate_rcfile or args.print_keys or args.print_header):
+            argparser.print_help()
 
     # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper_all, dnldr, args, argparser):
@@ -129,6 +145,7 @@ class NIHiCiteCli:
 
     def run_icite_pre(self, pmid2icitepaper_all, args, argparser):
         """Run iCite/PubMed"""
+        ## print('ALL', pmid2icitepaper_all)
         if not pmid2icitepaper_all and not args.print_keys and not args.print_header:
             argparser.print_help()
             self._prt_infiles(args.infile)
