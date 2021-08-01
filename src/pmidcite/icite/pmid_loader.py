@@ -40,10 +40,13 @@ class NIHiCiteLoader:
 
     def load_icite_mods_all(self, pmids_top):
         """Load iCite all connected NIHiCiteEntry"""
-        icites_top = self.load_icites(pmids_top)
+        icites_top = self.load_icites(pmids_top)                             # [NIHiCiteEntry]
+        ## print('load_icite_mods_all icites_top', icites_top)
         pmids_top = set(o.dct['pmid'] for o in icites_top)
-        pmids_linked = self._get_pmids_linked(icites_top)
-        icites_linked = self.load_icites(pmids_linked.difference(pmids_top))
+        pmids_linked = self._get_pmids_linked(icites_top)                    # [NIHiCiteEntry]
+        ## print('load_icite_mods_all pmids_linked', icites_top)
+        icites_linked = self.load_icites(pmids_linked.difference(pmids_top)) # [NIHiCiteEntry]
+        ## print('load_icite_mods_all icites_linked', icites_top)
         return icites_top + icites_linked
 
     def get_file_pmid(self, pmid):
