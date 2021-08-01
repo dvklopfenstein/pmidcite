@@ -2,10 +2,10 @@
 """Test long request to https://icite.od.nih.gov/api/pubs"""
 
 
-def test_icite_longreq:
+def test_icite_longreq():
     """Test long request to https://icite.od.nih.gov/api/pubs"""
     pmid = 17717599
-    die
+    ## die
 
 
 if __name__ == '__main__':
