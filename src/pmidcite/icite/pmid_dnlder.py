@@ -18,13 +18,13 @@ from pmidcite.icite.pmid_loader import NIHiCiteLoader
 class NIHiCiteDownloader:
     """Manage pubs notes files"""
 
-    def __init__(self, force_dnld, api, rpt_references=False):
-        self.rpt_references = rpt_references
+    def __init__(self, force_dnld, api, load_references=False):
         self.dnld_force = force_dnld
+        self.api = api                # NIHiCiteAPI
+        self.load_references = load_references
         self.dir_dnld = api.dir_dnld  # e.g., ./icite
         self.nihgrouper = api.nihgrouper
         self.loader = NIHiCiteLoader(self.nihgrouper, self.dir_dnld, prt=None)
-        self.api = api                # NIHiCiteAPI
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -71,7 +71,7 @@ class NIHiCiteDownloader:
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if prt_assc_pmids:
-                paper.prt_summary(prt, self.rpt_references,
+                paper.prt_summary(prt, self.load_references,
                                   sortby_cites='nih_sd',
                                   sortby_refs='nih_sd')
                 prt.write('\n')
@@ -142,6 +142,9 @@ class NIHiCiteDownloader:
             if dnld_assc_pmids_do:
                 self._dnld_assc_pmids(citeobj_top)
             icites = self.loader.load_icite_mods_all([pmid_top])
+            ## print('WWWWWWWWWWWWWWWWWWWW pmid_top   ', pmid_top)
+            ## print('WWWWWWWWWWWWWWWWWWWW len(icites)', len(icites), [o.dct['pmid'] for o in icites])
+            ## print('WWWWWWWWWWWWWWWWWWWW header     ', str(header))
             pmid2icite = {o.dct['pmid']:o for o in icites}
             return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
         note = ''
@@ -153,11 +156,6 @@ class NIHiCiteDownloader:
             NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
-    def _init_iciteobj(self, icite_dct):
-        """Initialize the top NIH iCite paper, if it exists"""
-        if icite_dct:
-            return NIHiCiteEntry(icite_dct, self.nihgrouper.get_group(icite_dct['nih_percentile']))
-        return None
 
     def _dnld_assc_pmids(self, icite):
         """Download PMID iCite data for PMIDs associated with icite paper"""
@@ -208,6 +206,12 @@ class NIHiCiteDownloader:
             return True
         prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
         return input(prompt_user).lower()[:1] == 'y'
+
+    #### def _init_iciteobj(self, icite_dct):
+    ####     """Initialize the top NIH iCite paper, if it exists"""
+    ####     if icite_dct:
+    ####         return NIHiCiteEntry(icite_dct, self.nihgrouper.get_group(icite_dct['nih_percentile']))
+    ####     return None
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
