@@ -73,9 +73,9 @@ class PubMedQueryToICite:
         dnldr = self.pmidcite.get_icitedownloader(
             self.force_dnld,
             grouperobj,
-            no_references=False,
+            details_cites_refs=None,
             prt_icitepy=self.prt_icitepy)
-        pmid2paper = dnldr.get_pmid2paper(pmids, self.verbose, self.pmid2note)
+        pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 
     @staticmethod

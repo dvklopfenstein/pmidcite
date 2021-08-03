@@ -42,7 +42,7 @@ def test_print_paper_all_refs_cites():
     from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
     force_download = False
-    dnldr = NIHiCiteDownloader(force_download, api)
+    dnldr = NIHiCiteDownloader(force_download, api, details_cites_refs="citations")
 
 
     # ## 3) Download NIH-OCC data for one PMID

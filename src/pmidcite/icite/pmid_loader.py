@@ -15,13 +15,13 @@ from pmidcite.icite.entry import NIHiCiteEntry
 class NIHiCiteLoader:
     """Load iCite citations that are stored as a dict in a Python module"""
 
-    def __init__(self, nih_grouper, dir_icitepy, icitepypat='p{PMID}.py', prt=stdout):
+    def __init__(self, nih_grouper, dir_icitepy, assc_pmid_keysset, icitepypat='p{PMID}.py'):
         self.nih_grouper = nih_grouper
         self.dir_dnld = dir_icitepy  # e.g., ./icite
+        self.associated_pmid_keysset = assc_pmid_keysset
         self.icitepypat = icitepypat
-        self.prt = prt
 
-    def load_icites(self, pmids):
+    def load_icites(self, pmids, prt=stdout):
         """Load multiple NIH iCite data from Python modules"""
         if not pmids:
             return []
@@ -33,20 +33,24 @@ class NIHiCiteLoader:
             iciteobj = s_load_icite(file_pmid)
             if iciteobj is not None:
                 icites.append(iciteobj)
-        if self.prt:
-            self.prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
-                N=len(icites), P=len(pmids)))
+        if prt:
+            num_icites = len(icites)
+            num_pmids = len(pmids)
+            if num_icites != num_pmids:
+                prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
+                    N=num_icites,
+                    P=num_pmids))
         return icites
 
     def load_icite_mods_all(self, pmids_top):
-        """Load iCite all connected NIHiCiteEntry"""
+        """Load NIHiCiteEntry for the citations and references of PMIDs in pmids_top"""
         icites_top = self.load_icites(pmids_top)                             # [NIHiCiteEntry]
-        ## print('load_icite_mods_all icites_top', icites_top)
         pmids_top = set(o.dct['pmid'] for o in icites_top)
         pmids_linked = self._get_pmids_linked(icites_top)                    # [NIHiCiteEntry]
-        ## print('load_icite_mods_all pmids_linked', icites_top)
         icites_linked = self.load_icites(pmids_linked.difference(pmids_top)) # [NIHiCiteEntry]
-        ## print('load_icite_mods_all icites_linked', icites_top)
+        ## print('LLLLLLLLLL NIHiCiteLoader load_icite_mods_all icites_top', icites_top)
+        ## print('LLLLLLLLLL NIHiCiteLoader load_icite_mods_all pmids_linked', len(pmids_linked))
+        ## print('LLLLLLLLLL NIHiCiteLoader load_icite_mods_all icites_linked', len(icites_linked))
         return icites_top + icites_linked
 
     def get_file_pmid(self, pmid):
@@ -67,16 +71,16 @@ class NIHiCiteLoader:
         fin_py = self.get_file_pmid(pmid)
         return self.load_icite(fin_py)
 
-    @staticmethod
-    def _get_pmids_linked(icites_top):
-        """Get PMID hextrings linked to given hex strings"""
-        pmidstrs_linked = set()
-        flds = ['cited_by', 'cited_by_clin', 'references']
-        for obj in icites_top:
-            for fld in flds:
-                for pmid in obj.dct[fld]:
-                    pmidstrs_linked.add(pmid)
-        return pmidstrs_linked
+    def _get_pmids_linked(self, icites_top):
+        """Get the PMIDs for the citations and references of top NIHiCiteEntry"""
+        s_asscpmid_keys = self.associated_pmid_keysset
+        return set(pmid for o in icites_top for f in s_asscpmid_keys for pmid in o.dct[f])
+        ## pmids_linked = set()
+        ## for obj in icites_top:
+        ##     for fld in self.associated_pmid_keysset:
+        ##         for pmid in obj.dct[fld]:
+        ##             pmids_linked.add(pmid)
+        ## return pmids_linked
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

@@ -24,7 +24,9 @@ class NIHiCiteEntry:
               '{A:2}|{author1:16}|{title}'
              )
 
-    associated_pmids = {'cited_by_clin', 'cited_by', 'references'}
+    citekeys = {'cited_by_clin', 'cited_by'}
+    refkey = {'references',}
+    associated_pmid_keys = citekeys.union(refkey)
 
     hdr = pat_str.format(
         pmid='PMID',
@@ -150,14 +152,13 @@ class NIHiCiteEntry:
             title=dct['title'],
         )
 
-    def get_assc_pmids(self, keys=None):
+    def get_assc_pmids(self, keys):
         """Get PMIDs associated with the given NIH iCite data"""
         pmids = set()
-        if keys is None:
-            keys = self.associated_pmids
+        s_dct = self.dct
         for assc_key in keys:
-            if self.dct[assc_key]:
-                pmids.update(self.dct[assc_key])
+            if s_dct[assc_key]:
+                pmids.update(s_dct[assc_key])
         return pmids
 
     def get_aart_type(self):

@@ -36,6 +36,7 @@ class NIHiCitePaper:
     def __init__(self, pmid, pmid2icite, header=None, pmid2note=None):
         self.pmid = pmid
         self.pmid2icite = pmid2icite
+        ## print('PPPPPPPP NIHiCitePaper({}, len(pmid2icite)={})'.format(pmid, len(pmid2icite)))
         self.hdr = header  # A header to print before a paper
         # A short pmid2note to print at end of cite line
         self.pmid2note = {} if pmid2note is None else pmid2note
@@ -65,7 +66,7 @@ class NIHiCitePaper:
         prt.write('    CLI: A clinical paper that cited TOP\n')
         prt.write("    REF: A paper referenced in the TOP paper's bibliography\n")
 
-    def prt_summary(self, prt=stdout, rpt_refs=True, sortby_cites='nih_sd', sortby_refs='nih_sd'):
+    def prt_summary(self, prt=stdout, sortby_cites='nih_sd', sortby_refs='nih_sd'):
         """Print summary of paper"""
         if self.hdr:
             prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
@@ -81,7 +82,7 @@ class NIHiCitePaper:
                 M=self.icite.dct['citation_count']))
         self._prt_list(self.cited_by, 'CIT', prt, sortby_cites)
         # References
-        if rpt_refs and self.references:
+        if self.references:
             prt.write('{N} of {M} References downloaded:\n'.format(
                 N=len(self.references),
                 M=self.icite.dct['num_refs']))

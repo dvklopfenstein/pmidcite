@@ -62,7 +62,7 @@ class ICiteTester:
 
     def get_paper(self, pmid, force_download=False, do_prt=True):
         """Run one download"""
-        dnldr = NIHiCiteDownloader(force_download, self.api)
+        dnldr = NIHiCiteDownloader(force_download, self.api, details_cites_refs='all')
         pmids = [pmid]
         pmid2paper = dnldr.get_pmid2paper(pmids)
         assert pmid in pmid2paper
@@ -74,7 +74,8 @@ class ICiteTester:
     def get_f2mtime(self, min_files):
         """Get mofification times of globbed files"""
         f2mtime = {getmtime(fin) for fin in glob(self.icite_files)}
-        assert len(f2mtime) >= min_files, 'iCite FILES NOT DOWNLOADED'
+        assert len(f2mtime) >= min_files, 'iCite FILES NOT DOWNLOADED len(f2mtime)={} < min_files({})'.format(
+            len(f2mtime), min_files)
         return f2mtime
 
     @staticmethod

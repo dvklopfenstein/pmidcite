@@ -1,4 +1,4 @@
-"""Given a PubMed ID (PMID), return a list of publications which cite it"""
+"""Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 # https://icite.od.nih.gov/api
 
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
@@ -16,15 +16,16 @@ from pmidcite.icite.pmid_loader import NIHiCiteLoader
 
 
 class NIHiCiteDownloader:
-    """Manage pubs notes files"""
+    """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 
-    def __init__(self, force_dnld, api, load_references=False):
+    def __init__(self, force_dnld, api, details_cites_refs=None):
         self.dnld_force = force_dnld
         self.api = api                # NIHiCiteAPI
-        self.load_references = load_references
+        # Default:set()  Options:{'cited_by_clin', 'cited_by', 'references'}
+        self.details_cites_refs = self._init_details_cites_refs(details_cites_refs)
         self.dir_dnld = api.dir_dnld  # e.g., ./icite
         self.nihgrouper = api.nihgrouper
-        self.loader = NIHiCiteLoader(self.nihgrouper, self.dir_dnld, prt=None)
+        self.loader = NIHiCiteLoader(self.nihgrouper, self.dir_dnld, self.details_cites_refs)
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -58,22 +59,21 @@ class NIHiCiteDownloader:
         NIHiCiteEntry.prt_key_desc(prt)
         prt.write('\n')
 
-    def prt_papers(self, pmid2icitepaper, prt=stdout, prt_assc_pmids=True):
+    def prt_papers(self, pmid2icitepaper, prt=stdout):
         """Print papers, including citation counts, cite_by and references list"""
         for pmid, paper in pmid2icitepaper.items():
             if paper is not None:
-                self.prt_paper(paper, pmid, pmid, prt, prt_assc_pmids)
+                self.prt_paper(paper, pmid, pmid, prt)
             else:
                 print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
 
     # pylint: disable=too-many-arguments
-    def prt_paper(self, paper, pmid, name, prt=stdout, prt_assc_pmids=True):
+    def prt_paper(self, paper, pmid, name, prt=stdout):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
-            if prt_assc_pmids:
-                paper.prt_summary(prt, self.load_references,
-                                  sortby_cites='nih_sd',
-                                  sortby_refs='nih_sd')
+            if self.details_cites_refs:
+                # pylint: disable=line-too-long
+                paper.prt_summary(prt, sortby_cites='nih_sd', sortby_refs='nih_sd')
                 prt.write('\n')
             else:
                 prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
@@ -108,43 +108,45 @@ class NIHiCiteDownloader:
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
         # pylint: disable=line-too-long
-        name2ntpaper = self._run_icite_name2pmid(name2pmid, dnld_assc_pmids_do=False, pmid2note=None)
+        name2ntpaper = self._run_icite_name2pmid(name2pmid, pmid2note=None)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
                 for name, ntpaper in name2ntpaper.items():
                     self.prt_paper(ntpaper.paper, ntpaper.pmid, name, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
-    def _run_icite_name2pmid(self, name2pmid, dnld_assc_pmids_do, pmid2note):
+    def _run_icite_name2pmid(self, name2pmid, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
         name2ntpaper = {}
         ntobj = cx.namedtuple('Paper', 'pmid paper')
         for name, pmid in name2pmid.items():
-            paper = self._geticitepaper(pmid, name, dnld_assc_pmids_do, pmid2note)
+            paper = self._geticitepaper(pmid, name, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
-    def get_pmid2paper(self, pmids, dnld_assc_pmids_do=True, pmid2note=None):
-        """Get a NIHiCitePaper object for each user-specified PMID"""
+    def get_pmid2paper(self, pmids_top, pmid2note=None):
+        """Get one NIHiCitePaper object for each user-specified PMID"""
         s_geticitepaper = self._geticitepaper
-        # Arg, dnld_assc_pmids_do, causes iCite data to be downloaded if needed, or loaded
+        header = ''
         if not pmid2note:
-            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, None) for p in pmids]
+            papers = [s_geticitepaper(p, header, None) for p in pmids_top]
         else:
-            papers = [s_geticitepaper(p, '', dnld_assc_pmids_do, pmid2note) for p in pmids]
+            papers = [s_geticitepaper(p, header, pmid2note) for p in pmids_top]
         # Note: if there is no iCite entry for a PMID, paper will be None
-        return cx.OrderedDict(zip(pmids, papers))  # pmid2ntpaper
+        return cx.OrderedDict(zip(pmids_top, papers))  # pmid2ntpaper
 
-    def _geticitepaper(self, pmid_top, header, dnld_assc_pmids_do, pmid2note):
+    def _geticitepaper(self, pmid_top, header, pmid2note):
         """Print summary for each user-specified PMID"""
-        citeobj_top = self.get_icite(pmid_top)  # NIHiCiteEntry
-        if citeobj_top:
-            if dnld_assc_pmids_do:
-                self._dnld_assc_pmids(citeobj_top)
+        top_nih_icite_entry = self.get_icite(pmid_top)  # NIHiCiteEntry
+        if top_nih_icite_entry:
+            if self.details_cites_refs:
+                assoc_pmids = top_nih_icite_entry.get_assc_pmids(self.details_cites_refs)
+                self._dnld_assc_pmids(assoc_pmids)
+            # Load TOP paper. If requested, load CIT, CLI, and REF
             icites = self.loader.load_icite_mods_all([pmid_top])
-            ## print('WWWWWWWWWWWWWWWWWWWW pmid_top   ', pmid_top)
-            ## print('WWWWWWWWWWWWWWWWWWWW len(icites)', len(icites), [o.dct['pmid'] for o in icites])
-            ## print('WWWWWWWWWWWWWWWWWWWW header     ', str(header))
+            ## print('WWWWWWWWWWWWWWWW pmid_top   ', pmid_top)
+            ## print('WWWWWWWWWWWWWWWW len(icites)', len(icites), [o.dct['pmid'] for o in icites])
+            ## print('WWWWWWWWWWWWWWWW header     ', str(header))
             pmid2icite = {o.dct['pmid']:o for o in icites}
             return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
         note = ''
@@ -156,13 +158,12 @@ class NIHiCiteDownloader:
             NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
-
-    def _dnld_assc_pmids(self, icite):
+    def _dnld_assc_pmids(self, pmids_assc):
         """Download PMID iCite data for PMIDs associated with icite paper"""
-        pmids_assc = icite.get_assc_pmids()
         if not pmids_assc:
             return []
         if self.dnld_force:
+            ## print('pppppppppppppppppppppp NIHiCiteDownloader _dnld_assc_pmids:', pmids_assc)
             return self.api.dnld_icites(pmids_assc)
         pmids_missing = self._get_pmids_missing(pmids_assc)
         if pmids_missing:
@@ -207,11 +208,23 @@ class NIHiCiteDownloader:
         prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
         return input(prompt_user).lower()[:1] == 'y'
 
-    #### def _init_iciteobj(self, icite_dct):
-    ####     """Initialize the top NIH iCite paper, if it exists"""
-    ####     if icite_dct:
-    ####         return NIHiCiteEntry(icite_dct, self.nihgrouper.get_group(icite_dct['nih_percentile']))
-    ####     return None
+    @staticmethod
+    def _init_details_cites_refs(details_cites_refs):
+        """Initialize associated PMID keys"""
+        # Default: Only load requested PMID (not citations or references)
+        if details_cites_refs is None:
+            return set()
+        if details_cites_refs == 'all':
+            return NIHiCiteEntry.associated_pmid_keys
+        if details_cites_refs == 'citations':
+            return NIHiCiteEntry.citekeys
+        if details_cites_refs == 'references':
+            return NIHiCiteEntry.refkey
+        if isinstance(details_cites_refs, str):
+            msg = ('**FATAL VALUE({V}) IN NIHiCiteDownloader(details_cites_refs="{V}"): '
+                   'EXPECTED ONE OF: all citations references')
+            raise RuntimeError(msg.format(V=details_cites_refs))
+        return set(details_cites_refs).intersection(NIHiCiteEntry.associated_pmid_keys)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

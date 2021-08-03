@@ -11,6 +11,7 @@ from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
+from pmidcite.cli.entry_keyset import get_details_cites_refs
 from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
@@ -49,16 +50,16 @@ class NIHiCiteCli:
         # - verbosity ------------------------------------------------------------------------
         parser.add_argument(
             '-v', '--verbose', action='store_true', default=False,
-            help='Load and print the list of citations and references for each paper.')
+            help='Load and print a descriptive list of citations and references for each paper.')
         parser.add_argument(
             '-c', '--load_citations', action='store_true', default=False,
-            help='Load and print the list of citations for each paper.')
+            help='Load and print a descriptive list of citations for each paper.')
         parser.add_argument(
             '-r', '--load_references', action='store_true', default=False,
-            help='Load and print the list of references for each paper.')
+            help='Load and print a descriptive list of references for each paper.')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
-            help='Print the list of citations, but not the list of references.')
+            help='Do not load or print a descriptive list of references. OBSOLETE Use: -v -c -r')
         # - output ---------------------------------------------------------------------------
         parser.add_argument(
             '-a', '--append_outfile',
@@ -81,6 +82,7 @@ class NIHiCiteCli:
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
         # - directories ----------------------------------------------------------------------
+        # pylint: disable=line-too-long
         parser.add_argument(
             '--dir_icite_py', default=dir_icite_py,
             help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(D=dir_icite_py))
@@ -107,6 +109,7 @@ class NIHiCiteCli:
         args = argparser.parse_args()
         ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self.pmidcite.dir_icite_py = args.dir_icite_py
+        self.pmidcite.dir_icite = args.dir_icite
         # Print rcfile initialization file
         if args.generate_rcfile:
             prt_rcfile(stdout)
@@ -115,15 +118,21 @@ class NIHiCiteCli:
             NIHiCiteDownloader.prt_keys()
         if args.print_header:
             NIHiCiteDownloader.prt_hdr()
-        # Get user-specified PMIDs
+        # Get a list of researcher-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
         if pmids:
             if len(pmids) > 10:
                 print('PROCESSING {N:,} PMIDs'.format(N=len(pmids)))
             # Begin to initialize citation/PMID cli
+            details_cites_refs = get_details_cites_refs(
+                args.verbose,
+                args.load_citations,
+                args.load_references,
+                args.no_references)
             groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-            dnldr = self.get_icite_downloader(groupobj, args.force_download, args.no_references)
-            pmid2icitepaper = dnldr.get_pmid2paper(pmids, not args.no_references, None)
+            dnldr = self.get_icite_downloader(groupobj, args.force_download, details_cites_refs)
+            pmid2icitepaper = dnldr.get_pmid2paper(pmids, None)
+            ## print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
             if args.pubmed:
                 self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
@@ -167,13 +176,11 @@ class NIHiCiteCli:
     def run_icite_wr(pmid2icitepaper, args, dnldr):
         """Print papers, including citation counts"""
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
-        prt_verbose = args.verbose
         if dct['outfile'] is None and not args.O:
-            dnldr.prt_papers(
-                pmid2icitepaper, prt=stdout, prt_assc_pmids=prt_verbose)
+            dnldr.prt_papers(pmid2icitepaper, prt=stdout)
         else:
             if args.verbose:
-                dnldr.prt_papers(pmid2icitepaper, prt=stdout, prt_assc_pmids=prt_verbose)
+                dnldr.prt_papers(pmid2icitepaper, prt=stdout)
             if dct['outfile'] is not None:
                 dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
 
@@ -182,7 +189,7 @@ class NIHiCiteCli:
         for pmid, paper in pmid2icitepaper.items():
             fout_txt = os.path.join(self.pmidcite.dir_icite, '{PMID}.txt'.format(PMID=pmid))
             with open(fout_txt, 'w') as prt:
-                dnldr.prt_papers({pmid:paper}, prt, prt_assc_pmids=True)
+                dnldr.prt_papers({pmid:paper}, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 
     @staticmethod
@@ -192,19 +199,19 @@ class NIHiCiteCli:
         print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
             Ps=' '.join(str(p) for p in pmids)))
 
-    def get_icite_downloader(self, grouperobj, force_download, no_references):
+    def get_icite_downloader(self, grouperobj, force_download, details_cites_refs):
         """Get iCite downloader"""
         # pylint: disable=line-too-long
-        return self.pmidcite.get_icitedownloader(force_download, grouperobj, no_references, prt_icitepy=None)
+        return self.pmidcite.get_icitedownloader(force_download, grouperobj, details_cites_refs, prt_icitepy=None)
 
-    #def _get_pmid2icitepaper(self, pmids, grouperobj, args):
-    #    """Get pmid2icitepaper"""
-    #    dnldr = self.pmidcite.get_icitedownloader(args.force_download, grouperobj, args.no_references, prt=None)
-    #    if args.print_keys:
-    #        dnldr.prt_keys()
-    #    dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
-    #    prt_verbose = not args.succinct
-    #    return dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
+    ####def _get_pmid2icitepaper(self, pmids, grouperobj, args):
+    ####    """Get pmid2icitepaper"""
+    ####    dnldr = self.pmidcite.get_icitedownloader(args.force_download, grouperobj, args.no_references, prt=None)
+    ####    if args.print_keys:
+    ####        dnldr.prt_keys()
+    ####    dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
+    ####    prt_verbose = not args.succinct
+    ####    return dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
