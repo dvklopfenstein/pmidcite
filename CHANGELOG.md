@@ -3,7 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2020-12-03 v0.0.5**](#release-2021-07-12-v009)
+* [**Release 2021-08-03 v0.0.12**](#release-2021-08-03-v0012)
+* [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009)
   Updated notebooks to use new customizable paper grouping
 * [**Release 2021-07-06 v0.0.8**](#release-2021-07-06-v008)
   Made grouping of paper's customizable
@@ -16,6 +17,13 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-08-03 v0.0.12
+* NIH citation data is now downloaded for only researcher-specified PMIDs by default. [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)
+* To download NIH citation details for citations/references of a researcher-specified PMID, use the icite arguments:
+  * -v (download NIH citation details for both citations and references of a researcher-specified PMID)
+  * -c (download NIH citation details for the citations of a researcher-specified PMID)
+  * -r (download NIH citation details for the references of a researcher-specified PMID)
 
 ### Release 2021-07-13 v0.0.10
 * Add script, icite (like icite.py)
