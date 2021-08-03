@@ -8,7 +8,7 @@
   [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)
 * [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009)
   Updated notebooks to use new customizable paper grouping
-  [#2]([#3](https://github.com/dvklopfenstein/pmidcite/issues/2)
+  [#2](https://github.com/dvklopfenstein/pmidcite/issues/2)
 * [**Release 2021-07-06 v0.0.8**](#release-2021-07-06-v008)
   Made grouping of paper's customizable
 * [**Release 2020-12-03 v0.0.5**](#release-2020-12-03-v005)
@@ -32,7 +32,7 @@
 * Add script, icite (like icite.py)
 
 ### Release 2021-07-12 v0.0.9
-* Updated all notebooks to use the new customizable paper grouping using the NIH's co-citation network data [#2]([#3](https://github.com/dvklopfenstein/pmidcite/issues/2)
+* Updated all notebooks to use the new customizable paper grouping using the NIH's co-citation network data [#2](https://github.com/dvklopfenstein/pmidcite/issues/2)
 
 ### Release 2021-07-16 v0.0.8
 * Made grouping of papers customizable by the researcher
