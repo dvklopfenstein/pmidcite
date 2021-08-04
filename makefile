@@ -31,6 +31,10 @@ chk:
 	chk_py
 	chk_setup_dirs
 
+cnt:
+	find ./icite -name \*.py | wc -l
+	find ./src/tests/icite -name \*.py | wc -l
+
 
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
