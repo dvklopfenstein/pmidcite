@@ -44,9 +44,22 @@ def prt_hms(tic, msg, prt=stdout):
     prt.write("{HMS}: {MSG}\n".format(HMS=hms, MSG=msg))
     return default_timer()
 
+def dir_icite_clobber(prt=stdout):
+    """Create an empty dir, ./src/tests/icite, removing old contents if necessary"""
+    cmd = 'rm -rf {ICITE}; mkdir {ICITE}'.format(ICITE=DIR_ICITE)
+    system(cmd)
+    if prt:
+        prt.write("{}\n".format(cmd))
+
+def dir_icite_wc_l(prt=stdout):
+    """Print count of p{PMID}.py files in dir ./src/tests/icite"""
+    cmd = r'find {DIR} -name \*.py | wc -l'.format(DIR=DIR_ICITE)
+    system(cmd)
+    if prt:
+        prt.write("{}\n".format(cmd))
+
 class ICiteTester:
     """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
-
 
     def __init__(self):
         self.dir_icite = self._init_dir_icite()
@@ -74,8 +87,9 @@ class ICiteTester:
     def get_f2mtime(self, min_files):
         """Get mofification times of globbed files"""
         f2mtime = {getmtime(fin) for fin in glob(self.icite_files)}
-        assert len(f2mtime) >= min_files, 'iCite FILES NOT DOWNLOADED len(f2mtime)={} < min_files({})'.format(
-            len(f2mtime), min_files)
+        assert len(f2mtime) >= min_files, \
+            'iCite FILES NOT DOWNLOADED len(f2mtime)={} < min_files({})'.format(
+                len(f2mtime), min_files)
         return f2mtime
 
     @staticmethod
