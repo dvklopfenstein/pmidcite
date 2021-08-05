@@ -41,6 +41,7 @@ class NIHiCitePaper:
         # A short pmid2note to print at end of cite line
         self.pmid2note = {} if pmid2note is None else pmid2note
         self.icite = pmid2icite.get(pmid)
+        # Sets of NIHiCiteEntrys
         self.cited_by = self._init_pmids('cited_by')
         self.cited_by_clin = self._init_pmids('cited_by_clin')
         self.references = self._init_pmids('references')
@@ -122,6 +123,16 @@ class NIHiCitePaper:
     def __str__(self):
         """Get the line containing data downloaded from NIH iCite for only the featured paper"""
         return self.str_line()
+
+    ## TBD:
+    ## def __eq__(self, rhs):
+    ##     if self.pmid != rhs.pmid:
+    ##         return False
+    ##     if self.cited_by != rhs.cited_by:
+    ##         print('LHS:', self.cited_by)
+    ##         print('RHS:', rhs.cited_by)
+    ##         return False
+    ##     return True
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

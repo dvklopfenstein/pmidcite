@@ -56,6 +56,12 @@ class NIHiCiteEntry:
         self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
         self.dct['num_refs'] = len(icite_dct['references'])
 
+    ## TBD:
+    ## def __eq__(self, rhs):
+    ##     if self.pmid == rhs.pmid:
+    ##         return False
+    ##     return True
+
     def get_au1_lastname(self):
         """Get the last name of the first author"""
         aus = self.dct['authors']
