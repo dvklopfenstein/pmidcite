@@ -4,7 +4,6 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 import sys
-from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 from pmidcite.cli.utils import read_pmids
 
@@ -30,15 +29,12 @@ class PmidCite:
         self.cfgparser.prt_rcfile_dflt(prt)
 
     # pylint: disable=line-too-long
-    def get_icitedownloader(self, force_download, nih_grouper=None, details_cites_refs=None, prt_icitepy=None):
+    def get_icitedownloader(self, force_download, nih_grouper=None, details_cites_refs=None):
         """Create NIHiCiteDownloader"""
-        # Setting prt_icitepy to sys.stdout will cause: WROTE: ./icite/p10802651.py
-        kws = {}  # TBD NIHiCiteCli
         if nih_grouper is None:
             nih_grouper = self.cfgparser.get_nihgrouper()
-        api = NIHiCiteAPI(nih_grouper, self.dir_icite_py, prt_icitepy, **kws)
         # src/pmidcite/icite/entry.py NIHiCiteEntry {'cited_by_clin', 'cited_by', 'references'}
-        return NIHiCiteDownloader(force_download, api, details_cites_refs)
+        return NIHiCiteDownloader(force_download, self.dir_icite_py, nih_grouper, details_cites_refs)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
