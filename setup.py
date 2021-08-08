@@ -6,10 +6,10 @@ from os.path import abspath
 from os.path import dirname
 from os.path import join
 # from distutils.core import setup
-from setuptools import setup
-# import versioneer
 from glob import glob
 from pathlib import PurePosixPath
+from setuptools import setup
+# import versioneer
 
 
 NAME = 'pmidcite'
@@ -38,7 +38,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.12',
+    version='0.0.14',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),

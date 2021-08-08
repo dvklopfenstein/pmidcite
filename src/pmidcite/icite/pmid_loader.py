@@ -63,6 +63,7 @@ class NIHiCiteLoader:
             spec = spec_from_file_location("module.name", file_pmid)
             mod = module_from_spec(spec)
             spec.loader.exec_module(mod)
+            ## print('LLLLLLLLLLLLL load_icite', file_pmid)
             return NIHiCiteEntry(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
         return None
 

@@ -3,7 +3,10 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-08-08 v0.0.14**](#release-2021-08-08-v0014)
+  * Simplified NIH downloader interface and improved speed handling large numbers of PMIDs
 * [**Release 2021-08-03 v0.0.12**](#release-2021-08-03-v0012)
+	Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
 	Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
   [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)
 * [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009)
@@ -20,6 +23,10 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-08-08 v0.0.14
+* Simplified the pmidcite library interface [Notebook updates](https://github.com/dvklopfenstein/pmidcite/issues/2#issuecomment-894760798)
+* Improved speed for downloading/loading NIH citation data for large (e.g. greater than 80,000) sets of PMIDs
 
 ### Release 2021-08-03 v0.0.12
 * NIH citation data is now downloaded for only researcher-specified PMIDs by default. [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)

@@ -42,6 +42,7 @@ class NIHiCiteDownloader:
             pmids_new = self._get_new_pmids(fout_txt, pmids_all)
         if pmids_new:
             if self._do_write(fout_txt, force_overwrite):
+                ## print('STARTING ', mode)
                 with open(fout_txt, mode) as prt:
                     self.prt_papers(pmid2icitepaper, prt)
                 print('{WR}: {TXT}'.format(
@@ -133,6 +134,15 @@ class NIHiCiteDownloader:
         """Get one NIHiCitePaper object for each user-specified PMID"""
         s_geticitepaper = self._geticitepaper
         header = ''
+        if not self.details_cites_refs:
+            pmid_paper = []
+            pmid2icite = {o.pmid:o for o in self.get_icites(pmids_top)}
+            for pmid in pmids_top:
+                if pmid in pmid2icite:
+                    nihicite = pmid2icite[pmid]
+                    paper = NIHiCitePaper(pmid, {pmid:nihicite}, '', pmid2note)
+                    pmid_paper.append((pmid, paper))
+            return OrderedDict(pmid_paper)
         if not pmid2note:
             papers = [s_geticitepaper(p, header, None) for p in pmids_top]
         else:
@@ -185,13 +195,26 @@ class NIHiCiteDownloader:
         pmids_pyexist1 = set(pmid for pmid, py in pmid2py.items() if exists(py))
         pmids_pyexist0 = set(pmids).difference(pmids_pyexist1)
         if pmids_pyexist1:
-            s_load_icite = self.loader.load_icite
-            nihentries_all.extend([s_load_icite(pmid2py[p]) for p in pmids_pyexist1])
+            nihentries_loaded = self._load_icites(pmids_pyexist1, pmid2py)
+            if nihentries_loaded:
+                nihentries_all.extend(nihentries_loaded)
         if pmids_pyexist0:
             nihentries_all.extend(self._dnld_icites({p:pmid2py[p] for p in pmids_pyexist0}))
         # Return results sorted in the same order as input PMIDs
         pmid2nihentry = {o.pmid:o for o in nihentries_all}
         return [pmid2nihentry.get(pmid) for pmid in pmids]
+
+    def _load_icites(self, pmids, pmid2py):
+        """Load a list of NIH citation data for PMIDs"""
+        nihentries_loaded = []
+        s_load_icite = self.loader.load_icite
+        num_exist = len(pmids)
+        for idx, pmid in enumerate(pmids, 1):
+            nihentries_loaded.append(s_load_icite(pmid2py[pmid]))
+            if idx%1000 == 0:
+                print('NIH citation data loaded: {N:,} of {M:,}'.format(N=idx, M=num_exist))
+        ## nihentries_all.extend([s_load_icite(pmid2py[p]) for p in pmids_pyexist1])
+        return nihentries_loaded
 
     def _dnld_icites(self, pmid2foutpy):
         """Download a list of NIH citation data for PMIDs"""
