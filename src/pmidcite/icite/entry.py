@@ -10,12 +10,12 @@ from sys import stdout
 class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    fields = ['pmid', 'aart_type', 'aart_animal', 'nih_perc', 'nih_sd', 'year',
+    fields = ['pmid', 'aart_type', 'aart_animal', 'nih_perc', 'nih_group', 'year',
               'num_cites_all', 'clin', 'references',
               'A', 'author1', 'title']
 
     pat_pre = ('{pmid:8} {aart_type} {aart_animal} '
-               '{nih_perc:3} {nih_sd} {year} {num_cites_all:5} {clin:2} {references:3} '
+               '{nih_perc:3} {nih_group} {year} {num_cites_all:5} {clin:2} {references:3} '
               )
     pat_str = pat_pre + 'au[{A:02}]({author1}) {title}'
 
@@ -33,7 +33,7 @@ class NIHiCiteEntry:
         year='YEAR',
         aart_type='RP',
         aart_animal='HAMCc',
-        nih_sd='G',
+        nih_group='G',
         nih_perc='  %',
         num_cites_all='  cit',
         clin='cli',
@@ -46,7 +46,7 @@ class NIHiCiteEntry:
         self.pmid = icite_dct['pmid']
         self.dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
-        self.dct['nih_sd'] = nih_group  # 0 - 5
+        self.dct['nih_group'] = nih_group  # 0 - 5
         # pylint: disable=line-too-long
         self.dct['num_auth'] = len(icite_dct['authors'])
         self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
@@ -141,14 +141,14 @@ class NIHiCiteEntry:
     def _str(self, pat):
         """Return one-line string describing NIH iCite entry"""
         dct = self.dct
-        nih_sd = dct['nih_sd']
+        nih_group = dct['nih_group']
         nih_perc = dct['nih_perc']
         return pat.format(
             pmid=self.pmid,
             year=dct['year'],
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
-            nih_sd=str(nih_sd) if nih_sd != 5 else 'i',
+            nih_group=str(nih_group) if nih_group != 5 else 'i',
             nih_perc=nih_perc if nih_perc <= 100 else ' -1',
             num_cites_all=dct['num_cites_all'],
             clin=dct['num_clin'],

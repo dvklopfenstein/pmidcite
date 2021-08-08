@@ -8,24 +8,29 @@ from sys import stdout
 from os.path import exists
 from os.path import join
 import collections as cx
+from collections import OrderedDict
 
 from pmidcite.cli.utils import read_top_pmids
 from pmidcite.icite.entry import NIHiCiteEntry
 from pmidcite.icite.paper import NIHiCitePaper
+from pmidcite.icite.api import NIHiCiteAPI
+from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.pmid_loader import NIHiCiteLoader
 
 
 class NIHiCiteDownloader:
     """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 
-    def __init__(self, force_dnld, api, details_cites_refs=None):
-        self.dnld_force = force_dnld
-        self.api = api                # NIHiCiteAPI
+    def __init__(self, dir_download, force_download, details_cites_refs=None, nih_grouper=None):
+        self.dnld_force = force_download
+        self.api = NIHiCiteAPI()
         # Default:set()  Options:{'cited_by_clin', 'cited_by', 'references'}
         self.details_cites_refs = self._init_details_cites_refs(details_cites_refs)
-        self.dir_dnld = api.dir_dnld  # e.g., ./icite
-        self.nihgrouper = api.nihgrouper
-        self.loader = NIHiCiteLoader(self.nihgrouper, self.dir_dnld, self.details_cites_refs)
+        self.dir_dnld = dir_download  # Recommended dir_icite_py: ./icite
+        self.nihgrouper = nih_grouper if nih_grouper is not None else NihGrouper()
+        self.loader = NIHiCiteLoader(self.nihgrouper, dir_download, self.details_cites_refs)
+        if not exists(dir_download):
+            raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dir_download))
 
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
         """Run iCite for user-provided PMIDs and write to a file"""
@@ -73,7 +78,7 @@ class NIHiCiteDownloader:
         if paper is not None:
             if self.details_cites_refs:
                 # pylint: disable=line-too-long
-                paper.prt_summary(prt, sortby_cites='nih_sd', sortby_refs='nih_sd')
+                paper.prt_summary(prt, sortby_cites='nih_group', sortby_refs='nih_group')
                 prt.write('\n')
             else:
                 prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
@@ -133,21 +138,21 @@ class NIHiCiteDownloader:
         else:
             papers = [s_geticitepaper(p, header, pmid2note) for p in pmids_top]
         # Note: if there is no iCite entry for a PMID, paper will be None
-        return cx.OrderedDict(zip(pmids_top, papers))  # pmid2ntpaper
+        return OrderedDict(zip(pmids_top, papers))  # pmid2ntpaper
+
+    def get_paper(self, pmid, pmid2note=None):
+        """Get one NIHiCitePaper object for each user-specified PMID"""
+        return self._geticitepaper(pmid, header='', pmid2note=None if not pmid2note else pmid2note)
 
     def _geticitepaper(self, pmid_top, header, pmid2note):
         """Print summary for each user-specified PMID"""
-        top_nih_icite_entry = self.get_icite(pmid_top)  # NIHiCiteEntry
+        top_nih_icite_entry = self.get_icite(pmid_top)  # get NIHiCiteEntry
         if top_nih_icite_entry:
+            pmid2icite = {top_nih_icite_entry.pmid:top_nih_icite_entry}
             if self.details_cites_refs:
                 assoc_pmids = top_nih_icite_entry.get_assc_pmids(self.details_cites_refs)
-                self._dnld_assc_pmids(assoc_pmids)
-            # Load TOP paper. If requested, load CIT, CLI, and REF
-            icites = self.loader.load_icite_mods_all([pmid_top])
-            ## print('WWWWWWWWWWWWWWWW pmid_top   ', pmid_top)
-            ## print('WWWWWWWWWWWWWWWW len(icites)', len(icites), [o.dct['pmid'] for o in icites])
-            ## print('WWWWWWWWWWWWWWWW header     ', str(header))
-            pmid2icite = {o.dct['pmid']:o for o in icites}
+                for nihentry in self.get_icites(assoc_pmids):
+                    pmid2icite[nihentry.pmid] = nihentry
             return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
         note = ''
         if pmid2note and pmid_top in pmid2note:
@@ -157,21 +162,6 @@ class NIHiCiteDownloader:
             HDR=header if header else '',
             NOTE=note))
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
-
-    def _dnld_assc_pmids(self, pmids_assc):
-        """Download PMID iCite data for PMIDs associated with icite paper"""
-        if not pmids_assc:
-            return []
-        if self.dnld_force:
-            ## print('pppppppppppppppppppppp NIHiCiteDownloader _dnld_assc_pmids:', pmids_assc)
-            return self.api.dnld_icites(pmids_assc)
-        pmids_missing = self._get_pmids_missing(pmids_assc)
-        if pmids_missing:
-            objs_missing = self.api.dnld_icites(pmids_missing)
-            pmids_load = pmids_assc.difference(pmids_missing)
-            objs_dnlded = self.loader.load_icites(pmids_load)
-            return objs_missing + objs_dnlded
-        return self.loader.load_icites(pmids_assc)
 
     def _get_pmids_missing(self, pmids_all):
         """Get PMIDs that have not yet been downloaded"""
@@ -183,21 +173,48 @@ class NIHiCiteDownloader:
         return pmids_missing
 
     def get_icites(self, pmids):
-        """Load or download NIH iCite data for requested PMIDs"""
-        icites = []
-        for pmid in pmids:
-            icite = self.get_icite(pmid)
-            if icite is not None:
-                icites.append(icite)
-        return icites
+        """Download NIH iCite data for requested PMIDs"""
+        # Python module filenames
+        s_dir_dnld = self.dir_dnld
+        pmid2py = {p:join(s_dir_dnld, 'p{PMID}.py'.format(PMID=p)) for p in pmids}
+        if self.dnld_force:
+            pmid2nihentry = {o.pmid: o for o in self._dnld_icites(pmid2py)}
+            return [pmid2nihentry.get(pmid) for pmid in pmids]
+        # Separate PMIDs into those stored in Python modules and those not
+        nihentries_all = []
+        pmids_pyexist1 = set(pmid for pmid, py in pmid2py.items() if exists(py))
+        pmids_pyexist0 = set(pmids).difference(pmids_pyexist1)
+        if pmids_pyexist1:
+            s_load_icite = self.loader.load_icite
+            nihentries_all.extend([s_load_icite(pmid2py[p]) for p in pmids_pyexist1])
+        if pmids_pyexist0:
+            nihentries_all.extend(self._dnld_icites({p:pmid2py[p] for p in pmids_pyexist0}))
+        # Return results sorted in the same order as input PMIDs
+        pmid2nihentry = {o.pmid:o for o in nihentries_all}
+        return [pmid2nihentry.get(pmid) for pmid in pmids]
+
+    def _dnld_icites(self, pmid2foutpy):
+        """Download a list of NIH citation data for PMIDs"""
+        nihdicts = self.api.dnld_nihdicts(pmid2foutpy.keys())
+        if nihdicts:
+            s_wrpy = self._wrpy
+            for nih_dict in nihdicts:
+                s_wrpy(pmid2foutpy[nih_dict['pmid']], nih_dict)
+            s_get_group = self.nihgrouper.get_group
+            return [NIHiCiteEntry(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
+        return []
 
     def get_icite(self, pmid):
         """Load or download NIH iCite data for requested PMID"""
+        ## print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP get_icite', pmid, self.dir_dnld)
         file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=pmid))
         if self.dnld_force or not exists(file_pmid):
-            iciteobj = self.api.dnld_icite(pmid)
-            if iciteobj is not None:
-                return iciteobj
+            nih_dict = self.api.dnld_nihdict(pmid)
+            if nih_dict:
+                self._wrpy(file_pmid, nih_dict)
+                return NIHiCiteEntry(
+                    nih_dict,
+                    self.nihgrouper.get_group(nih_dict['nih_percentile']))
         return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
 
     @staticmethod
@@ -225,6 +242,14 @@ class NIHiCiteDownloader:
                    'EXPECTED ONE OF: all citations references')
             raise RuntimeError(msg.format(V=details_cites_refs))
         return set(details_cites_refs).intersection(NIHiCiteEntry.associated_pmid_keys)
+
+    def _wrpy(self, fout_py, dct, log=None):
+        """Write NIH iCite to a Python module"""
+        with open(fout_py, 'w') as prt:
+            self.api.prt_dct(dct, prt)
+            # Setting prt to sys.stdout -> WROTE: ./icite/p10802651.py
+            if log:
+                log.write('  WROTE: {PY}\n'.format(PY=fout_py))
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.

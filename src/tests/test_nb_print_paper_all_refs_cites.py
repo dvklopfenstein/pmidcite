@@ -19,8 +19,6 @@
 
 from os import mkdir
 from os.path import exists
-from pmidcite.icite.nih_grouper import NihGrouper
-from pmidcite.icite.api import NIHiCiteAPI
 
 def test_print_paper_all_refs_cites():
     """Test notebook"""
@@ -28,9 +26,6 @@ def test_print_paper_all_refs_cites():
     dir_icite = './icite'
     if not exists(dir_icite):
         mkdir(dir_icite)
-    grpr = NihGrouper()
-    api = NIHiCiteAPI(grpr, dir_icite, prt=None)
-
 
     # ## 2) Load the NIH Downloader
     # The NIH downloader will use the API to download data from NIH if it is not stored locally or if the user has requested to always download and over-write the older citation file, allowing new citations to be seen.
@@ -38,12 +33,10 @@ def test_print_paper_all_refs_cites():
     # The NIH downloader will read already downloaded NIH-OCC data if it is available. This makes it possible to work offline using previously downloaded citation data.
 
     # In[2]:
-
-
     from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
     force_download = False
-    dnldr = NIHiCiteDownloader(force_download, api)
+    dnldr = NIHiCiteDownloader(dir_icite, force_download, details_cites_refs="all")
 
 
     # ## 3) Download NIH-OCC data for one PMID
@@ -51,13 +44,9 @@ def test_print_paper_all_refs_cites():
     # The first paper, `TOP`, is the requested paper. It is followed by a list of citations (`CIT`), then references (`REF`).
 
     # In[3]:
-
-
-    pmids = [22882545]
-    pmid2paper = dnldr.get_pmid2paper(pmids)
-
-    for paper in pmid2paper.values():
-        paper.prt_summary()
+    pmid = 22882545
+    paper = dnldr.get_paper(pmid)
+    paper.prt_summary()
 
 
 if __name__ == '__main__':

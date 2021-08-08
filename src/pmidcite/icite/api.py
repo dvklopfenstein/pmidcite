@@ -4,12 +4,14 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+## from timeit import default_timer
 from collections import OrderedDict
 
 import traceback
 import requests
 
 from pmidcite.icite.utils import split_list
+## from tests.prt_hms import prt_hms
 
 
 class NIHiCiteAPI:
@@ -42,70 +44,65 @@ class NIHiCiteAPI:
     flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
     yes_no = {'Yes':True, 'No':False}
 
-    #### def __init__(self, nihgrouper, dirpy_dnld='.', prt=None, **kws):
-    def __init__(self, prt=None, **kws):
-        #### self.nihgrouper = nihgrouper
-        #### self.dir_dnld = dirpy_dnld
-        #### if not exists(dirpy_dnld):
-        ####     raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dirpy_dnld))
-        self.prt = prt  # Setting prt to sys.stdout -> WROTE: ./icite/p10802651.py
+    def __init__(self, **kws):
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
 
-    def dnld_icites(self, pmid2foutpy):
+    def dnld_nihdict(self, pmid):
+        """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
+        rsp_json = self._send_request('{URL}/{PMID}'.format(URL=self.url_base, PMID=pmid))
+        return self._adjust_jsondct(rsp_json) if rsp_json else None
+
+    def dnld_nihdicts(self, pmids):
+        """Download a list of NIH citation data for given PMIDs"""
+        return self._dnld_gtmax(pmids) if len(pmids) > 1000 else self._dnld_ltmax(pmids)
+
+    def _dnld_gtmax(self, pmids):
         """Run iCite on given PubMed IDs"""
-        if not pmid2foutpy:
-            return {}
-            #### return []
-        #### icites_all = []
-        pmid2json = {}
-        for pmid2foutpy_cur in split_list(pmid2foutpy.items(), 900):
-            print('src/pmidcite/icite/api.py AAAAAAAAAAAAA', len(pmid2foutpy), len(pmid2foutpy_cur))
-            #### icites_cur = self._dnld_icites(pmid2foutpy_cur)
-            self._dnld_jsons(pmid2json, pmid2foutpy)
-            #### if icites_cur:
-            ####     icites_all.extend(icites_cur)
-        return pmid2json
-        #### return icites_all
+        nih_dicts_all = []
+        max_limit = 1000
+        pmid_list_all = pmids if isinstance(pmids, list) else list(pmids)
+        num_total = len(pmids)
+        # The NIH-OCC allows for a maximum of 1,000 PMIDs to be downloaded at once
+        for pmid_list_cur in split_list(pmid_list_all, max_limit):
+            nih_dicts_cur = self._dnld_ltmax(pmid_list_cur)
+            if nih_dicts_cur:
+                nih_dicts_all.extend(nih_dicts_cur)
+            # pylint: disable=line-too-long
+            print('NIH citation data downloaded: {N:,} of {P:,}'.format(N=len(nih_dicts_all), P=num_total))
+        return nih_dicts_all
 
-    #### def _dnld_icites(self, pmid2foutpy):
-    ####     """Download NIH citation data: 1 json per pmid"""
-    ####     jsons = self._dnld_jsons(pmid2foutpy)
-    ####     #### s_jsonpmid_to_obj = self._jsonpmid_to_obj
-    ####     #### return [s_jsonpmid_to_obj(j) for j in jsons]
-
-    def _dnld_jsons(self, pmid2jsondct, pmid2foutpy):
+    def _dnld_ltmax(self, pmids):
         """Download NIH citation data using a request using their API"""
+        ## tic = default_timer()
         req_nihocc = '{URL}?pmids={PMIDS}'.format(
             URL=self.url_base,
-            PMIDS=','.join(str(p) for p in pmid2foutpy))
+            PMIDS=','.join(str(p) for p in pmids))
+        ## tic = prt_hms(tic, "Create request")
+        # Note: rsp_json['data'] returned from NIH not in same order as requested
         rsp_json = self._send_request(req_nihocc)
+        ## tic = prt_hms(tic, "Send request. Get response")
         if rsp_json is not None:
+            # Adjust the jsons downloaded for NIH citation data
+            nih_dicts = []
             s_adjust_jsondct = self._adjust_jsondct
-            s_wrpy = self._wrpy
-            #### adj_json_dcts = [s_adjust_jsondct(json_dct) for json_dct in rsp_json['data']]
+            pmids_downloaded = set()
             for nih_json_dct in rsp_json['data']:
-                adj_json_dct = s_adjust_jsondct(nih_json_dct)
-                pmid = adj_json_dct['pmid']
-                pmid2jsondct[pmid] = adj_json_dct
-                fout_py = pmid2foutpy[pmid]
-                if fout_py is not None:
-                    s_wrpy(fout_py, adj_json_dct)
-            #### jsons = [s_adjust_jsondct(j) for j in rsp_json['data']]
-            #### print(next(iter(jsons)))
-            #### return jsons
-        #### lst = []
-        #### if rsp_json is not None:
-        ####     for json_dct in rsp_json['data']:
-        ####         lst.append(self._jsonpmid_to_obj(json_dct))
-        #### return lst
+                pmids_downloaded.add(nih_json_dct['pmid'])
+                nih_dicts.append(s_adjust_jsondct(nih_json_dct))
+            ## tic = prt_hms(tic, "Adjust reponse")
+            # Report PMIDs that did not have NIH citation data downloaded
+            pmids_missing = set(pmids).difference(pmids_downloaded)
+            if pmids_missing:
+                self._warn_missing(pmids_missing)
+            return nih_dicts
+        self._warn_missing(pmids)
+        return None
 
-    def dnld_icite(self, pmid, fout_pmid):
-        """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
-        cmd = '/'.join([self.url_base, str(pmid)])
-        adj_json_dct = self._adjust_jsondct(self._send_request(cmd))
-        if fout_pmid is not None:
-            self._wrpy(fout_pmid, adj_json_dct)
-        return adj_json_dct if adj_json_dct else None
+    @staticmethod
+    def _warn_missing(pmids):
+        """Warn that NIH citation data was not downloaded for pmids"""
+        print("**WARNING: {N:,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {PMIDs}".format(
+            N=len(pmids), PMIDs=' '.join(str(s) for s in sorted(pmids))))
 
     def _send_request(self, cmd):
         """Send the request to iCite"""
@@ -141,15 +138,6 @@ class NIHiCiteAPI:
             URL=rsp.url)
             #TEXT=rsp.text)
 
-    #### def _jsonpmid_to_obj(self, adj_json_dct):
-    ####     """Given a PMID json dict, return a NIHiCiteEntry object"""
-    ####     ## adj_json_dct = self._adjust_jsondct(json_dct)
-    ####     file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=adj_json_dct['pmid']))
-    ####     self._wrpy(file_pmid, adj_json_dct)
-    ####     return NIHiCiteEntry(
-    ####        adj_json_dct,
-    ####        self.nihgrouper.get_group(adj_json_dct['nih_percentile']))
-
     def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
         dct = {}
@@ -177,15 +165,8 @@ class NIHiCiteAPI:
                 lst.append((key, val))
         return OrderedDict(lst)
 
-    def _wrpy(self, fout_py, dct):
-        """Write NIH iCite to a Python module"""
-        with open(fout_py, 'w') as prt:
-            self._prt_dct(dct, prt)
-            if self.prt:
-                self.prt.write('  WROTE: {PY}\n'.format(PY=fout_py))
-
     @staticmethod
-    def _prt_dct(dct, prt):
+    def prt_dct(dct, prt):
         """Print NIH iCite data as a dict"""
         prt.write('"""Write data downloaded for NIH iCite data"""\n\n')
         prt.write('# pylint: disable=line-too-long\n')

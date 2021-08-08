@@ -19,9 +19,6 @@
 
 from os import mkdir
 from os.path import exists
-from sys import stdout
-from pmidcite.icite.api import NIHiCiteAPI
-from pmidcite.icite.nih_grouper import NihGrouper
 
 def test_nihocc_data_download_or_import():
     """Test notebook"""
@@ -29,8 +26,6 @@ def test_nihocc_data_download_or_import():
     dir_icite = './icite'
     if not exists(dir_icite):
         mkdir(dir_icite)
-    grpr = NihGrouper()
-    api = NIHiCiteAPI(grpr, dir_icite, prt=stdout)
 
 
     # ## 2) Load the NIH Downloader
@@ -44,7 +39,7 @@ def test_nihocc_data_download_or_import():
     from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
     force_download = False
-    dnldr = NIHiCiteDownloader(force_download, api)
+    dnldr = NIHiCiteDownloader(dir_icite, force_download)
 
 
     # ## 3) Download NIH-OCC data for one PMID
@@ -75,6 +70,7 @@ def test_nihocc_data_download_or_import():
 
     pmids = [31461780, 22882545, 20050301]
     nih_entries = dnldr.get_icites(pmids)
+    # die # TBD WRONG OUTPUT
 
     for entry in nih_entries:
         print(entry)

@@ -14,9 +14,6 @@ from os.path import exists
 from os.path import getmtime
 from glob import glob
 from sys import stdout
-from datetime import timedelta
-from timeit import default_timer
-from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
@@ -38,12 +35,6 @@ def get_filename_testdata(basename):
     """Get the full filename of a test file, basename"""
     return join(DIR_TESTDATA, basename)
 
-def prt_hms(tic, msg, prt=stdout):
-    """Print elapsed time including Hours, Minutes, and seconds with a user message."""
-    hms = str(timedelta(seconds=(default_timer()-tic)))
-    prt.write("{HMS}: {MSG}\n".format(HMS=hms, MSG=msg))
-    return default_timer()
-
 def dir_icite_clobber(prt=stdout):
     """Create an empty dir, ./src/tests/icite, removing old contents if necessary"""
     cmd = 'rm -rf {ICITE}; mkdir {ICITE}'.format(ICITE=DIR_ICITE)
@@ -63,8 +54,7 @@ class ICiteTester:
 
     def __init__(self):
         self.dir_icite = self._init_dir_icite()
-        nihgrouper = NihGrouper()
-        self.api = NIHiCiteAPI(nihgrouper, self.dir_icite, prt=stdout)
+        self.api = NIHiCiteAPI()
         self.icite_files = join(self.dir_icite, '*.py')
 
     def rm_icitefiles(self):
@@ -75,7 +65,7 @@ class ICiteTester:
 
     def get_paper(self, pmid, force_download=False, do_prt=True):
         """Run one download"""
-        dnldr = NIHiCiteDownloader(force_download, self.api, details_cites_refs='all')
+        dnldr = NIHiCiteDownloader(self.dir_icite, force_download, details_cites_refs='all')
         pmids = [pmid]
         pmid2paper = dnldr.get_pmid2paper(pmids)
         assert pmid in pmid2paper

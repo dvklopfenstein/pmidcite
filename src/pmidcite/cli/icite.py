@@ -130,7 +130,11 @@ class NIHiCiteCli:
                 args.load_references,
                 args.no_references)
             groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-            dnldr = self.get_icite_downloader(groupobj, args.force_download, details_cites_refs)
+            dnldr = NIHiCiteDownloader(
+                args.dir_icite_py,
+                args.force_download,
+                details_cites_refs,
+                groupobj)
             pmid2icitepaper = dnldr.get_pmid2paper(pmids, None)
             ## print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
@@ -202,7 +206,7 @@ class NIHiCiteCli:
     def get_icite_downloader(self, grouperobj, force_download, details_cites_refs):
         """Get iCite downloader"""
         # pylint: disable=line-too-long
-        return self.pmidcite.get_icitedownloader(force_download, grouperobj, details_cites_refs, prt_icitepy=None)
+        return self.pmidcite.get_icitedownloader(force_download, grouperobj, details_cites_refs)
 
     ####def _get_pmid2icitepaper(self, pmids, grouperobj, args):
     ####    """Get pmid2icitepaper"""

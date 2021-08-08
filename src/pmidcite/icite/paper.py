@@ -14,10 +14,10 @@ def sortby_cite(obj):
     """Sort lists of iCite items"""
     return [-1*obj.dct['citation_count'], -1*obj.dct['year']]
 
-def sortby_nih_sd(obj):
+def sortby_nih_group(obj):
     """Sort lists of iCite items"""
     dct = obj.dct
-    return [-1*dct['nih_sd'], -1*dct['year'], -1*dct['nih_perc'],
+    return [-1*dct['nih_group'], -1*dct['year'], -1*dct['nih_perc'],
             -1*dct['citation_count'] + -1*dct['num_clin'],
             -1*dct['num_refs'],
             -1*dct['pmid']]
@@ -28,7 +28,7 @@ class NIHiCitePaper:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
     sortby_dct = {
-        'nih_sd': sortby_nih_sd,
+        'nih_group': sortby_nih_group,
         'cite': sortby_cite,
         'year': sortby_year,
     }
@@ -67,7 +67,7 @@ class NIHiCitePaper:
         prt.write('    CLI: A clinical paper that cited TOP\n')
         prt.write("    REF: A paper referenced in the TOP paper's bibliography\n")
 
-    def prt_summary(self, prt=stdout, sortby_cites='nih_sd', sortby_refs='nih_sd'):
+    def prt_summary(self, prt=stdout, sortby_cites='nih_group', sortby_refs='nih_group'):
         """Print summary of paper"""
         if self.hdr:
             prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))

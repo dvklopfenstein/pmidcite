@@ -13,8 +13,6 @@ from os import system
 from os.path import exists
 from pmidcite.cfg import Cfg
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.nih_grouper import NihGrouper
-from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 
@@ -40,9 +38,7 @@ def test_query_pubmed():
     dir_icite = './icite'
     if not exists(dir_icite):
         mkdir(dir_icite)
-    grpr = NihGrouper()
-    api = NIHiCiteAPI(grpr, cfg.get_dir_icite_py(), prt=None)
-    dnldr = NIHiCiteDownloader(force_download, api)
+    dnldr = NIHiCiteDownloader(cfg.get_dir_icite_py(), force_download)
     pmid2paper = dnldr.get_pmid2paper(pmids)
     for paper in pmid2paper.values():
         print(paper)
