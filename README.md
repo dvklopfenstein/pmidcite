@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172713.svg)](https://doi.org/10.5281/zenodo.5172713)
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
+[![Github Actions](https://github.com/dvklopfenstein/pmidcite/workflows/build/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions)
 
 Augment a PubMed literature search by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
