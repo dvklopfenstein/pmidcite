@@ -1,5 +1,10 @@
 # Images
 
+## Badges
+### DOI on Zenodo
+![Zenodo](doc/images/zenodo.5172713.svg)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172713.svg)](https://doi.org/10.5281/zenodo.5172713)
+
 ## Google Scholar
 https://twitter.com/CT_Bergstrom/status/1170465764832231427    
 ![Google Scholar](Google_Scholar.png)     

@@ -1,4 +1,8 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172713.svg)](https://doi.org/10.5281/zenodo.5172713)
+[![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
+
 Augment a PubMed literature search by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
