@@ -21,7 +21,7 @@ pylint:
 ####     src/tests/test_cfg_icite.py
 
 pytest:
-	python3.8 --version; python3.8 -m pytest -v src/tests | tee pytest.log
+	python3.8 --version; python3.8 -m pytest --cov=pmidcite -v src/tests | tee pytest.log
 	#### python3 -m pytest $(TESTS)
 
 ver:
