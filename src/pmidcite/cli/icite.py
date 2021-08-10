@@ -59,7 +59,7 @@ class NIHiCiteCli:
             help='Load and print a descriptive list of references for each paper.')
         parser.add_argument(
             '-R', '--no_references', action='store_true',
-            help='Do not load or print a descriptive list of references. OBSOLETE Use: -v -c -r')
+            help='(DEPRECATED) Do not load or print a descriptive list of references. DEPRECATED -- Use instead: -c -r')
         # - output ---------------------------------------------------------------------------
         parser.add_argument(
             '-a', '--append_outfile',

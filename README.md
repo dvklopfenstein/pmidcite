@@ -1,6 +1,6 @@
 # [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172713.svg)](https://doi.org/10.5281/zenodo.5172713)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
 [![CodeQL](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml)
