@@ -19,7 +19,11 @@ class PmidCite:
     def run_pmid_file(self, fin_pmids, fout_icite, force_download):
         """Run iCite on list of PMIDs in a file"""
         pmids = read_pmids(fin_pmids)
-        dnldr = self.get_icitedownloader(force_download)
+        dnldr = NIHiCiteDownloader(
+            self.dir_icite_py,
+            force_download,
+            details_cites_refs=None,
+            nih_grouper=self.cfgparser.get_nihgrouper())
         pmid2ntpaper = dnldr.get_pmid2paper(pmids, pmid2note=None)
         dnldr.wr_papers(fout_icite, pmid2ntpaper, force_download, 'w')
         return pmids

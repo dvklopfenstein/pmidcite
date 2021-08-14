@@ -7,9 +7,8 @@ from os.path import exists
 import argparse
 
 from pmidcite.cfg import get_cfgparser
+
 ## from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.run import PmidCite
-from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.cli.entry_keyset import get_details_cites_refs
 ## from pmidcite.cli.utils import get_mode_force
 from pmidcite.cli.utils import get_outfile
@@ -17,6 +16,10 @@ from pmidcite.cli.utils import mk_outname_icite
 ## from pmidcite.cli.utils import wr_pmids
 from pmidcite.cli.utils import read_pmids
 ## from pmidcite.cli.utils import read_top_pmids
+
+from pmidcite.icite.run import PmidCite
+from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 
 class ReadPmids:
@@ -70,13 +73,16 @@ class ReadPmids:
     def _wr_icite(self, outfile, pmids, args):
         """Write an iCite report for the provided PMIDs"""
         grouperobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-        # pylint: disable=line-too-long
         details_cites_refs = get_details_cites_refs(
             args.verbose,
             args.load_citations,
             args.load_references,
             args.no_references)
-        dnldr = self.pmidcite.get_icitedownloader(args.force_download, grouperobj, details_cites_refs, prt_icitepy=None)
+        dnldr = NIHiCiteDownloader(
+            self.pmidcite.cfgparser.get_dir_icite_py(),
+            args.force_download,
+            details_cites_refs,
+            grouperobj)
         pmid2icitepaper_all = dnldr.get_pmid2paper(pmids, None)
         pmid2icitepaper_cur = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}
         if outfile is not None:

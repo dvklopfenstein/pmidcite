@@ -10,6 +10,7 @@ from pmidcite.cfg import get_cfgparser
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cli.utils import wr_pmids
 from pmidcite.icite.run import PmidCite
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 
 class PubMedQueryToICite:
@@ -69,12 +70,11 @@ class PubMedQueryToICite:
 
     def wr_icite(self, fout_icite, pmids, grouperobj=None):
         """Run PMIDs in iCite and print results into a file"""
-        # Get NIHiCiteDownloader object
-        dnldr = self.pmidcite.get_icitedownloader(
+        dnldr = NIHiCiteDownloader(
+            self.pmidcite.cfgparser.get_dir_icite_py(),
             self.force_dnld,
-            grouperobj,
             details_cites_refs=None,
-            prt_icitepy=self.prt_icitepy)
+            nih_grouper=grouperobj)
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 

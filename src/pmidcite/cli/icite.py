@@ -57,6 +57,7 @@ class NIHiCiteCli:
         parser.add_argument(
             '-r', '--load_references', action='store_true', default=False,
             help='Load and print a descriptive list of references for each paper.')
+        # pylint: disable=line-too-long
         parser.add_argument(
             '-R', '--no_references', action='store_true',
             help='(DEPRECATED) Do not load or print a descriptive list of references. DEPRECATED -- Use instead: -c -r')
@@ -202,20 +203,6 @@ class NIHiCiteCli:
             return
         print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
             Ps=' '.join(str(p) for p in pmids)))
-
-    def get_icite_downloader(self, grouperobj, force_download, details_cites_refs):
-        """Get iCite downloader"""
-        # pylint: disable=line-too-long
-        return self.pmidcite.get_icitedownloader(force_download, grouperobj, details_cites_refs)
-
-    ####def _get_pmid2icitepaper(self, pmids, grouperobj, args):
-    ####    """Get pmid2icitepaper"""
-    ####    dnldr = self.pmidcite.get_icitedownloader(args.force_download, grouperobj, args.no_references, prt=None)
-    ####    if args.print_keys:
-    ####        dnldr.prt_keys()
-    ####    dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
-    ####    prt_verbose = not args.succinct
-    ####    return dnldr.get_pmid2paper(pmids, not args.no_references, pmid2note)
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
