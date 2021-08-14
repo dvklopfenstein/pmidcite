@@ -3,6 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-08-14 v0.0.15**](#release-2021-08-14-v0015)
+  * Simplify code by instantiating NIHiCiteDownloader directly
 * [**Release 2021-08-08 v0.0.14**](#release-2021-08-08-v0014)
   * Simplified NIH downloader interface and improved speed handling large numbers of PMIDs
 * [**Release 2021-08-03 v0.0.12**](#release-2021-08-03-v0012)
@@ -23,6 +25,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-08-14 v0.0.15
+* Simplify code by instantiating NIHiCiteDownloader directly
 
 ### Release 2021-08-08 v0.0.14
 * Simplified the pmidcite library interface [Notebook updates](https://github.com/dvklopfenstein/pmidcite/issues/2#issuecomment-894760798)
