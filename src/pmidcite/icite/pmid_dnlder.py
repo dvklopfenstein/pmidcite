@@ -82,10 +82,15 @@ class NIHiCiteDownloader:
                 paper.prt_summary(prt, sortby_cites='nih_group', sortby_refs='nih_group')
                 prt.write('\n')
             else:
-                prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
+                self.prt_top(paper, prt)
         else:
             prt.write('No iCite results found: {PMID} {NAME}\n\n'.format(
                 PMID=pmid, NAME=name if name is not None else ''))
+
+    @staticmethod
+    def prt_top(paper, prt=stdout):
+        """Print one detailed line summarizing the paper"""
+        prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
 
     @staticmethod
     def _msg_wrote(mode, pmids_req, pmids_new):
