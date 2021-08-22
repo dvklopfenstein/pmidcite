@@ -194,7 +194,7 @@ class NIHiCiteDownloader:
         pmid2py = {p:join(s_dir_dnld, 'p{PMID}.py'.format(PMID=p)) for p in pmids}
         if self.dnld_force:
             pmid2nihentry = {o.pmid: o for o in self._dnld_icites(pmid2py)}
-            return [pmid2nihentry.get(pmid) for pmid in pmids]
+            return [pmid2nihentry[pmid] for pmid in pmids if pmid in pmid2nihentry]
         # Separate PMIDs into those stored in Python modules and those not
         nihentries_all = []
         pmids_pyexist1 = set(pmid for pmid, py in pmid2py.items() if exists(py))
@@ -207,7 +207,7 @@ class NIHiCiteDownloader:
             nihentries_all.extend(self._dnld_icites({p:pmid2py[p] for p in pmids_pyexist0}))
         # Return results sorted in the same order as input PMIDs
         pmid2nihentry = {o.pmid:o for o in nihentries_all}
-        return [pmid2nihentry.get(pmid) for pmid in pmids]
+        return [pmid2nihentry[pmid] for pmid in pmids if pmid in pmid2nihentry]
 
     def _load_icites(self, pmids, pmid2py):
         """Load a list of NIH citation data for PMIDs"""

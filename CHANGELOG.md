@@ -3,13 +3,15 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-08-22 v0.0.16**](#release-2021-08-22-v0016)
+  Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
 * [**Release 2021-08-14 v0.0.15**](#release-2021-08-14-v0015)
   * Simplify code by instantiating NIHiCiteDownloader directly
 * [**Release 2021-08-08 v0.0.14**](#release-2021-08-08-v0014)
   * Simplified NIH downloader interface and improved speed handling large numbers of PMIDs
 * [**Release 2021-08-03 v0.0.12**](#release-2021-08-03-v0012)
-	Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
-	Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
+	* Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
+	* Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
   [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)
 * [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009)
   Updated notebooks to use new customizable paper grouping
@@ -25,6 +27,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-08-22 v0.0.16
+* Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
 
 ### Release 2021-08-14 v0.0.15
 * Simplify code by instantiating NIHiCiteDownloader directly
