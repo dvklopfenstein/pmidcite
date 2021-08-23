@@ -13,6 +13,12 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
+This open-source project was developed as part of the paper:    
+[**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
+Klopfenstein DV and Dampier W    
+2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456) | [pdf](/doc/paper/JRSM_1456_iCite_main.pdf)    
+dvklopfenstein@protonmail.com    
+
 ## Usage
 ### Download citations from the command line
 ![Starting usage](doc/images/pmidcite0.png)
