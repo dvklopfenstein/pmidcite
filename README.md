@@ -22,7 +22,7 @@ dvklopfenstein@protonmail.com
 ## Usage
 ### Download citations from the command line
 ![Starting usage](doc/images/pmidcite0.png)
-The NIH percentile (`%`) is NIH's ranking of a paper among its co-citation group.
+The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
 
 The NIH percentile (`G`) grouping is part of this project and helps to
 highlight the better performing papers in groups `2`, `3`, and `4` by
