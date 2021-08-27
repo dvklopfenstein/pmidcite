@@ -73,12 +73,10 @@ class NIHiCiteDownloader:
             else:
                 print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
 
-    # pylint: disable=too-many-arguments
     def prt_paper(self, paper, pmid, name, prt=stdout):
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if self.details_cites_refs:
-                # pylint: disable=line-too-long
                 paper.prt_summary(prt, sortby_cites='nih_group', sortby_refs='nih_group')
                 prt.write('\n')
             else:
@@ -118,7 +116,6 @@ class NIHiCiteDownloader:
 
     def wr_name2pmid(self, fout_txt, name2pmid):
         """Run iCite for user-provided PMIDs and write to a file"""
-        # pylint: disable=line-too-long
         name2ntpaper = self._run_icite_name2pmid(name2pmid, pmid2note=None)
         if name2ntpaper:
             with open(fout_txt, 'w') as prt:
