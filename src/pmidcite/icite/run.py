@@ -32,13 +32,5 @@ class PmidCite:
         """Print pmidcite rcfile"""
         self.cfgparser.prt_rcfile_dflt(prt)
 
-    # pylint: disable=line-too-long
-    def get_icitedownloader(self, force_download, nih_grouper=None, details_cites_refs=None):
-        """Create NIHiCiteDownloader"""
-        if nih_grouper is None:
-            nih_grouper = self.cfgparser.get_nihgrouper()
-        # src/pmidcite/icite/entry.py NIHiCiteEntry {'cited_by_clin', 'cited_by', 'references'}
-        return NIHiCiteDownloader(force_download, self.dir_icite_py, nih_grouper, details_cites_refs)
-
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
