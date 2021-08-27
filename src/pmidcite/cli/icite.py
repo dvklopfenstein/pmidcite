@@ -33,6 +33,8 @@ class NIHiCiteCli:
         dir_icite_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite_py']
         dir_icite = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite']
         dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        # https://docs.python.org/3/library/argparse.html
+        # https://docs.python.org/3/library/argparse.html#action
         # - PMIDs ----------------------------------------------------------------------------
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
