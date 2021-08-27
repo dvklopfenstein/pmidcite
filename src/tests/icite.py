@@ -49,6 +49,7 @@ def dir_icite_wc_l(prt=stdout):
     if prt:
         prt.write("{}\n".format(cmd))
 
+
 class ICiteTester:
     """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
 
@@ -76,7 +77,7 @@ class ICiteTester:
 
     def get_f2mtime(self, min_files):
         """Get mofification times of globbed files"""
-        f2mtime = {getmtime(fin) for fin in glob(self.icite_files)}
+        f2mtime = {fin:getmtime(fin) for fin in glob(self.icite_files)}
         assert len(f2mtime) >= min_files, \
             'iCite FILES NOT DOWNLOADED len(f2mtime)={} < min_files({})'.format(
                 len(f2mtime), min_files)

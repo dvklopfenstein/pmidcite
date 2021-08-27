@@ -4,6 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+from time import sleep
 from tests.icite import ICiteTester
 
 
@@ -17,11 +18,12 @@ def test_print_paper():
 
     # iCite files are downloaded with the first call
     obj.get_paper(pmid, force_download=False)
-    f2mtime = obj.get_f2mtime(min_files=50)
+    f2mtime_dnld = obj.get_f2mtime(min_files=50)
+    sleep(1)
 
     # iCite files are imported (NOT downloaded) with the second call
     obj.get_paper(pmid, force_download=False)
-    assert obj.get_f2mtime(min_files=50) == f2mtime, 'iCite FILES SHOULD NOT HAVE BE MODIFIED'
+    assert obj.get_f2mtime(min_files=50) == f2mtime_dnld, 'iCite FILES SHOULD NOT HAVE BE MODIFIED'
 
     # Clean iCite files
     obj.rm_icitefiles()
