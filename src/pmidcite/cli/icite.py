@@ -12,6 +12,7 @@ from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 from pmidcite.cli.entry_keyset import get_details_cites_refs
+from pmidcite.icite.pmid_dnlder_base import NIHiCiteDownloaderBase
 from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
@@ -120,7 +121,7 @@ class NIHiCiteCli:
         if args.print_keys:
             NIHiCiteDownloader.prt_keys()
         if args.print_header:
-            NIHiCiteDownloader.prt_hdr()
+            NIHiCiteDownloaderBase.prt_hdr()
         # Get a list of researcher-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
         if pmids:

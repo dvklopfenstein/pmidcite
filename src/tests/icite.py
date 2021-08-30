@@ -14,7 +14,6 @@ from os.path import exists
 from os.path import getmtime
 from glob import glob
 from sys import stdout
-from pmidcite.icite.api import NIHiCiteAPI
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 DIR_TEST = dirname(abspath(__file__))
@@ -49,13 +48,19 @@ def dir_icite_wc_l(prt=stdout):
     if prt:
         prt.write("{}\n".format(cmd))
 
+def mk_dir_icite():
+    """Get the directory where data downloaded from NIH-OCC are stored"""
+    if not exists(DIR_ICITE):
+        mkdir(DIR_ICITE)
+        print('**CREATED DIR: {D}'.format(D=DIR_ICITE))
+    return DIR_ICITE
+
 
 class ICiteTester:
     """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
 
     def __init__(self):
-        self.dir_icite = self._init_dir_icite()
-        self.api = NIHiCiteAPI()
+        self.dir_icite = mk_dir_icite()
         self.icite_files = join(self.dir_icite, '*.py')
 
     def rm_icitefiles(self):
@@ -83,13 +88,6 @@ class ICiteTester:
                 len(f2mtime), min_files)
         return f2mtime
 
-    @staticmethod
-    def _init_dir_icite():
-        """Get the directory where data downloaded from NIH-OCC are stored"""
-        if not exists(DIR_ICITE):
-            mkdir(DIR_ICITE)
-            print('**CREATED DIR: {D}'.format(D=DIR_ICITE))
-        return DIR_ICITE
 
 
 # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
