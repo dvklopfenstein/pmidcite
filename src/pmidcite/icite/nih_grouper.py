@@ -57,5 +57,10 @@ class NihGrouper:
         """Get the dividing values as a list"""
         return [self.min1, self.min2, self.min3, self.min4]
 
+    def __str__(self):
+        """Print NIH percentiles which divide pmidcite groups"""
+        return 'Group min percentiles: 1({}) 2({}) 3({}) 4({})'.format(
+            self.min1, self.min2, self.min3, self.min4)
+
 
 # Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
