@@ -2,10 +2,12 @@
 """Test downloading a paper, paper + refs, paper + cites, paper + all"""
 
 from os import system
+from sys import stdout
 from glob import glob
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 from pmidcite.icite.entry import NIHiCiteEntry
 from tests.icite import DIR_ICITE
+from tests.icite import dir_icite_clobber
 
 FORCE_DNLD = True
 
@@ -27,6 +29,7 @@ def test_dnld_cites_refs():
 def _compare(test_name, pmid, entry_lst, desc):
     """Compare reporting refs/cites of a paper using set format vs. string format"""
     print("COMPARE: {} {}".format(entry_lst, desc))
+    dir_icite_clobber(stdout)
     dnldr_set = NIHiCiteDownloader(DIR_ICITE, FORCE_DNLD, entry_lst)
     dnldr_txt = NIHiCiteDownloader(DIR_ICITE, FORCE_DNLD, desc)
     paper_set = _run("{}-{}".format(test_name, ",".join(entry_lst)), dnldr_set, pmid)

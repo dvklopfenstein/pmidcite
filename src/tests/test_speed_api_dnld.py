@@ -32,7 +32,10 @@ def test_dnld_speed():
     nihdicts = dnldr.api.dnld_nihdicts(pmids)
     num_bytes = getsizeof(nihdicts)
     # pylint: disable=line-too-long
-    print('{N} nihdicts: {BYTES:,} bytes, {MB:,} MB'.format(N=len(nihdicts), BYTES=num_bytes, MB=num_bytes/1000000.0))
+    print('{N} nihdicts: {BYTES:,} bytes, {MB:,} MB'.format(
+        N=len(nihdicts),
+        BYTES=num_bytes,
+        MB=num_bytes/1000000.0))
     tic = prt_hms(tic, "Downloaded {N:,} items w/dnld_icites".format(N=len(nihdicts)))
     dir_icite_wc_l()
 

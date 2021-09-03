@@ -17,16 +17,15 @@ from pmidcite.cli.utils import mk_outname_icite
 from pmidcite.cli.utils import read_pmids
 ## from pmidcite.cli.utils import read_top_pmids
 
-from pmidcite.icite.run import PmidCite
 from pmidcite.icite.nih_grouper import NihGrouper
-from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
 
 
 class ReadPmids:
     """Read a file created by pmidcite and write simple text file of PMIDs"""
 
     def __init__(self):
-        self.pmidcite = PmidCite(get_cfgparser())
+        self.cfg = get_cfgparser()
 
     def _get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
@@ -34,7 +33,7 @@ class ReadPmids:
         parser.add_argument(
             'infile', nargs='*',
             help='Read PMIDs from a pmidcite output file.')
-        self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
+        self.cfg.get_nihgrouper().add_arguments(parser)
         parser.add_argument(
             '-f', '--force_write', action='store_true',
             help='if an existing outfile file exists, overwrite it.')
@@ -78,11 +77,11 @@ class ReadPmids:
             args.load_citations,
             args.load_references,
             args.no_references)
-        dnldr = NIHiCiteDownloader(
-            self.pmidcite.cfgparser.get_dir_icite_py(),
-            args.force_download,
+        dnldr = get_downloader(
             details_cites_refs,
-            grouperobj)
+            grouperobj,
+            self.cfg.get_dir_icite_py(),
+            args.force_download)
         pmid2icitepaper_all = dnldr.get_pmid2paper(pmids, None)
         pmid2icitepaper_cur = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}
         if outfile is not None:

@@ -19,6 +19,8 @@
 
 from os import mkdir
 from os.path import exists
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
 
 def test_print_paper_all_refs_cites():
     """Test notebook"""
@@ -33,17 +35,20 @@ def test_print_paper_all_refs_cites():
     # The NIH downloader will read already downloaded NIH-OCC data if it is available. This makes it possible to work offline using previously downloaded citation data.
 
     # In[2]:
-    from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
     force_download = False
     dnldr = NIHiCiteDownloader(dir_icite, force_download, details_cites_refs="all")
+    _run(dnldr)
+
+    dnldr = get_downloader()
+    _run(dnldr)
 
 
+def _run(dnldr):
+    """Print paper data"""
     # ## 3) Download NIH-OCC data for one PMID
     #
     # The first paper, `TOP`, is the requested paper. It is followed by a list of citations (`CIT`), then references (`REF`).
-
-    # In[3]:
     pmid = 22882545
     paper = dnldr.get_paper(pmid)
     paper.prt_summary()

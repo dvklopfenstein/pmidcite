@@ -1,35 +1,68 @@
 #!/usr/bin/env python3
-"""Test downloading PMIDs"""
+"""Given a user query, query PubMed and return PMIDs. Then run NIH's iCite on the PMIDs"""
 
-from pmidcite.cfg import Cfg
-from pmidcite.eutils.cmds.base import EntrezUtilities
-from tests.pmids import PMIDS
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
+__author__ = "DV Klopfenstein"
+
+import sys
+from os import system
+from os.path import join
+from os.path import exists
+
+from pmidcite.pubmedqueryicite import PubMedQueryToICite
+
+from tests.icite import DIR_REPO
 
 
-def test_dnld_pmids():
-    """Test downloading PMIDs"""
-    pmids1 = PMIDS[:97]
-    cfg = Cfg()
-    eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
-    rsp_epost = eutils.epost('pubmed', pmids1, num_ids_p_epost=10)
-    print(rsp_epost)
-    #querykey_max = rsp_epost['querykey']
-    webenv = rsp_epost['webenv']
-    # querykey_max = 10
-    # webenv = 'NCID_1_161316809_130.14.22.33_9001_1574883672_1613778891_0MetA0_S_MegaStore'
+def main():
+    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
+    # pylint: disable=bad-whitespace,line-too-long
+    queries = [
+        # Output filenames         PubMed query
+        # -----------------       -----------------------------------
+        ('SMILES_review.txt',     'Simplified molecular-input line-entry system AND (review[Filter])'),
+    ]
+    filename = join(DIR_REPO, queries[-1][0])
 
-    querykey = 1
-    rsp = eutils.run_eutilscmd(
-        'efetch',
-        db='pubmed',
-        retstart=0,
-        retmax=2,          # max: 10,000
-        rettype='medline',
-        retmode='text',
-        webenv=webenv,
-        query_key=querykey)
-    print(rsp)
+    # By default, only the last entry in the list is run.
+    # This allows you to build a history of searches,
+    # but not run all of them every time.
+    #
+    # To re-run all entries in the list:
+    #   $ src/bin/dnld_pmids.py all
+    #
+    # To run the first query:
+    #   $ src/bin/dnld_pmids.py 0
+    #
+    # To run the second to last query:
+    #   $ src/bin/dnld_pmids.py -2
+    #
+    system('rm -f {}'.format(filename))
+    assert not exists(filename)
+    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    obj.set_dir_pmids(DIR_REPO)
+    obj.set_dir_icite(DIR_REPO)
+    dnld_idx = obj.get_index(sys.argv)
+    obj.run(queries, dnld_idx)
+    assert exists(filename)
+    print('**PASSED DIR=repo\n')
+
+    system('rm -f {}'.format(filename))
+    assert not exists(filename)
+    obj.set_dir_pmids(None)
+    obj.set_dir_icite(None)
+    obj.run(queries, dnld_idx)
+    print('**PASSED DIR=None\n')
+
+    system('rm -f {}'.format(filename))
+    assert not exists(filename)
+    obj.set_dir_pmids('.')
+    obj.set_dir_icite('.')
+    obj.run(queries, dnld_idx)
+    print("**PASSED DIR='.'\n")
 
 
 if __name__ == '__main__':
-    test_dnld_pmids()
+    main()
+
+# Copyright (C) 2020-present DV Klopfenstein. All rights reserved.

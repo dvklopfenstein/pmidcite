@@ -23,6 +23,7 @@ PACKAGES = [
     'pmidcite.eutils.pubmed.counts',
     'pmidcite.eutils.pubmed.mesh',
     'pmidcite.icite',
+    'pmidcite.icite.dnldr',
     'pmidcite.plot',
 ]
 

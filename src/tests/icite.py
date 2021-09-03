@@ -19,7 +19,7 @@ from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 DIR_TEST = dirname(abspath(__file__))
 DIR_TESTDATA = join(DIR_TEST, "data")
 DIR_ICITE = join(DIR_TEST, "./icite")
-DIR_REPO = join(DIR_TEST, "../..")
+DIR_REPO = abspath(join(DIR_TEST, "../.."))
 DL = environ.get('DLCYG')
 
 def get_dnld_files(glob_pattern):
@@ -48,19 +48,21 @@ def dir_icite_wc_l(prt=stdout):
     if prt:
         prt.write("{}\n".format(cmd))
 
-def mk_dir_icite():
+def mk_dir(dir_name, rmdir=False):
     """Get the directory where data downloaded from NIH-OCC are stored"""
-    if not exists(DIR_ICITE):
-        mkdir(DIR_ICITE)
-        print('**CREATED DIR: {D}'.format(D=DIR_ICITE))
-    return DIR_ICITE
+    if rmdir:
+        system('rm -rf {DIR}'.format(DIR=dir_name))
+    if not exists(dir_name):
+        mkdir(dir_name)
+        print('**CREATED DIR: {D}'.format(D=dir_name))
+    return dir_name
 
 
 class ICiteTester:
     """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
 
     def __init__(self):
-        self.dir_icite = mk_dir_icite()
+        self.dir_icite = mk_dir(DIR_ICITE)
         self.icite_files = join(self.dir_icite, '*.py')
 
     def rm_icitefiles(self):

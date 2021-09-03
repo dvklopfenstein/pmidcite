@@ -3,7 +3,6 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-import os
 from sys import stdout
 import argparse
 
@@ -12,31 +11,37 @@ from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 from pmidcite.cli.entry_keyset import get_details_cites_refs
-from pmidcite.icite.pmid_dnlder_base import NIHiCiteDownloaderBase
 from pmidcite.icite.nih_grouper import NihGrouper
-from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
+from pmidcite.icite.downloader import prt_hdr
+from pmidcite.icite.downloader import prt_keys
 
 
 class NIHiCiteCli:
     """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
-    def __init__(self, pmidcite):
-        self.pmidcite = pmidcite
-        cfgparser = self.pmidcite.cfgparser
+    def __init__(self, cfg):
+        self.cfg = cfg
         self.pubmed = PubMed(
-            email=cfgparser.get_email(),
-            apikey=cfgparser.get_apikey(),
-            tool=cfgparser.get_tool())
+            email=cfg.get_email(),
+            apikey=cfg.get_apikey(),
+            tool=cfg.get_tool())
 
     def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
-        parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
-        dir_icite_py = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite_py']
-        dir_icite = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_icite']
-        dir_pubmed_txt = self.pmidcite.cfgparser.cfgparser['pmidcite']['dir_pubmed_txt']
+        parser = argparse.ArgumentParser(
+            description="Run NIH's iCite given PubMed IDs",
+            add_help=False)
+        cfg = self.cfg
+        dflt_dir_icite_py = cfg.get_dir_icite_py()
+        dflt_dir_icite = cfg.get_dir_icite()
+        dflt_dir_pubmed_txt = cfg.get_dir_pubmed_txt()
         # https://docs.python.org/3/library/argparse.html
         # https://docs.python.org/3/library/argparse.html#action
         # - PMIDs ----------------------------------------------------------------------------
+        parser.add_argument(
+            '-h', '--help', action='store_true',
+            help='print this help message and exit (also --help)')
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
@@ -84,18 +89,19 @@ class NIHiCiteCli:
         parser.add_argument(
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
-        self.pmidcite.cfgparser.get_nihgrouper().add_arguments(parser)
+        self.cfg.get_nihgrouper().add_arguments(parser)
         # - directories ----------------------------------------------------------------------
         # pylint: disable=line-too-long
         parser.add_argument(
-            '--dir_icite_py', default=dir_icite_py,
-            help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(D=dir_icite_py))
+            '--dir_icite_py', default=dflt_dir_icite_py,
+            help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(
+                D=dflt_dir_icite_py))
         parser.add_argument(
-            '--dir_icite', default=dir_icite,
-            help='Write PMID icite reports into directory (default={D})'.format(D=dir_icite))
+            '--dir_icite', default=dflt_dir_icite,
+            help='Write PMID icite reports into directory (default={D})'.format(D=dflt_dir_icite))
         parser.add_argument(
-            '--dir_pubmed_txt', default=dir_pubmed_txt,
-            help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
+            '--dir_pubmed_txt', default=dflt_dir_pubmed_txt,
+            help='Write PubMed entry into directory (default={D})'.format(D=dflt_dir_pubmed_txt))
         # ------------------------------------------------------------------------------------
         parser.add_argument(
             '--md', action='store_true',
@@ -110,42 +116,76 @@ class NIHiCiteCli:
     def cli(self):
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
-        args = argparser.parse_args()
+        args = self._get_args(argparser)
         ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
-        self.pmidcite.dir_icite_py = args.dir_icite_py
-        self.pmidcite.dir_icite = args.dir_icite
-        # Print rcfile initialization file
-        if args.generate_rcfile:
-            prt_rcfile(stdout)
-        # Print the keys and/or the header
-        if args.print_keys:
-            NIHiCiteDownloader.prt_keys()
-        if args.print_header:
-            NIHiCiteDownloaderBase.prt_hdr()
+        self._run(args, argparser)
+
+    def _run(self, args, argparser):
+        """Run iCite/PubMed using command-line interface"""
+        if args.help:
+            argparser.print_help()
+            print('\nHelp message printed because: -h or --help == True')
+            exit()
+        self.prt_info(args)
         # Get a list of researcher-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
         if pmids:
             if len(pmids) > 10:
                 print('PROCESSING {N:,} PMIDs'.format(N=len(pmids)))
-            # Begin to initialize citation/PMID cli
-            details_cites_refs = get_details_cites_refs(
-                args.verbose,
-                args.load_citations,
-                args.load_references,
-                args.no_references)
-            groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-            dnldr = NIHiCiteDownloader(
-                args.dir_icite_py,
-                args.force_download,
-                details_cites_refs,
-                groupobj)
+            dnldr = self._get_downloader(args)
             pmid2icitepaper = dnldr.get_pmid2paper(pmids, None)
             ## print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
             if args.pubmed:
                 self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
         elif not (args.generate_rcfile or args.print_keys or args.print_header):
-            argparser.print_help()
+            argparser.print_help(stdout)
+
+    def prt_info(self, args):
+        """Print helpful information"""
+        # If writing to a file, don't write to stdout
+        if args.O or args.append_outfile or args.outfile:
+            return
+        # Print rcfile initialization file
+        if args.generate_rcfile:
+            prt_rcfile(stdout)
+        self._prt_keys_n_hdr(stdout, args.print_keys, args.print_header)
+
+    @staticmethod
+    def _prt_keys_n_hdr(prt, print_keys, print_header):
+        # Print the keys and/or the header
+        if print_keys:
+            prt_keys(prt)
+        if print_header:
+            prt_hdr(prt)
+
+    @staticmethod
+    def _get_downloader(args):
+        """Get the downloader"""
+        details_cites_refs = get_details_cites_refs(
+            args.verbose,
+            args.load_citations,
+            args.load_references,
+            args.no_references)
+        groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
+        return get_downloader(
+            details_cites_refs,
+            groupobj,
+            args.dir_icite_py,
+            args.force_download)
+
+    def _get_args(self, argparser):
+        """Get args"""
+        args = argparser.parse_args()
+        self.cfg.set_dir_icite_py(args.dir_icite_py)
+        self.cfg.set_dir_icite(args.dir_icite)
+        # append_outfile:
+        #   * Append TOP, CIT, CLI, and REF into file if it is not already present
+        #   * Print TOP to the screen
+        if args.append_outfile:
+            args.load_citations = True
+            args.load_references = True
+        return args
 
     # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper_all, dnldr, args, argparser):
@@ -155,7 +195,7 @@ class NIHiCiteCli:
             return
         # Write the report with citations and references for each PMID into its own file
         if args.O:
-            self._wr_papers(pmid2icitepaper_cur, dnldr)
+            self._wr_papers(pmid2icitepaper_cur, dnldr, args.print_header)
         # Write the succinct report each PMID to the screen
         else:
             self.run_icite_wr(pmid2icitepaper_cur, args, dnldr)
@@ -189,14 +229,20 @@ class NIHiCiteCli:
         else:
             if args.verbose:
                 dnldr.prt_papers(pmid2icitepaper, prt=stdout)
+            elif args.append_outfile:
+                # Print TOP to stdout if append_outfile
+                for icitepaper in pmid2icitepaper.values():
+                    icitepaper.prt_top(prt=stdout)
             if dct['outfile'] is not None:
                 dnldr.wr_papers(dct['outfile'], pmid2icitepaper, dct['force_write'], dct['mode'])
 
-    def _wr_papers(self, pmid2icitepaper, dnldr):
+    def _wr_papers(self, pmid2icitepaper, dnldr, print_header):
         """Write one icite report per PMID into dir_icite/PMID.txt"""
         for pmid, paper in pmid2icitepaper.items():
-            fout_txt = os.path.join(self.pmidcite.dir_icite, '{PMID}.txt'.format(PMID=pmid))
+            fout_txt = self.cfg.get_fullname_icite('{PMID}.txt'.format(PMID=pmid))
             with open(fout_txt, 'w') as prt:
+                if print_header:
+                    prt_hdr(prt)
                 dnldr.prt_papers({pmid:paper}, prt)
                 print('  WROTE: {TXT}'.format(TXT=fout_txt))
 

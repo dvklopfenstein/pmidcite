@@ -19,6 +19,8 @@
 
 from os import mkdir
 from os.path import exists
+from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+
 
 def test_nihocc_data_download_or_import():
     """Test notebook"""
@@ -36,7 +38,6 @@ def test_nihocc_data_download_or_import():
     # In[2]:
 
 
-    from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
     force_download = False
     dnldr = NIHiCiteDownloader(dir_icite, force_download)

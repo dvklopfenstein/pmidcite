@@ -4,7 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
-from pmidcite.icite.pmid_dnlder_base import NIHiCiteDownloaderBase
+from pmidcite.icite.dnldr.pmid_dnlder_base import NIHiCiteDownloaderBase
 from pmidcite.icite.entry import NIHiCiteEntry
 
 

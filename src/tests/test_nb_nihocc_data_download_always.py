@@ -19,6 +19,7 @@
 from os import mkdir
 from os.path import exists
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
 
 
 def test_nihocc_data_download_always():
@@ -28,8 +29,12 @@ def test_nihocc_data_download_always():
     if not exists(dir_icite):
         mkdir(dir_icite)
     dnldr = NIHiCiteDownloader(dir_icite, force_download=True)
+    _run(dnldr)
 
+    dnldr = get_downloader()
+    _run(dnldr)
 
+def _run(dnldr):
     # ## 2) Download NIH-OCC data for one PMID
     #
     # Print the column headers first. Then print the citation data.

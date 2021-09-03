@@ -8,12 +8,10 @@
 
 # In[1]:
 
-from os import mkdir
 from os import system
-from os.path import exists
 from pmidcite.cfg import Cfg
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
 
 
 def test_query_pubmed():
@@ -34,11 +32,7 @@ def test_query_pubmed():
 
     # ## Print NIH citation data for the papers
     # In[4]:
-    force_download = False
-    dir_icite = './icite'
-    if not exists(dir_icite):
-        mkdir(dir_icite)
-    dnldr = NIHiCiteDownloader(cfg.get_dir_icite_py(), force_download)
+    dnldr = get_downloader()
     pmid2paper = dnldr.get_pmid2paper(pmids)
     for paper in pmid2paper.values():
         print(paper)
@@ -51,6 +45,7 @@ def test_query_pubmed():
     print(paper_chosen)
 
     # In[6]:
+    force_download = False
     pmid2nt = pmobj.dnld_wr1_per_pmid([paper_chosen.pmid], force_download, dir_pubmed_txt=".")
     for pmid, data in pmid2nt.items():
         print('PMID', pmid, data)

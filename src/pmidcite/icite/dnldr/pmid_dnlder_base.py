@@ -55,23 +55,6 @@ class NIHiCiteDownloaderBase:
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
     @staticmethod
-    def prt_hdr(prt=stdout):
-        """Print column headers in one line"""
-        prt.write('TYP {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
-
-    @staticmethod
-    def prt_keys(prt=stdout):
-        """Print paper keys"""
-        prt.write('\nKEYS TO PAPER LINE:\n')
-        prt.write('    TYP {ICITE_FMT}\n'.format(ICITE_FMT=NIHiCiteEntry.line_fmt()))
-        prt.write('\n')
-        prt.write('TYPe of relationship to the user-requested paper (TYP):\n')
-        NIHiCitePaper.prt_keys(prt)
-        prt.write('\nNIH iCite details:\n\n')
-        NIHiCiteEntry.prt_key_desc(prt)
-        prt.write('\n')
-
-    @staticmethod
     def prt_top(paper, prt=stdout):
         """Print one detailed line summarizing the paper"""
         prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))

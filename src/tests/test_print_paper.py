@@ -8,7 +8,7 @@ from timeit import default_timer
 from time import sleep
 
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
-from pmidcite.icite.pmid_dnlder_only import NIHiCiteDownloaderOnly
+from pmidcite.icite.dnldr.pmid_dnlder_only import NIHiCiteDownloaderOnly
 
 from tests.icite import ICiteTester
 from tests.prt_hms import prt_hms

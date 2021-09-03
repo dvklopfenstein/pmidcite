@@ -59,6 +59,10 @@ class NIHiCitePaper:
             return '{TXT} {NOTE}'.format(TXT=txt, NOTE=self.pmid2note[self.pmid])
         return txt
 
+    def prt_top(self, prt=stdout):
+        """Print TOP paper"""
+        prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
+
     @staticmethod
     def prt_keys(prt=stdout):
         """Print paper keys"""

@@ -4,10 +4,11 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserve
 __author__ = "DV Klopfenstein"
 
 from os import environ
+from os import getcwd
 from os.path import exists
 from os.path import basename
+from os.path import join
 from sys import stdout
-from sys import argv
 import configparser
 
 from pmidcite.icite.nih_grouper import NihGrouper
@@ -22,15 +23,6 @@ class Cfg(object):
 
     dfltdct = {
         'pmidcite' : {
-            # Information downloaded from NIH iCite stored in a Python module
-            'dir_icite_py': '.',
-
-            # Used by PubMedQueryToICite:
-            # Directory for files containing PMIDs downloaded from PubMed
-            'dir_pmids': '.',
-            # Run NIH's iCite on a set of PMIDs and store results in a file
-            'dir_icite': '.',
-
             # NIH Group divisions
             'group1_min': '2.1',
             'group2_min': '15.7',
@@ -43,8 +35,17 @@ class Cfg(object):
             'apikey': 'LONG_HEX_NCBI_API_KEY',
             'tool': 'scripts',
 
+            # Information downloaded from NIH iCite stored in a Python module
+            'dir_icite_py': 'None',
+
             # Directory for abstracts downloaded from PubMed
-            'dir_pubmed_txt': '.',
+            'dir_pubmed_txt': 'None',
+
+            # Used by PubMedQueryToICite:
+            # Directory for files containing PMIDs downloaded from PubMed
+            'dir_pmids': 'None',
+            # Run NIH's iCite on a set of PMIDs and store results in a file
+            'dir_icite': 'None',
         },
     }
 
@@ -77,6 +78,47 @@ class Cfg(object):
     def get_dir_icite(self):
         """Get the name of the directory containg PubMed entry text files"""
         return self.cfgparser['pmidcite']['dir_icite']
+
+    def get_fullname_pmids(self, filename):
+        """get the name of the directory containg pubmed entry text files"""
+        return self._get_fullname(filename, 'dir_pmids')
+
+    def get_fullname_icite(self, filename):
+        """get the name of the directory containg pubmed entry text files"""
+        return self._get_fullname(filename, 'dir_icite')
+
+    def _get_fullname(self, filename, dir_key):
+        """Get the filename, including optionally the directory and filename"""
+        dirname = self.cfgparser['pmidcite'][dir_key]
+        if dirname is None or dirname == 'None':
+            return filename
+        if exists(dirname):
+            return join(dirname, filename)
+        cwd = getcwd()
+        print('**WARNING: DIR NOT EXIST {DIR_TYPE}({DIR_NAME}) RETURNING CWD({CWD})'.format(
+            DIR_TYPE=dir_key, DIR_NAME=dirname, CWD=cwd))
+        return join(cwd, filename)
+
+    def set_dir_pubmed_txt(self, dirname):
+        """Set the name of the directory containg PubMed entry text files"""
+        self.cfgparser['pmidcite']['dir_pubmed_txt'] = self._get_dirname_str(dirname)
+
+    def set_dir_icite_py(self, dirname):
+        """Set the name of the directory containg PubMed entry text files"""
+        self.cfgparser['pmidcite']['dir_icite_py'] = self._get_dirname_str(dirname)
+
+    def set_dir_icite(self, dirname):
+        """Set the name of the directory containg PubMed entry text files"""
+        self.cfgparser['pmidcite']['dir_icite'] = self._get_dirname_str(dirname)
+
+    def set_dir_pmids(self, dirname):
+        """Set the name of the directory containg PubMed entry text files"""
+        self.cfgparser['pmidcite']['dir_pmids'] = self._get_dirname_str(dirname)
+
+    @staticmethod
+    def _get_dirname_str(dirname):
+        """Convert None to the str, "None", as needed by configparser"""
+        return 'None' if dirname is None or dirname == 'None' else dirname
 
     def get_nihgrouper(self):
         """Get an NIH Grouper with default values from the cfg file"""

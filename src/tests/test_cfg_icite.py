@@ -6,6 +6,7 @@ from os import stat
 from os.path import join
 from os.path import exists
 from os.path import basename
+from os.path import relpath
 from sys import argv
 import filecmp
 from pmidcite.cfg import Cfg
@@ -59,7 +60,8 @@ def test_cfg_example(update_example=False):
     wr_rcfile(fin_cfg, force=True)
     wr_rcfile(fin_ex, force=update_example)
     # Compare the contents of the two files
-    assert filecmp.cmp(fin_cfg, fin_ex, shallow=False)
+    assert filecmp.cmp(fin_cfg, fin_ex, shallow=False), 'EXP({}) != ACT({})'.format(
+        relpath(fin_ex), relpath(fin_cfg))
     system('rm {CFG}'.format(CFG=fin_cfg))
     print('PASSED: Cfg example matches cfg default')
 

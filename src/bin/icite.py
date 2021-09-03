@@ -6,12 +6,11 @@ __author__ = "DV Klopfenstein"
 
 from pmidcite.cli.icite import NIHiCiteCli  # get_argparser
 from pmidcite.cfg import get_cfgparser
-from pmidcite.icite.run import PmidCite
 
 
 def main():
     """Print lists of pubs in formation"""
-    NIHiCiteCli(PmidCite(get_cfgparser())).cli()
+    NIHiCiteCli(get_cfgparser()).cli()
 
 
 if __name__ == '__main__':

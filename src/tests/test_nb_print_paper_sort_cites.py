@@ -17,17 +17,11 @@
 # In[1]:
 
 
-from os import mkdir
-from os.path import exists
-from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
+from pmidcite.icite.downloader import get_downloader
 from pmidcite.icite.nih_grouper import NihGrouper
 
 def test_print_paper_all_refs_cites():
     """Test notebook"""
-    dir_icite = './icite'
-    if not exists(dir_icite):
-        mkdir(dir_icite)
-
 
     # ## 2) Load the NIH Downloader
     # The NIH downloader will use the API to download data from NIH if it is not stored locally or if the user has requested to always download and over-write the older citation file, allowing new citations to be seen.
@@ -35,8 +29,7 @@ def test_print_paper_all_refs_cites():
     # The NIH downloader will read already downloaded NIH-OCC data if it is available. This makes it possible to work offline using previously downloaded citation data.
 
     # In[2]:
-    force_download = False
-    dnldr = NIHiCiteDownloader(dir_icite, force_download, details_cites_refs="citations")
+    dnldr = get_downloader(details_cites_refs="citations")
 
 
     # ## 3) Download NIH-OCC data for one PMID
@@ -94,7 +87,7 @@ def test_print_paper_all_refs_cites():
 
     print('8) Expand NIH group `3` (well performing papers) to include NIH percentiles 50% or higher')
     grpr = NihGrouper(group3_min=50.0)
-    dnldr = NIHiCiteDownloader('./icite', force_download, details_cites_refs="citations", nih_grouper=grpr)
+    dnldr = get_downloader(details_cites_refs="citations", nih_grouper=grpr)
     paper = dnldr.get_paper(22882545)
     for nihentry in sorted(paper.cited_by, key=lambda o: [o.dct['nih_group'], o.dct['year']], reverse=True):
         print(nihentry)

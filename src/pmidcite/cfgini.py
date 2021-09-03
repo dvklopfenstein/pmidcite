@@ -23,43 +23,6 @@ PMIDCITERC = \
 [pmidcite]
 
 # --------------------------------------------------------------------------------
-# Specify the directory to store citation data from the NIH that is downloaded
-# using commands such as icite:
-#
-#  # PMID 33031632 is a new (-1) research (R) paper discussing humans (H)
-#  # with 2 citations and 18 references that is authored by 2 (au[02]) people with
-#  # the first author being DV Klopfenstein.
-#  #
-#  $ icite 33031632
-#  TOP 33031632 R. H....  -1 i 2021     2  0  18 au[02](D V Klopfenstein) Commentary ...
-#
-# Thousands of NIH citation files may be downloaded for a literature search
-# on a single subject. It is not necessary to save the NIH citation data and I
-# recommend not saving these files using git managed from the cloud.
-#
-# Note: Add an __init__.py file to the ./icite directory
-#       Add /icite to the .gitignore to avoid saving thousands of unecessary files using git
-#
-# Recommended value (mkdir ./icite):
-# dir_icite_py = ./icite
-dir_icite_py = .
-
-# --------------------------------------------------------------------------------
-# Store files containing longer lists of PMIDs into a dedicated directory
-# specified using the variable, dir_pmids.
-# Files containing lists of PMIDs can be downloaded either from the PubMed GUI
-# or by running a PubMed query from your copy of pmidcite's dnld_pmids.py script.
-#
-# Store NIH citation data for all PMIDs in a single file into a directory
-# dedicated to citation data files using the variable, dir_icite.
-#
-# Recommended values (mkdir ./log; mkdir ./log/pmids; mkdir ./log/icite)
-# dir_pmids = ./log/pmids
-# dir_icite = ./log/icite
-dir_pmids = .
-dir_icite = .
-
-# --------------------------------------------------------------------------------
 # When comparing numerous papers, use the group variables to place
 # the most recent papers first, the highest rated papers next, and
 # the lowest-rated papers at the end of the list of papers and citation data.
@@ -83,11 +46,57 @@ apikey = LONG_HEX_NCBI_API_KEY
 tool = scripts
 
 # --------------------------------------------------------------------------------
+# The default is to work on-line (dir_icite_py = None);
+# NIH citations will always be downloaded.
+#
+# To work off-line and store citation data downloaded from the NIH,
+# set `dir_icite_py' to a directory name. Each citation downloaded
+# from the NIH will then be stored in its own p<PMID>.py file for
+# later use when there is no internet available.
+#
+# Specify the directory to store citation data from the NIH that is downloaded
+# using commands such as icite:
+#
+#  # PMID 33031632 is a new (-1) research (R) paper discussing humans (H)
+#  # with 2 citations and 18 references that is authored by 2 (au[02]) people with
+#  # the first author being DV Klopfenstein.
+#  #
+#  $ icite 33031632
+#  TOP 33031632 R. H....  -1 i 2021     2  0  18 au[02](D V Klopfenstein) Commentary ...
+#
+# Thousands of NIH citation files may be downloaded for a literature search
+# on a single subject. It is not necessary to save the NIH citation data and I
+# recommend not saving these files using git managed from the cloud.
+#
+# Note: Add an __init__.py file to the ./icite directory
+#       Add /icite to the .gitignore to avoid saving thousands of unecessary files using git
+#
+# Recommended value, None or ./icite:
+# dir_icite_py = None
+# dir_icite_py = ./icite  # $ mkdir ./icite
+dir_icite_py = None
+
+# --------------------------------------------------------------------------------
 # Store abstracts and publication data downloaded form PubMed in a dedicated directory
 #
 # Recommended value (mkdir ./log; mkdir ./log/pubmed):
 # dir_pubmed_txt = ./log/pubmed
-dir_pubmed_txt = .
+dir_pubmed_txt = None
+
+# --------------------------------------------------------------------------------
+# Store files containing longer lists of PMIDs into a dedicated directory
+# specified using the variable, dir_pmids.
+# Files containing lists of PMIDs can be downloaded either from the PubMed GUI
+# or by running a PubMed query from your copy of pmidcite's dnld_pmids.py script.
+#
+# Store NIH citation data for all PMIDs in a single file into a directory
+# dedicated to citation data files using the variable, dir_icite.
+#
+# Recommended values (mkdir ./log; mkdir ./log/pmids; mkdir ./log/icite)
+# dir_pmids = ./log/pmids
+# dir_icite = ./log/icite
+dir_pmids = None
+dir_icite = None
 """
 
 def prt_rcfile(prt=stdout):

@@ -21,6 +21,7 @@ pylint:
 ####     src/tests/test_cfg_icite.py
 
 pytest:
+	make clobber_tmp
 	python3.8 --version; python3.8 -m pytest --cov=pmidcite -v src/tests | tee pytest.log
 	#### python3 -m pytest $(TESTS)
 
@@ -67,6 +68,9 @@ clean_dist:
 	rm -rf dist build 
 
 clean:
+	rm -f notebooks/pubmed_20050301.txt
+	rm -f pubmed_20050301.txt
+	rm -f dnldr_*.txt
 	rm -f p*.py
 	rm -f pubmed_*.txt
 	rm -f test_eutils.cfg
@@ -74,9 +78,11 @@ clean:
 	rm -f src/tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
 	rm -f notebooks/p*.py
+	rm -rf icite
 	rm -rf notebooks/icite
 	rm -rf src/tests/icite
-	make clobber_icite
+	make clobber_tmp
 
-clobber_icite:
+clobber_tmp:
 	rm -rf ./icite
+	rm -rf ./src/tests/icite

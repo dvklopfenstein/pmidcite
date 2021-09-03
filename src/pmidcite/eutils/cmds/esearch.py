@@ -57,7 +57,8 @@ class ESearch(EntrezUtilities):
         #### tot_ids = rsp_dct['count']
         #### ids = list(rsp_dct['idlist'])
         #### if rsp_dct and self.log:
-        ####     self.log.write('{N:6,} IDs FOR {DB} QUERY({Q})\n'.format(DB=database, N=tot_ids, Q=query))
+        ####     self.log.write('{N:6,} IDs FOR {DB} QUERY({Q})\n'.format(
+        ####         DB=database, N=tot_ids, Q=query))
         ####     self.log.flush()
         #### # 2) Continue to download PMIDs, N (num_ids_p_epost) at a time
         #### kws_p = {
@@ -94,7 +95,7 @@ class ESearch(EntrezUtilities):
                                 WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
                                 TXT=ntd.file_pubmed))
                     else:
-                        print('**WARNING: NOT DOWNLOADING: {PMID}'.format(PMID=pmid))
+                        print('**NOTE: NOT DOWNLOADING: {PMID}'.format(PMID=pmid))
         return pmid2nt
 
     #### @staticmethod
@@ -126,7 +127,8 @@ class ESearch(EntrezUtilities):
 
     #### def query(self, database, query, **esearch):
     ####     """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
-    ####     kws_exp = self.exp_params.difference({'db', 'term', 'rettype', 'usehistory', 'retmode'})
+    ####     kws_exp = self.exp_params.difference(
+    ###         {'db', 'term', 'rettype', 'usehistory', 'retmode'})
     ####     kws_act = {k:v for k, v in esearch.items() if k in kws_exp}
     ####     # Returns:
     ####     #    count
