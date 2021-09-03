@@ -3,6 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-09-03 v0.0.17**](#release-2021-09-17-v0017)
+  Added "online-always" mode to download the latest NIH citation data three times as fast as the original "online/offline" mode
 * [**Release 2021-08-22 v0.0.16**](#release-2021-08-22-v0016)
   Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
 * [**Release 2021-08-14 v0.0.15**](#release-2021-08-14-v0015)
@@ -27,6 +29,12 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-09-03 v0.0.17
+Changes for [Issue #5](https://github.com/dvklopfenstein/pmidcite/issues/5):
+* Added "online-always" mode to download the latest NIH citation data three times as fast as the original "online/offline" mode
+* Made "online-always" mode the default
+* Moved "online/offline" mode to be an option
 
 ### Release 2021-08-22 v0.0.16
 * Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
