@@ -13,12 +13,10 @@ from pmidcite.icite.downloader import get_downloader
 class PubMedQueryToICite:
     """Run PubMed user query and download PMIDs. Run iCite on PMIDs. Write text file."""
 
-    def __init__(self, force_dnld, verbose=True, pmid2note=None, prt_icitepy=None):
+    def __init__(self, force_dnld, verbose=True, pmid2note=None):
         self.force_dnld = force_dnld
         self.verbose = verbose
         self.pmid2note = {} if pmid2note is None else pmid2note
-        # Setting prt_icitepy to sys.stdout causes messages: WROTE: ./icite/p31898878.py
-        self.prt_icitepy = prt_icitepy
         self.cfg = get_cfgparser()
         self.pubmed = PubMed(
             email=self.cfg.get_email(),
@@ -53,14 +51,6 @@ class PubMedQueryToICite:
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
             self._wr_icite(fout_icite, pmids)
-
-    def set_dir_pmids(self, dirname):
-        """Set directory to store lists of PMIDs"""
-        self.cfg.set_dir_pmids(dirname)
-
-    def set_dir_icite(self, dirname):
-        """Set directory to store lists of PMIDs"""
-        self.cfg.set_dir_icite(dirname)
 
     def _wr_icite(self, fout_icite, pmids):
         """Run PMIDs in iCite and print results into a file"""
