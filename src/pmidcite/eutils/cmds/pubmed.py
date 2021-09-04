@@ -4,7 +4,9 @@ __author__ = 'DV Klopfenstein'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein. All rights reserved."
 __license__ = "GPL"
 
-import os
+from os import system
+from os import getcwd
+from os.path import exists
 import sys
 from pmidcite.eutils.cmds.base import EntrezUtilities
 from pmidcite.eutils.cmds.esearch import ESearch
@@ -29,8 +31,8 @@ class PubMed(EntrezUtilities):
 
     def _dnld_wr_all(self, fout_pubmed, efetch_idxs, efetch_params):
         """Download and write all PMIDs PubMed text entries into one file"""
-        if os.path.exists(fout_pubmed):
-            os.system('rm {FILE}'.format(FILE=fout_pubmed))
+        if exists(fout_pubmed):
+            system('rm {FILE}'.format(FILE=fout_pubmed))
         if not efetch_idxs:
             return
         for desc, start, pmids_exp, querykey in efetch_idxs:
@@ -46,15 +48,22 @@ class PubMed(EntrezUtilities):
         dct = self.run_eutilscmd('esearch', db='pubmed', term=query, retmode='json')
         return dct
 
-    # TBD: Remove RuntimeError
     def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt, pmid2name=None):
         """Download and write one PubMed text file entry per PMID"""
-        if not os.path.exists(dir_pubmed_txt):
-            raise RuntimeError('**ERROR: NO OUTPUT DIR: {DIR}'.format(
-                DIR=dir_pubmed_txt))
+        if not exists(dir_pubmed_txt):
+            dir_pubmed_txt = self._err_exists(dir_pubmed_txt)
         pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt, pmid2name)
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', 10, 1, **self.medline_text)
         return self.esearch.dnld_wr1_per_id('pubmed', efetch_idxs, efetch_params, pmid_nt_list)
+
+    @staticmethod
+    def _err_exists(dir_pubmed_txt):
+        """Print warning message if dir not exist, return current working directory"""
+        cwd = getcwd()
+        print('**WARNING: DIR({DIR_NAME}) NOT EXIST RETURNING CWD({CWD})'.format(
+            DIR_NAME=dir_pubmed_txt,
+            CWD=getcwd()))
+        return cwd
 
     def dnld_texts(self, efetch_idxs, efetch_params):
         """Download and save one PMID PubMed entry into a text string"""
