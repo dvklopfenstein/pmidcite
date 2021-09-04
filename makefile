@@ -70,7 +70,11 @@ clean_dist:
 clean:
 	rm -f notebooks/pubmed_20050301.txt
 	rm -f pubmed_20050301.txt
+	rm -f 29129787.txt
+	rm -f 29628312.txt
 	rm -f dnldr_*.txt
+	rm -f SMILES_review.txt
+	rm -f final_cite.txt
 	rm -f p*.py
 	rm -f pubmed_*.txt
 	rm -f test_eutils.cfg

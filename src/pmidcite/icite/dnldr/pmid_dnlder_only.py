@@ -16,7 +16,6 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
 
     def get_icites(self, pmids):
         """Download NIH iCite data for requested PMIDs"""
-        # Python module filenames
         pmid2nihentry = {o.pmid: o for o in self._dnld_icites(pmids)}
         return [pmid2nihentry[pmid] for pmid in pmids if pmid in pmid2nihentry]
 

@@ -41,6 +41,7 @@ def _compare(test_name, pmid, entry_lst, desc):
         test_name, len(paper_set.cited_by_clin), len(paper_txt.cited_by_clin), paper_set)
     assert len(paper_set.references) == len(paper_txt.references), '**FATAL {} -- references({} != {}): {}'.format(
         test_name, len(paper_set.references), len(paper_txt.references), paper_set)
+    print('TEST PASSED: {}'.format(desc))
 
 def _run(test_name, dnldr, pmid):
     """Download PMIDs"""

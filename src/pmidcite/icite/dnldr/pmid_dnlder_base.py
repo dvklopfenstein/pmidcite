@@ -114,32 +114,59 @@ class NIHiCiteDownloaderBase:
 
     def _run_icite_name2pmid(self, name2pmid, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
+        # TBD: Optimize for speed like _geticitepapers_w_assc
         name2ntpaper = {}
         ntobj = namedtuple('Paper', 'pmid paper')
+        s_geticitepaper = self._geticitepaper
         for name, pmid in name2pmid.items():
-            paper = self._geticitepaper(pmid, name, pmid2note)
+            paper = s_geticitepaper(pmid, name, pmid2note)
             name2ntpaper[name] = ntobj(pmid=pmid, paper=paper)
         return name2ntpaper
 
     def get_pmid2paper(self, pmids_top, pmid2note=None):
         """Get one NIHiCitePaper object for each user-specified PMID"""
-        s_geticitepaper = self._geticitepaper
-        header = ''
         if not self.details_cites_refs:
-            pmid_paper = []
-            pmid2icite = {o.pmid:o for o in self.get_icites(pmids_top)}
-            for pmid in pmids_top:
-                if pmid in pmid2icite:
-                    nihicite = pmid2icite[pmid]
-                    paper = NIHiCitePaper(pmid, {pmid:nihicite}, '', pmid2note)
-                    pmid_paper.append((pmid, paper))
-            return OrderedDict(pmid_paper)
-        if not pmid2note:
-            papers = [s_geticitepaper(p, header, None) for p in pmids_top]
-        else:
-            papers = [s_geticitepaper(p, header, pmid2note) for p in pmids_top]
-        # Note: if there is no iCite entry for a PMID, paper will be None
-        return OrderedDict(zip(pmids_top, papers))  # pmid2ntpaper
+            return self._geticitepapers_wo_assc(pmids_top, pmid2note)
+        return self._geticitepapers_w_assc(pmids_top, pmid2note)
+        #### s_geticitepaper = self._geticitepaper
+        #### papers = [s_geticitepaper(p, '', pmid2note) for p in pmids_top]
+        #### return OrderedDict(zip(pmids_top, papers))  # pmid2ntpaper
+
+    def _geticitepapers_wo_assc(self, pmids_top, pmid2note=None):
+        """Get one NIHiCitePaper object for each user-specified PMID only"""
+        pmid_paper = []
+        pmid2icite = {o.pmid:o for o in self.get_icites(pmids_top)}
+        for pmid in pmids_top:
+            if pmid in pmid2icite:
+                nihicite = pmid2icite[pmid]
+                paper = NIHiCitePaper(pmid, {pmid:nihicite}, '', pmid2note)
+                pmid_paper.append((pmid, paper))
+        return OrderedDict(pmid_paper)
+
+    def _geticitepapers_w_assc(self, pmids_top, pmid2note=None):
+        """Get one NIHiCitePaper object for each user-specified PMID w/cites and/or refs"""
+        nihentries_top = self.get_icites(pmids_top)
+        s_get_cites_refs = self.details_cites_refs
+        top_n_assocs = [(e.pmid, e.get_assc_pmids(s_get_cites_refs)) for e in nihentries_top]
+        # PMIDs that are associated with the top PMIDs (cited_by_clin, cited_by, references)
+        pmids_assoc = set.union(*list(zip(*top_n_assocs))[1])
+        # Get associated PMIDs that were requested by the researcher
+        nihentries_other = self.get_icites(pmids_assoc.difference(pmids_top))
+        pmid2entry_all = {e.pmid:e for e in nihentries_top + nihentries_other}
+        # Create and return pmid2paper
+        pmid_n_paper = []
+        pmids_w_entry = set(pmid2entry_all.keys())
+        header = ''
+        for pmid_top, pmids_assoc in top_n_assocs:
+            # pylint: disable=line-too-long
+            if pmid_top in pmid2entry_all:
+                pmid2entry_cur = {p:pmid2entry_all[p] for p in pmids_assoc.intersection(pmids_w_entry)}
+                pmid2entry_cur[pmid_top] = pmid2entry_all[pmid_top]
+                pmid_n_paper.append((pmid_top, NIHiCitePaper(pmid_top, pmid2entry_cur, header, pmid2note)))
+            # Note: if there is no iCite entry for a PMID, paper will be None
+            else:
+                pmid_n_paper.append((pmid_top, None))
+        return OrderedDict(pmid_n_paper)
 
     def get_paper(self, pmid, pmid2note=None):
         """Get one NIHiCitePaper object for each user-specified PMID"""

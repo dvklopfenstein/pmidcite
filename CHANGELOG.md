@@ -29,6 +29,7 @@
 ## Details
 
 ### Unreleased
+* Improve speed by 4x for "online-only" mode when downloading citation data for multiple papers and their citations and/or references
 
 ### Release 2021-09-03 v0.0.17
 Changes for [Issue #5](https://github.com/dvklopfenstein/pmidcite/issues/5):
