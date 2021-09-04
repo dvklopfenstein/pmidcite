@@ -46,6 +46,7 @@ class PubMed(EntrezUtilities):
         dct = self.run_eutilscmd('esearch', db='pubmed', term=query, retmode='json')
         return dct
 
+    # TBD: Remove RuntimeError
     def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt, pmid2name=None):
         """Download and write one PubMed text file entry per PMID"""
         if not os.path.exists(dir_pubmed_txt):
