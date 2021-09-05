@@ -31,7 +31,7 @@ def main():
     # To run the second to last query:
     #   $ src/bin/dnld_pmids.py -2
     #
-    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    obj = PubMedQueryToICite(force_dnld=True)
     dnld_idx = obj.get_index(sys.argv)
     obj.run(queries, dnld_idx)
 
