@@ -3,7 +3,9 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2021-09-03 v0.0.17**](#release-2021-09-17-v0017)
+* [**Release 2021-09-05 v0.0.18**](#release-2021-09-05-v0018)
+* 4x speed improvement when downloading papers, citations, and references; removed `PubMedQueryToICite` arg `prt_icitepy`
+* [**Release 2021-09-03 v0.0.17**](#release-2021-09-03-v0017)
   Added "online-always" mode to download the latest NIH citation data three times as fast as the original "online/offline" mode
 * [**Release 2021-08-22 v0.0.16**](#release-2021-08-22-v0016)
   Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
@@ -29,7 +31,10 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-09-05 v0.0.18
 * Improve speed by 4x for "online-only" mode when downloading citation data for multiple papers and their citations and/or references
+* Remove obsolete argument, `prt_icitepy`, of `PubMedQueryToICite`
 
 ### Release 2021-09-03 v0.0.17
 Changes for [Issue #5](https://github.com/dvklopfenstein/pmidcite/issues/5):
