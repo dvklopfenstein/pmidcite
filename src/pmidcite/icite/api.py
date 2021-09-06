@@ -149,7 +149,11 @@ class NIHiCiteAPI:
                 title = title.replace('\n', " ")
             dct['title'] = title
         if json_dct['authors'] is not None:
-            dct['authors'] = json_dct['authors'].split(', ')
+            authors = json_dct['authors']
+            if authors == '':
+                dct['authors'] = []
+            else:
+                dct['authors'] = json_dct['authors'].split(', ')
         yes_no = self.yes_no
         dct['is_research_article'] = yes_no[json_dct['is_research_article']]
         dct['is_clinical'] = yes_no[json_dct['is_clinical']]
