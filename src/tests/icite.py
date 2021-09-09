@@ -10,6 +10,7 @@ from os import environ
 from os.path import join
 from os.path import dirname
 from os.path import abspath
+from os.path import relpath
 from os.path import exists
 from os.path import getmtime
 from glob import glob
@@ -18,7 +19,7 @@ from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 
 DIR_TEST = dirname(abspath(__file__))
 DIR_TESTDATA = join(DIR_TEST, "data")
-DIR_ICITE = join(DIR_TEST, "./icite")
+DIR_ICITE = abspath(join(DIR_TEST, "./icite"))
 DIR_REPO = abspath(join(DIR_TEST, "../.."))
 DL = environ.get('DLCYG')
 
@@ -54,7 +55,7 @@ def mk_dir(dir_name, rmdir=False):
         system('rm -rf {DIR}'.format(DIR=dir_name))
     if not exists(dir_name):
         mkdir(dir_name)
-        print('**CREATED DIR: {D}'.format(D=dir_name))
+        print('**CREATED DIR: {D}'.format(D=relpath(dir_name)))
     return dir_name
 
 

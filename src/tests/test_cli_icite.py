@@ -42,12 +42,20 @@ def test_cli_icite():
     # icite 29129787 29628312 -O -H -v; wc -l 29129787.txt; wc -l 29628312.txt
     mk_dir(DIR_ICITE, rmdir=True)
     print('SET FROM TEST')
+
+    # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/src/tests/./icite/29129787.txt
+    # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/src/tests/./icite/29628312.txt
     system('icite 29129787 29628312 -O -H -v --dir_icite {}'.format(DIR_ICITE))
+
+    # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29129787.txt
+    # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29628312.txt
     system('icite 29129787 29628312 -O -H -v --dir_icite {}'.format(DIR_REPO))
+
     assert filecmp.cmp(join(DIR_REPO, '29129787.txt'), join(DIR_ICITE, '29129787.txt'))
     assert filecmp.cmp(join(DIR_REPO, '29628312.txt'), join(DIR_ICITE, '29628312.txt'))
 
     # icite 29129787 29628312 -O -H
+    # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29129787.txt
     system('icite 29129787 -O -H --dir_icite {}'.format(DIR_REPO))
     assert not filecmp.cmp(join(DIR_REPO, '29129787.txt'), join(DIR_ICITE, '29129787.txt'))
     print('**PASSED')
