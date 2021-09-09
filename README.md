@@ -52,7 +52,7 @@ def main():
         ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
     ]
 
-    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    obj = PubMedQueryToICite(force_dnld=True)
     dnld_idx = obj.get_index(sys.argv)
     obj.run(queries, dnld_idx)
 ```
