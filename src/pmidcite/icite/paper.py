@@ -83,7 +83,7 @@ class NIHiCitePaper:
         # Citations
         if self.cited_by:
             prt.write('{N} of {M} citations downloaded:\n'.format(
-                N=len([1 for o in self.cited_by if o.dct['cited_by']]),
+                N=len(self.cited_by),
                 M=self.icite.dct['citation_count']))
         self._prt_list(self.cited_by, 'CIT', prt, sortby_cites)
         # References
