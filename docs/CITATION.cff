@@ -1,0 +1,62 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Klopfenstein"
+  given-names: "DV"
+  orcid: "https://orcid.org/0000-0003-0161-7603"
+  email: dvklopfenstein@protonmail.com
+- family-names: "Dampier"
+  given-names: "Will"
+title: "pmidcite"
+version: 0.0.18
+doi: 10.5281/zenodo.5172712
+keywords: 
+  - CitedBy
+  - PubMed
+  - PMID
+  - "forward citation"
+  - "backward citation"
+  - "forward snowball"
+  - "backward snowball"
+  - "literature review"
+  - "citation downloader"
+contact:
+  - email: dvklopfenstein@protonmail.com
+    name: "PubMed ID (PMID) Cite"
+date-released: 2020-09-01
+url: "https://github.com/dvklopfenstein/pmidcite"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Klopfenstein"
+    given-names: "DV"
+    orcid: "https://orcid.org/0000-0003-0161-7603"
+    email: dvklopfenstein@protonmail.com
+  - family-names: "Dampier"
+    given-names: "Will"
+  doi: "10.1002/jrsm.1456"
+  journal: "Research Synthesis Methods"
+  month: 3
+  start: 126 # First page number
+  end: 135 # Last page number
+  title: "Commentary to Gusenbauer and Haddaway 2020: Evaluating retrieval qualities of Google Scholar and PubMed"
+  issue: 2
+  volume: 12
+  year: 2021
+  keywords: 
+    - CitedBy
+    - PubMed
+    - PMID
+    - "forward citation"
+    - "backward citation"
+    - "forward snowball"
+    - "backward snowball"
+    - "literature review"
+    - "citation downloader"
+  contact:
+    - email: dvklopfenstein@protonmail.com
+      name: "PubMed ID (PMID) Cite"
+  repository: https://github.com/dvklopfenstein/pmidcite
+  identifiers:
+    - type: "other"
+      value: "pmidcite"
