@@ -1,4 +1,10 @@
-## [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+<!--
+  Title: PubMed ID (PMID) Cite
+  Description: Augment your PubMed literature search with forward/backward citation chaining (snowballing) using NIH citation data
+  Author: dvklopfenstein
+  -->
+<meta name='keywords' content='CitedBy, PubMed, PMID, forward citation, backward citation, forward snowball, backward snowball, literature review, citation downloader'>
+# [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 Augment a PubMed literature search by linking 
 data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
