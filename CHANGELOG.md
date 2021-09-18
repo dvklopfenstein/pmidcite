@@ -3,34 +3,33 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-09-18 v0.0.19**](#release-2021-09-18-v0019) Added CITATION.cff and Google Search Console tag
 * [**Release 2021-09-05 v0.0.18**](#release-2021-09-05-v0018)
-* 4x speed improvement when downloading papers, citations, and references; removed `PubMedQueryToICite` arg `prt_icitepy`
+  * 4x speed improvement when downloading papers, citations, and references; removed `PubMedQueryToICite` arg `prt_icitepy`
 * [**Release 2021-09-03 v0.0.17**](#release-2021-09-03-v0017)
   Added "online-always" mode to download the latest NIH citation data three times as fast as the original "online/offline" mode
 * [**Release 2021-08-22 v0.0.16**](#release-2021-08-22-v0016)
   Corrected: [AttributeError: 'NoneType' object has no attribute 'pmid' #4](https://github.com/dvklopfenstein/pmidcite/issues/4)
-* [**Release 2021-08-14 v0.0.15**](#release-2021-08-14-v0015)
-  * Simplify code by instantiating NIHiCiteDownloader directly
-* [**Release 2021-08-08 v0.0.14**](#release-2021-08-08-v0014)
-  * Simplified NIH downloader interface and improved speed handling large numbers of PMIDs
+* [**Release 2021-08-14 v0.0.15**](#release-2021-08-14-v0015) Simplify code by instantiating NIHiCiteDownloader directly
+* [**Release 2021-08-08 v0.0.14**](#release-2021-08-08-v0014) Simplified NIH downloader interface. Improved speed handling large numbers of PMIDs
 * [**Release 2021-08-03 v0.0.12**](#release-2021-08-03-v0012)
 	* Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
 	* Add new `icite` arguments, `-c` and `-r` for finer grain control for downloading NIH citation data
   [#3](https://github.com/dvklopfenstein/pmidcite/issues/3)
-* [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009)
-  Updated notebooks to use new customizable paper grouping
-  [#2](https://github.com/dvklopfenstein/pmidcite/issues/2)
-* [**Release 2021-07-06 v0.0.8**](#release-2021-07-06-v008)
-  Made grouping of paper's customizable
-* [**Release 2020-12-03 v0.0.5**](#release-2020-12-03-v005)
-  * The 1st citation count in icite line contains any clinical citations
-* [**Release 2020-12-02 v0.0.4**](#release-2020-12-02-v004)
-  * Added to Documentation in README
-  * Added convenience get functions
+* [**Release 2021-07-12 v0.0.10**](#release-2021-07-12-v009) Updated notebooks to use new customizable paper grouping [#2](https://github.com/dvklopfenstein/pmidcite/issues/2)
+* [**Release 2021-07-06 v0.0.8**](#release-2021-07-06-v008) Made grouping of paper's customizable
+* [**Release 2020-12-03 v0.0.5**](#release-2020-12-03-v005) The 1st citation count in icite line contains any clinical citations
+* [**Release 2020-12-02 v0.0.4**](#release-2020-12-02-v004) Added to Documentation in README andd convenience get functions
 
 ## Details
 
 ### Unreleased
+
+### Release 2021-09-18 v0.0.19
+* Add CITATION.cff file
+* Added Google Search Console tag 
+* Changed: minor updates, including:
+  * Return [] if there are no authors #e294100
 
 ### Release 2021-09-05 v0.0.18
 * Improve speed by 4x for "online-only" mode when downloading citation data for multiple papers and their citations and/or references
