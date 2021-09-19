@@ -419,3 +419,10 @@ Fiorini N ... Lu Zhiyong
   * [**Gusenbauer's Response**](/doc/paper/jrsm.1457.pdf)
 
 Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein. All rights reserved.
+
+<!--
+  Title: PubMed ID (PMID) Cite
+  Description: Augment your PubMed literature search with forward/backward citation chaining (snowballing) using NIH citation data
+  Author: dvklopfenstein
+  -->
+<meta name='keywords' content='CitedBy, PubMed, PMID, forward citation, backward citation, forward snowball, backward snowball, literature review, citation downloader'>
