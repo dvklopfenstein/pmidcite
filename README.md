@@ -6,25 +6,25 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 
 Augment a PubMed literature search by linking 
-data downloaded from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
+citation data from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
-This open-source project was developed as part of the paper:    
+### This open-source project was developed as part of the paper:    
 [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
 Klopfenstein DV and Dampier W    
 2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456) | [pdf](/doc/paper/JRSM_1456_iCite_main.pdf)    
 dvklopfenstein@protonmail.com    
 
 ## Usage
-* [Download citation data for a paper]()
-* [Forward citation search](); aka following "Cited by" links or "Forward snowballing"
-* [Backward citation search](); aka following links to references or "Backward snowballing"
+* [Download citation data for a research paper]()
+* [Forward citation search](https://github.com/dvklopfenstein/pmidcite#forward-citation-search): AKA following a paper's "Cited by" links or "Forward snowballing"
+* [Backward citation search](https://github.com/dvklopfenstein/pmidcite#backward-citation-search): AKA following the links to a paper's references or "Backward snowballing"
 
-### Download citation data from the command line
+### Download citation data for a research paper
 ![Starting usage](docs/images/pmidcite0.png)
 The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
 
