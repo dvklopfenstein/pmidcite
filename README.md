@@ -22,9 +22,9 @@ dvklopfenstein@protonmail.com
 ## Usage
 * [**Download citation data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
 * [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search)    
-  Also known as following a paper's "Cited by" links or "Forward snowballing"
+  AKA following a paper's *Cited by* links or *Forward snowballing*
 * [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search)    
-  Also known as following the links to a paper's references or "Backward snowballing"
+  AKA following the links to a paper's references or *Backward snowballing*
 
 ## Download citation data for a research paper
 ![Starting usage](docs/images/pmidcite0.png)
