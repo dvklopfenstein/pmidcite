@@ -64,7 +64,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 
 ## PubMed vs Google Scholar
 <p align="center">
-<img src="doc/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
+<img src="docs/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
 In 2013, Boeker et al. recommended that a scientific search interface contain five integrated search criteria. 
@@ -81,7 +81,7 @@ The NIH's citation data includes a paper's ranking among its co-citation network
 
 
 ## What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
-<img src="doc/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
+<img src="docs/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
 PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
 * **MEDLINE**: a highly selective database started in the 1960s
