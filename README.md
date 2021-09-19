@@ -20,7 +20,11 @@ Klopfenstein DV and Dampier W
 dvklopfenstein@protonmail.com    
 
 ## Usage
-### Download citations from the command line
+* [Download citation data for a paper]()
+* [Forward citation search](); aka following "Cited by" links or "Forward snowballing"
+* [Backward citation search](); aka following links to references or "Backward snowballing"
+
+### Download citation data from the command line
 ![Starting usage](docs/images/pmidcite0.png)
 The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
 
@@ -32,6 +36,12 @@ lower performing papers in groups `0` or `1` at the back.
 New papers appear at the beginning of a sorted list,
 no matter how many citations they have to
 better facilitate researchers in finding the latest discoveries.
+
+### Forward citation search
+Also known as following a paper's "Cited by" links or "Forward snowballing"
+
+### Backward citation search
+Also known as following links to a paper's references or "Backward snowballing"
 
 
 ### Download citations for all papers returned from a PubMed search
