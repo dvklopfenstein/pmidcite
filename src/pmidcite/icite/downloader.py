@@ -25,6 +25,7 @@ def get_downloader(
 def prt_hdr(prt=stdout):
     """Print column headers in one line"""
     from pmidcite.icite.entry import NIHiCiteEntry
+    prt.write('COL {HDR}\n'.format(HDR=NIHiCiteEntry.col_idx))
     prt.write('TYP {HDR}\n'.format(HDR=NIHiCiteEntry.hdr))
 
 def prt_keys(prt=stdout):
