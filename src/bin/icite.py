@@ -10,7 +10,7 @@ from pmidcite.cfg import get_cfgparser
 
 def main():
     """Print lists of pubs in formation"""
-    NIHiCiteCli(get_cfgparser()).cli()
+    NIHiCiteCli(get_cfgparser(prt=None)).cli()
 
 
 if __name__ == '__main__':

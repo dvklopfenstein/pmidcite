@@ -111,6 +111,9 @@ class NIHiCiteCli:
             '--generate-rcfile', action='store_true',
             help='Generate a sample configuration file according to the '
                  'current configuration.')
+        parser.add_argument(
+            '--print-rcfile', action='store_true',
+            help='Print the location of the pmidcite configuration file')
         return parser
 
     def cli(self):
@@ -138,7 +141,8 @@ class NIHiCiteCli:
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
             if args.pubmed:
                 self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
-        elif not (args.generate_rcfile or args.print_keys or args.print_header):
+        # pylint: disable=line-too-long
+        elif not (args.generate_rcfile or args.print_keys or args.print_header or args.print_rcfile):
             argparser.print_help(stdout)
 
     def prt_info(self, args):
@@ -147,6 +151,8 @@ class NIHiCiteCli:
         if args.O or args.append_outfile or args.outfile:
             return
         # Print rcfile initialization file
+        if args.print_rcfile:
+            self.cfg.prt_cfgfile()
         if args.generate_rcfile:
             prt_rcfile(stdout)
         self._prt_keys_n_hdr(stdout, args.print_keys, args.print_header)

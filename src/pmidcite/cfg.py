@@ -8,11 +8,18 @@ from os import getcwd
 from os.path import exists
 from os.path import basename
 from os.path import join
+from os.path import abspath
 from sys import stdout
 import configparser
 
 from pmidcite.icite.nih_grouper import NihGrouper
 
+
+def get_cfgparser(prt=stdout):
+    """Init cfg parser"""
+    cfgparser = Cfg(check=False, prt=prt)
+    cfgparser.rd_rc(prt=prt)
+    return cfgparser
 
 # pylint: disable=useless-object-inheritance
 class Cfg(object):
@@ -54,6 +61,14 @@ class Cfg(object):
         self.cfgparser = self._get_dflt_cfgparser()
         if check:
             self._run_chk(prt, prt_fullname)
+
+    def prt_cfgfile(self, prt=stdout):
+        """Print information about the configuration file"""
+        prt.write('  printenv {VAR} # value({VAL})\n'.format(
+            VAR=self.envvar,
+            VAL=environ[self.envvar]))
+        prt.write('  CFG FILE: {CFG}\n'.format(
+            CFG=abspath(self.cfgfile)))
 
     def get_email(self):
         """Get email"""
@@ -213,12 +228,6 @@ class Cfg(object):
                 F=self.dfltcfgfile))
         return self.dfltcfgfile
 
-
-def get_cfgparser(prt=stdout):
-    """Init cfg parser"""
-    cfgparser = Cfg(check=False, prt=prt)
-    cfgparser.rd_rc(prt=prt)
-    return cfgparser
 
 
 # Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
