@@ -14,8 +14,8 @@ class NIHiCiteEntry:
               'num_cites_all', 'clin', 'references',
               'A', 'author1', 'title']
 
-    pat_pre = ('{pmid:8} {aart_type} {aart_animal} '
-               '{nih_perc:3} {nih_group} {year} {num_cites_all:5} {clin:2} {references:3} '
+    pat_pre = ('{pmid:8} {aart_type:2} {aart_animal:5} '
+               '{nih_perc:>3} {nih_group} {year:4} {num_cites_all:>5} {clin:>2} {references:>3} '
               )
     pat_str = pat_pre + 'au[{A:02}]({author1}) {title}'
 
@@ -27,6 +27,20 @@ class NIHiCiteEntry:
     citekeys = {'cited_by_clin', 'cited_by'}
     refkey = {'references',}
     associated_pmid_keys = citekeys.union(refkey)
+
+    col_idx = pat_str.format(
+        pmid='2',
+        aart_type='3',
+        aart_animal='4',
+        nih_perc='5',
+        nih_group='6',
+        year='7',
+        num_cites_all='8',
+        clin='9',
+        references='10',
+        A=11,
+        author1='authors',
+        title='')
 
     hdr = pat_str.format(
         pmid='PMID',
