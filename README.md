@@ -82,7 +82,7 @@ def main():
 ```
 
 To have better access to PubMed search results, 
-get n NCBI API key using these instuctions:    
+get a NCBI API key using these instuctions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 
