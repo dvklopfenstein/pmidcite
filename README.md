@@ -1,4 +1,4 @@
-# [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+# [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
 [![CodeQL](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml)
