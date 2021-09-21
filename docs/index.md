@@ -1,4 +1,4 @@
-# [PubMed](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
+# [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) **ID (PMID) Cite**
 
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
 [![CodeQL](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml)
@@ -8,10 +8,7 @@
 Augment a PubMed literature search by linking 
 citation data from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
-using the command line
-rather than clicking and clicking and clicking on
-[**Google Scholar**](/doc/images/README_twitter.md)
-*Cited by N* links.
+using the command line.
 
 #### This open-source project accompanies the *Research Synthesis Methods* paper:    
 [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
@@ -29,7 +26,7 @@ dvklopfenstein@protonmail.com
 ## Download citation data for a research paper
 ```$ icite -H 26032263```    
 
-![Starting usage](docs/images/pmidcite0.png)
+![Starting usage](images/pmidcite0.png)
 The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
 
 The NIH percentile (`G`) grouping is part of this project and helps to
@@ -104,7 +101,7 @@ citation data downloaded from the NIH using the command-line  using *pmidcite*.
 The NIH's citation data includes a paper's ranking among its co-citation network.
 
 
-## What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
+## What is in [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
 <img src="images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
 PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
