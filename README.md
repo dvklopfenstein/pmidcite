@@ -43,14 +43,16 @@ better facilitate researchers in finding the latest discoveries.
 
 ## Forward citation search
 Also known as following a paper's *Cited by* links or *Forward snowballing*    
+
 ```icite -H; icite 26032263 --load_citations | sort -k6 -r```    
-or
+or    
 ```icite -H; icite 26032263 -c | sort -k6 -r```    
 
 ## Backward citation search
 Also known as following links to a paper's references or *Backward snowballing*    
+
 ```$ icite -H; icite 26032263 --load_references | sort -k6 -r```    
-or
+or    
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 
