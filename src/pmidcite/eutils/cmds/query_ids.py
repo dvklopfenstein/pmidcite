@@ -72,8 +72,10 @@ class QueryIDs(EntrezUtilities):
         tot_ids = rsp_dct['count']
         ## print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
         for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_ids)):
+            ## print('WWWWWWWWWWWWWWWWWWWWWWWW retnum', retnum)
             rsp_dct = self.query(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
             if rsp_dct:
+                ## print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
                 ids.extend(rsp_dct['idlist'])
         assert tot_ids == len(set(ids)), 'PMIDS EXP({E}) ACT({A})'.format(
             E=tot_ids, A=len(set(ids)))

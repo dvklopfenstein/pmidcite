@@ -39,7 +39,8 @@ class PubMedQueryToICite:
     def _querypubmed_runicite(self, filename, query):
         """Given a user query, return PMIDs. Then run NIH's iCite"""
         # 1) Query PubMed and download PMIDs
-        pmids = self.pubmed.dnld_query_pmids(query)
+        pmids = self.pubmed.dnld_query_pmids(query, num_ids_p_epost=1000)
+        ## print('PMIDCITE QQQQQQQQQQQQQQQQQ {N} PMIDs'.format(N=len(pmids)))
         fout_pmids = self.cfg.get_fullname_pmids(filename)
         fout_icite = self.cfg.get_fullname_icite(filename)
         # 2) Write PubMed PMIDs into a simple text file, one PMID per line
@@ -60,7 +61,9 @@ class PubMedQueryToICite:
             nih_grouper=cfg.get_nihgrouper(),
             dir_icite_py=cfg.get_dir_icite_py(),
             force_download=self.force_dnld)
+        ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.get_pmid2paper {N} PMIDs'.format(N=len(pmids)))
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
+        ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 
     @staticmethod
