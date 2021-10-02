@@ -40,7 +40,7 @@ cnt:
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p src/pmidcite/__version__.py setup.py
+	vim -p src/pmidcite/__version__.py setup.py CHANGELOG.md
 
 # 2) Create wheel - Check PyPi packages are up-to-date: make upgrade
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
