@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-09-26 v0.0.21**](#release-2021-10-02-v0021) Use external link for gh-page images
 * [**Release 2021-09-26 v0.0.20**](#release-2021-09-26-v0020) Improved speed for downloading PMIDs returned from a PubMed query
 * [**Release 2021-09-18 v0.0.19**](#release-2021-09-18-v0019) Added CITATION.cff and Google Search Console tag
 * [**Release 2021-09-05 v0.0.18**](#release-2021-09-05-v0018)
@@ -25,6 +26,10 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-10-02 v0.0.21
+* Use external link for gh-page images
+* Improve utility of function by returning a list of namedtuples instead of None
 
 ### Release 2021-09-26 v0.0.20
 * Massive speed increase of downloading PMIDs returned from a PubMed query by downloading 1,000 PMIDs at a time  #81a6cd8 #e04a7c5
