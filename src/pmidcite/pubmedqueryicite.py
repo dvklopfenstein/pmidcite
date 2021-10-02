@@ -35,6 +35,7 @@ class PubMedQueryToICite:
         else:
             for ntd in nts:
                 self._querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+        return nts
 
     def _querypubmed_runicite(self, filename, query):
         """Given a user query, return PMIDs. Then run NIH's iCite"""
@@ -70,11 +71,10 @@ class PubMedQueryToICite:
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
 
-    @staticmethod
-    def get_nts_g_list(lst):
+    def get_nts_g_list(self, lst):
         """Turn a list iof tuple strings into a list of namedtuples"""
-        nto = namedtuple('Nt', 'filename pubmed_query')
-        return [nto._make(t) for t in lst]
+        nto = namedtuple('Nt', 'filename fullname pubmed_query')
+        return [nto._make([fname, self.cfg.get_fullname_icite(fname), qry]) for fname, qry in lst]
 
     @staticmethod
     def get_index(argv):
