@@ -390,10 +390,6 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 
-
-## Contact
-dvklopfenstein@protonmail.com
-
 ## How to Cite
 
 _If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (NIH citation data)._     
@@ -442,5 +438,8 @@ Fiorini N ... Lu Zhiyong
       * [S2. Contents of PubMed](/doc/paper/JRSM_1456_iCite_supp2_PMcontents.pdf)
       * [S3. Screen shots Google Scholar taken Jan 2020](/doc/paper/JRSM_1456_iCite_supp3_GS.pdf)
   * [**Gusenbauer's Response**](/doc/paper/jrsm.1457.pdf)
+
+## Contact
+dvklopfenstein@protonmail.com
 
 Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein. All rights reserved.
