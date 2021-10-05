@@ -18,10 +18,8 @@ This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.g
 
 ## Usage
 * [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
-* [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search)    
-  AKA following a paper's *Cited by* links or *Forward snowballing*
-* [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search)    
-  AKA following the links to a paper's references or *Backward snowballing*
+* [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
+* [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search): following the links to a paper's references or *Backward snowballing*
 
 ## Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
