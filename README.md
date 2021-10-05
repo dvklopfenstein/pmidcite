@@ -7,18 +7,14 @@
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Python%20library%20to%20download%20pubmed%20citation%20counts%20and%20data,%20given%20a%20PMID&url=https://github.com/dvklopfenstein/pmidcite&via=dvklopfenstein&hashtags=pubmed,pmid,citations,pubmed2cite,writingtips,scientificwriting)
 
 Augment a PubMed literature search by linking 
-citation data from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
+citation data from the [**NIH**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
-#### This open-source project accompanies the *Research Synthesis Methods* paper:    
-[**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
-Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456) | [pdf](/doc/paper/JRSM_1456_iCite_main.pdf)    
-dvklopfenstein@protonmail.com    
+#### This open-source project accompanies [**this paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods* paper:    
 
 ## Usage
 * [**Download citation data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)

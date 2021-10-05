@@ -6,15 +6,11 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 
 Augment a PubMed literature search by linking 
-citation data from [**NIH's Open Citation Collection (NIH-OCC)**](https://icite.od.nih.gov)
+citation data from the [**NIH**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line.
 
-#### This open-source project accompanies the *Research Synthesis Methods* paper:    
-[**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
-Klopfenstein DV and Dampier W    
-2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456) | [pdf](/doc/paper/JRSM_1456_iCite_main.pdf)    
-dvklopfenstein@protonmail.com    
+#### This open-source project accompanies [**this paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*
 
 ## Usage
 * [**Download citation data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
