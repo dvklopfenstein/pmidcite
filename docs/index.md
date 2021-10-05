@@ -19,7 +19,7 @@ This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.g
 
 ## Download citation data for a research paper
 ```$ icite -H 26032263```    
-* This paper (PMID 26032263) has `25` citations and `10` references and `4` authors.    
+* This paper (PMID 26032263) has `25` citations, `10` references, and `4` authors.    
 * This paper is performing well (`74`th percentile) compared to its peers.    
     
 ![Starting usage](images/pmidcite0.png)
