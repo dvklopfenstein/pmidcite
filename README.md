@@ -34,8 +34,9 @@ This paper is performing well (`74`th percentile) compared to its [peers](https:
 
 The NIH percentile (`G`) grouping helps to
 highlight the better performing papers in groups `2`, `3`, and `4` by
-placing them at the front of a sorted list of citations and the
-lower performing papers in groups `0` or `1` at the back.
+sorting the citing papers by group first, then publication year.
+
+The sort places the lower performing papers in groups `0` or `1` at the back.
 
 New papers appear at the beginning of a sorted list,
 no matter how many citations they have to
