@@ -32,7 +32,7 @@ This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.g
 ### NIH percentile
 This paper is performing well (`74`th percentile) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview) (column `%`).     
 
-The NIH percentile (`G`) grouping helps to
+The NIH percentile grouping (`G`) helps to
 highlight the better performing papers in groups `2`, `3`, and `4` by
 sorting the citing papers by group first, then publication year.
 
