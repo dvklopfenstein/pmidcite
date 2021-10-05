@@ -25,16 +25,21 @@ This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.g
 * This paper is performing well (`74`th percentile) compared to its peers.    
     
 ![Starting usage](images/pmidcite0.png)
-The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
+### NIH percentile
+This paper is performing well (`74`th percentile) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview) (column `%`).     
 
-The NIH percentile (`G`) grouping is part of this project and helps to
+The NIH percentile grouping (column `G`) helps to
 highlight the better performing papers in groups `2`, `3`, and `4` by
-placing them at the front of a sorted list and the
-lower performing papers in groups `0` or `1` at the back.
+sorting the citing papers by group first, then publication year.
+
+The sort places the lower performing papers in groups `0` or `1` at the back.
 
 New papers appear at the beginning of a sorted list,
 no matter how many citations they have to
 better facilitate researchers in finding the latest discoveries.
+
+The grouping of papers by NIH percentile grouping is a novel feature created by [dvklopfenstein](https://github.com/dvklopfenstein) for this project.
+
 
 ## Forward citation search
 Also known as following a paper's *Cited by* links or *Forward snowballing*    

@@ -17,13 +17,13 @@ rather than clicking and clicking and clicking on
 This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*    
 
 ## Usage
-* [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
+* [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
 * [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search)    
   AKA following a paper's *Cited by* links or *Forward snowballing*
 * [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search)    
   AKA following the links to a paper's references or *Backward snowballing*
 
-## Download citation data for a research paper
+## Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
 * This paper (PMID 26032263) has `25` citations and `10` references.    
 * This paper is performing well (`74`th percentile) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview) (column `%`).    
