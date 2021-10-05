@@ -24,7 +24,7 @@ This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.g
     
 ![Starting usage](images/pmidcite0.png)
 ### NIH percentile
-This paper is performing well (`74`th percentile) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview) (column `%`).     
+This paper is performing well (`74`th percentile in column `%`) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview).     
 
 The NIH percentile grouping (column `G`) helps to
 highlight the better performing papers in groups `2`, `3`, and `4` by
