@@ -29,7 +29,7 @@ dvklopfenstein@protonmail.com
 ## Download citation data for a research paper
 ```$ icite -H 26032263```    
 * This paper (PMID 26032263) has `25` citations and `10` references.    
-* This paper is performing well (`74`th percentile) compared to its peer papers.    
+* This paper is performing well (`74`th percentile) compared to its peers.    
     
 ![Starting usage](https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite0.png)
 The NIH percentile (`%`) is NIH's ranking of a paper among its [co-citation group](https://icite.od.nih.gov/user_guide?page_id=ug_overview).
