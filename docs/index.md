@@ -10,10 +10,10 @@ citation data from the [**NIH**](https://icite.od.nih.gov)
 for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line.
 
-#### This open-source project accompanies [**this paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*
+This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*
 
 ## Usage
-* [**Download citation data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
+* [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
 * [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search)    
   AKA following a paper's *Cited by* links or *Forward snowballing*
 * [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search)    

@@ -1,10 +1,10 @@
 # [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) ID (PMID) Cite
 
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Python%20library%20to%20download%20pubmed%20citation%20counts%20and%20data,%20given%20a%20PMID&url=https://github.com/dvklopfenstein/pmidcite&via=dvklopfenstein&hashtags=pubmed,pmid,citations,pubmed2cite,writingtips,scientificwriting)
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
 [![CodeQL](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/codeql-analysis.yml)
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Python%20library%20to%20download%20pubmed%20citation%20counts%20and%20data,%20given%20a%20PMID&url=https://github.com/dvklopfenstein/pmidcite&via=dvklopfenstein&hashtags=pubmed,pmid,citations,pubmed2cite,writingtips,scientificwriting)
 
 Augment a PubMed literature search by linking 
 citation data from the [**NIH**](https://icite.od.nih.gov)
@@ -14,10 +14,10 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 *Cited by N* links.
 
-#### This open-source project accompanies [**this paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods* paper:    
+This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*    
 
 ## Usage
-* [**Download citation data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
+* [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-data-for-a-research-paper)
 * [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search)    
   AKA following a paper's *Cited by* links or *Forward snowballing*
 * [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search)    
