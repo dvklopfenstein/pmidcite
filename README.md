@@ -8,13 +8,13 @@
 
 Augment a PubMed literature search by linking 
 citation data from the [**NIH**](https://icite.od.nih.gov)
-for researcher-specified [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
+for [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
-*Cited by N* links.
+"*Cited by N*" links.
 
-This open-source project accompanies [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*    
+This open-source project is part of [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*    
 
 ## Usage
 * [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
