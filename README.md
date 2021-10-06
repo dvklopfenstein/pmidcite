@@ -8,7 +8,7 @@
 
 Augment a PubMed literature search by linking 
 citation data from the [**NIH**](https://icite.od.nih.gov)
-for [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
+with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
