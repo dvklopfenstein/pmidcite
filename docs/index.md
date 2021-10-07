@@ -11,7 +11,7 @@ citation data from the [**NIH**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line.
 
-This open-source project is part of [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in *Research Synthesis Methods*
+This open-source project is part of [**a paper**](https://pubmed.ncbi.nlm.nih.gov/33031632) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887)
 
 ## Usage
 * [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
@@ -108,6 +108,10 @@ def main():
 To have better access to PubMed search results, 
 get n NCBI API key using these instuctions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
+
+## Installation
+To install from [**PyPI**](https://pypi.org/project/pmidcite/)
+```pip install pmidcite```
 
 
 Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein. All rights reserved.
