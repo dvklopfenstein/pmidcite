@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-10-07 v0.0.26**](#release-2021-10-07-v0026) Add link to paper in journal, Research Synthesis Methods
 * [**Release 2021-10-07 v0.0.25**](#release-2021-10-07-v0025) Add link to journal, Research Synthesis Methods
 * [**Release 2021-10-07 v0.0.24**](#release-2021-10-07-v0024) README text succinct and clean. Add twitter button.
 * [**Release 2021-10-02 v0.0.23**](#release-2021-10-02-v0023) Use external link for gh-page images
@@ -28,6 +29,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-10-07 v0.0.26
+* Add link to paper in journal, Research Synthesis Methods
 
 ### Release 2021-10-07 v0.0.25
 * Add link to journal, Research Synthesis Methods in README.md and docs/index.md
