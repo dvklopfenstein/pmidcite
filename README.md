@@ -1,5 +1,4 @@
 # PubMed ID (PMID) Cite
-pmidcite
 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Python%20library%20to%20download%20pubmed%20citation%20counts%20and%20data,%20given%20a%20PMID&url=https://github.com/dvklopfenstein/pmidcite&via=dvklopfenstein&hashtags=pubmed,pmid,citations,pubmed2cite,writingtips,scientificwriting)
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
@@ -348,7 +347,7 @@ $ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
 
 
 ## Installation
-To install from [**PyPI**](https://pypi.org/project/pmidcite/)
+To install from [**PyPI**](https://pypi.org/project/pmidcite/)    
 ```pip install pmidcite```
 
 ## Setup

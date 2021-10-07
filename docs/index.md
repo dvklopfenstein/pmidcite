@@ -110,7 +110,7 @@ get n NCBI API key using these instuctions:
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 ## Installation
-To install from [**PyPI**](https://pypi.org/project/pmidcite/)
+To install from [**PyPI**](https://pypi.org/project/pmidcite/)    
 ```pip install pmidcite```
 
 
