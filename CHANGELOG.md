@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-10-07 v0.0.24**](#release-2021-10-07-v0024) README text succinct and clean. Add twitter button.
 * [**Release 2021-10-02 v0.0.23**](#release-2021-10-02-v0023) Use external link for gh-page images
 * [**Release 2021-09-26 v0.0.20**](#release-2021-09-26-v0020) Improved speed for downloading PMIDs returned from a PubMed query
 * [**Release 2021-09-18 v0.0.19**](#release-2021-09-18-v0019) Added CITATION.cff and Google Search Console tag
@@ -27,8 +28,12 @@
 
 ### Unreleased
 
+### Release 2021-10-07 v0.0.24
+* Top of README more clean and succinct
+* Add twitter badge and link
+
 ### Release 2021-10-02 v0.0.23
-* Use external link for gh-page images
+* Use external link for gh-page images so they are viewable from PyPi page
 * Improve utility of function by returning a list of namedtuples instead of None
 
 ### Release 2021-09-26 v0.0.20
