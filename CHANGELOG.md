@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2021-10-11 v0.0.28**](#release-2021-10-11-v0028) Add summary image to README/index.md
 * [**Release 2021-10-07 v0.0.27**](#release-2021-10-07-v0027) Minor cleanup text format in README/index.md
 * [**Release 2021-10-07 v0.0.26**](#release-2021-10-07-v0026) Add link to paper in journal, Research Synthesis Methods
 * [**Release 2021-10-07 v0.0.25**](#release-2021-10-07-v0025) Add link to journal, Research Synthesis Methods
@@ -30,6 +31,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2021-10-11 v0.0.28
+* Add summary image to README/index.md
 
 ### Release 2021-10-07 v0.0.27
 * Minor cleanup text format in README/index.md
