@@ -6,6 +6,8 @@
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 
+![pmidcite summary](doc/images/pmidcite.png)
+
 Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking 
 citation data from the [**NIH**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
@@ -16,7 +18,6 @@ rather than clicking and clicking and clicking on
 
 This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887)    
 
-![pmidcite summary](doc/images/pmidcite.png)
 
 ## Usage
 * [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
