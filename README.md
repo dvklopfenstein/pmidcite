@@ -20,11 +20,11 @@ This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/3303
 
 
 ## Usage
-* [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
-* [**Forward citation search**](https://github.com/dvklopfenstein/pmidcite#forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
-* [**Backward citation search**](https://github.com/dvklopfenstein/pmidcite#backward-citation-search): following the links to a paper's references or *Backward snowballing*
+* [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
+* [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
+* [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
 
-## Download citation counts and data for a research paper
+## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
 * This paper (PMID 26032263) has `25` citations, `10` references, and `4` authors.    
 * This paper is performing well (`74`th percentile in column `%`) compared to its [peers](https://icite.od.nih.gov/user_guide?page_id=ug_overview).    
@@ -45,14 +45,14 @@ better facilitate researchers in finding the latest discoveries.
 
 The grouping of papers by NIH percentile grouping is a novel feature created by [dvklopfenstein](https://github.com/dvklopfenstein) for this project.
 
-## Forward citation search
+## 2) Forward citation search
 Also known as following a paper's *Cited by* links or *Forward snowballing*    
 
 ```icite -H; icite 26032263 --load_citations | sort -k6 -r```    
 or    
 ```icite -H; icite 26032263 -c | sort -k6 -r```    
 
-## Backward citation search
+## 3) Backward citation search
 Also known as following links to a paper's references or *Backward snowballing*    
 
 ```$ icite -H; icite 26032263 --load_references | sort -k6 -r```    
