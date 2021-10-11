@@ -398,7 +398,7 @@ dvklopfenstein@protonmail.com
 
 ## How to Cite
 _If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (NIH citation data)._     
-_Please also consider reading and citing paper 2 (improving search for all):_
+_Please also consider reading and citing Gusenbauer's response (paper 2) about improving search for all in the current avalanche of information:_
 
 1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
 Klopfenstein DV and Dampier W    
