@@ -43,8 +43,15 @@ class PltNihPercentile:
         norm = colors.Normalize(vmin=0, vmax=4)
         scalarmap = cm.ScalarMappable(norm=norm, cmap=cmap)
         rgbas = [scalarmap.to_rgba(n) for n in range(5)]
+        # NIH Group 0 color: # ff0029
+        # NIH Group 1 color: # cdff00
+        # NIH Group 2 color: # 00ff8c
+        # NIH Group 3 color: # 0018ff
+        # NIH Group 4 color: # ff00bf
         for idx, rgba in enumerate(rgbas):
-            print(idx, mpl.colors.rgb2hex(rgba))
+            print('NIH Group {G} color: # {COL}'.format(
+                G=idx,
+                COL=str(mpl.colors.rgb2hex(rgba))[1:]))
         return rgbas
 
     def fill_between(self, axes, xval0, xval1, facecolor):
