@@ -393,7 +393,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
-## Contact
+# Contact
 dvklopfenstein@protonmail.com
 
 ## How to Cite
