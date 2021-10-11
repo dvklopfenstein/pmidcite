@@ -6,7 +6,7 @@
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 
-![pmidcite summary](doc/images/pmidcite.png)
+<img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_summary.png" alt="pmidcite summary" width="600"/>
 
 Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking 
 citation data from the [**NIH**](https://icite.od.nih.gov)
