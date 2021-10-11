@@ -59,7 +59,7 @@ Also known as following links to a paper's references or *Backward snowballing*
 or    
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
-## PubMed vs Google Scholar
+# PubMed vs Google Scholar
 <p align="center">
 <img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
@@ -86,7 +86,7 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content like books and articles published before the 1960s
 
 
-## Usage details
+# Usage details
 
 ### Download citations for all papers returned from a PubMed search
 Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
