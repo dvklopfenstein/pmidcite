@@ -30,14 +30,20 @@ class PubMedQueryToICite:
         if dnld_idxs is not None:
             for idx in dnld_idxs:
                 ntd = nts[idx]
-                self._querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+                self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
         # Download PMIDs and NIH's iCite for all PubMed queries
         else:
             for ntd in nts:
-                self._querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+                self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
         return nts
 
-    def _querypubmed_runicite(self, filename, query):
+    def run_one(self, fout_query, dnld_idx):
+        """Query PubMed for PMIDs. Download iCite, given PMIDs"""
+        nts = self.get_nts_g_list(fout_query)
+        ntd = nts[dnld_idx]
+        return self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+
+    def querypubmed_runicite(self, filename, query, details_cites_refs=None):
         """Given a user query, return PMIDs. Then run NIH's iCite"""
         # 1) Query PubMed and download PMIDs
         #    Maximum PMIDs to download at a time is 100,000 (Default is 20):
@@ -56,13 +62,15 @@ class PubMedQueryToICite:
                 print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
-            self._wr_icite(fout_icite, pmids)
+            return self._wr_icite(fout_icite, pmids, details_cites_refs)
+        return None
 
-    def _wr_icite(self, fout_icite, pmids):
+    def _wr_icite(self, fout_icite, pmids, details_cites_refs):
         """Run PMIDs in iCite and print results into a file"""
         cfg = self.cfg
         dnldr = get_downloader(
-            details_cites_refs=None,
+            # all citations references
+            details_cites_refs=details_cites_refs,
             nih_grouper=cfg.get_nihgrouper(),
             dir_icite_py=cfg.get_dir_icite_py(),
             force_download=self.force_dnld)
@@ -70,6 +78,7 @@ class PubMedQueryToICite:
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))
         dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
+        return pmid2paper
 
     def get_nts_g_list(self, lst):
         """Turn a list iof tuple strings into a list of namedtuples"""
