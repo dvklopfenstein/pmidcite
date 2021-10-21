@@ -63,7 +63,7 @@ class PubMedQueryToICite:
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
             return self._wr_icite(fout_icite, pmids, details_cites_refs)
-        return None
+        return {}
 
     def _wr_icite(self, fout_icite, pmids, details_cites_refs):
         """Run PMIDs in iCite and print results into a file"""
