@@ -3,6 +3,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
 __author__ = "DV Klopfenstein"
 
+import sys
 from collections import namedtuple
 from pmidcite.cfg import get_cfgparser
 from pmidcite.eutils.cmds.pubmed import PubMed
@@ -86,13 +87,15 @@ class PubMedQueryToICite:
         return [nto._make([fname, self.cfg.get_fullname_icite(fname), qry]) for fname, qry in lst]
 
     @staticmethod
-    def get_index(argv):
+    def get_index(argv, queries=None):
         """Get the index of the pubmed query to run"""
         # If no argument was provided, run the last query in the list
         if len(argv) == 1:
             return [-1]
-        if argv[1] == 'all':
-            return None
+        if 'h' in argv[1] and queries:
+            for idx, item in enumerate(queries):
+                print('{I:3} {E}'.format(I=idx, E=item))
+            sys.exit(1)
         return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
 
 
