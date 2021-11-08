@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 from pmidcite.plot.nih_perc import PltNihVals
 ## from pmidcite.cfg import Cfg
+from pmidcite.cfg import Cfg
 
 MU = 0
 VARIANCE = 1
@@ -27,9 +28,18 @@ def main():
         '../bibliometrics/doc/nih_perc_groups.pdf',
     ]
 
+    # 1a) Get percentile group_mins along SD lines
+    # percentiles: [2.28, 15.87, 84.13, 97.72]
     vlines = [-3, -2, -1, 1, 2, 3]
-    probabilities = [round(stats.norm.cdf(z)*100, 2) for z in vlines[1:-1]]
-    pltr = PltNihVals(probabilities)
+    percentiles = [round(stats.norm.cdf(z)*100, 2) for z in vlines[1:-1]]
+
+    # 1b) Get percentile group_mins from Cfg
+    cfg = Cfg()
+    nih_grouper = cfg.get_nihgrouper()
+    percentiles = nih_grouper.get_list()
+
+    # Plot Gaussian curve
+    pltr = PltNihVals(percentiles)
     ## pltr = PltNihVals(Cfg().get_nihgrouper().get_list())
     pltr.prt_vals()
 
