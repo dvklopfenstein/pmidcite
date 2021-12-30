@@ -60,10 +60,12 @@ class NIHiCitePapers:
             authors = icite.dct['authors']
             ## print('PPPPPPPPPPPP', pmid, paper)
             if authors:
+                ## print('PPPPPPPPPPPP', authors)
                 # Count instances of being first or last author
                 au2firstlast[authors[0]]['F'].add(pmid)
-                au2firstlast[authors[1]]['f'].add(pmid)
                 au2firstlast[authors[-1]]['L'].add(pmid)
+                if len(authors) > 2:
+                    au2firstlast[authors[1]]['f'].add(pmid)
         return au2firstlast
 
     def _init_au2cnt(self):
@@ -83,7 +85,6 @@ class NIHiCitePapers:
             if coau in author:
                 return mrk
         return ''
-
 
 
 # Copyright (C) 2021-present DV Klopfenstein. All rights reserved.

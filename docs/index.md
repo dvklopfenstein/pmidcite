@@ -179,4 +179,4 @@ Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/
   Description: Augment your PubMed literature search with forward/backward citation chaining (snowballing) using NIH citation counts and data
   Author: dvklopfenstein
   -->
-<meta name='keywords' content='pmid to citation counts, pmid citation count, pubmed citations, pmid2cite, pubmed2cite, citation count, CitedBy, PubMed, pubmed id, PMID, forward citation, backward citation, forward snowball, backward snowball, literature review, citation downloader'>
+<meta name='keywords' content='PMID To citation counts, PMID Citation count, PubMed Citations, pmid2cite, pubmed2cite, citation count, CitedBy, PubMed, PubMed id, PMID, forward citation, backward citation, forward snowball, backward snowball, literature review, citation downloader'>
