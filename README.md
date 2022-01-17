@@ -80,10 +80,10 @@ The NIH's citation data includes a paper's ranking among its co-citation network
 ## What is in [PubMed](https://pubmed.ncbi.nlm.nih.gov)?  Take a [**quick tour**](https://www.nlm.nih.gov/pubs/techbull/ma20/brief/ma20_pubmed_essentials.html)
 <img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pubmed_content_2020_01_10.png" alt="PubMed Contents" width="850"/>
 
-PubMed is a search interface and toolset used to access over 30.5 million article records from databases like:
+PubMed is a search interface and toolset used to access over 30.5 million article records from databases such as:
 * **MEDLINE**: a highly selective database started in the 1960s
 * **PubMed Central (PMC)**: an open-access database for full-text papers that are free of cost
-* Additional content like books and articles published before the 1960s
+* Additional content such as books and articles published before the 1960s
 
 
 # Usage details
@@ -293,7 +293,7 @@ will often be slightly different than the query run on the PubMed website.
 PubMed has been alerted.
 
 Consequently, you may also want to view citation data on PMID PubMed query results
-downloaded from the PubMed website into a file like `pmid-OrcinusOrc-set.txt`:    
+downloaded from the PubMed website into a file such as `pmid-OrcinusOrc-set.txt`:    
 *Save->All results, Format=PMID*
 ```
 $ icite -i pmid-OrcinusOrc-set.txt
@@ -357,7 +357,7 @@ To install from [**PyPI**](https://pypi.org/project/pmidcite/)
 Save your literature search in a GitHub repo.
 
 ### 1. Add a [pmidcite init file](doc/example_cfg/.pmidciterc)
-Add a .pmidciterc init file to a non-git managed directory, like home (~)
+Add a .pmidciterc init file to a non-git managed directory, such as home (~)
 ```
 $ icite --generate-rcfile | tee ~/.pmidciterc
 [pmidcite]
@@ -373,7 +373,7 @@ dir_icite = .
 ```
 $ export PMIDCITECONF=~/.pmidciterc
 ```
-Do not version manage the `.pmidciterc` using a tool like GitHub because it
+Do not version manage the `.pmidciterc` using a tool such as GitHub because it
 contains your personal email and your private NCBI API key.
 
 ### 2. Add directories
