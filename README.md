@@ -16,7 +16,8 @@ rather than clicking and clicking and clicking on
 [**Google Scholar**](/doc/images/README_twitter.md)
 "*Cited by N*" links.
 
-This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887). Contact: dvklopfenstein@protonmail.com    
+This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).    
+Contact: dvklopfenstein@protonmail.com     
 
 
 ## Usage
