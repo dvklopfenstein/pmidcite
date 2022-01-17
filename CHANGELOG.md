@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-01-17 v0.0.29**](#release-2022-01-17-v0029) Add summary image to README/index.md
 * [**Release 2021-10-11 v0.0.28**](#release-2021-10-11-v0028) Add summary image to README/index.md
 * [**Release 2021-10-07 v0.0.27**](#release-2021-10-07-v0027) Minor cleanup text format in README/index.md
 * [**Release 2021-10-07 v0.0.26**](#release-2021-10-07-v0026) Add link to paper in journal, Research Synthesis Methods
@@ -31,6 +32,23 @@
 ## Details
 
 ### Unreleased
+
+### Release 2022-01-17 v0.0.29
+$ gitlog --since 2022-10
+RAN: git log --after "2022-10" --pretty=format:"%Cred%H %h %an %cd%Creset %s" --name-status
+
+All STARTING ON: 2022_01_16 Sun - 6 commits, 4 files
+  Sun 2022-01-16 18:57:25 4cbb911 A like -> such as
+  Mon 2022-01-17 06:56:50 f1e7ead B Cite/ref arrows right-to-left
+  Mon 2022-01-17 07:12:29 c7563cc C rm comment
+  Mon 2022-01-17 07:15:19 62943b0 D Group 4 (top group) color like in gaussian curve plot
+  Mon 2022-01-17 07:26:37 8b496ef E Add contact
+  Mon 2022-01-17 07:28:23 7b39acb F Format
+    A...EF M README.md
+    .B.D.. M docs/images/pmidcite_summary.png
+    ..C... M src/bin/plt_guassian_nihperc.py
+    ...D.. M doc/images/nih_perc_groups.png
+6 commits since 2022_01_16 shown
 
 ### Release 2021-10-11 v0.0.28
 * Add summary image to README/index.md
