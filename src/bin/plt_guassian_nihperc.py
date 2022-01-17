@@ -11,7 +11,6 @@ mpl.use('agg')
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 from pmidcite.plot.nih_perc import PltNihVals
-## from pmidcite.cfg import Cfg
 from pmidcite.cfg import Cfg
 
 MU = 0
