@@ -46,6 +46,7 @@ class NIHiCiteAPI:
 
     def __init__(self, **kws):
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
+        self.msgs = []
 
     def dnld_nihdict(self, pmid):
         """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
@@ -110,14 +111,19 @@ class NIHiCiteAPI:
             rsp = requests.get(cmd)
             if rsp.status_code == 200:
                 return rsp.json()
-            print(self._err_msg(rsp))
+            self._prt_errmsg(self._err_msg(rsp))
             return None
         except requests.exceptions.ConnectionError as errobj:
-            print('**ERROR: ConnectionError = {ERR}\n'.format(ERR=str(errobj)))
+            self._prt_errmsg('**ERROR: ConnectionError = {ERR}\n'.format(ERR=str(errobj)))
             return None
         except:
             traceback.print_exc()
             raise RuntimeError('**ERROR DOWNLOADING {CMD}'.format(CMD=cmd))
+
+    def _prt_errmsg(self, errmsg):
+        """Print the error and add the error to the list of API messages"""
+        print(errmsg)
+        self.msgs.append(errmsg)
 
     @staticmethod
     def _err_msg(rsp):

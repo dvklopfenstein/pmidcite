@@ -198,6 +198,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed"""
         pmid2icitepaper_cur = self.run_icite_pre(pmid2icitepaper_all, args, argparser)
         if not pmid2icitepaper_cur:
+            dnldr.prt_api_msgs()
             return
         # Write the report with citations and references for each PMID into its own file
         if args.O:
