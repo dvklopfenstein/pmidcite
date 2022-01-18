@@ -54,6 +54,11 @@ class NIHiCiteDownloaderBase:
                 print('{WR}: {TXT}'.format(
                     WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
 
+    def prt_api_msgs(self):
+        """Print error messages captured by API, if there are any"""
+        if self.api.msgs:
+            print('\n{MSG}'.format(MSG='\n'.join(self.api.msgs)))
+
     @staticmethod
     def prt_top(paper, prt=stdout):
         """Print one detailed line summarizing the paper"""
