@@ -10,7 +10,7 @@
 
 Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking 
 [**citation data**](https://icite.od.nih.gov) from the
-([**National Institutes of Health (**NIH**))[https://www.nih.gov/]
+(**National Institutes of Health (**NIH**))[https://www.nih.gov/]
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
