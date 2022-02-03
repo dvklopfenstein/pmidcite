@@ -9,7 +9,7 @@
 <p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_summary.png" alt="pmidcite summary" width="500"/></p>
 
 Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking 
-[**citation data**](https://icite.od.nih.gov) from the [(**National Institutes of Health (**NIH**)[https://www.nih.gov/]
+[**citation data**](https://icite.od.nih.gov) from the [(**National Institutes of Health (**NIH**))[https://www.nih.gov/]
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line
 rather than clicking and clicking and clicking on
