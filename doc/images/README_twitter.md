@@ -1,13 +1,19 @@
 # Out in the field
 
-* [Comments regarding Google Scholar](#google-scholar)
+* [Comments regarding Google Scholar](#comments-regarding-google-scholar)
+  * [Unknown algorithm operating on an unspecified corpus of the most important storehouse of knowledge](#unknown-algorithm-operating-on-an-unspecified-corpus-of-the-most-important-storehouse-of-knowledge)
+  * [2013 Google citations for 2015 work](#2013-google-citations-for-2015-work)
 * [Who is running pmid2cite.com?](#who-created-pmid2citecom)
 
 
-## Google Scholar
+## Comments regarding Google Scholar
+### Unknown algorithm operating on an unspecified corpus of the most important storehouse of knowledge
 https://twitter.com/CT_Bergstrom/status/1170465764832231427    
 ![Google Scholar](Google_Scholar.png)     
 ![Google Scholar](Google_Scholar2.png)    
+### 2013 Google citations for 2015 work
+https://twitter.com/svenja_lohmann/status/1496401646364024835    
+![Google Scholar 2013 cites for 2015 work](Google_Scholar_2013_cites_for_2015_work.png)
 
 
 ## Who created pmid2cite.com?

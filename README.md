@@ -73,7 +73,7 @@ Google's highly popular implementation of the forward citation search through th
 is a "Better" experience than the PubMed's "forward citation search" implementation.
 
 But if your research is in the health sciences and
-you are amenable to consider working from the [command line](#command-line-interface-cli),
+you are amenable to working from the [command line](#command-line-interface-cli),
 you can use PubMed in your browser plus
 citation data downloaded from the NIH using the command-line  using *pmidcite*.
 The NIH's citation data includes a paper's ranking among its co-citation network.
