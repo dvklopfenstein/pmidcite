@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-03-24 v0.0.30**](#release-2022-03-24-v0030) Adjust intro paragraph so search engines don't write a summary with missing spaces
 * [**Release 2022-01-17 v0.0.29**](#release-2022-01-17-v0029) Add summary image to README/index.md
 * [**Release 2021-10-11 v0.0.28**](#release-2021-10-11-v0028) Add summary image to README/index.md
 * [**Release 2021-10-07 v0.0.27**](#release-2021-10-07-v0027) Minor cleanup text format in README/index.md
@@ -32,6 +33,16 @@
 ## Details
 
 ### Unreleased
+
+### Release 2022-03-24 v0.0.30
+ADDED:
+* What is pmid2cite doing with your data and who are they?
+* More comments regarding Google Scholar
+* Improve link format in README.md
+* Clearly say NIH is the National Institutes of Health
+
+CHANGED:
+* Improved error message from API
 
 ### Release 2022-01-17 v0.0.29
 $ gitlog --since 2022-10
