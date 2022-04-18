@@ -13,8 +13,8 @@ citation data from the [**NIH**](https://icite.od.nih.gov)
 with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
 using the command line.
 
-This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/33031632) peer-reviewed [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).    
-Please cite this paper if you use *pmidcite* in your in your research or literature search.    
+This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).    
+Please cite if you use *pmidcite* in your in your research or literature search.    
 
 ## Usage
 * [**Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#download-citation-counts-and-data-for-a-research-paper)
