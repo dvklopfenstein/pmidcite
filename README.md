@@ -11,7 +11,7 @@
 Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking [**citation data**](https://icite.od.nih.gov) from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs) using the command line rather than clicking and clicking and clicking on [**Google Scholar**](/doc/images/README_twitter.md) "*Cited by N*" links.
 
 This open-source project is part of [**a**](https://pubmed.ncbi.nlm.nih.gov/33031632) peer-reviewed [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).    
-Please cite this paper if you use *pmidcite* in your in your research or your literature search.    
+Please cite this paper if you use *pmidcite* in your in your research or literature search.    
 Contact: dvklopfenstein@protonmail.com     
 
 
