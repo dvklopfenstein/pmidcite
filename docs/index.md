@@ -8,10 +8,8 @@
 
 <p align="center"><img src="images/pmidcite_summary.png" alt="pmidcite summary" width="500"/></p>
 
-Augment a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search by linking 
-citation data from the [**NIH**](https://icite.od.nih.gov)
-with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs)
-using the command line.
+
+Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences by linking [**citation data**](https://icite.od.nih.gov) from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs) using the command line rather than clicking and clicking and clicking on [**Google Scholar**](/doc/images/README_twitter.md) "*Cited by N*" links.
 
 This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).    
 Please cite if you use *pmidcite* in your research or literature search.    

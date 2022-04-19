@@ -3,7 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2022-04-18 v0.0.32**](#release-2022-03-24-v0032) Update peer-reviewed paper info in README and GitHub pages
+* [**Release 2022-04-19 v0.0.33**](#release-2022-04-19-v0033) Turbocharge your literature search
+* [**Release 2022-04-18 v0.0.32**](#release-2022-04-18-v0032) Update peer-reviewed paper info in README and GitHub pages
 * [**Release 2022-03-24 v0.0.30**](#release-2022-03-24-v0030) Adjust intro paragraph so search engines don't write a summary with missing spaces
 * [**Release 2022-01-17 v0.0.29**](#release-2022-01-17-v0029) Add summary image to README/index.md
 * [**Release 2021-10-11 v0.0.28**](#release-2021-10-11-v0028) Add summary image to README/index.md
@@ -34,6 +35,10 @@
 ## Details
 
 ### Unreleased
+
+### Release 2022-04-19 v0.0.33
+UPDATED: Turbocharge (augment does not properly describe the capabilities) your literature search: updated README and GitHub pages
+"Augment" does not properly describe the capabilities *pmidcite* offers.
 
 ### Release 2022-04-18 v0.0.32
 UPDATED: peer-reviewed paper info in README and GitHub pages
