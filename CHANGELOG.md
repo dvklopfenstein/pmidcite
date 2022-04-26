@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-04-26 v0.0.34**](#release-2022-04-26-v0034) More detailed GitHub repo card (project summary image)
 * [**Release 2022-04-19 v0.0.33**](#release-2022-04-19-v0033) Turbocharge your literature search
 * [**Release 2022-04-18 v0.0.32**](#release-2022-04-18-v0032) Update peer-reviewed paper info in README and GitHub pages
 * [**Release 2022-03-24 v0.0.30**](#release-2022-03-24-v0030) Adjust intro paragraph so search engines don't write a summary with missing spaces
@@ -35,6 +36,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2022-04-26 v0.0.34
+UPDATED: More detailed GitHub repo card (pmidcite_summary.png -> pmidcite_citedby.png)
 
 ### Release 2022-04-19 v0.0.33
 UPDATED: Turbocharge (augment does not properly describe the capabilities) your literature search: updated README and GitHub pages
