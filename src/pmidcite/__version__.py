@@ -1,3 +1,3 @@
 """Version of pmidcite project"""
 
-__version__ = '0.0.33'
+__version__ = '0.0.34'

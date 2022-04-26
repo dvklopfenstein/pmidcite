@@ -6,7 +6,7 @@
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
 
-<p align="center"><img src="images/pmidcite_summary.png" alt="pmidcite summary" width="500"/></p>
+<p align="center"><img src="images/pmidcite_citedby.png" alt="pmidcite summary" width="500"/></p>
 
 
 Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences by linking [**citation data**](https://icite.od.nih.gov) from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs) using the command line rather than clicking and clicking and clicking on [**Google Scholar**](/doc/images/README_twitter.md) "*Cited by N*" links.
