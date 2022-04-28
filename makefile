@@ -42,6 +42,9 @@ cnt:
 vim_ver:
 	vim -p src/pmidcite/__version__.py setup.py CHANGELOG.md
 
+vim_md:
+	vim -p README.md docs/index.md
+
 # 2) Create wheel - Check PyPi packages are up-to-date: make upgrade
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # universal wheels are pure Python
