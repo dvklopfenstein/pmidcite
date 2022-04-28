@@ -12,6 +12,7 @@ Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search in
 
 This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).
 Please cite if you use *pmidcite* in your research or literature search.    
+
 Contact: dvklopfenstein@protonmail.com     
 
 
