@@ -11,7 +11,7 @@
 Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences by linking [**citation data**](https://icite.od.nih.gov) from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) with [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) IDs (PMIDs) using the command line rather than clicking and clicking and clicking on [**Google Scholar**](/doc/images/README_twitter.md) "*Cited by N*" links.
 
 This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**paper**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) published in [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).
-Please cite if you use *pmidcite* in your research or literature search.    
+[**Please cite**](#how-to-cite) if you use *pmidcite* in your research or literature search.    
 
 Contact: dvklopfenstein@protonmail.com     
 
@@ -391,11 +391,11 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 # Contact
-dvklopfenstein@protonmail.com    
+email: dvklopfenstein@protonmail.com    
 https://orcid.org/0000-0003-0161-7603
 
 ## How to Cite
-_If you use **pmidcite** in your research, please cite paper 1 (pmidcite) and paper 3 (NIH citation data)._      
+_If you use **pmidcite** in your research or literature search, please cite paper 1 (pmidcite) and paper 3 (NIH citation data)._      
 
 _Please also consider reading and citing Gusenbauer's response (paper 2) about improving search for all during the information avalanche of these times:_
 
