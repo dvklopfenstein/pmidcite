@@ -10,6 +10,10 @@ https://twitter.com/CT_Bergstrom/status/1170465764832231427
 ![Google Scholar](Google_Scholar.png)     
 ![Google Scholar](Google_Scholar2.png)    
 
+## Gmail search
+https://twitter.com/Chronotope/status/1527287628256620544
+![Gmail search](gmail_search_changed.png)
+
 ## PubMed vs. Google Scholar
 ![PM v GS](/docs/images/Search_Features_GS_v_PubMed.png)
 
@@ -19,4 +23,4 @@ https://twitter.com/CT_Bergstrom/status/1170465764832231427
 ## PubMed Contents
 ![PubMed contents](/docs/images/pubmed_content_2020_01_10.png)
 
-Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
+Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved.
