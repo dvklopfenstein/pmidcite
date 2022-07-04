@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-07-03 v0.0.36**](#release-2022-07-03-v0036) Change citation count on GitHub repo card
 * [**Release 2022-04-28 v0.0.35**](#release-2022-04-28-v0035) More detailed GitHub repo card (project summary image)
 * [**Release 2022-04-19 v0.0.33**](#release-2022-04-19-v0033) Turbocharge your literature search
 * [**Release 2022-04-18 v0.0.32**](#release-2022-04-18-v0032) Update peer-reviewed paper info in README and GitHub pages
@@ -36,6 +37,9 @@
 ## Details
 
 ### Unreleased
+
+### Release 2022-07-03 v0.0.36
+CHANGED: Updated citation count on GitHub repo card after today's discussions
 
 ### Release 2022-04-28 v0.0.35
 UPDATED: More detailed GitHub repo card (pmidcite_summary.png -> pmidcite_citedby.png)
