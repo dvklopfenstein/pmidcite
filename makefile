@@ -48,6 +48,7 @@ vim_md:
 # 2) Create wheel - Check PyPi packages are up-to-date: make upgrade
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
 # universal wheels are pure Python
+#   Needs wheel package to run bdist_wheel: pip3 install wheel
 .PHONY: build
 build:
 	# python3 -m pip install --user --upgrade setuptools wheel
