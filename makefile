@@ -71,7 +71,11 @@ upgrade:
 clean_dist:
 	rm -rf dist build 
 
+pyc:
+	find . -name __pycache__ -type d | xargs rm -rf
+
 clean:
+	make pyc
 	rm -f notebooks/pubmed_20050301.txt
 	rm -f pubmed_20050301.txt
 	rm -f 29129787.txt

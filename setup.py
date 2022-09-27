@@ -21,7 +21,6 @@ PACKAGES = [
     'pmidcite.eutils.cmds',
     'pmidcite.eutils.pubmed',
     'pmidcite.eutils.pubmed.counts',
-    'pmidcite.eutils.pubmed.mesh',
     'pmidcite.icite',
     'pmidcite.icite.dnldr',
     'pmidcite.plot',
@@ -39,7 +38,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.36',
+    version='0.0.37',
     author='DV Klopfenstein',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
