@@ -17,6 +17,12 @@ pylint:
 	chmod 755 tmp_pylint
 	tmp_pylint
 
+py:
+	find src/bin src/pmidcite -name \*.py
+
+pyall:
+	find src -name \*.py
+
 #### TESTS := \
 ####     src/tests/test_cfg_icite.py
 
