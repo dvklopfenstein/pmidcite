@@ -7,7 +7,7 @@ from os.path import dirname
 from os.path import join
 # from distutils.core import setup
 from glob import glob
-from pathlib import PurePosixPath
+from os.pathlib import PurePosixPath
 from setuptools import setup
 # import versioneer
 
@@ -39,7 +39,7 @@ setup(
     name=NAME,
     ## version=versioneer.get_version(),
     version='0.0.37',
-    author='DV Klopfenstein',
+    author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
     packages=PACKAGES,
