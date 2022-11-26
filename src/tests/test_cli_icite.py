@@ -24,7 +24,7 @@ from tests.args_dflt import ARGS
 def test_cli_icite():
     """Test the icite command-line options"""
     args = ARGS
-    print(args)
+    print('TEST ARGS test_cli_icite:', args)
 
     # icite
     # pylint: disable=protected-access

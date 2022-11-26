@@ -107,7 +107,7 @@ class Cfg(object):
         dirname = self.cfgparser['pmidcite'][dir_key]
         if dirname is None or dirname == 'None':
             return filename
-        if exists(dirname):
+        if dirname is not None and exists(dirname):
             return join(dirname, filename)
         cwd = getcwd()
         print('**WARNING: DIR NOT EXIST {DIR_TYPE}({DIR_NAME}) RETURNING CWD({CWD})'.format(
@@ -159,7 +159,7 @@ class Cfg(object):
 
     def rd_rc(self, prt=stdout, prt_fullname=True):
         """Read a configuration file"""
-        if exists(self.cfgfile):
+        if self.cfgfile is not None and exists(self.cfgfile):
             if prt:
                 cfgfile = self.cfgfile if prt_fullname else basename(self.cfgfile)
                 prt.write('  READ: {CFG}\n'.format(CFG=cfgfile))

@@ -7,7 +7,7 @@ import sys
 from collections import namedtuple
 from pmidcite.cfg import get_cfgparser
 from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.cli.utils import wr_pmids
+#### from pmidcite.cli.utils import wr_pmids
 from pmidcite.icite.downloader import get_downloader
 
 
@@ -53,14 +53,14 @@ class PubMedQueryToICite:
         #        https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
         pmids = self.pubmed.dnld_query_pmids(query, num_ids_p_epost=100000)
         ## print('PMIDCITE QQQQQQQQQQQQQQQQQ {N} PMIDs'.format(N=len(pmids)))
-        fout_pmids = self.cfg.get_fullname_pmids(filename)
+        ## fout_pmids = self.cfg.get_fullname_pmids(filename)
         fout_icite = self.cfg.get_fullname_icite(filename)
-        # 2) Write PubMed PMIDs into a simple text file, one PMID per line
-        if fout_pmids != fout_icite:
-            if pmids:
-                wr_pmids(fout_pmids, pmids)
-            else:
-                print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
+        ##### 2) Write PubMed PMIDs into a simple text file, one PMID per line
+        ####if fout_pmids != fout_icite:
+        ####    if pmids:
+        ####        wr_pmids(fout_pmids, pmids)
+        ####    else:
+        ####        print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
             return self._wr_icite(fout_icite, pmids, details_cites_refs)
