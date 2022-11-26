@@ -38,6 +38,7 @@
 ## Details
 
 ### Unreleased
+* ADDED instructions for loading locally
 
 ### release 2022-09-03 v0.0.37
 FIXED: Remove unused package in setup.py (pmidcite.eutils.pubmed.mesh)
