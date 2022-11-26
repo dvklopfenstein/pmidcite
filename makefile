@@ -1,7 +1,18 @@
 PYTHON = python3
 
-findpy:
-	find src -regextype posix-extended -regex ".*[a-z]+.py"
+install:
+	pip install .
+
+py:
+	find src -name \*.py
+
+t:
+	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
+
+p:
+	find src/bin src/pmidcite -name \*.py
+
+d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
 diff0:
@@ -17,11 +28,6 @@ pylint:
 	chmod 755 tmp_pylint
 	tmp_pylint
 
-py:
-	find src/bin src/pmidcite -name \*.py
-
-pyall:
-	find src -name \*.py
 
 #### TESTS := \
 ####     src/tests/test_cfg_icite.py
@@ -57,6 +63,7 @@ vim_md:
 #   Needs wheel package to run bdist_wheel: pip3 install wheel
 .PHONY: build
 build:
+	# python3 -m pip install -U pip
 	# python3 -m pip install --user --upgrade setuptools wheel
 	make clean_dist
 	$(PYTHON) setup.py sdist
@@ -101,6 +108,7 @@ clean:
 	rm -rf notebooks/icite
 	rm -rf src/tests/icite
 	make clobber_tmp
+	make clean_dist
 
 clobber_tmp:
 	rm -rf ./icite
