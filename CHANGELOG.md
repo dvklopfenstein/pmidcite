@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-11-26 v0.0.38**](#release-2022-11-26-v0038) Added instructions, and console_script to run script, icite
 * [**Release 2022-09-27 v0.0.37**](#release-2022-09-27-v0037) Remove unused package in setup.py
 * [**Release 2022-07-03 v0.0.36**](#release-2022-07-03-v0036) Change citation count on GitHub repo card
 * [**Release 2022-04-28 v0.0.35**](#release-2022-04-28-v0035) More detailed GitHub repo card (project summary image)
@@ -38,7 +39,11 @@
 ## Details
 
 ### Unreleased
-* ADDED instructions for loading locally
+
+### release 2022-11-26 v0.0.38
+* ADDED instructions for loading locally to README.md [#43](https://github.com/dvklopfenstein/pmidcite/issues/43)
+* ADDED entry_points, console_scripts, icite to setup.py [#42](https://github.com/dvklopfenstein/pmidcite/issues/42)
+* CHANGED first make target to locally install pmidcite [#43](https://github.com/dvklopfenstein/pmidcite/issues/43)
 
 ### release 2022-09-03 v0.0.37
 FIXED: Remove unused package in setup.py (pmidcite.eutils.pubmed.mesh)
