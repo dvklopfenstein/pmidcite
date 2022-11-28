@@ -23,6 +23,8 @@ PACKAGES = [
     'pmidcite.icite',
     'pmidcite.icite.dnldr',
     'pmidcite.plot',
+    'src',
+    'src.bin',
 ]
 
 PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
@@ -30,14 +32,17 @@ PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
 def get_long_description():
     """Return the contents of the README.md as a string"""
     dir_cur = abspath(dirname(__file__))
-    with open(join(dir_cur, 'README.md'), encoding='utf-8') as ifstrm:
-        return ifstrm.read()
+    # python3
+    #with open(join(dir_cur, 'README.md'), encoding='utf-8') as ifstrm:
+    # python3 or python2
+    with open(join(dir_cur, 'README.md'), 'rb') as ifstrm:
+        return ifstrm.read().decode("UTF-8")
 
 
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.38',
+    version='0.0.39',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),

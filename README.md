@@ -348,13 +348,13 @@ $ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
 
 ## Installation
 To install from [**PyPI**](https://pypi.org/project/pmidcite/)    
-```$ pip install pmidcite```
+```$ pip3 install pmidcite```
 
 To install locally
 ```
 $ git clone https://github.com/dvklopfenstein/pmidcite.git
 $ cd ./pmidcite
-$ pip install .
+$ pip3 install .
 ```
 
 
