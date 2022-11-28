@@ -1,7 +1,7 @@
 PYTHON = python3
 
 install:
-	pip install .
+	pip3 install .
 
 py:
 	find src -name \*.py

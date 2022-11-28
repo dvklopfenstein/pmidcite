@@ -112,7 +112,14 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 
 ## Installation
 To install from [**PyPI**](https://pypi.org/project/pmidcite/)    
-```pip install pmidcite```
+```pip3 install pmidcite```
+
+To install locally
+```
+$ git clone https://github.com/dvklopfenstein/pmidcite.git
+$ cd ./pmidcite
+$ pip3 install .
+```
 
 # Contact
 dvklopfenstein@protonmail.com    
