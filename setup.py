@@ -23,11 +23,13 @@ PACKAGES = [
     'pmidcite.icite',
     'pmidcite.icite.dnldr',
     'pmidcite.plot',
-    'src',
-    'src.bin',
 ]
 
 PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
+
+PACKAGES.extend(['src', 'src.bin'])
+PACKAGE_DIRS['src'] = 'src'
+PACKAGE_DIRS['src.bin'] = 'src/bin'
 
 def get_long_description():
     """Return the contents of the README.md as a string"""
