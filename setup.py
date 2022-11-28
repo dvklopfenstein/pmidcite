@@ -23,6 +23,8 @@ PACKAGES = [
     'pmidcite.icite',
     'pmidcite.icite.dnldr',
     'pmidcite.plot',
+    'src',
+    'src.bin',
 ]
 
 PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
@@ -40,7 +42,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.38',
+    version='0.0.39',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),

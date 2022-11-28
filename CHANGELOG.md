@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-11-26 v0.0.38**](#release-2022-11-28-v0039) pip3, not pip from Python2
 * [**Release 2022-11-26 v0.0.38**](#release-2022-11-26-v0038) Added instructions, and console_script to run script, icite
 * [**Release 2022-09-27 v0.0.37**](#release-2022-09-27-v0037) Remove unused package in setup.py
 * [**Release 2022-07-03 v0.0.36**](#release-2022-07-03-v0036) Change citation count on GitHub repo card
@@ -39,6 +40,10 @@
 ## Details
 
 ### Unreleased
+
+### release 2022-11-29 v0.0.39
+* CHANGED `pip install .` to `pip3 install .` in makefile and README.md
+* ADDED `src` and `src.bin` to package modules
 
 ### release 2022-11-26 v0.0.38
 * ADDED instructions for loading locally to README.md [#43](https://github.com/dvklopfenstein/pmidcite/issues/43)
