@@ -22,12 +22,12 @@ PACKAGES = [
     'pmidcite.eutils.pubmed.counts',
     'pmidcite.icite',
     'pmidcite.icite.dnldr',
+    'pmidcite.scripts',
     'pmidcite.plot',
-    'src',
-    'src.bin',
 ]
 
 PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
+
 
 def get_long_description():
     """Return the contents of the README.md as a string"""
@@ -42,7 +42,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.39',
+    version='0.0.40',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
@@ -54,7 +54,7 @@ setup(
     scripts=glob('src/bin/*.py'),
     entry_points={
         'console_scripts':[
-            'icite=src.bin.icite:main',
+            'icite=pmidcite.scripts.icite:main',
         ],
     },
     # https://pypi.org/classifiers/
