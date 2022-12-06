@@ -3,7 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2022-11-26 v0.0.38**](#release-2022-11-28-v0040) Added pmidcite.scripts.icite; pip3, not pip from Python2
+* [**Release 2022-12-06 v0.0.41**](#release-2022-12-06-v0041) setup.py updates for make target, install 
+* [**Release 2022-11-26 v0.0.40**](#release-2022-11-28-v0040) Added pmidcite.scripts.icite; pip3, not pip from Python2
 * [**Release 2022-11-26 v0.0.38**](#release-2022-11-26-v0038) Added instructions, and console_script to run script, icite
 * [**Release 2022-09-27 v0.0.37**](#release-2022-09-27-v0037) Remove unused package in setup.py
 * [**Release 2022-07-03 v0.0.36**](#release-2022-07-03-v0036) Change citation count on GitHub repo card
@@ -41,7 +42,10 @@
 
 ### Unreleased
 
-### release 2022-11-29 v0.0.40
+### release 2022-12-06 v0.0.41
+* CHANGED setup.py PACKAGES variable to run install make target
+
+### release 2022-11-28 v0.0.40
 * ADDED `icite` to new package module, pmidcite.scripts
 * CHANGED `pip install .` to `pip3 install .` in makefile and README.md
 
