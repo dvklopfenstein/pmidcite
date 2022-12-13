@@ -16,6 +16,10 @@ class NihGrouper:
         self.min2 = group2_min
         self.min3 = group3_min
         self.min4 = group4_min
+        #print(f'group1_min: {group1_min}')
+        #print(f'group2_min: {group2_min}')
+        #print(f'group3_min: {group3_min}')
+        #print(f'group4_min: {group4_min}')
 
     def get_group(self, nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
