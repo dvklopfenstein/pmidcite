@@ -5,6 +5,9 @@ install:
 
 py:
 	find src -name \*.py
+	
+e:
+	find src/pmidcite/eutils -name \*.py
 
 t:
 	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
