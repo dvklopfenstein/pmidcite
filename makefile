@@ -116,3 +116,6 @@ clean:
 clobber_tmp:
 	rm -rf ./icite
 	rm -rf ./src/tests/icite
+
+clobber:
+	make -f makefile clobber_tmp clobber_dist

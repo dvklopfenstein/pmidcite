@@ -1,7 +1,7 @@
 """Read a file created by pmidcite and write simple text file of PMIDs"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os.path import exists
 from os.path import split
@@ -47,6 +47,16 @@ def get_all(pmid_list, fin_pmids, top_cit_ref=None):
             else:
                 print('  MISSING: {FILE}'.format(FILE=fin))
     return pmids
+
+def get_files_exists(files, prt=None):
+    """Get the files that exist"""
+    ret = []
+    for filename in files:
+        if exists(filename):
+            ret.append(filename)
+        elif prt:
+            prt.write(f'**WARNING: FILE NOT EXIST({filename})\n')
+    return ret
 
 def _read_pmids(fin, top_cit_ref):
     """Read PMIDs from a file. One PMID per line."""
@@ -125,5 +135,12 @@ def _get_outfile_resolved(outfile, append_outfile):
         return append_outfile
     return None
 
+def prt_loc_rcfile(cfg, prt=stdout):
+    """Print location of configuration file"""
+    prt.write('\n**NOTE FROM ARG(--print-rcfile):\n')
+    cfg.prt_cfgfile()
+    prt.write('\n')
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+
+
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

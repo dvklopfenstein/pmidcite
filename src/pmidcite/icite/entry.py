@@ -1,8 +1,8 @@
 """Holds NIH iCite data for one PubMed ID (PMID)"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 
@@ -56,19 +56,25 @@ class NIHiCiteEntry:
         author1='authors',
         title='title')
 
-    def __init__(self, icite_dct, nih_group):
-        self.pmid = icite_dct['pmid']
-        self.dct = icite_dct
+    def __init__(self, pmid=None, dct=None):
+        self.pmid = pmid
+        self.dct = dct
+
+    @classmethod
+    def from_jsondct(cls, icite_dct, nih_group_num):
+        """Construct NIHiCiteEntry from jsondct downloaded from NIH using Entrez utils"""
+        cls_dct = icite_dct
         nih_perc = icite_dct['nih_percentile']
-        self.dct['nih_group'] = nih_group  # 0 - 5
+        cls_dct['nih_group'] = nih_group_num  # 0 - 5
         # pylint: disable=line-too-long
-        self.dct['num_auth'] = len(icite_dct['authors'])
-        self.dct['num_clin'] = len(icite_dct['cited_by_clin'])
-        self.dct['num_cite'] = len(icite_dct['cited_by'])
-        num_cites_all = len(set(self.dct['cited_by_clin']).union(self.dct['cited_by']))
-        self.dct['num_cites_all'] = num_cites_all
-        self.dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
-        self.dct['num_refs'] = len(icite_dct['references'])
+        cls_dct['num_auth'] = len(icite_dct['authors'])
+        cls_dct['num_clin'] = len(icite_dct['cited_by_clin'])
+        cls_dct['num_cite'] = len(icite_dct['cited_by'])
+        num_cites_all = len(set(cls_dct['cited_by_clin']).union(cls_dct['cited_by']))
+        cls_dct['num_cites_all'] = num_cites_all
+        cls_dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
+        cls_dct['num_refs'] = len(icite_dct['references'])
+        return cls(icite_dct['pmid'], cls_dct)
 
     ## TBD:
     ## def __eq__(self, rhs):
@@ -222,4 +228,4 @@ class NIHiCiteEntry:
         return self.pmid < rhs.pmid
 
 
-# Copyright (C) 2019-present DV Klopfensteinr,. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

@@ -11,6 +11,8 @@ class NihGrouper:
 
     ntobj = namedtuple('NtNihGroup', 'val txt')
 
+    group_chrs = ['0', '1', '2', '3', '4', 'i']
+
     def __init__(self, group1_min=2.1, group2_min=15.7, group3_min=83.9, group4_min=97.5):
         self.min1 = group1_min
         self.min2 = group2_min
@@ -20,6 +22,11 @@ class NihGrouper:
         #print(f'group2_min: {group2_min}')
         #print(f'group3_min: {group3_min}')
         #print(f'group4_min: {group4_min}')
+
+    def str_group(self, nih_percentile):
+        """Get chr representing group number"""
+        group_num = self.get_group(nih_percentile)
+        return 'i' if group_num == 5 else str(group_num)
 
     def get_group(self, nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
