@@ -1,8 +1,8 @@
 """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os.path import exists
 from os.path import join
@@ -53,7 +53,8 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
             for nih_dict in nihdicts:
                 s_wrpy(pmid2foutpy[nih_dict['pmid']], nih_dict)
             s_get_group = self.nihgrouper.get_group
-            return [NIHiCiteEntry(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
+            # pylint: disable=line-too-long
+            return [NIHiCiteEntry.from_jsondct(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
         return []
 
     def get_icite(self, pmid):
@@ -63,7 +64,7 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
             nih_dict = self.api.dnld_nihdict(pmid)
             if nih_dict:
                 self._wrpy(file_pmid, nih_dict)
-                return NIHiCiteEntry(
+                return NIHiCiteEntry.from_jsondct(
                     nih_dict,
                     self.nihgrouper.get_group(nih_dict['nih_percentile']))
         return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
@@ -99,4 +100,4 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
         return nihentries_loaded
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

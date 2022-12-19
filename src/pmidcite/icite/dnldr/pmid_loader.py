@@ -1,7 +1,7 @@
 """Given a PubMed ID (PMID), return a list of publications which cite it"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 from os.path import join
@@ -64,7 +64,8 @@ class NIHiCiteLoader:
             mod = module_from_spec(spec)
             spec.loader.exec_module(mod)
             ## print('LLLLLLLLLLLLL load_icite', file_pmid)
-            return NIHiCiteEntry(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
+            # pylint: disable=line-too-long
+            return NIHiCiteEntry.from_jsondct(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
         return None
 
     def load_pmid(self, pmid):
@@ -84,4 +85,4 @@ class NIHiCiteLoader:
         ## return pmids_linked
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

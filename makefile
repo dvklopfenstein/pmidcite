@@ -5,6 +5,9 @@ install:
 
 py:
 	find src -name \*.py
+	
+e:
+	find src/pmidcite/eutils -name \*.py
 
 t:
 	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
@@ -113,3 +116,6 @@ clean:
 clobber_tmp:
 	rm -rf ./icite
 	rm -rf ./src/tests/icite
+
+clobber:
+	make -f makefile clobber_tmp clobber_dist
