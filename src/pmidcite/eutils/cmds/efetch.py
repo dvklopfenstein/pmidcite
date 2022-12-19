@@ -1,8 +1,8 @@
 """Fetch items and write"""
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch
 
-__author__ = 'DV Klopfenstein'
-__copyright__ = "Copyright (C) 2016-present DV Klopfenstein. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
+__copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
 __license__ = "GPL"
 
 import sys
@@ -17,7 +17,7 @@ class EFetch(CommandBase):
     #### def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100, **kws):
     def __init__(self, rettype='medline', retmode='text', batch_size=100, **kws):
         kws_base = {k:v for k, v in kws.items() if k in CommandBase.exp_kws}
-        print('FFFFFFFFFFFFFFFFFFFF', kws_base)
+        ##print('FFFFFFFFFFFFFFFFFFFF', kws_base)
         super(EFetch, self).__init__(**kws_base)
 
     def efetch_and_write(self, ostrm, database, webenv, querykey, num_fetches):
@@ -29,7 +29,7 @@ class EFetch(CommandBase):
         for start in range(0, num_fetches, self.batch_size):
             ## msg = msg_fmt.format(querykey, database, self.batch_size, start, self.desc)
             ## sys.stdout.write(msg)
-            print('SSSSSSSSSSSSSSSSSSSSSSSTART:', start)
+            ## print('SSSSSSSSSSSSSSSSSSSSSSSTART:', start)
             txt = self.efetch_txt(start, self.batch_size, database, webenv, querykey)
 
             if txt is not None:
@@ -73,4 +73,4 @@ class EFetch(CommandBase):
             sys.stdout.write("  querykey:   {}\n".format(querykey))
 
 
-# Copyright (C) 2016-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved.
