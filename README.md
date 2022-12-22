@@ -20,7 +20,7 @@ Contact: dvklopfenstein@protonmail.com
 * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
 * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
 * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
-* [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations):
+* [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -58,7 +58,7 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
-Examine a paper with PMID `30022098`. Print the column headers(`-H`):
+### 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):
 ```
 $ icite -H 30022098
 COL 2        3  4       5 6 7        8  9  10 au[11](authors)
@@ -66,9 +66,9 @@ TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
 TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
 ```
 
-Paper with PMID `30022098` is cited by `318`(`cit`) other reserch papers and `1`(`cli`) clinical study. It has `23` references.    
+Paper with PMID `30022098` is cited by `318`(`cit`) other reserch papers and `1`(`cli`) clinical study. It has `23` references(`ref`).    
 
-Download and save details about the citing papers(`-c`) into a file(`-o goatools_cites.txt`):
+### 4b) Download and save the details about each citing paper(`-c`) into a file(`-o goatools_cites.txt`):
 ```
 $ icite 30022098 -c -o goatools_cites.txt
 ```
@@ -88,8 +88,8 @@ $ grep CLI goatools_cites.txt | wc -l
 1
 ```
 
-**NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.
-Summarize all the papers in `goatools_cites.txt`
+### 4c) Summarize all the papers in `goatools_cites.txt`
+**NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.   
 ```
 $ summarize_papers goatools_cites.txt -p TOP CIT CLI
 i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 papers goatools_cites.txt
