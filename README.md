@@ -58,6 +58,13 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
+* 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):   
+`icite -H 30022098`
+* 4b) Download and save the details about each citing paper(`-c`) into a file(`-o goatools_cites.txt`):    
+`icite 30022098 -c -o goatools_cites.txt`
+* 4c) Summarize all the papers in `goatools_cites.txt`    
+`summarize_papers goatools_cites.txt -p TOP CIT CLI`
+
 ### 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):
 ```
 $ icite -H 30022098
@@ -96,8 +103,8 @@ i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 
 ```
 
 * Output is on one line so many files containing sets of PMIDs may be compared. TBD: Add multiline verbose option.
-* The groups are from newest('i`) to top-performing(`4`), great(`3`), very good(`2`), and overlooked(`1` and `0`)
-* The percentages in each group follow the group name
+* The groups are from newest(`i`) to top-performing(`4`), great(`3`), very good(`2`), and overlooked(`1` and `0`)
+* The percentages of papers in `goatools_citations.txt` in each group follow the group name
 
 
 
