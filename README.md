@@ -1,4 +1,4 @@
-# PubMed ID (PMID) Cite
+# PubMedj ID (PMID) Cite
 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Python%20library%20to%20download%20pubmed%20citation%20counts%20and%20data,%20given%20a%20PMID&url=https://github.com/dvklopfenstein/pmidcite&via=dvklopfenstein&hashtags=pubmed,pmid,citations,pubmed2cite,writingtips,scientificwriting)
 [![build](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml/badge.svg)](https://github.com/dvklopfenstein/pmidcite/actions/workflows/build.yml)
@@ -20,6 +20,7 @@ Contact: dvklopfenstein@protonmail.com
 * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
 * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
 * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
+* [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations):
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -55,6 +56,50 @@ Also known as following links to a paper's references or *Backward snowballing*
 ```$ icite -H; icite 26032263 --load_references | sort -k6 -r```    
 or    
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
+
+## 4) Summarize a group of citations
+Examine a paper with PMID `30022098`. Print the column headers(`-H`):
+```
+$ icite -H 30022098
+COL 2        3  4       5 6 7        8  9  10 au[11](authors)
+TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
+TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
+```
+
+Paper with PMID `30022098` is cited by `318`(`cit`) other reserch papers and `1`(`cli`) clinical study. It has `23` references.    
+
+Download and save details about the citing papers(`-c`) into a file(`-o goatools_cites.txt`):
+```
+$ icite 30022098 -c -o goatools_cites.txt
+```
+
+The requested paper (PMID=`30022098`) is described in one one line in `goatools_cites.txt`:
+```
+$ grep TOP goatools_cites.txt
+TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
+```
+
+The paper (PMID=`30022098`) is cited by 381(`CIT`) research papers plus 1(`CLI`) clinical study:
+```
+$ grep CIT goatools_cites.txt | wc -l
+318
+
+$ grep CLI goatools_cites.txt | wc -l
+1
+```
+
+**NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.
+Summarize all the papers in `goatools_cites.txt`
+```
+$ summarize_papers goatools_cites.txt -p TOP CIT CLI
+i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 papers goatools_cites.txt
+```
+
+* Output is on one line so many files containing sets of PMIDs may be compared. TBD: Add multiline verbose option.
+* The groups are from newest('i`) to top-performing(`4`), great(`3`), very good(`2`), and overlooked(`1` and `0`)
+* The percentages in each group follow the group name
+
+
 
 # PubMed vs Google Scholar
 <p align="center">
@@ -456,4 +501,4 @@ Fiorini N ... Lu Zhiyong
 dvklopfenstein@protonmail.com    
 https://orcid.org/0000-0003-0161-7603
 
-Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein. All rights reserved.
+Copyright (C) 2019-present [pmidcite](https://dvklopfenstein.github.io/pmidcite/), DV Klopfenstein, PhD. All rights reserved.
