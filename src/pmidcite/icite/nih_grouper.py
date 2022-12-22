@@ -1,10 +1,22 @@
 """Groups papers using the NIH percentile"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from collections import namedtuple
 
+def get_nihgrouper(min1, min2, min3, min4):
+    """Get NihGrouper, given NIH percentile dividers"""
+    args = {}
+    if min1:
+        args['group1_min'] = min1
+    if min2:
+        args['group2_min'] = min2
+    if min3:
+        args['group3_min'] = min3
+    if min4:
+        args['group4_min'] = min4
+    return NihGrouper(**args)
 
 class NihGrouper:
     """Groups papers using the NIH percentile"""
@@ -18,6 +30,8 @@ class NihGrouper:
         self.min2 = group2_min
         self.min3 = group3_min
         self.min4 = group4_min
+        assert group1_min and group2_min and group3_min and group4_min, \
+            f'DIVIDERS MUST BE FLOATs: {str(self)}'
         #print(f'group1_min: {group1_min}')
         #print(f'group2_min: {group2_min}')
         #print(f'group3_min: {group3_min}')
@@ -31,6 +45,7 @@ class NihGrouper:
     def get_group(self, nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
         # No NIH percentile yet assigned. This paper should be checked out.
+        ##print('DVK SSSSSSSSSS', str(self))
         if nih_percentile is None or nih_percentile == -1:
             return 5
         #  2.1% -3 SD: Very low citation rate
@@ -52,17 +67,23 @@ class NihGrouper:
         """Add NIH grouper arguments to the parser"""
         # pylint: disable=line-too-long
         parser.add_argument(
-            '-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
+            ##'-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
+            '-1', metavar='group1_min', dest='min1', type=float,
             help='Minimum NIH percentile to be placed in group 1 (default: {D})'.format(D=self.min1))
         parser.add_argument(
-            '-2', metavar='group2_min', dest='min2', default=self.min2, type=float,
+            '-2', metavar='group2_min', dest='min2', type=float,
             help='Minimum NIH percentile to be placed in group 2 (default: {D})'.format(D=self.min2))
         parser.add_argument(
-            '-3', metavar='group3_min', dest='min3', default=self.min3, type=float,
+            '-3', metavar='group3_min', dest='min3', type=float,
             help='Minimum NIH percentile to be placed in group 3 (default: {D})'.format(D=self.min3))
         parser.add_argument(
-            '-4', metavar='group4_min', dest='min4', default=self.min4, type=float,
+            '-4', metavar='group4_min', dest='min4', type=float,
             help='Minimum NIH percentile to be placed in group 4 (default: {D})'.format(D=self.min4))
+        # --print-NIH-dividers => prt_nihgrpr=True
+        #                      => prt_nihgrpr=False
+        parser.add_argument(
+            '--print-NIH-dividers', dest='prt_nihgrpr', action='store_true',
+            help='Print the NIH percentile grouper divider percentages')
 
     def get_list(self):
         """Get the dividing values as a list"""
@@ -74,4 +95,4 @@ class NihGrouper:
             self.min1, self.min2, self.min3, self.min4)
 
 
-# Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

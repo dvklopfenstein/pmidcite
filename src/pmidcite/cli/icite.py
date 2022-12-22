@@ -1,7 +1,7 @@
 """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 import argparse
@@ -11,7 +11,7 @@ from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 from pmidcite.cli.entry_keyset import get_details_cites_refs
-from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.icite.nih_grouper import get_nihgrouper
 from pmidcite.icite.downloader import get_downloader
 from pmidcite.icite.downloader import prt_hdr
 from pmidcite.icite.downloader import prt_keys
@@ -61,10 +61,10 @@ class NIHiCiteCli:
             help='Load and print a descriptive list of citations and references for each paper.')
         parser.add_argument(
             '-c', '--load_citations', action='store_true', default=False,
-            help='Load and print a descriptive list of citations for each paper.')
+            help='Load and print of papers and clinical studies that cited the requested paper.')
         parser.add_argument(
             '-r', '--load_references', action='store_true', default=False,
-            help='Load and print a descriptive list of references for each paper.')
+            help='Load and print the references for each requested paper.')
         # pylint: disable=line-too-long
         parser.add_argument(
             '-R', '--no_references', action='store_true',
@@ -120,7 +120,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = self._get_args(argparser)
-        ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ##print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self._run(args, argparser)
 
     def _run(self, args, argparser):
@@ -173,7 +173,7 @@ class NIHiCiteCli:
             args.load_citations,
             args.load_references,
             args.no_references)
-        groupobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
+        groupobj = get_nihgrouper(args.min1, args.min2, args.min3, args.min4)
         return get_downloader(
             details_cites_refs,
             groupobj,
@@ -261,4 +261,4 @@ class NIHiCiteCli:
             Ps=' '.join(str(p) for p in pmids)))
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

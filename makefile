@@ -18,6 +18,9 @@ p:
 d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
+cli:
+	find src/pmidcite/cli -name \*.py
+
 diff0:
 	git diff --compact-summary
 

@@ -42,7 +42,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.41',
+    version='0.0.42',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
@@ -55,6 +55,7 @@ setup(
     entry_points={
         'console_scripts':[
             'icite=pmidcite.scripts.icite:main',
+            'summarize_papers=pmidcite.scripts.icite:summarize_papers',
         ],
     },
     # https://pypi.org/classifiers/

@@ -1,7 +1,7 @@
 """Manage pmidcite Configuration"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os import environ
 from os import getcwd
@@ -135,14 +135,14 @@ class Cfg(object):
         """Convert None to the str, "None", as needed by configparser"""
         return 'None' if dirname is None or dirname == 'None' else dirname
 
-    def get_nihgrouper(self):
+    def get_nihgrouper(self, min1=None, min2=None, min3=None, min4=None):
         """Get an NIH Grouper with default values from the cfg file"""
         cfg = self.cfgparser['pmidcite']
         return NihGrouper(
-            float(cfg['group1_min']),
-            float(cfg['group2_min']),
-            float(cfg['group3_min']),
-            float(cfg['group4_min']))
+            float(cfg['group1_min'] if not min1 else min1),
+            float(cfg['group2_min'] if not min2 else min2),
+            float(cfg['group3_min'] if not min3 else min3),
+            float(cfg['group4_min'] if not min4 else min4))
 
     def _run_chk(self, prt, prt_fullname):
         if not self.rd_rc(prt, prt_fullname):
@@ -230,4 +230,4 @@ class Cfg(object):
 
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
