@@ -43,8 +43,10 @@
 
 ### Unreleased
 
-### release 2022-12-22 v0.0.42
+### release 2022-12-30 v0.0.42
 * ADDED summarize_papers script
+* ADDED requests package as a pre-requisite
+* CHANGED API to NCBI E-utils such that a missing LID (Local ID) is ignored on a PubMed entry
 
 ### release 2022-12-06 v0.0.41
 * CHANGED setup.py PACKAGES variable to run install make target
