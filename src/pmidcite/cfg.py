@@ -57,7 +57,7 @@ class Cfg(object):
     }
 
     def __init__(self, check=True, prt=stdout, prt_fullname=True):
-        self.cfgfile = self._init_cfgfilename()
+        self.cfgfile = self._init_cfgfilename(prt)
         self.cfgparser = self._get_dflt_cfgparser()
         if check:
             self._run_chk(prt, prt_fullname)
@@ -215,17 +215,16 @@ class Cfg(object):
         cfgparser = self._get_dflt_cfgparser()
         cfgparser.write(prt)
 
-    def _init_cfgfilename(self):
+    def _init_cfgfilename(self, prt=None):
         """Get the configuration filename"""
         if self.envvar in environ:
             cfgfile = environ[self.envvar]
             if exists(cfgfile):
                 return cfgfile
-            print('**WARNING: NO pmidcite CONFIG FILE FOUND AT {ENVVAR}={F}'.format(
-                F=cfgfile, ENVVAR=self.envvar))
-        if not exists(self.dfltcfgfile):
-            print('**WARNING: NO pmidcite CONFIG FILE FOUND: {F}'.format(
-                F=self.dfltcfgfile))
+            if prt:
+                prt.write(f'**WARNING: NO pmidcite CONFIG FILE FOUND AT {self.envvar}={cfgfile}\n')
+        if not exists(self.dfltcfgfile) and prt:
+            prt.write(f'**WARNING: NO pmidcite CONFIG FILE FOUND: {self.dfltcfgfile}\n')
         return self.dfltcfgfile
 
 
