@@ -10,6 +10,8 @@ from glob import glob
 from setuptools import setup
 # import versioneer
 
+__copyright__ = 'Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved'
+__author__ = 'DV Klopfenstein, PhD'
 
 NAME = 'pmidcite'
 
@@ -69,9 +71,11 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
     url='http://github.com/dvklopfenstein/pmidcite',
-    description="Augment's a PubMed literature search with citation data from NIH-OCC's iCite.",
+    description="Turbocharge a PubMed literature search using citation data from the NIH",
     # https://packaging.python.org/guides/making-a-pypi-friendly-readme/
     long_description=get_long_description(),
     long_description_content_type='text/markdown',
-    # install_requires=['docopt'],
+    install_requires=['requests'],
 )
+
+# Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved
