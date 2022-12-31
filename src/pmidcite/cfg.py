@@ -1,7 +1,7 @@
 """Manage pmidcite Configuration"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os import environ
 from os import getcwd
@@ -57,7 +57,7 @@ class Cfg(object):
     }
 
     def __init__(self, check=True, prt=stdout, prt_fullname=True):
-        self.cfgfile = self._init_cfgfilename()
+        self.cfgfile = self._init_cfgfilename(prt)
         self.cfgparser = self._get_dflt_cfgparser()
         if check:
             self._run_chk(prt, prt_fullname)
@@ -135,14 +135,14 @@ class Cfg(object):
         """Convert None to the str, "None", as needed by configparser"""
         return 'None' if dirname is None or dirname == 'None' else dirname
 
-    def get_nihgrouper(self):
+    def get_nihgrouper(self, min1=None, min2=None, min3=None, min4=None):
         """Get an NIH Grouper with default values from the cfg file"""
         cfg = self.cfgparser['pmidcite']
         return NihGrouper(
-            float(cfg['group1_min']),
-            float(cfg['group2_min']),
-            float(cfg['group3_min']),
-            float(cfg['group4_min']))
+            float(cfg['group1_min'] if not min1 else min1),
+            float(cfg['group2_min'] if not min2 else min2),
+            float(cfg['group3_min'] if not min3 else min3),
+            float(cfg['group4_min'] if not min4 else min4))
 
     def _run_chk(self, prt, prt_fullname):
         if not self.rd_rc(prt, prt_fullname):
@@ -215,19 +215,18 @@ class Cfg(object):
         cfgparser = self._get_dflt_cfgparser()
         cfgparser.write(prt)
 
-    def _init_cfgfilename(self):
+    def _init_cfgfilename(self, prt=None):
         """Get the configuration filename"""
         if self.envvar in environ:
             cfgfile = environ[self.envvar]
             if exists(cfgfile):
                 return cfgfile
-            print('**WARNING: NO pmidcite CONFIG FILE FOUND AT {ENVVAR}={F}'.format(
-                F=cfgfile, ENVVAR=self.envvar))
-        if not exists(self.dfltcfgfile):
-            print('**WARNING: NO pmidcite CONFIG FILE FOUND: {F}'.format(
-                F=self.dfltcfgfile))
+            if prt:
+                prt.write(f'**WARNING: NO pmidcite CONFIG FILE FOUND AT {self.envvar}={cfgfile}\n')
+        if not exists(self.dfltcfgfile) and prt:
+            prt.write(f'**WARNING: NO pmidcite CONFIG FILE FOUND: {self.dfltcfgfile}\n')
         return self.dfltcfgfile
 
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

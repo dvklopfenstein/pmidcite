@@ -10,6 +10,8 @@ from glob import glob
 from setuptools import setup
 # import versioneer
 
+__copyright__ = 'Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved'
+__author__ = 'DV Klopfenstein, PhD'
 
 NAME = 'pmidcite'
 
@@ -42,7 +44,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.41',
+    version='0.0.42',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),
@@ -55,6 +57,7 @@ setup(
     entry_points={
         'console_scripts':[
             'icite=pmidcite.scripts.icite:main',
+            'summarize_papers=pmidcite.scripts.icite:summarize_papers',
         ],
     },
     # https://pypi.org/classifiers/
@@ -68,9 +71,11 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
     url='http://github.com/dvklopfenstein/pmidcite',
-    description="Augment's a PubMed literature search with citation data from NIH-OCC's iCite.",
+    description="Turbocharge a PubMed literature search using citation data from the NIH",
     # https://packaging.python.org/guides/making-a-pypi-friendly-readme/
     long_description=get_long_description(),
     long_description_content_type='text/markdown',
-    # install_requires=['docopt'],
+    install_requires=['requests'],
 )
+
+# Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved

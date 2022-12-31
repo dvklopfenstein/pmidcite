@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 from pmidcite.cli.utils import prt_loc_rcfile
 from pmidcite.cli.utils import get_files_exists
 from pmidcite.summarize_papers import SummarizePapers
+from pmidcite.icite.top_cit_ref import TopCitRef
 
 __copyright__ = "Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved."
 __author__ = "DV Klopfenstein, PhD"
@@ -15,11 +16,12 @@ class SummarizePapersCli:
 
     def __init__(self, cfg):
         self.cfg = cfg
+        self.topcitref = TopCitRef()
 
     def get_argparser(self):
         """Argument parser for summarizing the citations on set(s) of papers"""
         parser = ArgumentParser(
-            description="Summarize NIH's citation on a set(s) of papers",
+            description="Summarize NIH's citation data on a set(s) of papers",
             add_help=False)
         ##cfg = self.cfg
         # https://docs.python.org/3/library/argparse.html
@@ -48,28 +50,34 @@ class SummarizePapersCli:
         parser.add_argument(
             '--print-rcfile', action='store_true',
             help='Print the location of the pmidcite configuration file (env var: PMIDCITECONF)')
+        self.topcitref.add_arguments(parser)
         return parser
-
 
     def cli(self):
         """Run citation summary on a set(s) of PMIDs"""
         argparser = self.get_argparser()
         args = argparser.parse_args()
-        print('ARGS CITE SUMMARY ../pmidcite/src/pmidcite/cli/summarize_papers.py', args)
+        ##print('ARGS CITE SUMMARY ../pmidcite/src/pmidcite/cli/summarize_papers.py', args)
         if args.print_rcfile:
             prt_loc_rcfile(self.cfg, stdout)
-            return
-        files = get_files_exists(args.files)
+        files = get_files_exists(args.files, stdout)
         if args.help or not files:
             argparser.print_help()
-            print('\nHelp message printed because: -h or --help == True')
-            return
-        ##self._run(args, argparser)
-        nih_grouper = self.cfg.get_nihgrouper()
+            ##print(f'\nHelp message printed because: -h or --help == {args.help} or {args.files}')
+        nih_grouper = self.cfg.get_nihgrouper(args.min1, args.min2, args.min3, args.min4)
+        self._summarize_papers(files, nih_grouper, self.topcitref.adjust_args(args.paper_labels))
+        if args.prt_nihgrpr:
+            print(nih_grouper)
+
+    @staticmethod
+    def _summarize_papers(files, nih_grouper, top_cit_refs):
+        """Summarize papers"""
         for filename in files:
-            sumpap = SummarizePapers.from_file(filename, nih_grouper)
+            sumpap = SummarizePapers.from_file(
+                filename=filename,
+                nih_grouper=nih_grouper,
+                top_cit_ref=top_cit_refs)
             print(sumpap.str_oneline())
-        return
 
 
 # Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved.

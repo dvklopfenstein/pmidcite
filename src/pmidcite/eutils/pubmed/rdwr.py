@@ -1,7 +1,7 @@
 """Write Python module for downloaded abstracts."""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 import os
@@ -151,8 +151,9 @@ class PubMedRdWr:
         if fld not in fld2objs:
             fld2objs[fld] = {}
         key0 = line.rfind('[')
-        # TBD Change these fatals to messages
-        assert key0 != -1, '**FATAL LID: {} {}'.format(fld, line)
+        if key0 == -1:
+            ##print(f'**WARNING Local ID (LID): {fld} KEY({key0}) {line}')
+            return
         assert line[-1] == ']', '**FATAL LID: {} {}'.format(fld, line)
         key = line[key0 + 1:-1]
         val = line[:key0].strip()
@@ -347,7 +348,7 @@ class PubMedRdWr:
 
                         #### mtch = match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
                         #### if mtch:
-                        ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
+                        ##     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b %d")
                         #### mtch = match(r'(\d{4} \S{3})\w?\s*-', str_date)
                         #### if mtch:
                         ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
@@ -453,4 +454,4 @@ class ProcessLines:
                     self.fldvals[-1][1].append(line_body)
 
 
-  # Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+  # Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

@@ -13,7 +13,7 @@ from tests.prt_hms import prt_hms
 from tests.pmids_i3 import PMIDS
 
 
-def test_dnld_speed():
+def test_speed_api_dnld():
     """Test speed for download NIH citation data"""
     force_dnld = True
     dnldr = _init_dnldr(force_dnld)
@@ -60,6 +60,6 @@ def _init_dnldr(force_dnld):
 
 
 if __name__ == '__main__':
-    test_dnld_speed()
+    test_speed_api_dnld()
 
-# Copyright (C) 2021-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.
