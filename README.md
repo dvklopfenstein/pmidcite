@@ -17,7 +17,7 @@ Contact: dvklopfenstein@protonmail.com
 
 
 # Table of Contents
-* ***Quickstart on the*** [***Command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
+* ***Quickstart on the*** [***command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
   * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
   * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
   * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
