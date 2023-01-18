@@ -241,7 +241,8 @@ _If you use **pmidcite** in your research or literature search, please cite pape
 
 _Please also consider reading and citing Gusenbauer's response (paper 2) about improving search for all during the information avalanche of these times:_
 
-1. [**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
+1. ** *pmidcite* paper**
+[**Commentary to Gusenbauer and Haddaway 2020: Evaluating Retrieval Qualities of PubMed and Google Scholar**](http://dx.doi.org/10.1002/jrsm.1456)    
 Klopfenstein DV and Dampier W    
 2020 | _Research Synthesis Methods_ | PMID: [33031632](https://pubmed.ncbi.nlm.nih.gov/33031632/) | DOI: [10.1002/jrsm.1456](http://dx.doi.org/10.1002/jrsm.1456) | [pdf](/doc/paper/JRSM_1456_iCite_main.pdf)
 
