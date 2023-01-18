@@ -34,7 +34,7 @@ Contact: dvklopfenstein@protonmail.com
   * [**Setup**](#setup)
   * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
     * [**What is in PubMed?**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#what-is-in-pubmed--take-a-quick-tour)
-  * [**How to cite *pmidcite***](#how-to-cite)
+  * [**How to Cite *pmidcite***](#how-to-cite)
 * [***References***](#references)
 
 ## 1) Download citation counts and data for a research paper
