@@ -17,7 +17,7 @@ Contact: dvklopfenstein@protonmail.com
 
 
 # Table of Contents
-* [***Command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli) ***usage***
+* ***Quickstart on the ***[***Command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
   * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
   * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
   * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
@@ -33,7 +33,9 @@ Contact: dvklopfenstein@protonmail.com
   * [**Installation**](#installation)
   * [**Setup**](#setup)
   * [**How to cite**](#how-to-cite)
-* [**References**](#references)
+  * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
+  * [**What is in PubMed?**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#what-is-in-pubmed--take-a-quick-tour)
+* [***References***](#references)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -190,12 +192,6 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content such as books and articles published before the 1960s
 
 
-
-
-## Table of Contents
-
-
-
 ## Installation
 To install from [**PyPI**](https://pypi.org/project/pmidcite/)    
 ```$ pip3 install pmidcite```
@@ -206,8 +202,6 @@ $ git clone https://github.com/dvklopfenstein/pmidcite.git
 $ cd ./pmidcite
 $ pip3 install .
 ```
-
-
 
 ## Setup
 Save your literature search in a GitHub repo.
