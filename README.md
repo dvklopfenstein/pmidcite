@@ -16,12 +16,24 @@ Please [**cite**](#how-to-cite) if you use *pmidcite* in your research or litera
 Contact: dvklopfenstein@protonmail.com     
 
 
-## [Command line](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli) usage
-* [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
-* [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
-* [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
-* [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
-* [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
+# Table of Contents
+* [Command line](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli) usage
+  * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
+  * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
+  * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
+  * [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
+  * [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
+* ***pmidcite*, the Python library**
+  * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
+  * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
+  * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
+  * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
+  * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
+* ***pmidcite***:
+  * [**Installation**](#installation)
+  * [**Setup**](#setup)
+  * [**How to cite**](#how-to-cite)
+* [**References**](#references)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -181,220 +193,6 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 
 
 ## Table of Contents
-* [***pmidcite*, on the command line**](#command-line-interface-cli):
-  * [**1) Get citation counts and ranking in the paper's co-citation network, given PMIDs**](#1-get-citation-counts-given-pmids)
-  * [**2) Sort citation counts and ranking in the paper's co-citation network, given PMIDs**](#2-sort-citation-counts-given-pmids)
-  * [**3) Query PubMed and download the citation data**](#3-query-pubmed-and-download-the-citation-data)
-  * [**4) Get citation data for PMIDs listed in a file**](#4-get-citation-data-using-pmids-downloaded-from-pubmed)
-  * [**5) Create ASCII plots**](#5-create-ascii-plots)
-* ***pmidcite*, the Python library**
-  * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
-  * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
-  * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
-  * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
-  * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
-* ***pmidcite***:
-  * [**Installation**](#installation)
-  * [**Setup**](#setup)
-  * [**How to cite**](#how-to-cite)
-* [**Referenced**](#references)
-
-
-### 1) Get citation counts, given PMIDs
-Quickly get the number of citations for a research paper with PMID, 26032263:
-```
-$ icite 26032263 -H
-TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
-TOP 26032263 R. .....  68 2 2015    16  0  10 au[04](N R Haddaway) Making literature reviews more reliable through application of lessons from systematic reviews.
-```
-* The first line (`TYP PMID ...`) contains the column headers (`-H`).    
-* The second line (`TOP ...`) is the citation data from NIH's iCite database.    
-* The citation count, `16`, is under the `cit` column header.    
-
-The [**group number**](#citation-group-numbers), `2` (`SD` column) indicates that the paper has a good citation rate,
-specifically it is in the `68th` percentile (`%` column) compared to its peers.
-
-#### Column header key (`-k`)
-```
-$ icite -k
-
-KEYS TO PAPER LINE:
-    TYP PubMedID RP HAMCc % G YEAR x y z au[A](First Author) Title of paper
-
-TYPe of relationship to the researcher-requested paper (TYP):
-    TOP: The paper requested by the researcher
-    CIT: A paper that cited TOP
-    CLI: A clinical paper that cited TOP
-    REF: A paper referenced in the TOP paper's bibliography
-
-NIH iCite details:
-
-  PubMedID: PubMed ID (PMID)
-
-     RP section:
-     ----------------------------------
-         R: Is a research article
-         P: iCite has calculated an initial Relative Citation Ratio (RCR) for new papers
-
-     HAMCc section:
-     ----------------------------------
-         H: Has MeSH terms in the human category
-         A: Has MeSH terms in the animal category
-         M: Has MeSH terms in the molecular/cellular biology category
-         C: Is a clinical trial, study, or guideline
-         c: Is cited by a clinical trial, study, or guideline
-
-     NIH section, based on Relative Citation Ratio (RCR):
-     ----------------------------------
-         %: NIH citation percentile rounded to an integer. -1 means "not determined" or TBD
-         G: NIH citation percentile group: 0=-3SD 1=-2SD 2=+/-1SD 3=+2SD 4=+3SD or i=TBD
-
-     YEAR/citations/references section:
-     ----------------------------------
-      YEAR: The year the article was published
-         x: Total of all unique articles that have cited the paper, including clinical articles
-         y: Number of unique clinical articles that have cited the paper
-         z: Number of references
-     au[A]: A is the number of authors
-```
-#### Citation group numbers [[1]](#how-to-cite)
-The ***pmidcite*** citation rate group numbers, **0, 1, 2, 3,** and **4** (`SD` column), 
-are determined using the *NIH Relative Citation Rate (RCR)* [[5]](#references) percentile.
-If the NIH has not yet determined a citation rate for new papers,
-the ***pmidcite*** group number is **i**.
-
-![cite group](https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/nih_perc_groups.png)
-
-### 2) Sort citation counts, given PMIDs
-Sort the citations (`CIT`) of the paper with PMID `26032263` first by citation group (`2` and `i`), then by year.
-
-The citation group shown contains:
-  * `i` New paper and not yet rated. The `i` variable will be set at a later date by the NIH
-  * `2` These papers are performing well
-
-Sort options:
-  * `-k6`: sort starting with the 6th column containing citation group, then by all text to the right.
-  * `-r`: reverse the sort so the newest papers are at the top
-
-```
-$ icite 26032263 -v | grep CIT | sort -k6 -r
-CIT 32557171 .. H....  -1 i 2020     0  0  21 au[05](Jillian Knox) Usage, definition, and measurement of coexistence, tolerance and acceptance in wildlife conservation research in Africa.
-CIT 32317639 R. HA...  -1 i 2020     0  0   8 au[09](Trevor J Krabbenhoft) FiCli, the Fish and Climate Change Database, informs climate adaptation and management for freshwater fishes.
-CIT 30285277 R. .....  -1 i 2019     2  0  14 au[02](Neal R Haddaway) Predicting the time needed for environmental systematic reviews and systematic maps.
-CIT 30055022 .. HA...  -1 i 2019     1  0  12 au[04](Hillary Smith) Hunting for common ground between wildlife governance and commons scholarship.
-CIT 31598307 R. HA...  -1 i 2019     1  0  12 au[02](Igor Khorozyan) How long do anti-predator interventions remain effective? Patterns, thresholds and uncertainty.
-CIT 31024221 R. .....  -1 i 2019     0  0   7 au[02](Micah G Bennett) MEASURING LOTIC ECOSYSTEM RESPONSES TO NUTRIENTS: A Mismatch that Limits the Synthesis and Application of Experimental Studies to Management.
-CIT 29488217 .P .A...  76 2 2018     7  0  64 au[03](Nicole V Coggan) A global database and 'state of the field' review of research into ecosystem engineering by land animals.
-CIT 29514874 .P .A...  47 2 2018     3  0  38 au[02](Kelly D Hannan) Aquatic acidification: a mechanism underpinning maintained oxygen transport and performance in fish experiencing elevated carbon dioxide conditions.
-CIT 28642071 .. H....  75 2 2017    11  0  80 au[05](Ora Oudgenoeg-Paz) The link between motor and cognitive development in children born preterm and/or with low birth weight: A review of current evidence.
-CIT 28061344 R. .....  70 2 2017     8  0  54 au[03](Maria Cristina Mangano) Monitoring of persistent organic pollutants in the polar regions: knowledge gaps &amp; gluts through evidence mapping.
-CIT 28042667 R. H....  53 2 2017     8  0  20 au[02](Martin J Westgate) The difficulties of systematic reviews.
-CIT 29451529 .. H....  56 2 2016     9  0  20 au[01](Jennifer A Byrne) Improving the peer review of narrative literature reviews.
-CIT 26984257 R. .....  46 2 2016     9  0   9 au[04](Neal R Haddaway) The benefits of systematic mapping to evidence-based environmental management.
-CIT 27617203 .. .....  43 2 2016     5  0  40 au[02](Neal R Haddaway) On the benefits of systematic reviews for wildlife parasitology.
-```
-
-#### Other sort examples
-In 2018 Fiorini et al. [[7]](#references), the creaters of PubMed's "best match" relevance sort ordering in PubMed,
-found that the most important document features to feed into the PubMed sorting algorithm are publication year and past usage.
-
-Mimic this by using the `-k6` argument to `sort` the citation group (usage group), which does two things:
-  * First, it highlights the newest or best performing papers by putting them at the beginning, while getting the lowest performing papers out of the mix by placing them at the end.
-  * Second, it shows the newest papers first in each usage group, highlighting them profoundly.
-
-We chose to highlight using usage group first, rather than NIH RCR percentile in the 5th column, seen with values `-1`, `76`, etc. because 
-only seeing the best performing papers first might bias the paper chosen for further examination 
-to only the best performing papers regardless of publication year.
-
-
-### 3) Query PubMed and download the citation data
-Query PubMed and download the citation data from the script, `src/bin/dnld_pmids.py`.    
-**NOTE:** Copy `dnld_pmids.py` to your project repo. Don't modify the pmidcite repo.
-
-#### 1. Add your query to your `dnld_pmids.py` script
-```
-    queries = [
-        # Output filename     PubMed query
-        # -----------------  -----------------------------------
-        ('killer_whale.txt', 'Orcinus Orca Type D'),
-    ]
-```
-
-#### 2. Run the script
-```
-$ src/bin/dnld_pmids.py
-     3 IDs FOR pubmed QUERY(Orcinus Orca Type D)
-     3 WROTE: ./log/pmids/killer_whale.txt
-     3 WROTE: ./log/icite/killer_whale.txt
-```
-
-#### 3. Examine the citation and pubmed data, sorting by year (column 7; `-k7`)
-```
-$ grep TOP ./log/icite/Orcinus_Orca_Type_D.txt | sort -k7
-TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
-TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
-TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
-```
-
-#### 4) Get citation data using PMIDs downloaded from PubMed
-Note that the PubMed query using NIH E-Utils from the `dnld_pmids.py` script
-will often be slightly different than the query run on the PubMed website.
-PubMed has been alerted.
-
-Consequently, you may also want to view citation data on PMID PubMed query results
-downloaded from the PubMed website into a file such as `pmid-OrcinusOrc-set.txt`:    
-*Save->All results, Format=PMID*
-```
-$ icite -i pmid-OrcinusOrc-set.txt
-TOP 30123694 RP HA...  17 2 2018     1  0   6 au[07](Paul Tixier) Killer whale (<i>Orcinus orca</i>) interactions with blue-eye trevalla (<i>Hyperoglyphe antarctica</i>) longline fisheries.
-TOP 31461780 R. .A...  -1 i 2020     0  0   0 au[06](Robert L Pitman) Enigmatic megafauna: type D killer whale in the Southern Ocean.
-TOP 22882545 .. .A...  63 2 2013    25  0  24 au[03](P J N de Bruyn) Killer whale ecotypes: is there a global model?
-TOP 20050301 R. .A...  70 2 2009    43  0  25 au[05](Andrew D Foote) Ecological, morphological and genetic divergence of sympatric North Atlantic killer whale populations.
-```
-
-
-
-### 5) Create ASCII plots
-Create a scatter plot of publication year vs. citation count for a list of papers.
-This will be made friendlier.
-
-Columns 7 and 8 contain the year and the citation count.
-```
-$ grep TOP log/icite/Osbourn_Anne.txt | awk '{print $7 " " $8}' | scatter.py
--------------------------------------------------------------------------------------------- 282
-|                                                                1                         |
-|                                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                              1                                                           |
-|                                                                                          |
-|               1                                                                          |
-|                                                                                          |
-|                                                                                          |
-|                                                           1                              |
-|          1                                                     1                         |
-|1                                  1                                                      |
-|                                                                                          |
-|                                                      1                                   |
-|                    1                   1                                                 |
-|                                            1                   1                         |
-|                                            1              1    1                         |
-|     1                             1                                 1                    |
-|                    1              1                  1    1                              |
-|                              1             1              1                              |
-|     1              1              1    1        2    2                                   |
-|                                        1                            1    2               |
-|                                                           1    2    1    1         1     |
-|1    1                                  1   2    1    1              3    1    4          |
-|               1         1    1         1   1    3    1    1    1              5          |
-|          2         2                                           1    1    2    1    7    3|
--------------------------------------------------------------------------------------------- 0
-2002                                                                                          2020
-```
 
 
 
