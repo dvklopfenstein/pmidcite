@@ -21,7 +21,7 @@ Contact: dvklopfenstein@protonmail.com
 * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
 * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
 * [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
-* [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite#5-download-citation-counts-and-data-for-a-research-paper)
+* [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -110,7 +110,7 @@ i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 
 
 ## 5) Download citations for all papers returned from a PubMed search
 1. To search PubMed from the command line, 
-   get a NCBI API key using these instuctions:    
+   get a NCBI API key following instuctions found at NCBI:    
    https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 2. Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
@@ -424,13 +424,12 @@ email = myname@email.edu
 apikey = MY_LONG_HEX_NCBI_API_KEY
 tool = my_scripts
 ```
-
 ```
 $ export PMIDCITECONF=~/.pmidciterc
 ```
 Do not version manage the `.pmidciterc` using a tool such as GitHub because it
 contains your personal email and your private NCBI API key.
-```
+
 
 ### 2. NCBI E-Utils API key
 To download PubMed abstracts and PubMed search results using NCBI's E-Utils,
