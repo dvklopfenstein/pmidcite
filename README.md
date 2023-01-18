@@ -21,6 +21,7 @@ Contact: dvklopfenstein@protonmail.com
 * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
 * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
 * [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
+* [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite#5-download-citation-counts-and-data-for-a-research-paper)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -107,6 +108,32 @@ i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 
 * The percentages of papers in `goatools_citations.txt` in each group follow the group name
 
 
+## 5) Download citations for all papers returned from a PubMed search
+1. To search PubMed from the command line, 
+   get a NCBI API key using these instuctions:    
+   https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
+
+2. Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
+
+There are two PubMed searches in this example:
+  * `systematic review AND "how to"[TI]`
+  * `Orcinus Orca Type D`
+
+The PubMed search results are saved to specified filenames such as `systematic_review.txt` to be grepped and sorted.
+```
+def main():
+    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
+    queries = [
+        # Output filenames               PubMed query
+        # -----------------              -----------------------------------
+        ('systematic_review.txt',        'systematic review AND "how to"[TI]'),
+        ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
+    ]
+
+    obj = PubMedQueryToICite(force_dnld=True)
+    dnld_idx = obj.get_index(sys.argv)
+    obj.run(queries, dnld_idx)
+```
 
 # PubMed vs Google Scholar
 <p align="center">
@@ -135,34 +162,6 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content such as books and articles published before the 1960s
 
 
-# Usage details
-
-### Download citations for all papers returned from a PubMed search
-Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
-
-There are two PubMed searches in this example:
-  * `systematic review AND "how to"[TI]`
-  * `Orcinus Orca Type D`
-
-The PubMed search results are saved to specified filenames such as `systematic_review.txt` to be grepped and sorted.
-```
-def main():
-    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
-    queries = [
-        # Output filenames               PubMed query
-        # -----------------              -----------------------------------
-        ('systematic_review.txt',        'systematic review AND "how to"[TI]'),
-        ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
-    ]
-
-    obj = PubMedQueryToICite(force_dnld=True)
-    dnld_idx = obj.get_index(sys.argv)
-    obj.run(queries, dnld_idx)
-```
-
-To have better access to PubMed search results, 
-get a NCBI API key using these instuctions:    
-https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 
 ## Table of Contents
@@ -419,13 +418,11 @@ Add a .pmidciterc init file to a non-git managed directory, such as home (~)
 ```
 $ icite --generate-rcfile | tee ~/.pmidciterc
 [pmidcite]
-email = name@email.edu
-apikey = long_hex_digit
-tool = scripts
-dir_icite_py = .
-dir_pubmed_txt = .
-dir_pmids = .
-dir_icite = .
+email = myname@email.edu
+# To download PubMed search results, get an NCBI API key here:
+# https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
+apikey = MY_LONG_HEX_NCBI_API_KEY
+tool = my_scripts
 ```
 
 ```
@@ -433,18 +430,9 @@ $ export PMIDCITECONF=~/.pmidciterc
 ```
 Do not version manage the `.pmidciterc` using a tool such as GitHub because it
 contains your personal email and your private NCBI API key.
-
-### 2. Add directories
-Add directories which match those in ~/.pmidciterc:
-```
-$ mkdir [GIT_REPO_PATH]/icite
-$ mkdir [GIT_REPO_PATH]/log
-$ mkdir [GIT_REPO_PATH]/log/pubmed
-$ mkdir [GIT_REPO_PATH]/log/pmids
-$ mkdir [GIT_REPO_PATH]/log/icite
 ```
 
-### 3. NCBI E-Utils API key
+### 2. NCBI E-Utils API key
 To download PubMed abstracts and PubMed search results using NCBI's E-Utils,
 get an NCBI API key using these instructions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
