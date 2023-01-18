@@ -170,7 +170,7 @@ downloading Cygwin from https://www.cygwin.com/ [[1]](#how-to-cite).
 <img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
 </p>
 
-In 2013, Boeker et al. [[#6](#references)]
+In 2013, Boeker et al. [[6](#references)]
 recommended that a scientific search interface contain five integrated search criteria. 
 PubMed implements all five, while Google did not in 2013 or today.
 
