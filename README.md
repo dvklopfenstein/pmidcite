@@ -16,7 +16,7 @@ Please [**cite**](#how-to-cite) if you use *pmidcite* in your research or litera
 Contact: dvklopfenstein@protonmail.com     
 
 
-## Usage
+## [Command line](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli) usage
 * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
 * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
 * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
@@ -135,6 +135,22 @@ def main():
     obj.run(queries, dnld_idx)
 ```
 
+## Command Line Interface (CLI)
+
+A Command-Line Interface (CLI) can be preferable 
+to a Graphical User Interface (GUI) because: 
+* processing can be automated from a script
+* time-consuming mouse clicking is reduced
+* more data can be seen at once on a text screen
+than in a browser, giving the researcher 
+a better overall impression of the full set of information [[1]](#how-to-cite)
+
+Researchers who use Linux or Mac already work from the command line.
+Researchers who use Windows can get that Linux-like command line feeling
+while still running native Windows programs by
+downloading Cygwin from https://www.cygwin.com/ [[1]](#how-to-cite).
+
+
 # PubMed vs Google Scholar
 <p align="center">
 <img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
@@ -183,21 +199,6 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
   * [**How to cite**](#how-to-cite)
 * [**Referenced**](#references)
 
-
-## Command Line Interface (CLI)
-
-A Command-Line Interface (CLI) can be preferable 
-to a Graphical User Interface (GUI) because: 
-* processing can be automated from a script
-* time-consuming mouse clicking is reduced
-* more data can be seen at once on a text screen
-than in a browser, giving the researcher 
-a better overall impression of the full set of information [[1]](#how-to-cite)
-
-Researchers who use Linux or Mac already work from the command line.
-Researchers who use Windows can get that Linux-like command line feeling
-while still running native Windows programs by
-downloading Cygwin from https://www.cygwin.com/ [[1]](#how-to-cite).
 
 ### 1) Get citation counts, given PMIDs
 Quickly get the number of citations for a research paper with PMID, 26032263:
