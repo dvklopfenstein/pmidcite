@@ -44,7 +44,7 @@ def get_long_description():
 setup(
     name=NAME,
     ## version=versioneer.get_version(),
-    version='0.0.42',
+    version='0.0.43',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     ## cmdclass=versioneer.get_cmdclass(),

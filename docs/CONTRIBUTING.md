@@ -77,9 +77,9 @@ Once you submit your PR, a Docs team member will review your proposal. We may as
 
 ### Your PR is merged!
 
-Congratulations :tada::tada: The GitHub team thanks you :sparkles:. 
+Congratulations :tada::tada: Thank you for your good work :sparkles:. 
 
-Once your PR is merged, your contributions will be publicly visible on the [GitHub docs](https://docs.github.com/en). 
+Once your PR is merged, your contributions will be publicly visible at https://github.com/dvklopfenstein/pmidcite. 
 
 Now that you are part of the GitHub docs community, see how else you can [contribute to the docs](/contributing/types-of-contributions.md).
 
