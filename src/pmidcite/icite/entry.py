@@ -145,9 +145,9 @@ class NIHiCiteEntry:
         prt.write('     YEAR/citations/references section:\n')
         prt.write('     ----------------------------------\n')
         prt.write('      YEAR: The year the article was published\n')
-        prt.write('         x: Total of all unique articles that have cited the paper, including clinical articles\n')
-        prt.write('         y: Number of unique clinical articles that have cited the paper\n')
-        prt.write('         z: Number of references\n')
+        prt.write('       cit: Total of all unique articles that have cited the paper, including clinical articles\n')
+        prt.write('       cli: Number of unique clinical articles that have cited the paper\n')
+        prt.write('       ref: Number of references\n')
         prt.write('     au[A]: A is the number of authors\n')
 
     def str_md(self):
