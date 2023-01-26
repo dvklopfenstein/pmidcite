@@ -35,6 +35,7 @@ Contact: dvklopfenstein@protonmail.com
   * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
     * [**What is in PubMed?**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#what-is-in-pubmed--take-a-quick-tour)
   * [**How to Cite *pmidcite***](#how-to-cite)
+  * [**Contributing**](#contributing
 * [***References***](#references)
 
 ## 1) Download citation counts and data for a research paper
@@ -231,6 +232,9 @@ get an NCBI API key using these instructions:
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
 
 Set the `apikey` value in the config file: `~/.pmidciterc`
+
+# Contributing
+See the [**contributing guide**](/docs/CONTRIBUTING.md) for detailed instructions on how to get started contributing to the **pmidcite** project.
 
 # Contact
 email: dvklopfenstein@protonmail.com    
