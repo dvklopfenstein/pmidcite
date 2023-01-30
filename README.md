@@ -60,14 +60,18 @@ better facilitate researchers in finding the latest discoveries.
 The grouping of papers by NIH percentile grouping is a novel feature created by [dvklopfenstein](https://github.com/dvklopfenstein) for this project.
 
 ## 2) Forward citation search
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_cit.png" alt="pmidcite summary" width="500"/></p>
+
 Also known as following a paper's *Cited by* links or *Forward snowballing*    
 
 ```icite -H; icite 26032263 --load_citations | sort -k6 -r```    
 or    
 ```icite -H; icite 26032263 -c | sort -k6 -r```    
 
+
 ## 3) Backward citation search
 Also known as following links to a paper's references or *Backward snowballing*    
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_ref.png" alt="pmidcite summary" width="500"/></p>
 
 ```$ icite -H; icite 26032263 --load_references | sort -k6 -r```    
 or    
@@ -124,31 +128,9 @@ i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 
 
 
 ## 5) Download citations for all papers returned from a PubMed search
-1. To search PubMed from the command line, 
-   get a NCBI API key following instuctions found at NCBI:    
-   https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
-
-2. Make a copy of `src/bin/dnld_pmids.py` and add your PubMed search to the end of the `queries` list.
-
-There are two PubMed searches in this example:
-  * `systematic review AND "how to"[TI]`
-  * `Orcinus Orca Type D`
-
-The PubMed search results are saved to specified filenames such as `systematic_review.txt` to be grepped and sorted.
-```
-def main():
-    """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
-    queries = [
-        # Output filenames               PubMed query
-        # -----------------              -----------------------------------
-        ('systematic_review.txt',        'systematic review AND "how to"[TI]'),
-        ('rarely_seen_killer_whale.txt', 'Orcinus Orca Type D'),
-    ]
-
-    obj = PubMedQueryToICite(force_dnld=True)
-    dnld_idx = obj.get_index(sys.argv)
-    obj.run(queries, dnld_idx)
-```
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_src.png" alt="pmidcite summary" width="500"/></p>   
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_dnld.png" alt="pmidcite summary" width="500"/></p>   
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_save.png" alt="pmidcite summary" width="500"/></p>   
 
 ## Command Line Interface (CLI)
 
