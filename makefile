@@ -77,7 +77,8 @@ build:
 	ls -lh dist
 	twine check dist/*
 
-# 3) Upload wheel to PyPi
+# 3) Upload wheel to https://pypi.org
+# https://pypi.org/manage/account/token/
 upload:
 	twine upload dist/* --verbose
 
