@@ -1,8 +1,8 @@
 """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
-__copyright__ = "Copyright (C) 2020-present DV Klopfenstein. All rights reserved."
-__author__ = 'DV Klopfenstein'
+__copyright__ = "Copyright (C) 2020-present DV Klopfenstein, PhD. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
 
 import sys
 from pmidcite.eutils.cmds.base import EntrezUtilities
@@ -45,7 +45,7 @@ class QueryIDs(EntrezUtilities):
 
     def get_query_rsp(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
-        # 1) Query PubMed/Protein/etc. Get first N (num_ids_p_epost) of the total PMIDs
+        # 1) Query PubMed/Protein, PhD/etc. Get first N (num_ids_p_epost) of the total PMIDs
         rsp_dct = self.query(database, query, retmax=num_ids_p_epost)
         if rsp_dct is None:
             if self.log:
@@ -77,8 +77,8 @@ class QueryIDs(EntrezUtilities):
             if rsp_dct:
                 ## print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
                 ids.extend(rsp_dct['idlist'])
-        assert tot_ids == len(set(ids)), 'PMIDS EXP({E}) ACT({A})'.format(
-            E=tot_ids, A=len(set(ids)))
+        assert tot_ids == len(set(ids)), \
+            f'PMIDS EXP({tot_ids}) ACT({len(set(ids))}) num_ids_p_epost({num_ids_p_epost})'
         return ids
 
     @staticmethod
@@ -87,6 +87,7 @@ class QueryIDs(EntrezUtilities):
         num_querykeys = num_pmids//num_ids_p_epost
         if num_pmids%num_ids_p_epost != 0:
             num_querykeys += 1
+        ## print(f'num_querykeys({num_querykeys})')
         return num_querykeys
 
     def query(self, database, query, **esearch):
@@ -121,4 +122,4 @@ class QueryIDs(EntrezUtilities):
         return None
 
 
-# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved.
