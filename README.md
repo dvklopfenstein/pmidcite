@@ -60,7 +60,7 @@ better facilitate researchers in finding the latest discoveries.
 The grouping of papers by NIH percentile grouping is a novel feature created by [dvklopfenstein](https://github.com/dvklopfenstein) for this project.
 
 ## 2) Forward citation search
-<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_cit.png" alt="pmidcite summary" width="300"/></p>
+<p align="left"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_cit.png" alt="pmidcite summary" width="300"/></p>
 
 Also known as following a paper's *Cited by* links or *Forward snowballing*    
 
@@ -71,7 +71,7 @@ or
 
 ## 3) Backward citation search
 Also known as following links to a paper's references or *Backward snowballing*    
-<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_ref.png" alt="pmidcite summary" width="300"/></p>
+<p align="left"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby_ref.png" alt="pmidcite summary" width="300"/></p>
 
 ```$ icite -H; icite 26032263 --load_references | sort -k6 -r```    
 or    
