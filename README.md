@@ -128,9 +128,9 @@ i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 
 
 
 ## 5) Download citations for all papers returned from a PubMed search
-<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_src.png" alt="pmidcite summary" width="500"/></p>   
-<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_dnld.png" alt="pmidcite summary" width="500"/></p>   
-<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_save.png" alt="pmidcite summary" width="500"/></p>   
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_srch.png" alt="pmidcite summary" width="800"/></p>   
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_save.png" alt="pmidcite summary" width="800"/></p>   
+<p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/doc/images/pubmed_HIV_AND_Me_dnld.png" alt="pmidcite summary" width="800"/></p>   
 ```
 $ icite -i pmid-HIVANDDNAm-set.txt -o pmid-HIVANDDNAm-icite.txt
 ```
