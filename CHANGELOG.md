@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2022-12-22 v0.0.41**](#release-2023-01-30-v0043) Add @scbarrera's PR
 * [**Release 2022-12-22 v0.0.41**](#release-2022-12-22-v0042) Added summarize_papers script
 * [**Release 2022-12-06 v0.0.41**](#release-2022-12-06-v0041) setup.py updates for make target, install 
 * [**Release 2022-11-26 v0.0.40**](#release-2022-11-28-v0040) Added pmidcite.scripts.icite; pip3, not pip from Python2
@@ -43,7 +44,11 @@
 
 ### Unreleased
 
-### release 2022-12-30 v0.0.42
+### release 2023-01-30 v0.0.42
+* CHANGED: Improved output from `icite -k' or `icite --print_keys' Thanks @scbarrer for the [PR](https://github.com/dvklopfenstein/pmidcite/pull/53)
+* ADDED: Description in README.md showing how to analyze the results of a PubMed search. Thanks @Raefcon for opening the [issue](https://github.com/dvklopfenstein/pmidcite/issues/50)
+
+### release 2022-12-22 v0.0.42
 * ADDED summarize_papers script
 * ADDED requests package as a pre-requisite
 * CHANGED API to NCBI E-utils such that a missing LID (Local ID) is ignored on a PubMed entry
