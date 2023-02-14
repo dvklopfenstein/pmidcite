@@ -79,6 +79,7 @@ build:
 
 # 3) Upload wheel to https://pypi.org
 # https://pypi.org/manage/account/token/
+# python3 -m pip install --upgrade pmidcite
 upload:
 	twine upload dist/* --verbose
 
