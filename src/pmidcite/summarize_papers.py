@@ -94,7 +94,7 @@ class SummarizePapers:
     @classmethod
     def from_file(cls, filename, nih_grouper=None, top_cit_ref=None):
         """Get SummarizePapers instance, given a file filled with icite lines w/TOP|CIT|CLI|REF"""
-        obj = cls(filename, nih_grouper)
+        obj = cls(name=filename, nih_grouper=nih_grouper)
         obj.nts = obj.read_lines(filename, top_cit_ref)
         obj.num_papers_all = len(obj.nts)
         return obj
