@@ -181,7 +181,7 @@ class NIHiCiteAPI:
         prt.write('"""Write data downloaded for NIH iCite data"""\n\n')
         prt.write('# pylint: disable=line-too-long\n')
         prt.write('ICITE = {\n')
-        str_val = {'title', 'journal', 'doi'}
+        str_val = {'title', 'journal', 'doi', 'last_modified'}
         for key, val in dct.items():
             if key == 'authors':
                 prt.write("    '{K}': {V},\n".format(K=key, V=val))
