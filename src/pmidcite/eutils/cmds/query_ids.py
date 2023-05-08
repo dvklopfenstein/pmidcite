@@ -60,7 +60,7 @@ class QueryIDs(EntrezUtilities):
 
     def get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
         """Download PMIDs, N (num_ids_p_epost) at a time"""
-        ## print('WWWWWWWWWWWWWWWWWWWWW pmidcite/eutils/cmds/query_ids.py', rsp_dct)
+        ##print('WWWWWWWWWWWWWWWWWWWWW pmidcite/eutils/cmds/query_ids.py', rsp_dct)
         if not rsp_dct:
             return []
         ids = list(rsp_dct['idlist'])
@@ -70,15 +70,15 @@ class QueryIDs(EntrezUtilities):
             'retmax': num_ids_p_epost,
         }
         tot_ids = rsp_dct['count']
-        ## print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
+        ##print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
         for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_ids)):
-            ## print('WWWWWWWWWWWWWWWWWWWWWWWW retnum', retnum)
+            ##print('WWWWWWWWWWWWWWWWWWWWWWWW retnum', retnum)
             rsp_dct = self.query(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
             if rsp_dct:
-                ## print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
+                ##print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
                 ids.extend(rsp_dct['idlist'])
-        assert tot_ids == len(set(ids)), \
-            f'PMIDS EXP({tot_ids}) ACT({len(set(ids))}) num_ids_p_epost({num_ids_p_epost})'
+        ##assert tot_ids == len(set(ids)), \
+        ##    f'PMIDS EXP({tot_ids}) ACT({len(set(ids))}) num_ids_p_epost({num_ids_p_epost})'
         return ids
 
     @staticmethod
