@@ -123,4 +123,4 @@ clobber_tmp:
 	rm -rf ./src/tests/icite
 
 clobber:
-	make -f makefile clobber_tmp clobber_dist
+	make -f makefile clobber_tmp clean_dist
