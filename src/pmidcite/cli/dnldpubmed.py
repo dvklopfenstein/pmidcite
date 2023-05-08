@@ -1,11 +1,10 @@
 """Given PMIDs, download PubMed entries into a text file"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import argparse
 
-import os
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cfg import Cfg
 from pmidcite.cli.utils import get_pmids
@@ -66,4 +65,4 @@ class DnldPubMed:
         return pmids
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
