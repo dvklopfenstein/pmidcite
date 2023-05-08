@@ -52,7 +52,7 @@ def test_nihocc_data_download_or_import():
 
     nih_entry = dnldr.get_icite(22882545)
 
-    print(nih_entry.hdr)
+    print(f'HEADER FOR PMID(22882545): {nih_entry.hdr}')
     print(nih_entry)
 
 
