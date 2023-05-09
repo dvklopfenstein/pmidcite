@@ -18,6 +18,9 @@ p:
 d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
+g:
+	git status -uno; git branch; git remote -v
+
 cli:
 	find src/pmidcite/cli -name \*.py
 
