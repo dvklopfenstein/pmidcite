@@ -1,7 +1,7 @@
 """Run PubMed user query and download PMIDs. Run iCite on PMIDs. Write text file."""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 from collections import namedtuple
@@ -24,19 +24,40 @@ class PubMedQueryToICite:
             apikey=self.cfg.get_apikey(),
             tool=self.cfg.get_tool())
 
-    def run(self, fout_query, dnld_idxs=None):
+    #### def run(self, nts_fout_query, dnld_idxs=None):
+    def get_pmid2paper(self, nts_fout_query, dnld_idxs=None):
         """Give an list of tuples: Query PubMed for PMIDs. Download iCite, given PMIDs"""
+        # Get nts_fout_query using function, get_nts_g_list(...)
+        #
         # Download PMIDs and NIH's iCite for only one PubMed query
-        nts = self.get_nts_g_list(fout_query)
+        # Get output file and query:
+        #     Nt(filename='Microglia.txt',
+        #        fullname='./log/icite/Microglia.txt',
+        #        pubmed_query='("microglia"[Title]) AND (review[Filter])')
+        #     Nt(filename='Astrocytes.txt',
+        #        fullname='./log/icite/Astrocytes.txt',
+        #        pubmed_query='("astrocytes"[Title]) AND (review[Filter])')
+        pmid2paper_all = {}
+        ## nts_fout_query = self.get_nts_g_list(fout_query)
         if dnld_idxs is not None:
             for idx in dnld_idxs:
-                ntd = nts[idx]
-                self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+                ntd = nts_fout_query[idx]
+                print('PMIDCITE NTD:', ntd)
+                pmid2paper_cur = self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+                self._update_pmid2paper(pmid2paper_all, pmid2paper_cur)
         # Download PMIDs and NIH's iCite for all PubMed queries
         else:
-            for ntd in nts:
-                self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
-        return nts
+            for ntd in nts_fout_query:
+                pmid2paper_cur = self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
+                self._update_pmid2paper(pmid2paper_all, pmid2paper_cur)
+        return pmid2paper_all
+
+    @staticmethod
+    def _update_pmid2paper(pmid2paper_all, pmid2paper_cur):
+        """Update pmid2paper_all with PMIDs & associated papers in pmid2paper_cur"""
+        for pmid, paper in pmid2paper_cur.items():
+            if pmid not in pmid2paper_all:
+                pmid2paper_all[pmid] = paper
 
     def run_one(self, fout_query, dnld_idx):
         """Query PubMed for PMIDs. Download iCite, given PMIDs"""
@@ -63,6 +84,7 @@ class PubMedQueryToICite:
         ####        print('  0 PMIDs: NOT WRITING {TXT}'.format(TXT=fout_pmids))
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
+            # return pmid2paper
             return self._wr_icite(fout_icite, pmids, details_cites_refs)
         return {}
 
@@ -83,6 +105,13 @@ class PubMedQueryToICite:
 
     def get_nts_g_list(self, lst):
         """Turn a list iof tuple strings into a list of namedtuples"""
+        # Returns:
+        #     Nt(filename='Microglia.txt',
+        #        fullname='./log/icite/Microglia.txt',
+        #        pubmed_query='("microglia"[Title]) AND (review[Filter])')
+        #     Nt(filename='Astrocytes.txt',
+        #        fullname='./log/icite/Astrocytes.txt',
+        #        pubmed_query='("astrocytes"[Title]) AND (review[Filter])')
         nto = namedtuple('Nt', 'filename fullname pubmed_query')
         return [nto._make([fname, self.cfg.get_fullname_icite(fname), qry]) for fname, qry in lst]
 
@@ -101,4 +130,4 @@ class PubMedQueryToICite:
         return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
