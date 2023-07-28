@@ -50,9 +50,6 @@ setup(
     ## cmdclass=versioneer.get_cmdclass(),
     packages=PACKAGES,
     package_dir=PACKAGE_DIRS,
-    # https://stackoverflow.com/questions/18787036/difference-between-entry-points-console-scripts-and-scripts-in-setup-py
-    # https://stackoverflow.com/questions/45114076/python-setuptools-using-scripts-keyword-in-setup-py
-    # https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#scripts
     scripts=glob('src/bin/*.py'),
     entry_points={
         'console_scripts':[
