@@ -3,7 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* **Release 2023-08-18 v0.0.44** GNU Affero General Public License v3.0 (GNU AGPLv3)
+* [**Release 2023-08-18 v0.0.44**](#release-2023-08-18-v0044) GNU Affero General Public License v3.0 (GNU AGPLv3)
 * [**Release 2022-12-22 v0.0.44**](#release-2023-01-30-v0043) Add @scbarrera's PR
 * [**Release 2022-12-22 v0.0.41**](#release-2022-12-22-v0042) Added summarize_papers script
 * [**Release 2022-12-06 v0.0.41**](#release-2022-12-06-v0041) setup.py updates for make target, install 
@@ -44,6 +44,11 @@
 ## Details
 
 ### Unreleased
+
+### release 2023-08-18 v0.0.44
+* ADDED GNU Affero General Public License v3.0 (GNU AGPLv3)
+* CHANGED DV Klopfenstein to DV Klopfenstein, PhD
+* REMOVED references to versioneer
 
 ### release 2023-01-30 v0.0.42
 * CHANGED: Improved output from `icite -k' or `icite --print_keys' Thanks @scbarrer for the [PR](https://github.com/dvklopfenstein/pmidcite/pull/53)
