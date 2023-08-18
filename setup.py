@@ -8,9 +8,8 @@ from os.path import join
 # from distutils.core import setup
 from glob import glob
 from setuptools import setup
-# import versioneer
 
-__copyright__ = 'Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved'
+__copyright__ = 'Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved'
 __author__ = 'DV Klopfenstein, PhD'
 
 NAME = 'pmidcite'
@@ -43,11 +42,9 @@ def get_long_description():
 
 setup(
     name=NAME,
-    ## version=versioneer.get_version(),
     version='0.0.44',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
-    ## cmdclass=versioneer.get_cmdclass(),
     packages=PACKAGES,
     package_dir=PACKAGE_DIRS,
     scripts=glob('src/bin/*.py'),
@@ -75,4 +72,4 @@ setup(
     install_requires=['requests'],
 )
 
-# Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved

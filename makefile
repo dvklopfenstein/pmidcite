@@ -43,7 +43,7 @@ pylint:
 
 pytest:
 	make clobber_tmp
-	python3.8 --version; python3.8 -m pytest --cov=pmidcite -v src/tests | tee pytest.log
+	python3 --version; python3 -m pytest --cov=pmidcite -v src/tests | tee pytest.log
 	#### python3 -m pytest $(TESTS)
 
 ver:
