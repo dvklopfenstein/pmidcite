@@ -1,7 +1,7 @@
 """Given PMIDs, download PubMed records containing"""
 
-__author__ = 'DV Klopfenstein'
-__copyright__ = "Copyright (C) 2016-present DV Klopfenstein. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
+__copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
 __license__ = "GPL"
 
 from os import system
@@ -86,4 +86,4 @@ class PubMed(EntrezUtilities):
 
 
 
-# Copyright (C) 2016-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved.

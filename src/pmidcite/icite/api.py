@@ -1,8 +1,8 @@
 """Given PubMed IDs (PMIDs), download NIH citation data and write it to a Python module"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 ## from timeit import default_timer
 from collections import OrderedDict
@@ -195,4 +195,4 @@ class NIHiCiteAPI:
         prt.write('}\n')
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

@@ -1,7 +1,7 @@
 """Plot the types of content and their amount in PubMed"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import matplotlib as mpl
 mpl.use('agg')
@@ -225,4 +225,4 @@ class PubMedPlot:
         plt.annotate('PMC', (pmc_x0+pmc_all/2.0, yval-5), ha='center', va='center')
 
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

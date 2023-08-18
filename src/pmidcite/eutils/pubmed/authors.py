@@ -1,7 +1,7 @@
 """Hold list of Authors."""
 
-__author__ = 'DV Klopfenstein'
-__copyright__ = "Copyright (C) 2019-present DV Klopfenstein. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
+__copyright__ = "Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved."
 
 from pmidcite.eutils.pubmed.author import Author
 
@@ -52,4 +52,4 @@ class Authors(object):
     return "\n".join([str(a) for a in self.authors])
 
 
-# Copyright (C) 2019-present DV Klopfenstein.  All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD.  All rights reserved.

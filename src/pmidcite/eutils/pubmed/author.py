@@ -1,7 +1,7 @@
 """Author object."""
 
-__author__ = 'DV Klopfenstein'
-__copyright__ = "Copyright (C) 2019-present DV Klopfenstein. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
+__copyright__ = "Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved."
 
 
 class Author(object):
@@ -20,4 +20,4 @@ class Author(object):
     return "\n".join(lst)
 
 
-# Copyright (C) 2019-present DV Klopfenstein.  All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD.  All rights reserved.

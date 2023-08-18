@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Download over 100,000 PMIDs to be used in testing"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import argv
 from os.path import exists
@@ -97,4 +97,4 @@ if __name__ == '__main__':
     main()
     #_get_traced_memory()
 
-# Copyright (C) 2021-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.

@@ -1,8 +1,8 @@
 """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD, PhD"
 
 from pmidcite.icite.dnldr.pmid_dnlder_base import NIHiCiteDownloaderBase
 from pmidcite.icite.entry import NIHiCiteEntry
@@ -38,4 +38,4 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
         return None
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.

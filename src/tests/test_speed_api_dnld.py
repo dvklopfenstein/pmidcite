@@ -62,4 +62,4 @@ def _init_dnldr(force_dnld):
 if __name__ == '__main__':
     test_speed_api_dnld()
 
-# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD, PhD. All rights reserved.

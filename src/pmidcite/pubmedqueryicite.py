@@ -1,7 +1,7 @@
 """Run PubMed user query and download PMIDs. Run iCite on PMIDs. Write text file."""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD, PhD"
 
 import sys
 from collections import namedtuple
@@ -121,13 +121,13 @@ class PubMedQueryToICite:
         # If no argument was provided, run the last query in the list
         if len(argv) == 1:
             return [-1]
-        if argv[1] == 'all' and queries is not None:
+        if argv[1] in {'all', '--all'} and queries is not None:
             return list(range(len(queries)))
         if 'h' in argv[1] and queries:
             for idx, item in enumerate(queries):
-                print('{I:3} {E}'.format(I=idx, E=item))
+                print(f'{idx:3} {item}')
             sys.exit(1)
         return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.

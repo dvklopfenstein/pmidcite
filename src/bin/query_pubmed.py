@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Given a PubMed query, retrun the pubmed IDs"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from pmidcite.cli.querypubmed import QueryPubMed  # get_argparser
 
@@ -15,4 +15,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

@@ -1,7 +1,7 @@
 """Manage counts for various types of PubMed data"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import collections as cx
 
@@ -110,4 +110,4 @@ class DataMgr:
             ([(xvals[4], a2n['other'].count)],   (yval-7, 1.8), {'label':'Other', 'facecolors':'tab:orange', **par}),
         ]
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

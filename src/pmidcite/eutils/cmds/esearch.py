@@ -1,8 +1,8 @@
 """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
-__copyright__ = "Copyright (C) 2020-present DV Klopfenstein. All rights reserved."
-__author__ = 'DV Klopfenstein'
+__copyright__ = "Copyright (C) 2020-present DV Klopfenstein, PhD. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
 
 import os
 import sys
@@ -188,4 +188,4 @@ class ESearch(EntrezUtilities):
         return nts
 
 
-# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved.

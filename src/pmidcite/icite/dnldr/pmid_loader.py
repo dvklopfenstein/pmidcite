@@ -1,7 +1,7 @@
 """Given a PubMed ID (PMID), return a list of publications which cite it"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD, PhD"
 
 from sys import stdout
 from os.path import join
@@ -85,4 +85,4 @@ class NIHiCiteLoader:
         ## return pmids_linked
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.

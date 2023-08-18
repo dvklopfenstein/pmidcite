@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Plot NIH percentile groups for citation data from a paper's cocitation network"""
 
-__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved."
 
 
 # pylint: disable=wrong-import-position
@@ -59,4 +59,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved.

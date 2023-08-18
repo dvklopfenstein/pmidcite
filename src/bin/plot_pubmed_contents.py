@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Plot the types of content and their amount in PubMed"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 from pmidcite.cfg import Cfg
@@ -39,4 +39,4 @@ def main(dnld=False):
 if __name__ == '__main__':
     main(len(sys.argv) != 1)
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

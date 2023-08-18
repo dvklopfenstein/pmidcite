@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Test the icite command-line options"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os import system
 from os.path import join
@@ -125,4 +125,4 @@ if __name__ == '__main__':
     else:
         test_cli_icite()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.
