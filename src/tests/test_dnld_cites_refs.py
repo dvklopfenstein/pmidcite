@@ -84,4 +84,4 @@ def _get_exp_pmids(dnldr, top_dct):
 if __name__ == '__main__':
     test_dnld_cites_refs()
 
-# Copyright (C) 2021-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.

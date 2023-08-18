@@ -1,7 +1,7 @@
 """Given PMIDs, download PubMed entries into a text file"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import argparse
 
@@ -72,4 +72,4 @@ class QueryPubMed:
         return pmids_all
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

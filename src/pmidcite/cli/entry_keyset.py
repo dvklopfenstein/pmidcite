@@ -1,7 +1,7 @@
 """Read a file created by pmidcite and write simple text file of PMIDs"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from pmidcite.icite.entry import NIHiCiteEntry
 
@@ -26,4 +26,4 @@ def get_details_cites_refs(verbose, load_citations, load_references, no_referenc
     return details_cites_refs
 
 
-# Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

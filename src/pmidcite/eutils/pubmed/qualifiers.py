@@ -88,4 +88,4 @@ NTS = [
   NtQbin._make(['virology', 'VI', 'VIROL', 'Used with organs, animals, and higher plants and with diseases for virologic studies. For bacteria, rickettsia, and fungi, "microbiology" is used; for parasites, "parasitology" is used.']),
 ]
 
-# Copyright (C) 2014-2020 DV Klopfenstein. All rights reserved
+# Copyright (C) 2014-2020 DV Klopfenstein, PhD. All rights reserved

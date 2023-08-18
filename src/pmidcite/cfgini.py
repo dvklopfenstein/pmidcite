@@ -1,7 +1,7 @@
 """Configuration file for PMID Cite"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 from os.path import exists
@@ -59,10 +59,10 @@ tool = scripts
 #
 #  # PMID 33031632 is a new (-1) research (R) paper discussing humans (H)
 #  # with 2 citations and 18 references that is authored by 2 (au[02]) people with
-#  # the first author being DV Klopfenstein.
+#  # the first author being DV Klopfenstein, PhD.
 #  #
 #  $ icite 33031632
-#  TOP 33031632 R. H....  -1 i 2021     2  0  18 au[02](D V Klopfenstein) Commentary ...
+#  TOP 33031632 R. H....  -1 i 2021     2  0  18 au[02](D V Klopfenstein, PhD) Commentary ...
 #
 # Thousands of NIH citation files may be downloaded for a literature search
 # on a single subject. It is not necessary to save the NIH citation data and I
@@ -116,4 +116,4 @@ def wr_rcfile(cfgfile, force=False):
     return False
 
 
-# Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

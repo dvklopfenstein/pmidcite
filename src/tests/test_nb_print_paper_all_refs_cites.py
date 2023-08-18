@@ -57,4 +57,4 @@ def _run(dnldr):
 if __name__ == '__main__':
     test_print_paper_all_refs_cites()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

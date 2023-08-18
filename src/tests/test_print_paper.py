@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from timeit import default_timer
 from time import sleep
@@ -64,4 +64,4 @@ def test_print_paper():
 if __name__ == '__main__':
     test_print_paper()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

@@ -1,6 +1,6 @@
 """Plot groups in the NIH percentile map showing how well a paper is doing among its peers"""
 
-__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved."
 
 import math
 from sys import stdout
@@ -144,4 +144,4 @@ class PltNihVals(PltNihPercentile):
                       xytext=(3, 0.30), xy=(self.vlines_x[4], self.vlines_y[4]), ha='right', **kws)
 
 
-# Copyright (C) 2020-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved.

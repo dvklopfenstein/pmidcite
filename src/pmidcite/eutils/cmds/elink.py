@@ -1,7 +1,7 @@
 """Fetch items and write"""
 
-__author__ = 'DV Klopfenstein'
-__copyright__ = "Copyright (C) 2016-present DV Klopfenstein. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
+__copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
 __license__ = "GPL"
 
 import sys
@@ -66,4 +66,4 @@ class ELink(CommandBase):
                 sys.stdout.write("*FATAL: NO SOCKET HANDLE TO READ FROM\n")
 
 
-# Copyright (C) 2016-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved.

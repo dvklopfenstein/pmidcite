@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Test that given, one PMID, all ref/cite PMIDs are downloaded"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os import system
 from os import mkdir
@@ -93,4 +93,4 @@ class ICiteTester:
 
 
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

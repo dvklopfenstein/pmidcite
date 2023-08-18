@@ -1,7 +1,7 @@
 """Read a file created by pmidcite and write simple text file of PMIDs"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from os.path import exists
 import argparse
@@ -127,4 +127,4 @@ class ReadPmids:
         return pmids
 
 
-# Copyright (C) 2019-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

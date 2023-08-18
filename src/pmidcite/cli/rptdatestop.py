@@ -1,7 +1,7 @@
 """Report the date each TOP line was added in an iCite report file"""
 
-__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import os
 import sys
@@ -105,4 +105,4 @@ class RptDatesTop:
         return None
 
 
-# Copyright (C) 2020-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present DV Klopfenstein, PhD. All rights reserved.

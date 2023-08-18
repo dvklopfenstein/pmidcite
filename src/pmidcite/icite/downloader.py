@@ -1,7 +1,7 @@
 """Get a Dowloader/Loader or Downloader-Only"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
@@ -42,4 +42,4 @@ def prt_keys(prt=stdout):
     prt.write('\n')
 
 
-# Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

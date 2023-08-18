@@ -1,7 +1,7 @@
 """Manage MeSH descriptors or qualifiers stored in Python modules."""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 import collections as cx
@@ -68,4 +68,4 @@ class MeshTerms(object):
             sys.stdout.write("MeSH CHECK-UNKNOWN VALUE({})\n".format(mhstr))
 
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

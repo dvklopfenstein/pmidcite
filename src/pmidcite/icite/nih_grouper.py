@@ -1,7 +1,7 @@
 """Groups papers using the NIH percentile"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD, PhD"
 
 from collections import namedtuple
 
@@ -95,4 +95,4 @@ class NihGrouper:
             self.min1, self.min2, self.min3, self.min4)
 
 
-# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD, PhD. All rights reserved.

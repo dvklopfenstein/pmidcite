@@ -1,7 +1,7 @@
 """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from collections import Counter
 from collections import defaultdict
@@ -87,4 +87,4 @@ class NIHiCitePapers:
         return ''
 
 
-# Copyright (C) 2021-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

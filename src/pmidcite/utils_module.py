@@ -1,7 +1,7 @@
 """Module helper"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 import pkgutil
@@ -47,4 +47,4 @@ def load_modpy(fin_py):
         return None
 
 
-# Copyright (C) 2019-present DV Klopfensteinr,. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhDr,. All rights reserved.

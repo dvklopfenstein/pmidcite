@@ -2,8 +2,8 @@
 """Test various sorts of papers"""
 # TBD Add assertions
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 
 from tests.icite import ICiteTester
@@ -37,4 +37,4 @@ def test_paper_sort():
 if __name__ == '__main__':
     test_paper_sort()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

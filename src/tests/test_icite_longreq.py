@@ -11,4 +11,4 @@ def test_icite_longreq():
 if __name__ == '__main__':
     test_icite_longreq()
 
-# Copyright (C) 2021-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.

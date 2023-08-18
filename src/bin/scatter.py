@@ -2,7 +2,7 @@
 """ASCII scatter plot adapted from https://github.com/dzerbino/ascii_plots"""
 
 __copyright__ = "Copyright (C) 2013-present, Authored by Daniel Zerbino. All rights reserved."
-__copyright__ = "Copyright (C) 2020-present, Adapted for pmidcite by DV Klopfenstein. All rights reserved."
+__copyright__ = "Copyright (C) 2020-present, Adapted for pmidcite by DV Klopfenstein, PhD. All rights reserved."
 
 
 import sys
@@ -19,4 +19,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Copyright (C) 2020-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2020-present DV Klopfenstein, PhD. All rights reserved.

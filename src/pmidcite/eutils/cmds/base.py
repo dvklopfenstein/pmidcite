@@ -13,8 +13,8 @@
 # tags: # https://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.Tn/
 
 
-__copyright__ = "Copyright (C) 2014-present DV Klopfenstein. All rights reserved."
-__author__ = 'DV Klopfenstein'
+__copyright__ = "Copyright (C) 2014-present DV Klopfenstein, PhD. All rights reserved."
+__author__ = 'DV Klopfenstein, PhD'
 
 import sys
 import traceback
@@ -432,4 +432,4 @@ class EntrezUtilities(object):
         return num_tot
 
 
-# Copyright (C) 2014-present DV Klopfenstein. All rights reserved.
+# Copyright (C) 2014-present DV Klopfenstein, PhD. All rights reserved.

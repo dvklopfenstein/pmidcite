@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Read a file created by pmidcite and write simple text file of PMIDs"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 
 from pmidcite.cli.readpmids import ReadPmids  # get_argparser
@@ -16,4 +16,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

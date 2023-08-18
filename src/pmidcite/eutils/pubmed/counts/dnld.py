@@ -18,8 +18,8 @@
 # Linking to a World of Resources
 # http://www.ncbi.nlm.nih.gov/projects/linkout/
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein. All rights reserved."
-__author__ = "DV Klopfenstein"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import os
 import sys
@@ -287,4 +287,4 @@ class PubMedDnld(EntrezUtilities):
         return dct
 
 
-# Copyright (C) 2019-present, DV Klopfenstein. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.
