@@ -3,7 +3,8 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2022-12-22 v0.0.41**](#release-2023-01-30-v0043) Add @scbarrera's PR
+* **Release 2023-08-18 v0.0.44** GNU Affero General Public License v3.0 (GNU AGPLv3)
+* [**Release 2022-12-22 v0.0.44**](#release-2023-01-30-v0043) Add @scbarrera's PR
 * [**Release 2022-12-22 v0.0.41**](#release-2022-12-22-v0042) Added summarize_papers script
 * [**Release 2022-12-06 v0.0.41**](#release-2022-12-06-v0041) setup.py updates for make target, install 
 * [**Release 2022-11-26 v0.0.40**](#release-2022-11-28-v0040) Added pmidcite.scripts.icite; pip3, not pip from Python2
