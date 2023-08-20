@@ -65,11 +65,11 @@ class ReadPmids:
         dct = get_outfile(args.outfile, None, args.force_write)
         outfile = self._get_outfile(args, dct)
         if pmids:
-            self._wr_icite(outfile, pmids, args)
+            self._wr_icite_pmids(outfile, pmids, args)
         else:
             print('XXX', outfile, pmids)
 
-    def _wr_icite(self, outfile, pmids, args):
+    def _wr_icite_pmids(self, outfile, pmids, args):
         """Write an iCite report for the provided PMIDs"""
         grouperobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
         details_cites_refs = get_details_cites_refs(
@@ -121,9 +121,9 @@ class ReadPmids:
                             pmids.append(pmid)
                             seen.add(pmid)
                 else:
-                    print('  MISSING: {FILE}'.format(FILE=fin))
+                    print(f'  MISSING: {fin}')
                 if len(fins_pmidcite) != 1:
-                    print('{N:6} PMIDs READ'.format(N=len(pmids)))
+                    print(f'{len(pmids):6} PMIDs READ')
         return pmids
 
 
