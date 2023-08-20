@@ -76,7 +76,7 @@ vim_md:
 build:
 	# python3 -m pip install -U pip
 	# python3 -m pip install --user --upgrade setuptools wheel
-	make clean_dist
+	make clean_build
 	$(PYTHON) setup.py sdist
 	$(PYTHON) setup.py bdist_wheel --universal
 	ls -lh dist
@@ -95,7 +95,7 @@ upgrade:
 	$(PYTHON) -m pip install --upgrade setuptools wheel twine
 	$(PYTHON) -m pip install --upgrade distutils
 
-clean_dist:
+clean_build:
 	rm -rf dist build 
 
 pyc:
@@ -121,11 +121,11 @@ clean:
 	rm -rf notebooks/icite
 	rm -rf src/tests/icite
 	make clobber_tmp
-	make clean_dist
+	make clean_build
 
 clobber_tmp:
 	rm -rf ./icite
 	rm -rf ./src/tests/icite
 
 clobber:
-	make -f makefile clobber_tmp clean_dist
+	make -f makefile clobber_tmp clean_build

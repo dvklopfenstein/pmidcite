@@ -85,10 +85,10 @@ class PubMedQueryToICite:
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
             # return pmid2paper
-            return self._wr_icite(fout_icite, pmids, details_cites_refs)
+            return self._wr_icite_query(fout_icite, pmids, query, details_cites_refs)
         return {}
 
-    def _wr_icite(self, fout_icite, pmids, details_cites_refs):
+    def _wr_icite_query(self, fout_icite, pmids, query, details_cites_refs):
         """Run PMIDs in iCite and print results into a file"""
         cfg = self.cfg
         dnldr = get_downloader(
@@ -100,7 +100,7 @@ class PubMedQueryToICite:
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.get_pmid2paper {N} PMIDs'.format(N=len(pmids)))
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))
-        dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
+        dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True, query=query)
         return pmid2paper
 
     def get_nts_g_list(self, lst):
