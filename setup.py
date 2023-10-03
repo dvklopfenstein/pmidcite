@@ -51,7 +51,7 @@ setup(
     entry_points={
         'console_scripts':[
             'icite=pmidcite.scripts.icite:main',
-            'summarize_papers=pmidcite.scripts.summarize_papers:main',
+            'sumpaps=pmidcite.scripts.summarize_papers:main',
         ],
     },
     # https://pypi.org/classifiers/
