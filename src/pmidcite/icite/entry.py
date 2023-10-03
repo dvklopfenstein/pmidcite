@@ -1,8 +1,8 @@
 """Holds NIH iCite data for one PubMed ID (PMID)"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 
@@ -228,4 +228,4 @@ class NIHiCiteEntry:
         return self.pmid < rhs.pmid
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
