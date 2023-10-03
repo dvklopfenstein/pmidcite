@@ -3,8 +3,8 @@
 
 from pmidcite.icite.top_cit_ref import TopCitRef
 
-__copyright__ = "Copyright (C) 2022-present, DV Klopfenstein, PhD, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD, PhD"
+__copyright__ = "Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 
 ADJ = TopCitRef().adjust_args
@@ -33,4 +33,4 @@ def _chk(num, args, exp):
 if __name__ == '__main__':
     test_topcitref_args()
 
-# Copyright (C) 2022-present, DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved.

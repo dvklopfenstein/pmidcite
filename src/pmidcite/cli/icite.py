@@ -1,7 +1,7 @@
 """Manage args for NIH iCite run for one PubMed ID (PMID)"""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
 import argparse
@@ -261,4 +261,4 @@ class NIHiCiteCli:
             Ps=' '.join(str(p) for p in pmids)))
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
