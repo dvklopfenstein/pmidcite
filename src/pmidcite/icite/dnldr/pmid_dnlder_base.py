@@ -217,7 +217,7 @@ class NIHiCiteDownloaderBase:
                 ## print('STARTING ', mode)
                 with open(fout_txt, mode, encoding='utf-8') as prt:
                     if query is not None:
-                        prt.write(f'QUERY: {query}')
+                        prt.write(f'QUERY: {query}\n')
                     self.prt_papers(pmid2icitepaper, prt)
                 print(f'{self._msg_wrote(mode, pmids_all, pmids_new)}: {fout_txt}')
 
