@@ -121,8 +121,10 @@ class PubMedQueryToICite:
         # If no argument was provided, run the last query in the list
         if len(argv) == 1:
             return [-1]
-        if argv[1] in {'all', '--all'} and queries is not None:
-            return list(range(len(queries)))
+        if argv[1] in {'all', '--all'}:
+            if queries is not None:
+                return list(range(len(queries)))
+            raise DeprecationWarning('FUNCTION get_index PARAMATER queries IS None')
         if 'h' in argv[1] and queries:
             for idx, item in enumerate(queries):
                 print(f'{idx:3} {item}')
