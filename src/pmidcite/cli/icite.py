@@ -4,9 +4,11 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights re
 __author__ = "DV Klopfenstein, PhD"
 
 from sys import stdout
-import argparse
+from sys import exit as sys_exit
+from argparse import ArgumentParser
 
 from pmidcite.eutils.cmds.pubmed import PubMed
+from pmidcite.citation import CITATION
 from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
@@ -29,7 +31,7 @@ class NIHiCiteCli:
 
     def get_argparser(self):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
-        parser = argparse.ArgumentParser(
+        parser = ArgumentParser(
             description="Run NIH's iCite given PubMed IDs",
             add_help=False)
         cfg = self.cfg
@@ -42,6 +44,9 @@ class NIHiCiteCli:
         parser.add_argument(
             '-h', '--help', action='store_true',
             help='print this help message and exit (also --help)')
+        parser.add_argument(
+            '--cite', action='store_true',
+            help='publication citation for the pmidcite project')
         parser.add_argument(
             'pmids', metavar='PMID', type=int, nargs='*',
             help='PubMed IDs (PMIDs)')
@@ -94,14 +99,13 @@ class NIHiCiteCli:
         # pylint: disable=line-too-long
         parser.add_argument(
             '--dir_icite_py', default=dflt_dir_icite_py,
-            help='Write PMID iCite information into directory which contains temporary working files (default={D})'.format(
-                D=dflt_dir_icite_py))
+            help=f'Write PMID iCite information into directory which contains temporary working files (default={dflt_dir_icite_py})')
         parser.add_argument(
             '--dir_icite', default=dflt_dir_icite,
-            help='Write PMID icite reports into directory (default={D})'.format(D=dflt_dir_icite))
+            help=f'Write PMID icite reports into directory (default={dflt_dir_icite})')
         parser.add_argument(
             '--dir_pubmed_txt', default=dflt_dir_pubmed_txt,
-            help='Write PubMed entry into directory (default={D})'.format(D=dflt_dir_pubmed_txt))
+            help=f'Write PubMed entry into directory (default={dflt_dir_pubmed_txt})')
         # ------------------------------------------------------------------------------------
         parser.add_argument(
             '--md', action='store_true',
@@ -128,13 +132,16 @@ class NIHiCiteCli:
         if args.help:
             argparser.print_help()
             print('\nHelp message printed because: -h or --help == True')
-            exit()
+            sys_exit()
+        if args.cite:
+            print(CITATION)
+            sys_exit()
         self.prt_info(args)
         # Get a list of researcher-specified PMIDs
         pmids = get_pmids(args.pmids, args.infile)
         if pmids:
             if len(pmids) > 10:
-                print('PROCESSING {N:,} PMIDs'.format(N=len(pmids)))
+                print(f'PROCESSING {len(pmids):,} PMIDs')
             dnldr = self._get_downloader(args)
             pmid2icitepaper = dnldr.get_pmid2paper(pmids, None)
             ## print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
@@ -193,7 +200,6 @@ class NIHiCiteCli:
             args.load_references = True
         return args
 
-    # pylint: disable=too-many-arguments
     def run_icite(self, pmid2icitepaper_all, dnldr, args, argparser):
         """Run iCite/PubMed"""
         pmid2icitepaper_cur = self.run_icite_pre(pmid2icitepaper_all, args, argparser)
@@ -225,7 +231,7 @@ class NIHiCiteCli:
         """Print input files"""
         if infiles:
             for fin in infiles:
-                print('**ERROR: NO PMIDs found in: {F}'.format(F=fin))
+                print(f'**ERROR: NO PMIDs found in: {fin}')
 
     @staticmethod
     def run_icite_wr(pmid2icitepaper, args, dnldr):
@@ -246,19 +252,18 @@ class NIHiCiteCli:
     def _wr_papers(self, pmid2icitepaper, dnldr, print_header):
         """Write one icite report per PMID into dir_icite/PMID.txt"""
         for pmid, paper in pmid2icitepaper.items():
-            fout_txt = self.cfg.get_fullname_icite('{PMID}.txt'.format(PMID=pmid))
-            with open(fout_txt, 'w') as prt:
+            fout_txt = self.cfg.get_fullname_icite(f'{pmid}.txt')
+            with open(fout_txt, 'w', encoding='utf8') as prt:
                 if print_header:
                     prt_hdr(prt)
                 dnldr.prt_papers({pmid:paper}, prt)
-                print('  WROTE: {TXT}'.format(TXT=fout_txt))
+                print(f'  WROTE: {fout_txt}')
 
     @staticmethod
     def _prt_no_icite(pmids):
         if not pmids:
             return
-        print('**NOTE: No NIH iCite papers found for: {Ps}'.format(
-            Ps=' '.join(str(p) for p in pmids)))
+        print('**NOTE: No NIH iCite papers found for: {" ".join(str(p) for p in pmids)}')
 
 
 # Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

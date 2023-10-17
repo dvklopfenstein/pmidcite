@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "If you use this project, please cite it as below."
 authors:
 - family-names: "Klopfenstein"
   given-names: "DV"
@@ -11,6 +11,7 @@ title: "pmidcite"
 version: 0.0.18
 doi: 10.5281/zenodo.5172712
 keywords: 
+  - "Google Scholar"
   - CitedBy
   - PubMed
   - PMID
@@ -19,6 +20,7 @@ keywords:
   - "forward snowball"
   - "backward snowball"
   - "literature review"
+  - "literature search"
   - "citation downloader"
 contact:
   - email: dvklopfenstein@protonmail.com
@@ -36,6 +38,7 @@ preferred-citation:
     given-names: "Will"
   doi: "10.1002/jrsm.1456"
   journal: "Research Synthesis Methods"
+  publisher: "Wiley"
   month: 3
   start: 126 # First page number
   end: 135 # Last page number
@@ -43,15 +46,20 @@ preferred-citation:
   issue: 2
   volume: 12
   year: 2021
+  pmid:33031632
+  eprint:33031632
+  eprinttype:pubmed
   keywords: 
     - CitedBy
     - PubMed
     - PMID
+    - "Google Scholar"
     - "forward citation"
     - "backward citation"
     - "forward snowball"
     - "backward snowball"
     - "literature review"
+    - "literature search"
     - "citation downloader"
   contact:
     - email: dvklopfenstein@protonmail.com
