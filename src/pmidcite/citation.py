@@ -23,6 +23,9 @@ bibtex:
 @article{Klopfenstein_2021,
   author = {Klopfenstein, DV and Dampier, Will},
   doi = {10.1002/jrsm.1456},
+  pmid = {33031632},
+  eprint = {33031632},
+  eprinttype = {pubmed},
   url = {https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456}
   journal = {Research Synthesis Methods},
   publisher = {{Wiley}},
