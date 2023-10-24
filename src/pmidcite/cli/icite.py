@@ -96,7 +96,6 @@ class NIHiCiteCli:
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         self.cfg.get_nihgrouper().add_arguments(parser)
         # - directories ----------------------------------------------------------------------
-        # pylint: disable=line-too-long
         parser.add_argument(
             '--dir_icite_py', default=dflt_dir_icite_py,
             help=f'Write PMID iCite information into directory which contains temporary working files (default={dflt_dir_icite_py})')
@@ -124,7 +123,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = self._get_args(argparser)
-        ##print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self._run(args, argparser)
 
     def _run(self, args, argparser):
