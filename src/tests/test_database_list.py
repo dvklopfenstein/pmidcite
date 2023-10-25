@@ -24,6 +24,7 @@ def test_database_list(einfo_each_db=False):
 
 def _prt_einfo_db(dbs):
     """Print the list of databases"""
+    assert dbs is not None, 'ERROR getting database list from NCBI E-Utils'
     for idx, database in enumerate(dbs):
         print('  {I}) {DB}'.format(I=idx, DB=database))
 

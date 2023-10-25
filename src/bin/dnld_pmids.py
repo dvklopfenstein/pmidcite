@@ -32,7 +32,7 @@ def main():
     #   $ src/bin/dnld_pmids.py -2
     #
     obj = PubMedQueryToICite(force_dnld=True)
-    dnld_idx = obj.get_index(sys.argv)
+    dnld_idx = obj.get_index(sys.argv, queries)
     obj.run(queries, dnld_idx)
 
 

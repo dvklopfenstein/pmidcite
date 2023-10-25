@@ -7,8 +7,8 @@ from pmidcite.cli.utils import get_files_exists
 from pmidcite.summarize_papers import SummarizePapers
 from pmidcite.icite.top_cit_ref import TopCitRef
 
-__copyright__ = "Copyright (C) 2022-present, DV Klopfenstein, PhD, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD, PhD"
+__copyright__ = "Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 
 class SummarizePapersCli:
@@ -80,4 +80,4 @@ class SummarizePapersCli:
             print(sumpap.str_oneline())
 
 
-# Copyright (C) 2022-present, DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2022-present, DV Klopfenstein, PhD. All rights reserved.

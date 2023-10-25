@@ -1,7 +1,7 @@
 """Run PubMed user query and download PMIDs. Run iCite on PMIDs. Write text file."""
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD, PhD. All rights reserved."
-__author__ = "DV Klopfenstein, PhD, PhD"
+__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__author__ = "DV Klopfenstein, PhD"
 
 import sys
 from collections import namedtuple
@@ -85,10 +85,10 @@ class PubMedQueryToICite:
         # 3) Run NIH's iCite on the PMIDs and write the results into a file
         if pmids:
             # return pmid2paper
-            return self._wr_icite(fout_icite, pmids, details_cites_refs)
+            return self._wr_icite_query(fout_icite, pmids, query, details_cites_refs)
         return {}
 
-    def _wr_icite(self, fout_icite, pmids, details_cites_refs):
+    def _wr_icite_query(self, fout_icite, pmids, query, details_cites_refs):
         """Run PMIDs in iCite and print results into a file"""
         cfg = self.cfg
         dnldr = get_downloader(
@@ -100,7 +100,7 @@ class PubMedQueryToICite:
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.get_pmid2paper {N} PMIDs'.format(N=len(pmids)))
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))
-        dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True)
+        dnldr.wr_papers(fout_icite, pmid2icitepaper=pmid2paper, force_overwrite=True, query=query)
         return pmid2paper
 
     def get_nts_g_list(self, lst):
@@ -121,8 +121,10 @@ class PubMedQueryToICite:
         # If no argument was provided, run the last query in the list
         if len(argv) == 1:
             return [-1]
-        if argv[1] in {'all', '--all'} and queries is not None:
-            return list(range(len(queries)))
+        if argv[1] in {'all', '--all'}:
+            if queries is not None:
+                return list(range(len(queries)))
+            raise DeprecationWarning('FUNCTION get_index PARAMATER queries IS None')
         if 'h' in argv[1] and queries:
             for idx, item in enumerate(queries):
                 print(f'{idx:3} {item}')
@@ -130,4 +132,4 @@ class PubMedQueryToICite:
         return [int(n) for n in argv[1:] if n.lstrip('-').isdigit()]
 
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

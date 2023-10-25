@@ -28,41 +28,24 @@ class NIHiCiteDownloaderBase:
 
     def get_icites(self, pmids):
         """Citation data should be downloaded or loaded by derived classes"""
-        # pylint: disable=unreachable,no-self-use,useless-return
         raise RuntimeError("**FATAL NIHiCiteDownloaderBase:get_icites(pmids)")
-        return []
+        ## return []
 
     def get_icite(self, pmid):
         """Citation data should be downloaded or loaded by derived classes"""
-        # pylint: disable=unreachable,no-self-use
         raise RuntimeError("**FATAL NIHiCiteDownloaderBase:get_icite(pmid)")
-        return False
-
-    def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w'):
-        """Run iCite for user-provided PMIDs and write to a file"""
-        if not pmid2icitepaper:
-            return
-        pmids_all = pmid2icitepaper.keys()
-        pmids_new = pmids_all
-        if mode == 'a':
-            pmids_new = self._get_new_pmids(fout_txt, pmids_all)
-        if pmids_new:
-            if self._do_write(fout_txt, force_overwrite):
-                ## print('STARTING ', mode)
-                with open(fout_txt, mode) as prt:
-                    self.prt_papers(pmid2icitepaper, prt)
-                print('{WR}: {TXT}'.format(
-                    WR=self._msg_wrote(mode, pmids_all, pmids_new), TXT=fout_txt))
+        ## return False
 
     def prt_api_msgs(self):
         """Print error messages captured by API, if there are any"""
         if self.api.msgs:
+            # pylint: disable=consider-using-f-string
             print('\n{MSG}'.format(MSG='\n'.join(self.api.msgs)))
 
     @staticmethod
     def prt_top(paper, prt=stdout):
         """Print one detailed line summarizing the paper"""
-        prt.write('TOP {iCite}\n'.format(iCite=paper.str_line()))
+        prt.write(f'TOP {paper.str_line()}\n')
 
     def prt_papers(self, pmid2icitepaper, prt=stdout):
         """Print papers, including citation counts, cite_by and references list"""
@@ -70,7 +53,7 @@ class NIHiCiteDownloaderBase:
             if paper is not None:
                 self.prt_paper(paper, pmid, pmid, prt)
             else:
-                print('**WARNING: NO iCite ENTRY FOUND FOR: {PMID}'.format(PMID=pmid))
+                print(f'**WARNING: NO iCite ENTRY FOUND FOR: {pmid}')
 
     def prt_paper(self, paper, pmid, name, prt=stdout):
         """Print one paper, including citation counts, cite_by and references list"""
@@ -81,24 +64,18 @@ class NIHiCiteDownloaderBase:
             else:
                 self.prt_top(paper, prt)
         else:
-            prt.write('No iCite results found: {PMID} {NAME}\n\n'.format(
-                PMID=pmid, NAME=name if name is not None else ''))
+            prt.write(f'No iCite results found: {pmid} {name if name is not None else ""}\n\n')
 
     @staticmethod
     def _msg_wrote(mode, pmids_req, pmids_new):
         """Get the 'WROTE' or 'APPENDED' message"""
         if mode == 'w':
-            return '{N:6,} WROTE'.format(N=len(pmids_req))
+            return f'{len(pmids_req):6,} WROTE'
         if mode == 'a':
-            if pmids_new:
-                return '{N:,} of {M:,} APPENDED'.format(
-                    N=len(pmids_new),
-                    M=len(pmids_req))
-            return '{N:,} of {M:,} FOUND'.format(
-                N=len(pmids_new),
-                M=len(pmids_req))
+            n_of_m = f'{len(pmids_new):,} of {len(pmids_req):,}'
+            return f'{n_of_m} APPENDED' if pmids_new else f'{n_of_m} FOUND'
             # return '{N:,} FOUND'.format(M=len(pmids_req))
-        raise RuntimeError('UNRECOGNIZED WRITE MODE({M})'.format(M=mode))
+        raise RuntimeError(f'UNRECOGNIZED WRITE MODE({mode})')
 
     @staticmethod
     def _get_new_pmids(pmidcite_txt, pmids):
@@ -112,10 +89,10 @@ class NIHiCiteDownloaderBase:
         """Run iCite for user-provided PMIDs and write to a file"""
         name2ntpaper = self._run_icite_name2pmid(name2pmid, pmid2note=None)
         if name2ntpaper:
-            with open(fout_txt, 'w') as prt:
+            with open(fout_txt, 'w', encoding='utf-8') as prt:
                 for name, ntpaper in name2ntpaper.items():
                     self.prt_paper(ntpaper.paper, ntpaper.pmid, name, prt)
-                print('  WROTE: {TXT}'.format(TXT=fout_txt))
+                print(f'  WROTE: {fout_txt}')
 
     def _run_icite_name2pmid(self, name2pmid, pmid2note):
         """Get a NIHiCitePaper object for each user-specified PMID"""
@@ -194,13 +171,10 @@ class NIHiCiteDownloaderBase:
                 for nihentry in self.get_icites(assoc_pmids):
                     pmid2icite[nihentry.pmid] = nihentry
             return NIHiCitePaper(pmid_top, pmid2icite, header, pmid2note)
-        note = ''
-        if pmid2note and pmid_top in pmid2note:
-            note = pmid2note[pmid_top]
-        print('No NIH iCite results found: {PMID} {HDR} {NOTE}'.format(
-            PMID=pmid_top,
-            HDR=header if header else '',
-            NOTE=note))
+        ## note = ''
+        ## if pmid2note and pmid_top in pmid2note:
+        ##     note = pmid2note[pmid_top]
+        print('No NIH iCite results found: {pmid_top} {header if header else ""} {note}')
         return None  ## TBD: NIHiCitePaper(pmid_top, self.dir_dnld, header, note)
 
     @staticmethod
@@ -208,7 +182,7 @@ class NIHiCiteDownloaderBase:
         """Ask for a yes-no answer from the user on STDIN"""
         if not exists(fout_txt) or force_overwrite:
             return True
-        prompt_user = '\nover-write {TXT} (yes/no)? '.format(TXT=fout_txt)
+        prompt_user = f'\nover-write {fout_txt} (yes/no)? '
         return input(prompt_user).lower()[:1] == 'y'
 
     @staticmethod
@@ -228,6 +202,24 @@ class NIHiCiteDownloaderBase:
                    'EXPECTED ONE OF: all citations references')
             raise RuntimeError(msg.format(V=details_cites_refs))
         return set(details_cites_refs).intersection(NIHiCiteEntry.associated_pmid_keys)
+
+    # pylint: disable=too-many-arguments
+    def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w', query=None):
+        """Run iCite for user-provided PMIDs and write to a file"""
+        if not pmid2icitepaper:
+            return
+        pmids_all = pmid2icitepaper.keys()
+        pmids_new = pmids_all
+        if mode == 'a':
+            pmids_new = self._get_new_pmids(fout_txt, pmids_all)
+        if pmids_new:
+            if self._do_write(fout_txt, force_overwrite):
+                ## print('STARTING ', mode)
+                with open(fout_txt, mode, encoding='utf-8') as prt:
+                    if query is not None:
+                        prt.write(f'QUERY: {query}\n')
+                    self.prt_papers(pmid2icitepaper, prt)
+                print(f'{self._msg_wrote(mode, pmids_all, pmids_new)}: {fout_txt}')
 
 
 # Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

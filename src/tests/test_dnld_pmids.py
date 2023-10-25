@@ -42,7 +42,7 @@ def main():
     obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
     obj.cfg.set_dir_pmids(DIR_REPO)
     obj.cfg.set_dir_icite(DIR_REPO)
-    dnld_idx = obj.get_index(sys.argv)
+    dnld_idx = obj.get_index(sys.argv, queries)
     obj.run(queries, dnld_idx)
     assert exists(filename)
     print('**PASSED: DIR=repo\n')

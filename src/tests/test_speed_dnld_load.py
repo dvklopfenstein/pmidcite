@@ -84,4 +84,4 @@ def _run_download(dnldr, pmids):
 if __name__ == '__main__':
     test_speed_dnld_load()
 
-# Copyright (C) 2021-present, DV Klopfenstein, PhD, PhD. All rights reserved.
+# Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.
