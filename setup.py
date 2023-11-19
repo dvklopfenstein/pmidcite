@@ -42,7 +42,7 @@ def get_long_description():
 
 setup(
     name=NAME,
-    version='0.0.45',
+    version='0.0.47',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     packages=PACKAGES,

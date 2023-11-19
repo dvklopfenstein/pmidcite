@@ -2,7 +2,7 @@
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
 
 __copyright__ = "Copyright (C) 2020-present DV Klopfenstein, PhD. All rights reserved."
-__author__ = 'DV Klopfenstein, PhD.'
+__author__ = 'DV Klopfenstein, PhD'
 
 import sys
 from pmidcite.eutils.cmds.base import EntrezUtilities
