@@ -13,7 +13,7 @@ class CommandBase(EntrezUtilities):
 
     def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100):
         cfg = Cfg()
-        super(CommandBase, self).__init__(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
+        super().__init__(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
         self.batch_size = batch_size
         self.retmax = retmax
         self.rettype = rettype
