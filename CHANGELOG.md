@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2023-11-19 v0.0.47**](#release-2023-11-19-v0047) GNU AGPLv3; Add function to summarize a set of papers
 * [**Release 2023-08-18 v0.0.45**](#release-2023-08-18-v0045) GNU Affero General Public License v3.0 (GNU AGPLv3)
 * [**Release 2022-12-22 v0.0.43**](#release-2023-01-30-v0043) Add @scbarrera's PR
 * [**Release 2022-12-22 v0.0.42**](#release-2022-12-22-v0042) Added summarize_papers script
@@ -44,6 +45,16 @@
 ## Details
 
 ### Unreleased
+
+### release 2023-11-19 v0.0.47
+* UPDATE codeql-analysis.yml by @manodeep in #54
+* UPDATE GNU Affero General Public License v3.0 (GNU AGPLv3) & more Copyrights by @dvklopfenstein in #56
+* UPDATE for pytest
+* UPDATE Copyright cleanup
+* ADD function get_indexs
+* ADD function summarize_papers 
+* ADD QUERY to summary prints by @dvklopfenstein in #59
+* Run workflow by @dvklopfenstein in #60
 
 ### release 2023-08-18 v0.0.45
 * ADDED GNU Affero General Public License v3.0 (GNU AGPLv3)

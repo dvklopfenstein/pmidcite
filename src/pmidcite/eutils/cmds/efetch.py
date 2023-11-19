@@ -1,7 +1,7 @@
 """Fetch items and write"""
 # https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch
 
-__author__ = 'DV Klopfenstein, PhD.'
+__author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
 __license__ = "GNU AGPLv3"
 
