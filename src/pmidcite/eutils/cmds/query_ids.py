@@ -36,12 +36,12 @@ class QueryIDs(EntrezUtilities):
     }
 
     def __init__(self, email, apikey, tool, prt=sys.stdout):
-        super(QueryIDs, self).__init__(email, apikey, tool, prt)
+        super().__init__(email, apikey, tool, prt)
 
     def dnld_query_ids(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
         rsp_dct = self.get_query_rsp(query, database, num_ids_p_epost)
-        return self.get_ids(rsp_dct, query, database, num_ids_p_epost)
+        return self._get_ids(rsp_dct, query, database, num_ids_p_epost)
 
     def get_query_rsp(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
@@ -49,16 +49,15 @@ class QueryIDs(EntrezUtilities):
         rsp_dct = self.query(database, query, retmax=num_ids_p_epost)
         if rsp_dct is None:
             if self.log:
-                self.log.write('No {DB} entries found: {Q}\n'.format(DB=database, Q=query))
+                self.log.write(f'No {database} entries found: {query}\n')
                 self.log.flush()
             return []
         if rsp_dct and self.log:
-            self.log.write('{N:6,} IDs FOR {DB} QUERY({Q})\n'.format(
-                DB=database, N=rsp_dct['count'], Q=query))
+            self.log.write(f'{rsp_dct["count"]:6,} IDs FOR {database} QUERY({query})\n')
             self.log.flush()
         return rsp_dct
 
-    def get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
+    def _get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
         """Download PMIDs, N (num_ids_p_epost) at a time"""
         ##print('WWWWWWWWWWWWWWWWWWWWW pmidcite/eutils/cmds/query_ids.py', rsp_dct)
         if not rsp_dct:
@@ -116,7 +115,7 @@ class QueryIDs(EntrezUtilities):
         if dct is not None and 'idlist' in dct and dct['idlist']:
             if database in {'pubmed',}:
                 dct['idlist'] = [int(n) for n in dct['idlist']]
-            for fldname in {'count', 'retmax'}:
+            for fldname in ['count', 'retmax']:
                 dct[fldname] = int(dct[fldname])
             return dct
         return None
