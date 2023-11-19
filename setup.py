@@ -60,7 +60,7 @@ setup(
         'Environment :: Console',
         'Intended Audience :: Science/Research',
         'Development Status :: 4 - Beta',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
