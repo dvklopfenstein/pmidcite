@@ -129,4 +129,4 @@ clobber_tmp:
 	rm -rf ./src/tests/icite
 
 clobber:
-	make -f makefile clobber_tmp clean_build
+	make -f makefile clobber_tmp clean_build pyc
