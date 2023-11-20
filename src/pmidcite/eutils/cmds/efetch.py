@@ -14,9 +14,8 @@ class EFetch(CommandBase):
     """Fetch and write text"""
 
     # pylint: disable=too-many-arguments
-    def __init__(self, rettype='medline', retmode='text', batch_size=100):
-        retmax = 10000
-        super().__init__(retmax, rettype, retmode, batch_size)
+    def __init__(self, rettype='medline', retmode='text', batch_size=100, retmax=10000):
+        super().__init__(rettype, retmode, batch_size, retmax)
 
     def efetch_and_write(self, ostrm, database, webenv, querykey, num_fetches):
         """EFetch records found for PMIIDs, page by page"""

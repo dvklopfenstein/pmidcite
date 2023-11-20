@@ -1,4 +1,6 @@
-"""Fetch items and write"""
+"""Run a NCBI E-Utils command that requires args, rettype and retmode"""
+# pylint: disable=line-too-long
+# https://www.ncbi.nlm.nih.gov/books/NBK25499/table/chapter4.T._valid_values_of__retmode_and/?report=objectonly
 
 __author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
@@ -9,9 +11,9 @@ from pmidcite.eutils.cmds.base import EntrezUtilities
 
 
 class CommandBase(EntrezUtilities):
-    """Fetch and write text"""
+    """Run a NCBI E-Utils command that requires args, rettype and retmode"""
 
-    def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100):
+    def __init__(self, rettype='medline', retmode='text', batch_size=100, retmax=10000):
         cfg = Cfg()
         super().__init__(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
         self.batch_size = batch_size
