@@ -348,14 +348,13 @@ class EntrezUtilities(object):
                 traceback.print_exc()
                 print('\n**FATAL JSONDecodeError:\n{RECORD}'.format(RECORD=record.decode('utf-8')))
 
-        if retmode == 'text':
+        if retmode in {'text', 'asn.1'}:
             ## print('RECORD:', str(record))
             return record.decode('utf-8')
 
         ## print('RETMODE', retmode)
         ## print('RECORD', record)
 
-        ## print(record)
         # <?xml version="1.0" encoding="ISO-8859-1"?>
         # <!DOCTYPE ePostResult
         #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
@@ -366,8 +365,11 @@ class EntrezUtilities(object):
         # </ePostResult>
         # Parse XML
         root = ElementTree.fromstring(record)
-        ## print('root.tag', root.tag)
-        assert root.tag in 'ePostResult', root.tag
+        print(f'ElementTree.fromstring(record).root:\n{root}')
+        return root
+        # TODO
+        print('root.tag', root.tag)
+        assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
         dct = {r.tag.lower():r.text for r in root}
         if 'querykey' in dct:
             dct['querykey'] = int(dct['querykey'])
