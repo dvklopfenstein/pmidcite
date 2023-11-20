@@ -14,11 +14,9 @@ class EFetch(CommandBase):
     """Fetch and write text"""
 
     # pylint: disable=too-many-arguments
-    #### def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100, **kws):
-    def __init__(self, rettype='medline', retmode='text', batch_size=100, **kws):
-        kws_base = {k:v for k, v in kws.items() if k in CommandBase.exp_kws}
-        ##print('FFFFFFFFFFFFFFFFFFFF', kws_base)
-        super(EFetch, self).__init__(**kws_base)
+    def __init__(self, rettype='medline', retmode='text', batch_size=100):
+        retmax = 10000
+        super().__init__(retmax, rettype, retmode, batch_size)
 
     def efetch_and_write(self, ostrm, database, webenv, querykey, num_fetches):
         """EFetch records found for PMIIDs, page by page"""
@@ -29,7 +27,6 @@ class EFetch(CommandBase):
         for start in range(0, num_fetches, self.batch_size):
             ## msg = msg_fmt.format(querykey, database, self.batch_size, start, self.desc)
             ## sys.stdout.write(msg)
-            ## print('SSSSSSSSSSSSSSSSSSSSSSSTART:', start)
             txt = self.efetch_txt(start, self.batch_size, database, webenv, querykey)
 
             if txt is not None:
@@ -42,14 +39,13 @@ class EFetch(CommandBase):
                     ostrm.flush()
                 # pylint: disable=broad-except
                 except Exception as err:
-                    sys.stdout.write("*FATAL: BAD READ SOCKET HANDLE: {}\n".format(str(err)))
+                    sys.stdout.write(f"*FATAL: BAD READ SOCKET HANDLE: {str(err)}\n")
             else:
                 sys.stdout.write("*FATAL: NO SOCKET HANDLE TO READ FROM\n")
 
     def efetch_txt(self, start, retmax, database, webenv, querykey):
         """Fetch database text"""
         try:
-            # pylint: disable=bad-whitespace
             txt = self.run_eutilscmd(
                 'efetch',
                 db        = database,
@@ -62,15 +58,16 @@ class EFetch(CommandBase):
             #print('FETCH:', dct)
             return txt
         except IOError as err:
-            msg = "\n*FATAL: EFetching FAILED: {}".format(err)
+            msg = f"\n*FATAL: EFetching FAILED: {err}"
             sys.stdout.write(msg)
-            sys.stdout.write("  database:   {}\n".format(database))
-            sys.stdout.write("  retstart:   {}\n".format(start))
-            sys.stdout.write("  batch_size: {}\n".format(self.batch_size))
-            sys.stdout.write("  rettype:    {}\n".format(self.rettype))
-            sys.stdout.write("  retmode:    {}\n".format(self.retmode))
-            sys.stdout.write("  webenv:     {}\n".format(webenv))
-            sys.stdout.write("  querykey:   {}\n".format(querykey))
+            sys.stdout.write(f"  database:   {database}\n")
+            sys.stdout.write(f"  retstart:   {start}\n")
+            sys.stdout.write(f"  batch_size: {self.batch_size}\n")
+            sys.stdout.write(f"  rettype:    {self.rettype}\n")
+            sys.stdout.write(f"  retmode:    {self.retmode}\n")
+            sys.stdout.write(f"  webenv:     {webenv}\n")
+            sys.stdout.write(f"  querykey:   {querykey}\n")
+        return None
 
 
 # Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved.
