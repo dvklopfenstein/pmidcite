@@ -39,6 +39,10 @@ def get_long_description():
     with open(join(dir_cur, 'README.md'), 'rb') as ifstrm:
         return ifstrm.read().decode("UTF-8")
 
+CONSOLE_SCRIPTS = [
+    'icite=pmidcite.scripts.icite:main',
+    'sumpaps=pmidcite.scripts.summarize_papers:main',
+]
 
 setup(
     name=NAME,
@@ -49,10 +53,7 @@ setup(
     package_dir=PACKAGE_DIRS,
     scripts=glob('src/bin/*.py'),
     entry_points={
-        'console_scripts':[
-            'icite=pmidcite.scripts.icite:main',
-            'sumpaps=pmidcite.scripts.summarize_papers:main',
-        ],
+        'console_scripts': CONSOLE_SCRIPTS,
     },
     # https://pypi.org/classifiers/
     classifiers=[
