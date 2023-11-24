@@ -112,9 +112,9 @@ class QueryIDs(EntrezUtilities):
             usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
             retmode='json',
             **kws_act)
-        print(f'run_eutilscmd rsp {dct.keys()}')
+        ## print(f'run_eutilscmd rsp {dct.keys()}')
         esearchresult = self._get_esearchresult(dct)
-        print(f'run_eutilscmd rsp {esearchresult}')
+        ## print(f'run_eutilscmd rsp {esearchresult}')
         if esearchresult is not None and 'idlist' in esearchresult and esearchresult['idlist']:
             if database in {'pubmed','gene'}:
                 esearchresult['idlist'] = [int(n) for n in esearchresult['idlist']]
