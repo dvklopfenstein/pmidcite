@@ -46,7 +46,7 @@ class QueryIDs(EntrezUtilities):
     def get_query_rsp(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
         # 1) Query PubMed/Protein, PhD/etc. Get first N (num_ids_p_epost) of the total PMIDs
-        rsp_dct = self.query(database, query, retmax=num_ids_p_epost)
+        rsp_dct = self.get_ids_esearch(database, query, retmax=num_ids_p_epost)
         if rsp_dct is None:
             if self.log:
                 self.log.write(f'No {database} entries found: {query}\n')
@@ -72,7 +72,8 @@ class QueryIDs(EntrezUtilities):
         ##print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
         for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_ids)):
             ##print('WWWWWWWWWWWWWWWWWWWWWWWW retnum', retnum)
-            rsp_dct = self.query(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
+            # pylint: disable=line-too-long
+            rsp_dct = self.get_ids_esearch(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
             if rsp_dct:
                 ##print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
                 ids.extend(rsp_dct['idlist'])
@@ -89,10 +90,10 @@ class QueryIDs(EntrezUtilities):
         ## print(f'num_querykeys({num_querykeys})')
         return num_querykeys
 
-    def query(self, database, query, **esearch):
-        """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
+    def get_ids_esearch(self, database, query, **kws):
+        """Esearch for json uilist finds database UIDs for later use in ESummary, EFetch or ELink"""
         kws_exp = self.exp_params.difference({'db', 'term', 'rettype', 'usehistory', 'retmode'})
-        kws_act = {k:v for k, v in esearch.items() if k in kws_exp}
+        kws_act = {k:v for k, v in kws.items() if k in kws_exp}
         # Returns:
         #    count
         #    retmax
