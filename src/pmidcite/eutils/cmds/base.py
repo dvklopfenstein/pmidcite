@@ -211,39 +211,16 @@ class EntrezUtilities(object):
         ret['querykey'] = rsp['querykey']
         return ret
 
-    @staticmethod
-    def _return_einforesult(record):
-        """Return EInfo result"""
-        einforesult = record['einforesult']
-        cmdtype = record['header']['type']
-        if 'dblist' in einforesult:
-            return einforesult['dblist']
-        if cmdtype == 'einfo' and 'dbinfo' in einforesult:
-            assert len(record['einforesult']['dbinfo']) == 1
-            ## print('RRRRRRRRRRRRRRR', record.keys())
-            ## print('RRRRRRRRRRRRRRR', len(record['einforesult']['dbinfo']))
-            ## print('RRRRRRRRRRRRRRR', record)
-            return record['einforesult']['dbinfo'][0]
-        raise RuntimeError('IMPLEMENT _return_einforesult')
-
-    @staticmethod
-    def _return_linksets(record):
-        """Return ELink result"""
-        links_all = []
-        for dct0 in record['linksets']:
-            ## print('DCT', dct0)
-            if 'linksetdbs' in dct0:
-                for dct1 in dct0['linksetdbs']:
-                    links_all.extend(dct1['links'])
-        print('{N} LINKED ITEMS'.format(N=len(links_all)))
-        return links_all
-
     # ------------------------------------------------------------------------------------
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
+        # print('RUN NCBI EUTILS CMD', cmd)
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
+        # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
+        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
+        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
         if rsp_dct is not None:
             return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return None
@@ -251,8 +228,8 @@ class EntrezUtilities(object):
     def _mk_cgi(self, cmd, **params):
         """Get Fast Common Gateway Interface (fcgi) string, given E-utils command/parameters"""
         cgi = self.cgifmt.format(ECMD=cmd)
+        ##print('PARAMS', params)
         params = self._construct_params(params)
-        ## print('PARAMS', params)
         options = self._encode_options(params)
         cgi += '?' + options
         return cgi
@@ -333,29 +310,19 @@ class EntrezUtilities(object):
         """Extract the data from a response from running a Entrez Utilities command"""
         if retmode == 'json':
             try:
-                dct = json.loads(record)
-                if 'esearchresult' in dct:
-                    return dct['esearchresult']
-                if 'einforesult' in dct:
-                    return self._return_einforesult(dct)
-                if 'linksets' in dct:
-                    return self._return_linksets(dct)
-                print('KEYS:', dct.keys())
-                print('DCT:', dct)
-                raise RuntimeError('UNKNOWN RESULT in _run_req')
+                return json.loads(record)
             except json.decoder.JSONDecodeError as errobj:
                 print('JSONDecodeError = {ERR}'.format(ERR=str(errobj)))
                 traceback.print_exc()
                 print('\n**FATAL JSONDecodeError:\n{RECORD}'.format(RECORD=record.decode('utf-8')))
 
-        if retmode == 'text':
+        if retmode in {'text', 'asn.1'}:
             ## print('RECORD:', str(record))
             return record.decode('utf-8')
 
         ## print('RETMODE', retmode)
         ## print('RECORD', record)
 
-        ## print(record)
         # <?xml version="1.0" encoding="ISO-8859-1"?>
         # <!DOCTYPE ePostResult
         #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
@@ -366,8 +333,11 @@ class EntrezUtilities(object):
         # </ePostResult>
         # Parse XML
         root = ElementTree.fromstring(record)
-        ## print('root.tag', root.tag)
-        assert root.tag in 'ePostResult', root.tag
+        #print(f'ElementTree.fromstring(record).root:\n{root}')
+        return root
+        # TODO
+        #print('root.tag', root.tag)
+        assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
         dct = {r.tag.lower():r.text for r in root}
         if 'querykey' in dct:
             dct['querykey'] = int(dct['querykey'])

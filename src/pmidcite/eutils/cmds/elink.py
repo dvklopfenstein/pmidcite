@@ -1,4 +1,4 @@
-"""Fetch items and write"""
+"""ELink"""
 
 __author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
@@ -6,17 +6,16 @@ __license__ = "GPL"
 
 import sys
 import re
-from pmidcite.eutils.cmds.cmdbase import CommandBase
+from pmidcite.eutils.cmds.base import EntrezUtilities
 
 
-# TBD:
-class ELink(CommandBase):
-    """Fetch and write text"""
+class ELink(EntrezUtilities):
+    """ELink"""
 
     # pylint: disable=too-many-arguments
-    def __init__(self, retmax=10000, rettype='medline', retmode='text', batch_size=100, **kws):
-        kws_base = {k:v for k, v in kws.items() if k in CommandBase.exp_kws}
-        super(ELink, self).__init__(**kws_base)
+    def __init__(self, email, apikey, tool, batch_size=100):
+        super().__init__(email, apikey, tool)
+        self.batch_size = batch_size
 
     def elink(self, database_from, linkname, webenv, querykey, num_fetches):
         """EFetch records found for PMIDs, page by page"""
@@ -29,7 +28,6 @@ class ELink(CommandBase):
             ## sys.stdout.write(msg)
             record = None
             try:
-                # pylint: disable=bad-whitespace
                 record = self.run_eutilscmd(
                     'elink',
                     db        = database_from,
@@ -41,15 +39,15 @@ class ELink(CommandBase):
                     query_key = querykey)
                 print('ELINK:', linkname, record)
             except IOError as err:
-                msg = "\n*FATAL: EFetching FAILED: {}".format(err)
+                msg = f"\n*FATAL: EFetching FAILED: {err}"
                 sys.stdout.write(msg)
-                sys.stdout.write("  database:   {}\n".format(database_from))
-                sys.stdout.write("  retstart:   {}\n".format(start))
-                # sys.stdout.write("  retmax:     {}\n".format(retmax))
-                sys.stdout.write("  batch_size: {}\n".format(self.batch_size))
-                sys.stdout.write("  linkname:   {}\n".format(linkname))
-                sys.stdout.write("  webenv:     {}\n".format(webenv))
-                sys.stdout.write("  querykey:   {}\n".format(querykey))
+                sys.stdout.write(f"  database:   {database_from}\n")
+                sys.stdout.write(f"  retstart:   {start}\n")
+                # sys.stdout.write(f"  retmax:     {retmax}\n")
+                sys.stdout.write(f"  batch_size: {self.batch_size}\n")
+                sys.stdout.write(f"  linkname:   {linkname}\n")
+                sys.stdout.write(f"  webenv:     {webenv}\n")
+                sys.stdout.write(f"  querykey:   {querykey}\n")
 
             if record is not None:
                 try:
@@ -61,7 +59,7 @@ class ELink(CommandBase):
                     # ostrm.flush()
                 # pylint: disable=broad-except
                 except Exception as err:
-                    sys.stdout.write("*FATAL: BAD READ SOCKET HANDLE: {}\n".format(str(err)))
+                    sys.stdout.write(f"*FATAL: BAD READ SOCKET HANDLE: {str(err)}\n")
             else:
                 sys.stdout.write("*FATAL: NO SOCKET HANDLE TO READ FROM\n")
 

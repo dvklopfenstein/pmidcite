@@ -36,29 +36,28 @@ class QueryIDs(EntrezUtilities):
     }
 
     def __init__(self, email, apikey, tool, prt=sys.stdout):
-        super(QueryIDs, self).__init__(email, apikey, tool, prt)
+        super().__init__(email, apikey, tool, prt)
 
     def dnld_query_ids(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
         rsp_dct = self.get_query_rsp(query, database, num_ids_p_epost)
-        return self.get_ids(rsp_dct, query, database, num_ids_p_epost)
+        return self._get_ids(rsp_dct, query, database, num_ids_p_epost)
 
     def get_query_rsp(self, query, database, num_ids_p_epost=10):
         """Searches a NCBI database for a user query, writes resulting entries into one file."""
         # 1) Query PubMed/Protein, PhD/etc. Get first N (num_ids_p_epost) of the total PMIDs
-        rsp_dct = self.query(database, query, retmax=num_ids_p_epost)
+        rsp_dct = self.get_ids_esearch(database, query, retmax=num_ids_p_epost)
         if rsp_dct is None:
             if self.log:
-                self.log.write('No {DB} entries found: {Q}\n'.format(DB=database, Q=query))
+                self.log.write(f'No {database} entries found: {query}\n')
                 self.log.flush()
             return []
         if rsp_dct and self.log:
-            self.log.write('{N:6,} IDs FOR {DB} QUERY({Q})\n'.format(
-                DB=database, N=rsp_dct['count'], Q=query))
+            self.log.write(f'{rsp_dct["count"]:6,} IDs FOR {database} QUERY({query})\n')
             self.log.flush()
         return rsp_dct
 
-    def get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
+    def _get_ids(self, rsp_dct, query, database, num_ids_p_epost=10):
         """Download PMIDs, N (num_ids_p_epost) at a time"""
         ##print('WWWWWWWWWWWWWWWWWWWWW pmidcite/eutils/cmds/query_ids.py', rsp_dct)
         if not rsp_dct:
@@ -73,7 +72,8 @@ class QueryIDs(EntrezUtilities):
         ##print('WWWWWWWWWWWWWWWWWWWWWWWW', kws_p)
         for retnum in range(1, self._get_num_querykeys(num_ids_p_epost, tot_ids)):
             ##print('WWWWWWWWWWWWWWWWWWWWWWWW retnum', retnum)
-            rsp_dct = self.query(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
+            # pylint: disable=line-too-long
+            rsp_dct = self.get_ids_esearch(database, query, retstart=num_ids_p_epost*retnum, **kws_p)
             if rsp_dct:
                 ##print('WWWWWWWWWWWWWWWWWWWWWWWW idlist', rsp_dct['idlist'])
                 ids.extend(rsp_dct['idlist'])
@@ -90,10 +90,10 @@ class QueryIDs(EntrezUtilities):
         ## print(f'num_querykeys({num_querykeys})')
         return num_querykeys
 
-    def query(self, database, query, **esearch):
-        """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
+    def get_ids_esearch(self, database, query, **kws):
+        """Esearch for json uilist finds database UIDs for later use in ESummary, EFetch or ELink"""
         kws_exp = self.exp_params.difference({'db', 'term', 'rettype', 'usehistory', 'retmode'})
-        kws_act = {k:v for k, v in esearch.items() if k in kws_exp}
+        kws_act = {k:v for k, v in kws.items() if k in kws_exp}
         # Returns:
         #    count
         #    retmax
@@ -113,12 +113,22 @@ class QueryIDs(EntrezUtilities):
             usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
             retmode='json',
             **kws_act)
-        if dct is not None and 'idlist' in dct and dct['idlist']:
-            if database in {'pubmed',}:
-                dct['idlist'] = [int(n) for n in dct['idlist']]
-            for fldname in {'count', 'retmax'}:
-                dct[fldname] = int(dct[fldname])
-            return dct
+        ## print(f'run_eutilscmd rsp {dct.keys()}')
+        esearchresult = self._get_esearchresult(dct)
+        ## print(f'run_eutilscmd rsp {esearchresult}')
+        if esearchresult is not None and 'idlist' in esearchresult and esearchresult['idlist']:
+            if database in {'pubmed','gene'}:
+                esearchresult['idlist'] = [int(n) for n in esearchresult['idlist']]
+            for fldname in ['count', 'retmax']:
+                esearchresult[fldname] = int(esearchresult[fldname])
+            return esearchresult
+        return None
+
+    @staticmethod
+    def _get_esearchresult(dct):
+        if dct is not None:
+            if 'esearchresult' in dct:
+                return dct['esearchresult']
         return None
 
 

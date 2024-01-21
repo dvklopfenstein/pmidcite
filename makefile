@@ -18,11 +18,6 @@ p:
 d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
-g:
-	git status -uno
-	git remote -v
-	git branch
-
 cli:
 	find src/pmidcite/cli -name \*.py
 
@@ -129,4 +124,4 @@ clobber_tmp:
 	rm -rf ./src/tests/icite
 
 clobber:
-	make -f makefile clobber_tmp clean_build
+	make -f makefile clobber_tmp clean_build pyc

@@ -185,13 +185,14 @@ class Cfg(object):
         """Check to see that user has added a NCBI API key"""
         try:
             int(loaded['apikey'], 16)
-        except ValueError:
-            msg = ('SET API KEY IN {CFG}\n'
+        except ValueError as exc:
+            msg = (f'SET API KEY IN {self.cfgfile}\n'
                    'Get an NCBI API key to run the E-utilities:\n'
                    'https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/'
                    'new-api-keys-for-the-e-utilities\n'
-                   'To ensure your API key is not made public, add {CFG} to the .gitignore')
-            raise RuntimeError(msg.format(CFG=self.cfgfile))
+                   'To ensure your API key is not made public, '
+                   f'add {self.cfgfile} to the .gitignore')
+            raise RuntimeError(msg) from exc
 
     def _err_notfound(self):
         """Report the config file was not found"""
