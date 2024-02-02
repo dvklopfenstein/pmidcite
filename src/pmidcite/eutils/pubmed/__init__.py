@@ -107,4 +107,29 @@ __author__ = 'DV Klopfenstein, PhD'
 # VI            |Volume            |Volume number of the journal
 # VTI            |Volume Title            |Book Volume Title
 
+
+# https://superuser.com/questions/771140/how-to-insert-enough-spaces-to-align-text-to-column-number-using-vim
+#
+# Line up: -e 's/:.*$//' to same column number?
+#  COMP_ID=`      echo $SRC | sed -e 's/.*COMP_ID=//'  -e 's/:.*$//'`
+#  SRC_TYP=`      echo $SRC | sed -e 's/.*SRC_TYP=//'  -e 's/:.*$//'`
+#  DOC_TYP=`      echo $SRC | sed -e 's/.*DOC_TYP=//'  -e 's/:.*$//'`
+#  SRC_ID=`       echo $SRC | sed -e 's/.*SRC_ID=//'      -e 's/:.*$//'`
+#  ACC=`          echo $SRC | sed -e 's/.*ACC=//'      -e 's/:.*$//'`
+#  PASS=`         echo $SRC | sed -e 's/.*PASS=//'  -e 's/:.*$//'`
+#  POP=`          echo $SRC | sed -e 's/.*POP=//'      -e 's/:.*$//'`
+#  REMOTE_HOST=`  echo $SRC | sed -e 's/.*REMOTE_HOST=//'  -e 's/:.*$//'`
+#  REMOTE_PATH=`  echo $SRC | sed -e 's/.*REMOTE_PATH=//'  -e 's/:.*$//'`
+#  ARCHIVE_PATH=` echo $SRC | sed -e 's/.*ARCHIVE_PATH=//' -e 's/:.*$//'`
+
+# :%s#\(.*\)\zs\ze-e#\=repeat(' ',58-len(submatch(1)))
+# Note: This assumes that -e is the last of line. But you can capture it otherwise if it is not suitable to your case.
+# 
+# Explanation:
+#   * %s#\(.*\) - captures the line before the -e.
+#   * \zs\ze    - starts and stops the match here.
+#   * -e#       - just before the -e.
+#   * Using \zs and \ze here let us to add our spaces directly before -e (otherwise concatenation with .submatch(x) would have been possible).
+#   * \=repeat(' ',58-len(submatch(1))) - replace this location with a variable number of spaces and where 58 is your aimed column.
+
 # Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights reserved
