@@ -85,7 +85,7 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
             self.api.prt_dct(dct, prt)
             # Setting prt to sys.stdout -> WROTE: ./icite/p10802651.py
             if log:
-                log.write('  WROTE: {PY}\n'.format(PY=fout_py))
+                log.write(f'  WROTE: {fout_py}\n')
 
     def _load_icites(self, pmids, pmid2py):
         """Load a list of NIH citation data for PMIDs"""
