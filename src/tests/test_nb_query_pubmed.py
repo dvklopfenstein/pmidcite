@@ -14,8 +14,8 @@ from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.icite.downloader import get_downloader
 
 
-def test_query_pubmed():
-    """Test notebook"""
+def test_query_pubmed_apikey1():
+    """Test notebook that queries PubMed with free text"""
     cfg = Cfg(prt_fullname=False)
 
     # ## Instantiate a PubMed object
@@ -56,6 +56,7 @@ def test_query_pubmed():
 
 
 if __name__ == '__main__':
-    test_query_pubmed()
+    test_query_pubmed_apikey1()
+    #test_query_pubmed_apikey0()
 
 # Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.
