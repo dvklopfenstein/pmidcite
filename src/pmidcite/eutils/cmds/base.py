@@ -1,6 +1,7 @@
 """This script downloads NCBI records based on user search query"""
 
 # Entrez Help: # https://www.ncbi.nlm.nih.gov/books/NBK3837/
+# APIKEY: https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
 #
 # A General Introduction to the E-utilities: # https://www.ncbi.nlm.nih.gov/books/NBK25497/
 #
@@ -31,6 +32,8 @@ from urllib.parse import urlencode
 from urllib.error import URLError as _URLError
 from urllib.error import HTTPError as _HTTPError
 
+from pmidcite.eutils.apikey import DEFAULT_APIKEY
+
 
 # pylint: disable=useless-object-inheritance
 class EntrezUtilities(object):
@@ -52,7 +55,10 @@ class EntrezUtilities(object):
     def get_database_list(self):
         """Get a list of Entrez databases"""
         # einfo: http://www.ncbi.nlm.nih.gov/books/NBK25499/
-        return self.run_eutilscmd('einfo', retmode='json')
+        rsp = self.run_eutilscmd('einfo', retmode='json')
+        if rsp and 'einforesult' in rsp and 'dblist' in rsp['einforesult']:
+            return rsp['einforesult']['dblist']
+        return None
 
     def epost_ids(self, ids, database, num_ids_p_epost, retmax, **medline_text):
         """Post IDs using EPost"""
@@ -359,15 +365,15 @@ class EntrezUtilities(object):
         for key, value in list(params.items()):
             if value is None:
                 del params[key]
-        # Tell Entrez that we are using Biopython (or whatever the user has
-        # specified explicitly in the parameters or by changing the default)
-        if "tool" not in params:
-            params["tool"] = self.tool
-        # Tell Entrez who we are
-        if "email" not in params:
-            params["email"] = self.email
-        if self.api_key and "api_key" not in params:
-            params["api_key"] = self.api_key
+        # Put API key and related info if the researcher has an API key
+        if self.api_key != DEFAULT_APIKEY:
+            if "tool" not in params:
+                params["tool"] = self.tool
+            # Tell Entrez who we are
+            if "email" not in params:
+                params["email"] = self.email
+            if self.api_key and "api_key" not in params:
+                params["api_key"] = self.api_key
         return params
 
     def _encode_options(self, params):

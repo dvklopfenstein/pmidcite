@@ -6,7 +6,8 @@ __author__ = "DV Klopfenstein, PhD"
 from sys import stdout
 from os.path import exists
 
-DEFAULT_APIKEY = 'LONG_HEX_NCBI_API_KEY'
+from pmidcite.eutils.apikey import DEFAULT_APIKEY
+
 DEFAULT_EMAIL = 'name@university.edu'
 DEFAULT_TOOL = 'scripts'
 

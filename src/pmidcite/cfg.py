@@ -13,6 +13,7 @@ from sys import stdout
 import configparser
 
 from pmidcite.icite.nih_grouper import NihGrouper
+from pmidcite.eutils.apikey import API_INFO
 
 
 def get_cfgparser(prt=stdout):
@@ -187,9 +188,7 @@ class Cfg(object):
             int(loaded['apikey'], 16)
         except ValueError as exc:
             msg = (f'SET API KEY IN {self.cfgfile}\n'
-                   'Get an NCBI API key to run the E-utilities:\n'
-                   'https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/'
-                   'new-api-keys-for-the-e-utilities\n'
+                   f'{API_INFO}\n'
                    'To ensure your API key is not made public, '
                    f'add {self.cfgfile} to the .gitignore')
             raise RuntimeError(msg) from exc
