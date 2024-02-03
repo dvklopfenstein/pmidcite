@@ -4,7 +4,7 @@ install:
 	pip3 install .
 
 py:
-	find src -name \*.py
+	find src -name \*.py | grep -v icite
 	
 e:
 	find src/pmidcite/eutils -name \*.py
@@ -96,6 +96,8 @@ clean_build:
 
 pyc:
 	find . -name __pycache__ -type d | xargs rm -rf
+	find . -name .ipynb_checkpoints | xargs rm -rf
+	rm -rf notebooks/icite; mkdir notebooks/icite
 
 clean:
 	make pyc
