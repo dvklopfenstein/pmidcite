@@ -32,16 +32,16 @@ class PubMed(EntrezUtilities):
     def _dnld_wr_all(self, fout_pubmed, efetch_idxs, efetch_params):
         """Download and write all PMIDs PubMed text entries into one file"""
         if exists(fout_pubmed):
-            system('rm {FILE}'.format(FILE=fout_pubmed))
+            system(f'rm {fout_pubmed}')
         if not efetch_idxs:
             return
         for desc, start, pmids_exp, querykey in efetch_idxs:
             rsp_txt = self._run_efetch('pubmed', start, querykey, pmids_exp, desc, **efetch_params)
             if rsp_txt is not None:
-                with open(fout_pubmed, 'a') as prt:
+                with open(fout_pubmed, 'a', encoding='utf-8') as prt:
                     prt.write(rsp_txt)
                     prt.flush()
-        print('  WROTE: {FILE}'.format(FILE=fout_pubmed))
+        print(f'  WROTE: {fout_pubmed}')
 
     def _dnld_query(self, query):
         """Searches an NCBI database for a user search term, returns NCBI IDs."""
@@ -60,9 +60,7 @@ class PubMed(EntrezUtilities):
     def _err_exists(dir_pubmed_txt):
         """Print warning message if dir not exist, return current working directory"""
         cwd = getcwd()
-        print('**WARNING: DIR({DIR_NAME}) NOT EXIST RETURNING CWD({CWD})'.format(
-            DIR_NAME=dir_pubmed_txt,
-            CWD=getcwd()))
+        print(f'**WARNING: DIR({dir_pubmed_txt}) NOT EXIST RETURNING CWD({getcwd()})')
         return cwd
 
     def dnld_texts(self, efetch_idxs, efetch_params):
@@ -76,8 +74,10 @@ class PubMed(EntrezUtilities):
     @staticmethod
     def _get_str_post_fetch(num_pmids_p_epost, num_pmids_p_efetch, querykey, start):
         """Get a string summarizing current EPost and EFetch"""
-        return 'IDs/epost={P} IDs/efetch={F} querykey({Q}) start({S})'.format(
-            P=num_pmids_p_epost, F=num_pmids_p_efetch, Q=querykey, S=start)
+        return (f'IDs/epost={num_pmids_p_epost} '
+                f'IDs/efetch={num_pmids_p_efetch} '
+                f'querykey({querykey}) '
+                f'start({start})')
 
     def get_pmid_nt_list(self, pmids, force_download, dir_pubmed, pmid2name=None):
         """Get list of PubMed entries: Title, abstract, authors, journal, MeSH"""
