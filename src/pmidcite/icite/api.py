@@ -50,7 +50,7 @@ class NIHiCiteAPI:
 
     def dnld_nihdict(self, pmid):
         """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
-        rsp_json = self._send_request('{URL}/{PMID}'.format(URL=self.url_base, PMID=pmid))
+        rsp_json = self._send_request(f'{self.url_base}/{pmid}')
         return self._adjust_jsondct(rsp_json) if rsp_json else None
 
     def dnld_nihdicts(self, pmids):
@@ -69,15 +69,14 @@ class NIHiCiteAPI:
             if nih_dicts_cur:
                 nih_dicts_all.extend(nih_dicts_cur)
             # pylint: disable=line-too-long
-            print('NIH citation data downloaded: {N:,} of {P:,}'.format(N=len(nih_dicts_all), P=num_total))
+            print(f'NIH citation data downloaded: {len(nih_dicts_all):,} of {num_total:,}')
         return nih_dicts_all
 
     def _dnld_ltmax(self, pmids):
         """Download NIH citation data using a request using their API"""
         ## tic = default_timer()
-        req_nihocc = '{URL}?pmids={PMIDS}'.format(
-            URL=self.url_base,
-            PMIDS=','.join(str(p) for p in pmids))
+        pmids = ','.join(str(p) for p in pmids)
+        req_nihocc = f'{self.url_base}?pmids={pmids}'
         ## tic = prt_hms(tic, "Create request")
         # Note: rsp_json['data'] returned from NIH not in same order as requested
         rsp_json = self._send_request(req_nihocc)
@@ -102,23 +101,25 @@ class NIHiCiteAPI:
     @staticmethod
     def _warn_missing(pmids):
         """Warn that NIH citation data was not downloaded for pmids"""
-        print("**WARNING: {N:,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {PMIDs}".format(
-            N=len(pmids), PMIDs=' '.join(str(s) for s in sorted(pmids))))
+        pmids =' '.join(str(s) for s in sorted(pmids))
+        print(f"**WARNING: {len(pmids):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids}")
 
-    def _send_request(self, cmd):
+    def _send_request(self, cmd, timeout=500):
         """Send the request to iCite"""
         try:
-            rsp = requests.get(cmd)
+            rsp = requests.get(cmd, timeout=timeout)
             if rsp.status_code == 200:
                 return rsp.json()
             self._prt_errmsg(self._err_msg(rsp))
             return None
         except requests.exceptions.ConnectionError as errobj:
-            self._prt_errmsg('**ERROR: ConnectionError = {ERR}\n'.format(ERR=str(errobj)))
+            self._prt_errmsg(f'**ERROR: ConnectionError = {str(errobj)}\n')
             return None
+        # TODO: Consider explicitly re-raising using
+        # 'raise RuntimeError(f'**ERROR DOWNLOADING {cmd}\n{error}') from error'
         except:
             traceback.print_exc()
-            raise RuntimeError('**ERROR DOWNLOADING {CMD}'.format(CMD=cmd))
+            raise RuntimeError(f'**ERROR DOWNLOADING {cmd}')
 
     def _prt_errmsg(self, errmsg):
         """Print the error and add the error to the list of API messages"""
@@ -137,12 +138,7 @@ class NIHiCiteAPI:
         ## print('6 RRRRRRRRRRRRRRRRRRRRRR', rsp.url)
         ## if rsp.json() is not None:
         ##     txt =' '.join('{K}({V})'.format(K=k, V=v) for k, v in sorted(rsp.json().items()))
-        return '{CODE} {REASON} URL[{N}]: {URL}'.format(
-            CODE=rsp.status_code,
-            REASON=rsp.reason,
-            N=len(rsp.url),
-            URL=rsp.url)
-            #TEXT=rsp.text)
+        return f'{rsp.status_code} {rsp.reason} URL[{len(rsp.url)}]: {rsp.url}'
 
     def _adjust_jsondct(self, json_dct):
         """Adjust values in the json dict"""
@@ -183,15 +179,17 @@ class NIHiCiteAPI:
         prt.write('ICITE = {\n')
         str_val = {'title', 'journal', 'doi', 'last_modified'}
         for key, val in dct.items():
+            print(f'KEY({key})')
+            print(f'VAL({val})')
             if key == 'authors':
-                prt.write("    '{K}': {V},\n".format(K=key, V=val))
+                prt.write(f"    '{key}': {val},\n")
                 #prt.write("    '{K}': {AUTHORS},\n".format(
                 #    K=key,
                 #    AUTHORS='\n'.join(['"{AU}"'.format(AU=a) for a in val])))
             elif key not in str_val:
-                prt.write("    '{K}': {V},\n".format(K=key, V=val))
+                prt.write(f"    '{key}': {val},\n")
             else:
-                prt.write('''    '{K}': """{V}""",\n'''.format(K=key, V=val))
+                prt.write(f'''    '{key}': """{val}""",\n''')
         prt.write('}\n')
 
 
