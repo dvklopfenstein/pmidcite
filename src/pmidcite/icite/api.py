@@ -179,8 +179,6 @@ class NIHiCiteAPI:
         prt.write('ICITE = {\n')
         str_val = {'title', 'journal', 'doi', 'last_modified'}
         for key, val in dct.items():
-            print(f'KEY({key})')
-            print(f'VAL({val})')
             if key == 'authors':
                 prt.write(f"    '{key}': {val},\n")
                 #prt.write("    '{K}': {AUTHORS},\n".format(
