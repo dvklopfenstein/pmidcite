@@ -65,11 +65,8 @@ class Cfg(object):
 
     def prt_cfgfile(self, prt=stdout):
         """Print information about the configuration file"""
-        prt.write('  printenv {VAR} # value({VAL})\n'.format(
-            VAR=self.envvar,
-            VAL=environ[self.envvar]))
-        prt.write('  CFG FILE: {CFG}\n'.format(
-            CFG=abspath(self.cfgfile)))
+        prt.write(f'  printenv {self.envvar} # value({environ[self.envvar]})\n')
+        prt.write(f'  CFG FILE: {abspath(self.cfgfile)}\n')
 
     def get_email(self):
         """Get email"""
@@ -111,8 +108,7 @@ class Cfg(object):
         if dirname is not None and exists(dirname):
             return join(dirname, filename)
         cwd = getcwd()
-        print('**WARNING: DIR NOT EXIST {DIR_TYPE}({DIR_NAME}) RETURNING CWD({CWD})'.format(
-            DIR_TYPE=dir_key, DIR_NAME=dirname, CWD=cwd))
+        print('**WARNING: DIR NOT EXIST {dir_key}({dirname}) RETURNING CWD({cwd})')
         return join(cwd, filename)
 
     def set_dir_pubmed_txt(self, dirname):
@@ -163,24 +159,24 @@ class Cfg(object):
         if self.cfgfile is not None and exists(self.cfgfile):
             if prt:
                 cfgfile = self.cfgfile if prt_fullname else basename(self.cfgfile)
-                prt.write('  READ: {CFG}\n'.format(CFG=cfgfile))
+                prt.write(f'  READ: {cfgfile}\n')
         # Returns a list containing configuration file names
         return self.cfgparser.read(self.cfgfile)
 
     def wr_rc(self, force=False):
         """Write a sample configuration with default values set"""
         if not exists(self.cfgfile) or force:
-            with open(self.cfgfile, 'w') as prt:
+            with open(self.cfgfile, 'w', encoding='utf-8') as prt:
                 self.cfgparser.write(prt)
-                print('  WROTE: {CFG}'.format(CFG=self.cfgfile))
+                print(f'  WROTE: {self.cfgfile}')
                 return True
-        print('  EXISTS: {CFG} OVERWRITE WITH wr_rc(force=True)'.format(CFG=self.cfgfile))
+        print(f'  EXISTS: {self.cfgfile} OVERWRITE WITH wr_rc(force=True)')
         return False
 
     def _chk_email(self, loaded):
         """Check to see that user has added their email"""
         if loaded['email'] == self.dfltdct['pmidcite']['email']:
-            raise RuntimeError('SET EMAIL IN {CFG}'.format(CFG=self.cfgfile))
+            raise RuntimeError(f'SET EMAIL IN {self.cfgfile}')
 
     def _chk_apikey(self, loaded):
         """Check to see that user has added a NCBI API key"""
