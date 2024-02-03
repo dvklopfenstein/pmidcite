@@ -205,10 +205,10 @@ class EntrezUtilities(object):
                 if self.log is not None:
                     self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{end_pt-idx}]={id_str}\n")
         elif 'error' in rsp:
-            raise RuntimeError(f'**ERROR EPost: {rsp["error"]}')
+            raise RuntimeError(f'**ERROR EPost: {rsp["error"]}\nRESPONSE:\n{rsp}')
         else:
             print(rsp)
-            raise RuntimeError("NO webenv RETURNED FROM FIRST EPOST")
+            raise RuntimeError(f"NO webenv RETURNED FROM FIRST EPOST\nRESPONSE:\n{rsp}")
         ## if self.log is not None:
         ##     self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
         ret['querykey'] = rsp['querykey']
