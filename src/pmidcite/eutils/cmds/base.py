@@ -184,7 +184,7 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
+        # print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
