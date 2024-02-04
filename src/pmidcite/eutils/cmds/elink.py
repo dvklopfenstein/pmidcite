@@ -2,7 +2,7 @@
 
 __author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
-__license__ = "GPL"
+__license__ = "AGPL-3.0"
 
 import sys
 import re
