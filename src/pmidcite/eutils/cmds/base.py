@@ -184,7 +184,7 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        # print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
+        print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
@@ -221,10 +221,10 @@ class EntrezUtilities(object):
         # params example: db retstart retmax rettype retmode webenv query_key
         ## print('RUN NCBI EUTILS CMD', cmd)
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
-        ## # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
-        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
-        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
+        # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
+        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
+        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
         if rsp_dct is not None:
             return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return None
