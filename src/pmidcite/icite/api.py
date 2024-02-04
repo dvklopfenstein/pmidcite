@@ -75,8 +75,8 @@ class NIHiCiteAPI:
     def _dnld_ltmax(self, pmids):
         """Download NIH citation data using a request using their API"""
         ## tic = default_timer()
-        pmids = ','.join(str(p) for p in pmids)
-        req_nihocc = f'{self.url_base}?pmids={pmids}'
+        pmids_str = ','.join(str(p) for p in pmids)
+        req_nihocc = f'{self.url_base}?pmids={pmids_str}'
         ## tic = prt_hms(tic, "Create request")
         # Note: rsp_json['data'] returned from NIH not in same order as requested
         rsp_json = self._send_request(req_nihocc)
@@ -92,17 +92,14 @@ class NIHiCiteAPI:
             ## tic = prt_hms(tic, "Adjust reponse")
             # Report PMIDs that did not have NIH citation data downloaded
             pmids_missing = set(pmids).difference(pmids_downloaded)
+            # pylint: disable=line-too-long
             if pmids_missing:
-                self._warn_missing(pmids_missing)
+                print(f"**WARNING: {len(pmids_str):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_str}")
             return nih_dicts
-        self._warn_missing(pmids)
+        # pylint: disable=line-too-long
+        print(f"**WARNING: {len(pmids_str):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_str}")
         return None
 
-    @staticmethod
-    def _warn_missing(pmids):
-        """Warn that NIH citation data was not downloaded for pmids"""
-        pmids =' '.join(str(s) for s in sorted(pmids))
-        print(f"**WARNING: {len(pmids):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids}")
 
     def _send_request(self, cmd, timeout=500):
         """Send the request to iCite"""
