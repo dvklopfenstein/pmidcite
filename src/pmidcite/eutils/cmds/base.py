@@ -32,8 +32,6 @@ from urllib.parse import urlencode
 from urllib.error import URLError as _URLError
 from urllib.error import HTTPError as _HTTPError
 
-from pmidcite.eutils.apikey import DEFAULT_APIKEY
-
 
 # pylint: disable=useless-object-inheritance
 class EntrezUtilities(object):
@@ -184,7 +182,7 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
+        ## print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
@@ -219,12 +217,13 @@ class EntrezUtilities(object):
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
-        ## print('RUN NCBI EUTILS CMD', cmd)
+        ## print('RUN NCBI EUTILS CMD:', cmd)
+        ## print('RUN NCBI EUTILS PARAMS:', params)
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
+        ##print('RR run_eutilscmd KEYS RRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
         # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
-        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
-        print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        ## print('RR run_eutilscmd DATA rsp_dct["data"} RRR', rsp_dct['data'])
+        ## print('RR run_eutilscmd rsp_dct RRRRRRRRRRRRRRRR', rsp_dct)
         if rsp_dct is not None:
             return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return None
@@ -252,8 +251,8 @@ class EntrezUtilities(object):
             ## print('RECORD:', str(record))
             return record.decode('utf-8')
 
-        ## print('RETMODE', retmode)
-        ## print('RECORD', record)
+        ## print('XML RETMODE', retmode)   # None
+        ## print('XML RECORD', record)     # ePostResult
 
         # <?xml version="1.0" encoding="ISO-8859-1"?>
         # <!DOCTYPE ePostResult
@@ -265,23 +264,22 @@ class EntrezUtilities(object):
         # </ePostResult>
         # Parse XML
         root = ElementTree.fromstring(record)
-        #print(f'ElementTree.fromstring(record).root:\n{root}')
-        return root
-        # TODO
-        ## #print('root.tag', root.tag)
-        ## assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
-        ## dct = {r.tag.lower():r.text for r in root}
-        ## if 'querykey' in dct:
-        ##     dct['querykey'] = int(dct['querykey'])
-        ## ## print('XML:', root)
-        ## ## print('XML:', root.tag)
-        ## ## print('XML:', root.attrib)
-        ## ## print('XML:', dir(root))
-        ## ## print(f'XML[0]({root[0].tag}) ({root[0].text})')
-        ## ## print(f'XML[1]({root[1].tag})')
-        ## ## print('XML:', dir(root[0]))
-        ## ## print('XML:', dct)
-        ## return dct
+        ## print(f'ElementTree.fromstring(record).root:\n{root}')
+        #return root
+        assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
+        ## print('root.tag', root.tag)
+        dct = {r.tag.lower():r.text for r in root}
+        if 'querykey' in dct:
+            dct['querykey'] = int(dct['querykey'])
+        ## print('XML root:        ', root)
+        ## print('XMLroot.tag:     ', root.tag)
+        ## print('XML root.attrib: ', root.attrib)
+        ## print('XMLdir(root):    ', dir(root))
+        ## print(f'XML[0]({root[0].tag}) ({root[0].text})')
+        ## print(f'XML[1]({root[1].tag})')
+        ## print('XML dir(root[0]):', dir(root[0]))
+        ## print('XML dct:         ', dct)
+        return dct
 
     def run_req(self, cmd, prt=None, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
@@ -321,7 +319,7 @@ class EntrezUtilities(object):
         # Equivalently, at least a third of second between queries
         # Using just 0.333333334 seconds sometimes hit the NCBI rate limit,
         # the slightly longer pause of 0.37 seconds has been more reliable.
-        delay = 0.1 if self.api_key else 0.37
+        delay = 0.1 if self.api_key is not None else 0.37
         current = time.time()
         wait = self.previous + delay - current
         if wait > 0:
@@ -367,7 +365,7 @@ class EntrezUtilities(object):
             if value is None:
                 del params[key]
         # Put API key and related info if the researcher has an API key
-        if self.api_key != DEFAULT_APIKEY:
+        if self.api_key is not None:
             if "tool" not in params:
                 params["tool"] = self.tool
             # Tell Entrez who we are
