@@ -184,6 +184,7 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
+        print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
@@ -218,12 +219,12 @@ class EntrezUtilities(object):
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
-        # print('RUN NCBI EUTILS CMD', cmd)
+        ## print('RUN NCBI EUTILS CMD', cmd)
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
-        # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
+        ## # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
+        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
+        ## print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
         if rsp_dct is not None:
             return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return None
@@ -236,6 +237,51 @@ class EntrezUtilities(object):
         options = self._encode_options(params)
         cgi += '?' + options
         return cgi
+
+    def _extract_rsp(self, record, retmode):
+        """Extract the data from a response from running a Entrez Utilities command"""
+        if retmode == 'json':
+            try:
+                return json.loads(record)
+            except json.decoder.JSONDecodeError as errobj:
+                print(f'JSONDecodeError = {str(errobj)}')
+                traceback.print_exc()
+                print(f'\n**FATAL JSONDecodeError:\n{record.decode("utf-8")}')
+
+        if retmode in {'text', 'asn.1'}:
+            ## print('RECORD:', str(record))
+            return record.decode('utf-8')
+
+        ## print('RETMODE', retmode)
+        ## print('RECORD', record)
+
+        # <?xml version="1.0" encoding="ISO-8859-1"?>
+        # <!DOCTYPE ePostResult
+        #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
+        #      PUBLIC "-//NLM//DTD epost 20090526//EN">
+        # <ePostResult>
+        #     <QueryKey>1</QueryKey>
+        #     <WebEnv>NCID_1_14223415_130.14.18.97 ... </WebEnv>
+        # </ePostResult>
+        # Parse XML
+        root = ElementTree.fromstring(record)
+        #print(f'ElementTree.fromstring(record).root:\n{root}')
+        return root
+        # TODO
+        ## #print('root.tag', root.tag)
+        ## assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
+        ## dct = {r.tag.lower():r.text for r in root}
+        ## if 'querykey' in dct:
+        ##     dct['querykey'] = int(dct['querykey'])
+        ## ## print('XML:', root)
+        ## ## print('XML:', root.tag)
+        ## ## print('XML:', root.attrib)
+        ## ## print('XML:', dir(root))
+        ## ## print(f'XML[0]({root[0].tag}) ({root[0].text})')
+        ## ## print(f'XML[1]({root[1].tag})')
+        ## ## print('XML:', dir(root[0]))
+        ## ## print('XML:', dct)
+        ## return dct
 
     def run_req(self, cmd, prt=None, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
@@ -311,50 +357,6 @@ class EntrezUtilities(object):
                 # brief delay.
                 time.sleep(self.sleep_between_tries)
 
-    def _extract_rsp(self, record, retmode):
-        """Extract the data from a response from running a Entrez Utilities command"""
-        if retmode == 'json':
-            try:
-                return json.loads(record)
-            except json.decoder.JSONDecodeError as errobj:
-                print(f'JSONDecodeError = {str(errobj)}')
-                traceback.print_exc()
-                print(f'\n**FATAL JSONDecodeError:\n{record.decode("utf-8")}')
-
-        if retmode in {'text', 'asn.1'}:
-            ## print('RECORD:', str(record))
-            return record.decode('utf-8')
-
-        ## print('RETMODE', retmode)
-        ## print('RECORD', record)
-
-        # <?xml version="1.0" encoding="ISO-8859-1"?>
-        # <!DOCTYPE ePostResult
-        #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
-        #      PUBLIC "-//NLM//DTD epost 20090526//EN">
-        # <ePostResult>
-        #     <QueryKey>1</QueryKey>
-        #     <WebEnv>NCID_1_14223415_130.14.18.97 ... </WebEnv>
-        # </ePostResult>
-        # Parse XML
-        root = ElementTree.fromstring(record)
-        #print(f'ElementTree.fromstring(record).root:\n{root}')
-        return root
-        # TODO
-        ## #print('root.tag', root.tag)
-        ## assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
-        ## dct = {r.tag.lower():r.text for r in root}
-        ## if 'querykey' in dct:
-        ##     dct['querykey'] = int(dct['querykey'])
-        ## ## print('XML:', root)
-        ## ## print('XML:', root.tag)
-        ## ## print('XML:', root.attrib)
-        ## ## print('XML:', dir(root))
-        ## ## print(f'XML[0]({root[0].tag}) ({root[0].text})')
-        ## ## print(f'XML[1]({root[1].tag})')
-        ## ## print('XML:', dir(root[0]))
-        ## ## print('XML:', dct)
-        ## return dct
 
     def _construct_params(self, params):
         if params is None:
