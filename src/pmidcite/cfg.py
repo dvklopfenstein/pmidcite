@@ -14,6 +14,7 @@ import configparser
 
 from pmidcite.icite.nih_grouper import NihGrouper
 from pmidcite.eutils.apikey import API_INFO
+from pmidcite.eutils.apikey import DEFAULT_APIKEY
 
 
 def get_cfgparser(prt=stdout):
@@ -40,7 +41,7 @@ class Cfg(object):
             # Entrez utilities
             'email': 'name@university.edu',
             # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
-            'apikey': 'LONG_HEX_NCBI_API_KEY',
+            'apikey': DEFAULT_APIKEY,
             'tool': 'scripts',
 
             # Information downloaded from NIH iCite stored in a Python module
@@ -74,7 +75,8 @@ class Cfg(object):
 
     def get_apikey(self):
         """Get API Key"""
-        return self.cfgparser['pmidcite']['apikey']
+        apikey = self.cfgparser['pmidcite']['apikey']
+        return apikey if apikey != DEFAULT_APIKEY else None
 
     def get_tool(self):
         """Get tool name"""
