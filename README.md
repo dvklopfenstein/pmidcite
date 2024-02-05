@@ -77,38 +77,18 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
-* 4a) Create a file containing numerous PMIDs annotated with icite info.    
-`$ icite 30022098 -c -o goatools_cites.txt`
-* 4b) Summarize the overall performace of the 300+ citing papers contained in `goatools_cites.txt`    
-`$ summarize_papers goatools_cites.txt -p TOP CIT CLI`
-
-
-### 4a) Create a file containing numerous PMIDs annotated with icite info.
 ```
+# Create a file containing numerous PMIDs annotated with icite info
 $ icite 30022098 -c -o goatools_cites.txt
   WROTE: goatools_cites.txt
-```
 
-The requested paper (PMID=`30022098`) is described in one one line in `goatools_cites.txt`:
-```
-$ grep TOP goatools_cites.txt
-TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
-```
+# Count the number of lines in the file
+$ wc -l goatools_cites.txt
+468 goatools_cites.txt
 
-The paper (PMID=`30022098`) is cited by 381(`CIT`) research papers plus 1(`CLI`) clinical study:
-```
-$ grep CIT goatools_cites.txt | wc -l
-318
-
-$ grep CLI goatools_cites.txt | wc -l
-1
-```
-
-### 4b) Summarize all the papers in `goatools_cites.txt`
-**NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.   
-```
-$ summarize_papers goatools_cites.txt -p TOP CIT CLI
-i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 papers goatools_cites.txt
+# Summarize the papers in "goatools_cites.txt"
+$ sumpaps goatools_cites.txt
+i=026.9% 4=003.0% 3=018.9% 2=028.8% 1=015.9% 0=006.5%   6 years:2018-2024   465 papers goatools_cites.txt
 ```
 
 * Output is on one line so many files containing sets of PMIDs may be compared. TBD: Add multiline verbose option.
