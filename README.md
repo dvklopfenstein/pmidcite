@@ -77,7 +77,7 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
-* 4a) Create a file containing numerous PMIDs annotated with icite info.
+* 4a) Create a file containing numerous PMIDs annotated with icite info.    
 `icite 30022098 -c -o goatools_cites.txt`
 * 4b) Summarize the overall performace of the 300+ citing papers contained in `goatools_cites.txt`    
 `summarize_papers goatools_cites.txt -p TOP CIT CLI`
