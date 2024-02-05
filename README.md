@@ -77,16 +77,20 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
+Create a file containing numerous PMIDs annotated with icite info
 ```
-# Create a file containing numerous PMIDs annotated with icite info
 $ icite 30022098 -c -o goatools_cites.txt
   WROTE: goatools_cites.txt
+```
 
-# Count the number of lines in the file
+Count the number of lines in the file
+```
 $ wc -l goatools_cites.txt
 468 goatools_cites.txt
+```
 
-# Summarize the papers in "goatools_cites.txt"
+Summarize the papers in "goatools_cites.txt"
+```
 $ sumpaps goatools_cites.txt
 i=026.9% 4=003.0% 3=018.9% 2=028.8% 1=015.9% 0=006.5%   6 years:2018-2024   465 papers goatools_cites.txt
 ```
