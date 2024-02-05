@@ -90,10 +90,8 @@ $ wc -l goatools_cites.txt
 $ sumpaps goatools_cites.txt
 i=026.9% 4=003.0% 3=018.9% 2=028.8% 1=015.9% 0=006.5%   6 years:2018-2024   465 papers goatools_cites.txt
 ```
-
-* Output is on one line so many files containing sets of PMIDs may be compared. TBD: Add multiline verbose option.
+* The output is on one line so many files containing sets of PMIDs may be compared
 * The groups are from newest(`i`) to top-performing(`4`), great(`3`), very good(`2`), and overlooked(`1` and `0`)
-* The percentages of papers in `goatools_citations.txt` in each group follow the group name
 
 
 ## 5) Download citations for all papers returned from a PubMed search
