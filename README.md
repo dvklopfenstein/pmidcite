@@ -86,6 +86,7 @@ or
 ### 4a) Create a file containing numerous PMIDs annotated with icite info.
 ```
 $ icite 30022098 -c -o goatools_cites.txt
+  WROTE: goatools_cites.txt
 ```
 
 The requested paper (PMID=`30022098`) is described in one one line in `goatools_cites.txt`:
