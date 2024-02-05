@@ -77,24 +77,13 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
-* 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):   
-`icite -H 30022098`
-* 4b) Download the details about each paper(`-c`) that cites `30022098` into a file(`-o goatools_cites.txt`):    
+* 4a) Create a file containing numerous PMIDs annotated with icite info.
 `icite 30022098 -c -o goatools_cites.txt`
-* 4c) Summarize the overall performace of the 300+ citing papers contained in `goatools_cites.txt`    
+* 4b) Summarize the overall performace of the 300+ citing papers contained in `goatools_cites.txt`    
 `summarize_papers goatools_cites.txt -p TOP CIT CLI`
 
-### 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):
-```
-$ icite -H 30022098
-COL 2        3  4       5 6 7        8  9  10 au[11](authors)
-TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
-TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
-```
 
-Paper with PMID `30022098` is cited by `318`(`cit`) other research papers and `1`(`cli`) clinical study. It has `23` references(`ref`).    
-
-### 4b) Download the details about each paper(`-c`) that cites `30022098` into a file(`-o goatools_cites.txt`):
+### 4a) Create a file containing numerous PMIDs annotated with icite info.
 ```
 $ icite 30022098 -c -o goatools_cites.txt
 ```
@@ -114,7 +103,7 @@ $ grep CLI goatools_cites.txt | wc -l
 1
 ```
 
-### 4c) Summarize all the papers in `goatools_cites.txt`
+### 4b) Summarize all the papers in `goatools_cites.txt`
 **NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.   
 ```
 $ summarize_papers goatools_cites.txt -p TOP CIT CLI
