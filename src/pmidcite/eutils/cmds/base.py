@@ -1,6 +1,7 @@
 """This script downloads NCBI records based on user search query"""
 
 # Entrez Help: # https://www.ncbi.nlm.nih.gov/books/NBK3837/
+# APIKEY: https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
 #
 # A General Introduction to the E-utilities: # https://www.ncbi.nlm.nih.gov/books/NBK25497/
 #
@@ -20,7 +21,7 @@ import sys
 import traceback
 import json
 import collections as cx
-import re
+#import re
 from xml.etree import ElementTree
 
 import time
@@ -52,7 +53,10 @@ class EntrezUtilities(object):
     def get_database_list(self):
         """Get a list of Entrez databases"""
         # einfo: http://www.ncbi.nlm.nih.gov/books/NBK25499/
-        return self.run_eutilscmd('einfo', retmode='json')
+        rsp = self.run_eutilscmd('einfo', retmode='json')
+        if rsp and 'einforesult' in rsp and 'dblist' in rsp['einforesult']:
+            return rsp['einforesult']['dblist']
+        return None
 
     def epost_ids(self, ids, database, num_ids_p_epost, retmax, **medline_text):
         """Post IDs using EPost"""
@@ -96,13 +100,12 @@ class EntrezUtilities(object):
         """Get text from EFetch response"""
         rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, db=database, **params)
         if rsp_dct is None:
-            print('\n{DESC}\n**ERROR: DATA is None'.format(DESC=desc))
+            print(f'\n{desc}\n**ERROR: DATA is None')
             return None
         rsp_txt = rsp_dct['data'].decode('utf-8')
         err_txt = self._chk_error_str(rsp_txt)
         if err_txt is not None:
-            print('\nURL: {URL}\n{DESC}\n**ERROR: {ERR}'.format(
-                ERR=err_txt, DESC=desc, URL=rsp_dct['url']))
+            print(f'\nURL: {rsp_dct["url"]}\n{desc}\n**ERROR: {err_txt}')
             return None
         ## # PubMed test
         ## pmids_downloaded = [int(i) for i in re.findall(r'PMID-\s*(\d+)', rsp_txt)]
@@ -167,7 +170,7 @@ class EntrezUtilities(object):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
         if not isinstance(ids, list):
-            raise RuntimeError('\n**FATAL: IDs({})\n**FATAL: EPost IDs NOT A LIST'.format(ids))
+            raise RuntimeError(f'\n**FATAL: IDs({ids})\n**FATAL: EPost IDs NOT A LIST')
         if not ids:
             print('**NOTE: NO IDs to EPost')
             return None
@@ -179,12 +182,12 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
+        ## print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
             if self.log is not None:
                 ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
-                self.log.write('epost webenv: {W}\n'.format(W=rsp['webenv']))
-                self.log.write("epost querykey({Q:>6}) ids[{N}]={Ps}\n".format(
-                    N=len(str_ids), Q=rsp['querykey'], Ps=id_str))
+                self.log.write(f'epost webenv: {rsp["webenv"]}\n')
+                self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{len(str_ids)}]={id_str}\n")
             ret['webenv'] = rsp['webenv']
             webenv = rsp['webenv']
             num_ids = len(ids)
@@ -193,19 +196,18 @@ class EntrezUtilities(object):
                 end_pt = idx+num_ids_p_epost
                 if num_ids < end_pt:
                     end_pt = num_ids
-                #print '{:3} {:3} {:3}'.format(num_ids, idx, end_pt)
+                #print(f'{num_ids:3} {idx:3} {end_pt:3}')
                 id_str = ','.join(str_ids[idx:end_pt])
                 rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
                 ret['qkey2ids'].append(ids[idx:idx+num_ids_p_epost])
                 webenv = rsp['webenv']
                 if self.log is not None:
-                    self.log.write("epost querykey({Q:>6}) ids[{N}]={Ps}\n".format(
-                        N=end_pt-idx, Q=rsp['querykey'], Ps=id_str))
+                    self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{end_pt-idx}]={id_str}\n")
         elif 'error' in rsp:
-            raise RuntimeError('**ERROR EPost: {MSG}'.format(MSG=rsp['error']))
+            raise RuntimeError(f'**ERROR EPost: {rsp["error"]}\nRESPONSE:\n{rsp}')
         else:
             print(rsp)
-            raise Exception("NO webenv RETURNED FROM FIRST EPOST")
+            raise RuntimeError(f"NO webenv RETURNED FROM FIRST EPOST\nRESPONSE:\n{rsp}")
         ## if self.log is not None:
         ##     self.log.write('LAST  EPOST RESULT: {}\n'.format(rsp))
         ret['querykey'] = rsp['querykey']
@@ -215,12 +217,13 @@ class EntrezUtilities(object):
     def run_eutilscmd(self, cmd, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
         # params example: db retstart retmax rettype retmode webenv query_key
-        # print('RUN NCBI EUTILS CMD', cmd)
+        ## print('RUN NCBI EUTILS CMD:', cmd)
+        ## print('RUN NCBI EUTILS PARAMS:', params)
         rsp_dct = self.run_req(cmd, **params) # post=None, ecitmatch=False):
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
+        ##print('RR run_eutilscmd KEYS RRRRRRRRRRRRRRRRRRR', rsp_dct.keys())
         # dict_keys(['code', 'msg', 'url', 'headers', 'data'])
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct['data'])
-        # print('RRRRRRRRRRRRRRRRRRRRRRR', rsp_dct)
+        ## print('RR run_eutilscmd DATA rsp_dct["data"} RRR', rsp_dct['data'])
+        ## print('RR run_eutilscmd rsp_dct RRRRRRRRRRRRRRRR', rsp_dct)
         if rsp_dct is not None:
             return self._extract_rsp(rsp_dct['data'], params.get('retmode'))
         return None
@@ -234,43 +237,89 @@ class EntrezUtilities(object):
         cgi += '?' + options
         return cgi
 
+    def _extract_rsp(self, record, retmode):
+        """Extract the data from a response from running a Entrez Utilities command"""
+        if retmode == 'json':
+            try:
+                return json.loads(record)
+            except json.decoder.JSONDecodeError as errobj:
+                print(f'JSONDecodeError = {str(errobj)}')
+                traceback.print_exc()
+                print(f'\n**FATAL JSONDecodeError:\n{record.decode("utf-8")}')
+
+        if retmode in {'text', 'asn.1'}:
+            ## print('RECORD:', str(record))
+            return record.decode('utf-8')
+
+        ## print('XML RETMODE', retmode)   # None
+        ## print('XML RECORD', record)     # ePostResult
+
+        # <?xml version="1.0" encoding="ISO-8859-1"?>
+        # <!DOCTYPE ePostResult
+        #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
+        #      PUBLIC "-//NLM//DTD epost 20090526//EN">
+        # <ePostResult>
+        #     <QueryKey>1</QueryKey>
+        #     <WebEnv>NCID_1_14223415_130.14.18.97 ... </WebEnv>
+        # </ePostResult>
+        # Parse XML
+        root = ElementTree.fromstring(record)
+        ## print(f'ElementTree.fromstring(record).root:\n{root}')
+        #return root
+        assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
+        ## print('root.tag', root.tag)
+        dct = {r.tag.lower():r.text for r in root}
+        if 'querykey' in dct:
+            dct['querykey'] = int(dct['querykey'])
+        ## print('XML root:        ', root)
+        ## print('XMLroot.tag:     ', root.tag)
+        ## print('XML root.attrib: ', root.attrib)
+        ## print('XMLdir(root):    ', dir(root))
+        ## print(f'XML[0]({root[0].tag}) ({root[0].text})')
+        ## print(f'XML[1]({root[1].tag})')
+        ## print('XML dir(root[0]):', dir(root[0]))
+        ## print('XML dct:         ', dct)
+        return dct
+
     def run_req(self, cmd, prt=None, **params):  # params=None, post=None, ecitmatch=False):
         """Run NCBI E-Utilities command"""
+        # pylint: disable=inconsistent-return-statements
         # params example: db retstart retmax rettype retmode webenv query_key
         cgi = self._mk_cgi(cmd, **params)
-        ## print('CGI: {CGI}\n'.format(CGI=cgi))
+        ## print(f'CGI: {cgi}\n')
         try:
             rsp = self._run_req(cgi, prt) # post=None, ecitmatch=False):
             # print('PPPPPPPPPPPPPPPPPP src/pmidcite/eutils/cmds/base.py run_req', rsp)
             return rsp
         except json.decoder.JSONDecodeError as errobj:
-            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
-            print('**FATAL: JSONDecodeError = {ERR}\n'.format(ERR=str(errobj)))
+            print(f'\n**FATAL: CGI: {cgi}')
+            print(f'**FATAL: JSONDecodeError = {str(errobj)}\n')
             traceback.print_exc()
         except urllib.error.HTTPError as errobj:
-            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
-            print('**FATAL: {ERR}\n'.format(ERR=str(errobj)))
+            print(f'\n**FATAL: CGI: {cgi}')
+            print(f'**FATAL: {str(errobj)}\n')
             traceback.print_exc()
         except urllib.error.ContentTooShortError as errobj:
-            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
-            print('**FATAL: ContentTooShortError = {ERR}\n'.format(ERR=str(errobj.reason)))
+            print(f'\n**FATAL: CGI: {cgi}')
+            print(f'**FATAL: ContentTooShortError = {str(errobj.reason)}\n')
             traceback.print_exc()
         except urllib.error.URLError as errobj:
-            print('\n**FATAL: CGI: {CGI}'.format(CGI=cgi))
-            print('**FATAL: URLError = {ERR}\n'.format(ERR=str(errobj.reason)))
+            print(f'\n**FATAL: CGI: {cgi}')
+            print(f'**FATAL: URLError = {str(errobj.reason)}\n')
             traceback.print_exc()
         except RuntimeError as errobj:
-            print('\n**FATAL: CGI: {CGI}\n'.format(CGI=cgi))
+            print(f'\n**FATAL: CGI: {cgi}\n')
             print(errobj)
             traceback.print_exc()
 
     def _run_req(self, cgi, prt):  # params=None, post=None, ecitmatch=False):
         """Get a response from running a Entrez Utilities command"""
+        # pylint: disable=inconsistent-return-statements
         # NCBI requirement: At most three queries per second if no API key is provided.
         # Equivalently, at least a third of second between queries
         # Using just 0.333333334 seconds sometimes hit the NCBI rate limit,
         # the slightly longer pause of 0.37 seconds has been more reliable.
-        delay = 0.1 if self.api_key else 0.37
+        delay = 0.1 if self.api_key is not None else 0.37
         current = time.time()
         wait = self.previous + delay - current
         if wait > 0:
@@ -279,7 +328,7 @@ class EntrezUtilities(object):
         else:
             self.previous = current
         if prt:
-            prt.write('CMD: {CMD}\n'.format(CMD=cgi))
+            prt.write(f'CMD: {cgi}\n')
         ## sys.stdout.write('CMD: {CMD}\n'.format(CMD=cgi))  # For PubMed MISMATCHES
 
         for idx in range(self.max_tries):
@@ -306,50 +355,6 @@ class EntrezUtilities(object):
                 # brief delay.
                 time.sleep(self.sleep_between_tries)
 
-    def _extract_rsp(self, record, retmode):
-        """Extract the data from a response from running a Entrez Utilities command"""
-        if retmode == 'json':
-            try:
-                return json.loads(record)
-            except json.decoder.JSONDecodeError as errobj:
-                print('JSONDecodeError = {ERR}'.format(ERR=str(errobj)))
-                traceback.print_exc()
-                print('\n**FATAL JSONDecodeError:\n{RECORD}'.format(RECORD=record.decode('utf-8')))
-
-        if retmode in {'text', 'asn.1'}:
-            ## print('RECORD:', str(record))
-            return record.decode('utf-8')
-
-        ## print('RETMODE', retmode)
-        ## print('RECORD', record)
-
-        # <?xml version="1.0" encoding="ISO-8859-1"?>
-        # <!DOCTYPE ePostResult
-        #      SYSTEM "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20090526/epost.dtd"
-        #      PUBLIC "-//NLM//DTD epost 20090526//EN">
-        # <ePostResult>
-        #     <QueryKey>1</QueryKey>
-        #     <WebEnv>NCID_1_14223415_130.14.18.97 ... </WebEnv>
-        # </ePostResult>
-        # Parse XML
-        root = ElementTree.fromstring(record)
-        #print(f'ElementTree.fromstring(record).root:\n{root}')
-        return root
-        # TODO
-        #print('root.tag', root.tag)
-        assert root.tag in 'ePostResult', f'ElementTree.fromstring(record).tag: {root.tag}'
-        dct = {r.tag.lower():r.text for r in root}
-        if 'querykey' in dct:
-            dct['querykey'] = int(dct['querykey'])
-        ## print('XML:', root)
-        ## print('XML:', root.tag)
-        ## print('XML:', root.attrib)
-        ## print('XML:', dir(root))
-        ## print('XML[0]({}) ({})'.format(root[0].tag, root[0].text))
-        ## print('XML[1]({})'.format(root[1].tag))
-        ## print('XML:', dir(root[0]))
-        ## print('XML:', dct)
-        return dct
 
     def _construct_params(self, params):
         if params is None:
@@ -359,15 +364,15 @@ class EntrezUtilities(object):
         for key, value in list(params.items()):
             if value is None:
                 del params[key]
-        # Tell Entrez that we are using Biopython (or whatever the user has
-        # specified explicitly in the parameters or by changing the default)
-        if "tool" not in params:
-            params["tool"] = self.tool
-        # Tell Entrez who we are
-        if "email" not in params:
-            params["email"] = self.email
-        if self.api_key and "api_key" not in params:
-            params["api_key"] = self.api_key
+        # Put API key and related info if the researcher has an API key
+        if self.api_key is not None:
+            if "tool" not in params:
+                params["tool"] = self.tool
+            # Tell Entrez who we are
+            if "email" not in params:
+                params["email"] = self.email
+            if self.api_key and "api_key" not in params:
+                params["api_key"] = self.api_key
         return params
 
     def _encode_options(self, params):

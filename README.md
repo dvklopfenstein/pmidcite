@@ -21,7 +21,7 @@ Contact: dvklopfenstein@protonmail.com
   * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
   * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
   * [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
-  * [**5) Search PubMed from the command line**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
+  * [**5) Download citations for all papers returned from a PubMed search**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
 * ***Examples in Jupyter notebooks using the *pmidcite* Python library***
   * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
   * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
@@ -77,53 +77,25 @@ or
 ```$ icite -H; icite 26032263 -r | sort -k6 -r```     
 
 ## 4) Summarize a group of citations
-* 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):   
-`icite -H 30022098`
-* 4b) Download the details about each paper(`-c`) that cites `30022098` into a file(`-o goatools_cites.txt`):    
-`icite 30022098 -c -o goatools_cites.txt`
-* 4c) Summarize the overall performace of the 300+ citing papers contained in `goatools_cites.txt`    
-`summarize_papers goatools_cites.txt -p TOP CIT CLI`
-
-### 4a) Examine a paper with PMID `30022098`. Print the column headers(`-H`):
-```
-$ icite -H 30022098
-COL 2        3  4       5 6 7        8  9  10 au[11](authors)
-TYP PMID     RP HAMCc   % G YEAR   cit cli ref au[00](authors) title
-TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
-```
-
-Paper with PMID `30022098` is cited by `318`(`cit`) other research papers and `1`(`cli`) clinical study. It has `23` references(`ref`).    
-
-### 4b) Download the details about each paper(`-c`) that cites `30022098` into a file(`-o goatools_cites.txt`):
+Create a file containing numerous PMIDs annotated with icite info
 ```
 $ icite 30022098 -c -o goatools_cites.txt
+  WROTE: goatools_cites.txt
 ```
 
-The requested paper (PMID=`30022098`) is described in one one line in `goatools_cites.txt`:
+Count the number of lines in the file
 ```
-$ grep TOP goatools_cites.txt
-TOP 30022098 R. .A..c 100 4 2018   318  1  23 au[14](D V Klopfenstein) GOATOOLS: A Python library for Gene Ontology analyses.
-```
-
-The paper (PMID=`30022098`) is cited by 381(`CIT`) research papers plus 1(`CLI`) clinical study:
-```
-$ grep CIT goatools_cites.txt | wc -l
-318
-
-$ grep CLI goatools_cites.txt | wc -l
-1
+$ wc -l goatools_cites.txt
+468 goatools_cites.txt
 ```
 
-### 4c) Summarize all the papers in `goatools_cites.txt`
-**NEW FUNCTIONALITY; INPUT REQUESTED: What would you like to see?** [Open an issue](https://github.com/dvklopfenstein/pmidcite/issues) to comment.   
+Summarize the papers in "goatools_cites.txt"
 ```
-$ summarize_papers goatools_cites.txt -p TOP CIT CLI
-i=033.4% 4=003.4% 3=020.9% 2=021.9% 1=015.9% 0=004.4%   4 years:2018-2022   320 papers goatools_cites.txt
+$ sumpaps goatools_cites.txt
+i=026.9% 4=003.0% 3=018.9% 2=028.8% 1=015.9% 0=006.5%   6 years:2018-2024   465 papers goatools_cites.txt
 ```
-
-* Output is on one line so many files containing sets of PMIDs may be compared. TBD: Add multiline verbose option.
+* The output is on one line so many files containing sets of PMIDs may be compared
 * The groups are from newest(`i`) to top-performing(`4`), great(`3`), very good(`2`), and overlooked(`1` and `0`)
-* The percentages of papers in `goatools_citations.txt` in each group follow the group name
 
 
 ## 5) Download citations for all papers returned from a PubMed search

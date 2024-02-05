@@ -6,9 +6,13 @@ __author__ = "DV Klopfenstein, PhD"
 from sys import stdout
 from os.path import exists
 
+from pmidcite.eutils.apikey import DEFAULT_APIKEY
+
+DEFAULT_EMAIL = 'name@university.edu'
+DEFAULT_TOOL = 'scripts'
 
 PMIDCITERC = \
-"""# Link citation data from the National Institute of Health (NIH) to PubMed IDs.
+f"""# Link citation data from the National Institute of Health (NIH) to PubMed IDs.
 
 # The file .pmidciterc is a configuration file for the project, pmidcite, and its
 # executables, which includes icite.
@@ -41,9 +45,9 @@ group4_min = 97.5
 #
 # Learn more about registering for a NCBI API key here:
 # https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
-email = name@university.edu
-apikey = LONG_HEX_NCBI_API_KEY
-tool = scripts
+email = {DEFAULT_EMAIL}
+apikey = {DEFAULT_APIKEY}
+tool = {DEFAULT_TOOL}
 
 # --------------------------------------------------------------------------------
 # The default is to work on-line (dir_icite_py = None);
@@ -108,11 +112,11 @@ def prt_rcfile(prt=stdout):
 def wr_rcfile(cfgfile, force=False):
     """Write a sample configuration with default values set"""
     if not exists(cfgfile) or force:
-        with open(cfgfile, 'w') as prt:
+        with open(cfgfile, 'w', encoding='utf-8') as prt:
             prt.write(PMIDCITERC)
-            print('  WROTE: {CFG}'.format(CFG=cfgfile))
+            print(f'  WROTE: {cfgfile}')
             return True
-    print('  EXISTS: {CFG} OVERWRITE WITH wr_rc(force=True)'.format(CFG=cfgfile))
+    print(f'  EXISTS: {cfgfile} OVERWRITE WITH wr_rc(force=True)')
     return False
 
 

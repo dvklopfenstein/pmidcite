@@ -23,7 +23,7 @@ class TopCitRef:
         # pylint: disable=line-too-long
         parser.add_argument(
             '-p', metavar='labels', dest='paper_labels', type=str, nargs='*',
-            default=['TOP',],
+            default=['ALL'],
             choices=self.choices,
             help=f'Paper label choices: {" ".join(self.choices)} (default: TOP)',
         )

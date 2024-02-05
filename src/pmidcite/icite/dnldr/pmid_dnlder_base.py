@@ -67,17 +67,6 @@ class NIHiCiteDownloaderBase:
             prt.write(f'No iCite results found: {pmid} {name if name is not None else ""}\n\n')
 
     @staticmethod
-    def _msg_wrote(mode, pmids_req, pmids_new):
-        """Get the 'WROTE' or 'APPENDED' message"""
-        if mode == 'w':
-            return f'{len(pmids_req):6,} WROTE'
-        if mode == 'a':
-            n_of_m = f'{len(pmids_new):,} of {len(pmids_req):,}'
-            return f'{n_of_m} APPENDED' if pmids_new else f'{n_of_m} FOUND'
-            # return '{N:,} FOUND'.format(M=len(pmids_req))
-        raise RuntimeError(f'UNRECOGNIZED WRITE MODE({mode})')
-
-    @staticmethod
     def _get_new_pmids(pmidcite_txt, pmids):
         """Get PMIDs which are not already fully analyzed in pmidcite.txt"""
         if not exists(pmidcite_txt):
@@ -219,7 +208,12 @@ class NIHiCiteDownloaderBase:
                     if query is not None:
                         prt.write(f'QUERY: {query}\n')
                     self.prt_papers(pmid2icitepaper, prt)
-                print(f'{self._msg_wrote(mode, pmids_all, pmids_new)}: {fout_txt}')
+                if mode == 'w':
+                    print(f'  WROTE: {fout_txt}')
+                else:  # mode  == 'a'
+                    n_of_m = f'{len(pmids_new):,} of {len(pmids_all):,}'
+                    txt = f'{n_of_m} APPENDED' if pmids_new else f'{n_of_m} FOUND'
+                    print(f'{txt}: {fout_txt}')
 
 
 # Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
