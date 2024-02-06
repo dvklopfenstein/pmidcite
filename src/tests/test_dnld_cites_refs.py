@@ -28,12 +28,12 @@ def test_dnld_cites_refs():
 
 def _compare(test_name, pmid, entry_lst, desc):
     """Compare reporting refs/cites of a paper using set format vs. string format"""
-    print("COMPARE: {} {}".format(entry_lst, desc))
+    print(f"COMPARE: {entry_lst} {desc}")
     dir_icite_clobber(stdout)
     dnldr_set = NIHiCiteDownloader(DIR_ICITE, FORCE_DNLD, entry_lst)
     dnldr_txt = NIHiCiteDownloader(DIR_ICITE, FORCE_DNLD, desc)
-    paper_set = _run("{}-{}".format(test_name, ",".join(entry_lst)), dnldr_set, pmid)
-    paper_txt = _run("{}-{}".format(test_name, desc), dnldr_txt, pmid)
+    paper_set = _run(f"{test_name}-{','.join(entry_lst)}", dnldr_set, pmid)
+    paper_txt = _run(f"{test_name}-{desc}", dnldr_txt, pmid)
     # pylint: disable=line-too-long
     assert len(paper_set.cited_by) == len(paper_txt.cited_by), '**FATAL {} -- cited_by({} != {}): {}'.format(
         test_name, len(paper_set.cited_by), len(paper_txt.cited_by), paper_set)
@@ -57,13 +57,13 @@ def _run(test_name, dnldr, pmid):
     ##     P=pmid,
     ##     O=dnldr.details_cites_refs))
     paper = pmid2icitepaper[pmid]
-    pmids_exp = _get_exp_pmids(dnldr, paper.icite.dct)
+    pmids_exp = _get_exp_pmids(dnldr, paper.icite.get_dict())
     ## print(pmids_exp)
     ## print(pmids_dnlded)
     assert len(pmids_exp) + 1 == len(pmids_dnlded), '{} EXP({}) != ACT({}) {}'.format(
         test_name, len(pmids_exp) + 1, len(pmids_dnlded), dnldr.dir_dnld)
     ## print(dnldr.details_cites_refs)
-    ## print(paper.icite.dct)
+    ## print(paper.icite.get_dict())
     assert len(pmids_exp) + 1 == len(paper.pmid2icite)
     print('PMID({PMID}) has {N} assc PMIDs by {KEYS}'.format(
         PMID=pmid,
