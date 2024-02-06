@@ -46,7 +46,7 @@ CONSOLE_SCRIPTS = [
 
 setup(
     name=NAME,
-    version='0.0.47',
+    version='0.0.48',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     packages=PACKAGES,

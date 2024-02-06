@@ -3,6 +3,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2024-02-05 v0.0.48**](#release-2024-02-05-v0048) Update apikey; If rsp is not json, text, asn.1, return dict from xml format
 * [**Release 2023-11-19 v0.0.47**](#release-2023-11-19-v0047) GNU AGPLv3; Add function to summarize a set of papers
 * [**Release 2023-08-18 v0.0.45**](#release-2023-08-18-v0045) GNU Affero General Public License v3.0 (GNU AGPLv3)
 * [**Release 2022-12-22 v0.0.43**](#release-2023-01-30-v0043) Add @scbarrera's PR
@@ -45,6 +46,10 @@
 ## Details
 
 ### Unreleased
+
+### release 2024-02-05 v0.0.48
+* UPDATE apikey: Separate apikey into its own variable in its own module
+* UPDATE src/pmidcite/eutils/cmds/base.py: If rsp is not json, text, asn.1, return dict from xml format
 
 ### release 2023-11-19 v0.0.47
 * UPDATE codeql-analysis.yml by @manodeep in #54
