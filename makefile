@@ -4,7 +4,9 @@ install:
 	pip3 install .
 
 py:
-	find src -name \*.py | grep -v icite
+	find src/bin -name \*.py
+	find src/pmidcite -name \*.py
+	find src/tests -name \*.py | grep -v icite
 	
 e:
 	find src/pmidcite/eutils -name \*.py
