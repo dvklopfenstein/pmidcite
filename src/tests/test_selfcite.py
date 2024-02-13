@@ -38,12 +38,7 @@ def test_selfcite():
     groupobj = cfg.get_nihgrouper()
     print(groupobj)
 
-    dnldr = get_downloader(
-        None,     # {'references', 'cited_by', 'cited_by_clin'}
-        groupobj
-    )
-        #cfg.dir_icite_py,
-        #args.force_download)
+    dnldr = get_downloader(groupobj)
     print(dnldr)
 
     pmid2icitepaper = dnldr.get_pmid2paper(ref_pmids, None)

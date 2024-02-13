@@ -35,23 +35,23 @@ def _compare(test_name, pmid, entry_lst, desc):
     paper_set = _run(f"{test_name}-{','.join(entry_lst)}", dnldr_set, pmid)
     paper_txt = _run(f"{test_name}-{desc}", dnldr_txt, pmid)
     # pylint: disable=line-too-long
-    assert len(paper_set.cited_by) == len(paper_txt.cited_by), '**FATAL {} -- cited_by({} != {}): {}'.format(
-        test_name, len(paper_set.cited_by), len(paper_txt.cited_by), paper_set)
-    assert len(paper_set.cited_by_clin) == len(paper_txt.cited_by_clin), '**FATAL {} -- cited_by_clin({} != {}): {}'.format(
-        test_name, len(paper_set.cited_by_clin), len(paper_txt.cited_by_clin), paper_set)
-    assert len(paper_set.references) == len(paper_txt.references), '**FATAL {} -- references({} != {}): {}'.format(
-        test_name, len(paper_set.references), len(paper_txt.references), paper_set)
-    print('TEST PASSED: {}'.format(desc))
+    assert len(paper_set.cited_by) == len(paper_txt.cited_by), \
+        f'**FATAL {test_name} -- cited_by({len(paper_set.cited_by)} != {len(paper_txt.cited_by)}): {paper_set}'
+    assert len(paper_set.cited_by_clin) == len(paper_txt.cited_by_clin), \
+        f'**FATAL {test_name} -- cited_by_clin({len(paper_set.cited_by_clin)} != {len(paper_txt.cited_by_clin)}): {paper_set}'
+    assert len(paper_set.references) == len(paper_txt.references), \
+        f'**FATAL {test_name} -- references({len(paper_set.references)} != {len(paper_txt.references)}): {paper_set}'
+    print(f'TEST PASSED: {desc}')
 
 def _run(test_name, dnldr, pmid):
     """Download PMIDs"""
-    system('rm -f {DIR}/p*.py'.format(DIR=dnldr.dir_dnld))
+    system(f'rm -f {dnldr.dir_dnld}/p*.py')
     pmid2icitepaper = dnldr.get_pmid2paper({pmid}, pmid2note=None)
 
     # Get filenames (p{PMID}.py) downloaded from NIH's citation database
-    globstr = '{DIR}/p*.py'.format(DIR=dnldr.dir_dnld)
+    globstr = f'{dnldr.dir_dnld}/p*.py'
     pmids_dnlded = glob(globstr)
-    print('{N} NIH icites downloaded'.format(N=len(pmids_dnlded)))
+    print(f'{len(pmids_dnlded)} NIH icites downloaded')
     ## print('{N} pmid2icitepaper for PMID({P}); {O} assc PMIDs'.format(
     ##     N=len(pmid2icitepaper),
     ##     P=pmid,
@@ -60,15 +60,12 @@ def _run(test_name, dnldr, pmid):
     pmids_exp = _get_exp_pmids(dnldr, paper.icite.get_dict())
     ## print(pmids_exp)
     ## print(pmids_dnlded)
-    assert len(pmids_exp) + 1 == len(pmids_dnlded), '{} EXP({}) != ACT({}) {}'.format(
-        test_name, len(pmids_exp) + 1, len(pmids_dnlded), dnldr.dir_dnld)
+    assert len(pmids_exp) + 1 == len(pmids_dnlded), \
+        f'{test_name} EXP({len(pmids_exp) + 1}) != ACT({len(pmids_dnlded)}) {dnldr.dir_dnld}'
     ## print(dnldr.details_cites_refs)
     ## print(paper.icite.get_dict())
     assert len(pmids_exp) + 1 == len(paper.pmid2icite)
-    print('PMID({PMID}) has {N} assc PMIDs by {KEYS}'.format(
-        PMID=pmid,
-        N=len(paper.pmid2icite),
-        KEYS=dnldr.details_cites_refs))
+    print(f'PMID({pmid}) has {len(paper.pmid2icite)} assc PMIDs by {dnldr.details_cites_refs}')
     print('')
     return paper
 

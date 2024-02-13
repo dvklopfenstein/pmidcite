@@ -81,13 +81,13 @@ def test_print_paper_all_refs_cites():
 
     # In[7]:
     nih_entry = next(iter(nih_cites))
-    print('\n{N} key-value pairs in an NIH entry:\n'.format(N=len(nih_entry.dct)))
+    print(f'\n{len(nih_entry.dct)} key-value pairs in an NIH entry:\n')
     for key, value in nih_entry.dct.items():
-        print("{KEY:>27} {VAL}".format(KEY=key, VAL=value))
+        print(f"{key:>27} {value}")
 
     print('8) Expand NIH group `3` (well performing papers) to include NIH percentiles 50% or higher')
     grpr = NihGrouper(group3_min=50.0)
-    dnldr = get_downloader(details_cites_refs="citations", nih_grouper=grpr)
+    dnldr = get_downloader(nih_grouper=grpr, details_cites_refs="citations")
     paper = dnldr.get_paper(22882545)
     for nihentry in sorted(paper.cited_by, key=lambda o: [o.dct['nih_group'], o.dct['year']], reverse=True):
         print(nihentry)

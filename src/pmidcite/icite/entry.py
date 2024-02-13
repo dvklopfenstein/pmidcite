@@ -83,12 +83,6 @@ class NIHiCiteEntry:
         cls_dct['num_refs'] = len(icite_dct['references'])
         return cls(icite_dct['pmid'], cls_dct)
 
-    ## TBD:
-    ## def __eq__(self, rhs):
-    ##     if self.pmid == rhs.pmid:
-    ##         return False
-    ##     return True
-
     def get_au1_lastname(self):
         """Get the last name of the first author"""
         aus = self.dct['authors']
