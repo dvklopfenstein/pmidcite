@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
-"""Test self-citing functions"""
+"""Test getting all authors for a bunch of papers"""
 
 from pmidcite.cfg import Cfg
-from pmidcite.icite.entry import NIHiCiteEntry
-#from pmidcite.cli.entry_keyset import get_details_cites_refs
 from pmidcite.icite.downloader import get_downloader
 
 def test_selfcite():
-    """Test self-citing functions"""
-    authors = [
-        'Nasserdine Papa Mze',
-        'Cécile Fernand-Laurent',
-        'Solen Daugabel',
-        'Olfa Zanzouri',
-        'Stéphanie Marque Juillet',
-    ]
+    """Test getting all authors for a bunch of papers"""
+    #authors = [
+    #    'Nasserdine Papa Mze',
+    #    'Cécile Fernand-Laurent',
+    #    'Solen Daugabel',
+    #    'Olfa Zanzouri',
+    #    'Stéphanie Marque Juillet',
+    #]
     ref_pmids = [
         30753724, # TOP 30753724 H.M.c 40 2 2019    10  1  22 au[41](Lambert Assoumou)
         30517632, # TOP 30517632 H.M.. 21 2 2019     5  0  35 au[17](Paula C Aulicino)
@@ -31,28 +29,20 @@ def test_selfcite():
     ]
 
     cfg = Cfg()
-
-    details_cites_refs = set(NIHiCiteEntry.associated_pmid_keys)
-    print(f'details_cites_refs: {details_cites_refs}')
-
     groupobj = cfg.get_nihgrouper()
-    print(groupobj)
-
     dnldr = get_downloader(groupobj)
-    print(dnldr)
 
-    pmid2icitepaper = dnldr.get_pmid2paper(ref_pmids, None)
     # Get PMID and pmidcite.icite.paper.NIHiCitePaper
-    # TODO: Improve researcher experience here
+    pmid2icitepaper = dnldr.get_pmid2paper(ref_pmids, None)
     for pmid, icitepaper in pmid2icitepaper.items():
-        entry = icitepaper.get_icite()
-        authors = entry.dct['authors']
-        print(entry)
-        for author in authors:
-            print(f'{pmid:8} {author}')
+        for author in icitepaper.get_authors():
+            print(f'PAPER: {pmid:8} {author}')
 
-    print()
-    print(entry.dct.keys())
+    # Even simpler:
+    # Get pmidcite.icite.paper.NIHiCiteEntry for each PMID in the references
+    for icitepaper in dnldr.get_icites(ref_pmids):
+        for author in icitepaper.get_authors():
+            print(f'iCite: {icitepaper.pmid:8} {author}')
 
 
 if __name__ == '__main__':

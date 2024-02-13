@@ -83,6 +83,10 @@ class NIHiCiteEntry:
         cls_dct['num_refs'] = len(icite_dct['references'])
         return cls(icite_dct['pmid'], cls_dct)
 
+    def get_authors(self):
+        """Get the list of authors from NIH's iCite for this paper"""
+        return self.dct.get('authors')
+
     def get_au1_lastname(self):
         """Get the last name of the first author"""
         aus = self.dct['authors']

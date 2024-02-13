@@ -50,18 +50,22 @@ class NIHiCitePaper:
         """Get NIHiCiteEntry for this paper"""
         return self.pmid2icite[self.pmid]
 
+    def get_authors(self):
+        """Get authors for this paper"""
+        return self.pmid2icite[self.pmid].get_authors()
+
     def str_line(self):
         """Return a string summarizing the the paper described herein"""
         txt = str(self.icite)
         if not self.pmid2note:
             return txt
         if self.pmid in self.pmid2note:
-            return '{TXT} {NOTE}'.format(TXT=txt, NOTE=self.pmid2note[self.pmid])
+            return f'{txt} {self.pmid2note[self.pmid]}'
         return txt
 
     def prt_top(self, prt=stdout):
         """Print TOP paper"""
-        prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
+        prt.write(f'TOP {self.str_line()}\n')
 
     @staticmethod
     def prt_keys(prt=stdout):
@@ -74,23 +78,21 @@ class NIHiCitePaper:
     def prt_summary(self, prt=stdout, sortby_cites='nih_group', sortby_refs='nih_group'):
         """Print summary of paper"""
         if self.hdr:
-            prt.write('NAME: {NAME}\n'.format(NAME=self.hdr))
-        prt.write('TOP {iCite}\n'.format(iCite=self.str_line()))
+            prt.write(f'NAME: {self.hdr}\n')
+        prt.write(f'TOP {self.str_line()}\n')
         # Citations by clinical papers
         if self.cited_by_clin:
-            prt.write('Cited by {N} Clinical papers:\n'.format(N=len(self.cited_by_clin)))
+            prt.write(f'Cited by {len(self.cited_by_clin)} Clinical papers:\n')
         self._prt_list(self.cited_by_clin, 'CLI', prt, sortby_cites)
         # Citations
         if self.cited_by:
-            prt.write('{N} of {M} citations downloaded:\n'.format(
-                N=len(self.cited_by),
-                M=self.icite.dct['citation_count']))
+            prt.write(f'{len(self.cited_by)} of {self.icite.dct["citation_count"]} '
+                       'citations downloaded:\n')
         self._prt_list(self.cited_by, 'CIT', prt, sortby_cites)
         # References
         if self.references:
-            prt.write('{N} of {M} References downloaded:\n'.format(
-                N=len(self.references),
-                M=self.icite.dct['num_refs']))
+            prt.write(f'{len(self.references)} of {self.icite.dct["num_refs"]} '
+                       'References downloaded:\n')
             self._prt_list(self.references, 'REF', prt, sortby_refs)
 
     def get_sorted(self, icites, sortby=None):
@@ -109,13 +111,12 @@ class NIHiCitePaper:
             s_pmid2note = self.pmid2note
             for icite in icites:
                 if icite.pmid in s_pmid2note:
-                    prt.write('{DESC} {iCite} {note}\n'.format(
-                        DESC=desc, iCite=str(icite), note=s_pmid2note[icite.pmid]))
+                    prt.write(f'{desc} {str(icite)} {s_pmid2note[icite.pmid]}\n')
                 else:
-                    prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
+                    prt.write('{desc} {str(icite.}\n')
             return
         for icite in icites:
-            prt.write('{DESC} {iCite}\n'.format(DESC=desc, iCite=str(icite)))
+            prt.write('{desc} {str(icite)}\n')
 
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
@@ -127,16 +128,6 @@ class NIHiCitePaper:
     def __str__(self):
         """Get the line containing data downloaded from NIH iCite for only the featured paper"""
         return self.str_line()
-
-    ## TBD:
-    ## def __eq__(self, rhs):
-    ##     if self.pmid != rhs.pmid:
-    ##         return False
-    ##     if self.cited_by != rhs.cited_by:
-    ##         print('LHS:', self.cited_by)
-    ##         print('RHS:', rhs.cited_by)
-    ##         return False
-    ##     return True
 
 
 # Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
