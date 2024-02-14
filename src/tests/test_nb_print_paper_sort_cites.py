@@ -65,13 +65,13 @@ def test_print_paper_all_refs_cites():
     # The 999 value makes the newest papers appear next to the papers having the highest NIH percentiles so the new papers are highlighted.
 
     # In[5]:
-    for nih_entry in sorted(all_cites, key=lambda o: o.dct['nih_perc'], reverse=True):
+    for nih_entry in sorted(all_cites, key=lambda o: o.get_dict()['nih_perc'], reverse=True):
         print(nih_entry)
 
 
     print('6) Sort by NIH group, then by year')
     # In[6]:
-    nih_cites = sorted(all_cites, key=lambda o: [o.dct['nih_group'], o.dct['year']], reverse=True)
+    nih_cites = sorted(all_cites, key=lambda o: [o.get_dict()['nih_group'], o.get_dict()['year']], reverse=True)
     for nih_entry in nih_cites:
         print(nih_entry)
 
@@ -81,15 +81,15 @@ def test_print_paper_all_refs_cites():
 
     # In[7]:
     nih_entry = next(iter(nih_cites))
-    print(f'\n{len(nih_entry.dct)} key-value pairs in an NIH entry:\n')
-    for key, value in nih_entry.dct.items():
+    print(f'\n{len(nih_entry.get_dict())} key-value pairs in an NIH entry:\n')
+    for key, value in nih_entry.get_dict().items():
         print(f"{key:>27} {value}")
 
     print('8) Expand NIH group `3` (well performing papers) to include NIH percentiles 50% or higher')
     grpr = NihGrouper(group3_min=50.0)
     dnldr = get_downloader(nih_grouper=grpr, details_cites_refs="citations")
     paper = dnldr.get_paper(22882545)
-    for nihentry in sorted(paper.cited_by, key=lambda o: [o.dct['nih_group'], o.dct['year']], reverse=True):
+    for nihentry in sorted(paper.cited_by, key=lambda o: [o.get_dict()['nih_group'], o.get_dict()['year']], reverse=True):
         print(nihentry)
 
 

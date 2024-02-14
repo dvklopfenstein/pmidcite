@@ -36,15 +36,10 @@ pylint:
 	chmod 755 tmp_pylint
 	tmp_pylint
 
-
-#### TESTS := \
-####     src/tests/test_cfg_icite.py
-
 pytest:
 	make clobber_tmp
+	python3 --version
 	coverage run -m pytest -v src/tests --log-file=pytest.log
-	#python3 --version; python3 -m pytest --cov=pmidcite -v src/tests | tee pytest.log
-	#### python3 -m pytest $(TESTS)
 
 ver:
 	git describe --tags --dirty --always
@@ -61,7 +56,7 @@ cnt:
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p src/pmidcite/__version__.py setup.py CHANGELOG.md
+	vim -p src/pmidcite/__init__.py setup.py CHANGELOG.md
 
 vim_md:
 	vim -p README.md docs/index.md
