@@ -43,7 +43,7 @@ def _run(pmobj, force_download):
         print(f'TEST PAPER: {paper}', flush=True)
 
     # Download the PubMed abstract for the newest paper
-    paper_chosen = sorted(pmid2paper.values(), key=lambda o: o.icite.dct['year'])[0]
+    paper_chosen = sorted(pmid2paper.values(), key=lambda o: o.icite.get_dict()['year'])[0]
     print(f'\nTEST CHOSEN: {paper_chosen}\n', flush=True)
 
     pmid2nt = pmobj.dnld_wr1_per_pmid([paper_chosen.pmid], force_download, dir_pubmed_txt=".")

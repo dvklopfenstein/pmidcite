@@ -25,7 +25,7 @@ def test_paper_sort():
         print(nih_entry)
 
     print('\nSORT BY NIH PERCENTILE')
-    for nih_entry in sorted(all_cites, key=lambda o: o.dct['nih_perc'], reverse=True):
+    for nih_entry in sorted(all_cites, key=lambda o: o.get_dict()['nih_perc'], reverse=True):
         print(nih_entry)
 
     nih_entry = paper.pmid2icite[pmid]   # NIHiCiteEntry

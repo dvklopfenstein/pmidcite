@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## DEPRECATED
+* Use entry.get_dict() instead of accessing the dict data member directly. 
+  The dict data member is deprecated and will be replaced with a namedtuple.
+
 ## Summary
 
 * [**Unreleased**](#unreleased)
@@ -46,6 +50,11 @@
 ## Details
 
 ### Unreleased
+* ADD function, get_dict(), to get a dict containing data member values from the NIHiCiteEntry
+* DEPRECATED:
+  * Use entry.get_dict() instead of accessing the dict data member directly. 
+    The dict data member is deprecated and will be replaced with a namedtuple.
+
 
 ### release 2024-02-05 v0.0.48
 * UPDATE apikey: Separate apikey into its own variable in its own module

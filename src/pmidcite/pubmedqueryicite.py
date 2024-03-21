@@ -92,11 +92,11 @@ class PubMedQueryToICite:
         """Run PMIDs in iCite and print results into a file"""
         cfg = self.cfg
         dnldr = get_downloader(
+            nih_grouper=cfg.get_nihgrouper(),
+            force_download=self.force_dnld,
             # all citations references
             details_cites_refs=details_cites_refs,
-            nih_grouper=cfg.get_nihgrouper(),
-            dir_icite_py=cfg.get_dir_icite_py(),
-            force_download=self.force_dnld)
+            dir_icite_py=cfg.get_dir_icite_py())
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.get_pmid2paper {N} PMIDs'.format(N=len(pmids)))
         pmid2paper = dnldr.get_pmid2paper(pmids, self.pmid2note)
         ## print('PMIDCITE PPPPPPPPPPPPPPPPP dnldr.wr_papers{N} PMIDs'.format(N=len(pmids)))

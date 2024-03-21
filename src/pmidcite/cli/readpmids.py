@@ -78,10 +78,10 @@ class ReadPmids:
             args.load_references,
             args.no_references)
         dnldr = get_downloader(
-            details_cites_refs,
             grouperobj,
-            self.cfg.get_dir_icite_py(),
-            args.force_download)
+            args.force_download,
+            details_cites_refs,
+            self.cfg.get_dir_icite_py())
         pmid2icitepaper_all = dnldr.get_pmid2paper(pmids, None)
         pmid2icitepaper_cur = {p: o for p, o in pmid2icitepaper_all.items() if o is not None}
         if outfile is not None:

@@ -60,6 +60,13 @@ class NIHiCiteEntry:
         self.pmid = pmid
         self.dct = dct
 
+    def get_dict(self):
+        """Gets a dict containing all member data.
+           Use `get_dict` instead of accessing the dict directly.
+           The dict data member is deprecated and will be replaced by a namedtuple
+        """
+        return self.dct
+
     @classmethod
     def from_jsondct(cls, icite_dct, nih_group_num):
         """Construct NIHiCiteEntry from jsondct downloaded from NIH using Entrez utils"""
@@ -76,11 +83,19 @@ class NIHiCiteEntry:
         cls_dct['num_refs'] = len(icite_dct['references'])
         return cls(icite_dct['pmid'], cls_dct)
 
-    ## TBD:
-    ## def __eq__(self, rhs):
-    ##     if self.pmid == rhs.pmid:
-    ##         return False
-    ##     return True
+    def get(self, attrname):
+        """Get the value of attrname. Use this rather than the deprecated dct data member"""
+        if attrname in self.dct:
+            return self.dct[attrname]
+        return None
+
+    def get_attrnames(self):
+        """Get a list of attribute names"""
+        return list(self.dct.keys())
+
+    def get_authors(self):
+        """Get the list of authors from NIH's iCite for this paper"""
+        return self.dct.get('authors')
 
     def get_au1_lastname(self):
         """Get the last name of the first author"""
@@ -111,7 +126,7 @@ class NIHiCiteEntry:
 
     def prt_keys(self, prt=stdout):
         """Print paper keys, including header line"""
-        prt.write('{COLS}\n\n'.format(COLS=self.line_fmt()))
+        prt.write(f'{self.line_fmt()}\n\n')
         self.prt_key_desc(prt)
 
     @staticmethod
@@ -212,15 +227,15 @@ class NIHiCiteEntry:
 
     def prt_dct(self, prt=stdout):
         """Print full NIH iCite dictionary"""
-        prt.write('{STR}\n'.format(STR=self.str_dct()))
+        prt.write(f'{self.str_dct()}\n')
 
     def str_dct(self):
         """Get a string describing object"""
         txt = []
         for key, val in self.dct.items():
             if isinstance(val, list):
-                val = '[{N}] {LST}'.format(N=len(val), LST=', '.join(str(e) for e in val))
-            txt.append('{K:27} {V}'.format(K=key, V=val))
+                val = f"[{len(val)}] {', '.join(str(e) for e in val)}"
+            txt.append(f'{key:27} {val}'.format(K=key, V=val))
         return '\n'.join(txt)
 
     def __lt__(self, rhs):

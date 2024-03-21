@@ -15,8 +15,8 @@ from pmidcite.cli.utils import get_pmids
 from pmidcite.cli.entry_keyset import get_details_cites_refs
 from pmidcite.icite.nih_grouper import get_nihgrouper
 from pmidcite.icite.downloader import get_downloader
-from pmidcite.icite.downloader import prt_hdr
-from pmidcite.icite.downloader import prt_keys
+from pmidcite.icite.prt_hdrkey import prt_keys
+from pmidcite.icite.prt_hdrkey import prt_hdr
 
 
 class NIHiCiteCli:
@@ -181,10 +181,10 @@ class NIHiCiteCli:
             args.no_references)
         groupobj = get_nihgrouper(args.min1, args.min2, args.min3, args.min4)
         return get_downloader(
-            details_cites_refs,
             groupobj,
-            args.dir_icite_py,
-            args.force_download)
+            args.force_download,
+            details_cites_refs,
+            args.dir_icite_py)
 
     def _get_args(self, argparser):
         """Get args"""

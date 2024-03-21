@@ -82,8 +82,8 @@ def test_nihocc_data_download_or_import():
     # In[6]:
 
 
-    for key, val in nih_entry.dct.items():
-        print('{KEY:>27} {VAL}'.format(KEY=key, VAL=val))
+    for key, val in nih_entry.get_dict().items():
+        print(f'{key:>27} {val}')
 
 if __name__ == '__main__':
     test_nihocc_data_download_or_import()
