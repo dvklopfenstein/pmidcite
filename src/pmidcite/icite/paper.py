@@ -42,6 +42,7 @@ class NIHiCitePaper:
         self.pmid2note = {} if pmid2note is None else pmid2note
         self.icite = pmid2icite.get(pmid)
         # Sets of NIHiCiteEntrys
+        # cited_by contains all cited_by_clin papers
         self.cited_by = self._init_pmids('cited_by')
         self.cited_by_clin = self._init_pmids('cited_by_clin')
         self.references = self._init_pmids('references')
@@ -113,10 +114,10 @@ class NIHiCitePaper:
                 if icite.pmid in s_pmid2note:
                     prt.write(f'{desc} {str(icite)} {s_pmid2note[icite.pmid]}\n')
                 else:
-                    prt.write('{desc} {str(icite.}\n')
+                    prt.write(f'{desc} {str(icite)}\n')
             return
         for icite in icites:
-            prt.write('{desc} {str(icite)}\n')
+            prt.write(f'{desc} {str(icite)}\n')
 
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""

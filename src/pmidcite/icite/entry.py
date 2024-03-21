@@ -83,6 +83,16 @@ class NIHiCiteEntry:
         cls_dct['num_refs'] = len(icite_dct['references'])
         return cls(icite_dct['pmid'], cls_dct)
 
+    def get(self, attrname):
+        """Get the value of attrname. Use this rather than the deprecated dct data member"""
+        if attrname in self.dct:
+            return self.dct[attrname]
+        return None
+
+    def get_attrnames(self):
+        """Get a list of attribute names"""
+        return list(self.dct.keys())
+
     def get_authors(self):
         """Get the list of authors from NIH's iCite for this paper"""
         return self.dct.get('authors')
