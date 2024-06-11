@@ -12,8 +12,8 @@ Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search wi
 PubMed contains peer-reviewed research papers
 in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.
 [**Citation data**](https://icite.od.nih.gov) is downloaded from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
-Citation counts of all papers and clinical papers;
-Performance of a paper among its peer papers.
+citation counts of all papers and clinical papers;
+performance of a paper among its peer papers.
 
 This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**commentary**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) that was invited by the editors of [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).
 Please [**Cite**](#how-to-cite) if you use *pmidcite* in your research or literature search.    
