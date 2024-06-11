@@ -21,7 +21,8 @@ in biomedicine, biochemistry, chemistry, behavioral science, and other life scie
 each time `icite` is run
 from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
 citation counts of all papers and clinical papers;
-performance of a paper among its peer papers.
+performance of a paper among its peer papers;
+MeSH terms for the human, animal, and molecular/cellular categories.
 
 # Table of Contents
 * ***Quickstart on the*** [***command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
