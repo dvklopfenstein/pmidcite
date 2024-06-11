@@ -14,14 +14,14 @@ Please [**Cite**](#how-to-cite) if you use *pmidcite* in your research or litera
 
 Contact: dvklopfenstein@protonmail.com     
 
-
-# Table of Contents
+# PubMed and NIH Citation data
 PubMed contains peer-reviewed research papers
 in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.
 [**Citation data**](https://icite.od.nih.gov) is downloaded from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
 citation counts of all papers and clinical papers;
 performance of a paper among its peer papers.
 
+# Table of Contents
 * ***Quickstart on the*** [***command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
   * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
   * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
