@@ -17,7 +17,9 @@ Contact: dvklopfenstein@protonmail.com
 # PubMed and NIH Citation data
 PubMed contains peer-reviewed research papers
 in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.
-[**Citation data**](https://icite.od.nih.gov) is downloaded from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
+[**Citation data**](https://icite.od.nih.gov) is downloaded
+each time `icite` is run
+from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
 citation counts of all papers and clinical papers;
 performance of a paper among its peer papers.
 
