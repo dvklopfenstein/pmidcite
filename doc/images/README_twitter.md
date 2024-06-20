@@ -5,6 +5,7 @@
     * [Unknown algorithm operating on an unspecified corpus of the most important storehouse of knowledge](#unknown-algorithm-operating-on-an-unspecified-corpus-of-the-most-important-storehouse-of-knowledge)
     * [2013 Google citations for 2015 work](#2013-google-citations-for-2015-work)
   * [Gmail search got worse](#gmail-search-got-worse)
+  * **Controversy re: [Accurate structure prediction of biomolecular interactions with AlphaFold 3](https://www.nature.com/articles/s41586-024-07487-w)
 * [Who is running pmid2cite.com?](#who-created-pmid2citecom)
 
 

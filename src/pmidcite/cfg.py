@@ -110,7 +110,7 @@ class Cfg(object):
         if dirname is not None and exists(dirname):
             return join(dirname, filename)
         cwd = getcwd()
-        print('**WARNING: DIR NOT EXIST {dir_key}({dirname}) RETURNING CWD({cwd})')
+        print(f'**WARNING: DIR NOT EXIST {dir_key}({dirname}) RETURNING CWD({cwd})')
         return join(cwd, filename)
 
     def set_dir_pubmed_txt(self, dirname):
