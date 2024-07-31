@@ -79,7 +79,8 @@ build:
 # https://pypi.org/manage/account/token/
 # python3 -m pip install --upgrade pmidcite
 upload:
-	twine upload dist/* --verbose
+	#twine upload dist/* --verbose
+	twine upload dist/* --repository pmidcite --verbose
 
 
 # -----------------------------------------------------------------------------
