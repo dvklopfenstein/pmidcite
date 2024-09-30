@@ -68,16 +68,16 @@ class NihGrouper:
         # pylint: disable=line-too-long
         parser.add_argument(
             ##'-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
-            '-1', metavar='group1_min', dest='min1', type=float,
+            '-1', metavar='group1_min', dest='min1', type=float, default=self.min1,
             help='Minimum NIH percentile to be placed in group 1 (default: {D})'.format(D=self.min1))
         parser.add_argument(
-            '-2', metavar='group2_min', dest='min2', type=float,
+            '-2', metavar='group2_min', dest='min2', type=float, default=self.min2,
             help='Minimum NIH percentile to be placed in group 2 (default: {D})'.format(D=self.min2))
         parser.add_argument(
-            '-3', metavar='group3_min', dest='min3', type=float,
+            '-3', metavar='group3_min', dest='min3', type=float, default=self.min3,
             help='Minimum NIH percentile to be placed in group 3 (default: {D})'.format(D=self.min3))
         parser.add_argument(
-            '-4', metavar='group4_min', dest='min4', type=float,
+            '-4', metavar='group4_min', dest='min4', type=float, default=self.min4,
             help='Minimum NIH percentile to be placed in group 4 (default: {D})'.format(D=self.min4))
         # --print-NIH-dividers => prt_nihgrpr=True
         #                      => prt_nihgrpr=False

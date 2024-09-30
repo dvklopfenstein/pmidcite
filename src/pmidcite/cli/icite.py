@@ -38,6 +38,8 @@ class NIHiCiteCli:
         dflt_dir_icite_py = cfg.get_dir_icite_py()
         dflt_dir_icite = cfg.get_dir_icite()
         dflt_dir_pubmed_txt = cfg.get_dir_pubmed_txt()
+        # Add group default boundaries using configuration
+        grpr = self.cfg.get_nihgrouper()
         # https://docs.python.org/3/library/argparse.html
         # https://docs.python.org/3/library/argparse.html#action
         # - PMIDs ----------------------------------------------------------------------------
@@ -94,7 +96,7 @@ class NIHiCiteCli:
         parser.add_argument(
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
-        self.cfg.get_nihgrouper().add_arguments(parser)
+        grpr.add_arguments(parser)
         # - directories ----------------------------------------------------------------------
         parser.add_argument(
             '--dir_icite_py', default=dflt_dir_icite_py,
