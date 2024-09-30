@@ -14,7 +14,7 @@ def read_pmids(fin, prt=stdout):
     """Read PMIDs from a file. One PMID per line."""
     pmids = _str_to_int(_read_pmids(fin, top_cit_ref=None))
     if prt:
-        prt.write('{N:6,} PMIDs READ: {FILE}\n'.format(N=len(pmids), FILE=fin))
+        prt.write(f'{len(pmids):6,} PMIDs READ: {fin}\n')
     return pmids
 
 def get_pmids(pmid_list, fin_pmids):
@@ -45,7 +45,7 @@ def get_all(pmid_list, fin_pmids, top_cit_ref=None):
                     if pmid not in seen:
                         pmids.append(pmid)
             else:
-                print('  MISSING: {FILE}'.format(FILE=fin))
+                print(f'  MISSING: {fin}')
     return pmids
 
 def get_files_exists(files, prt=None):
@@ -63,13 +63,13 @@ def _read_pmids(fin, top_cit_ref):
     pmids = []
     if top_cit_ref is None:
         top_cit_ref = {'TOP',}  # TOP, CIT, CLI, REF
-    with open(fin) as ifstrm:
+    with open(fin, encoding='utf8') as ifstrm:
         for line in ifstrm:
             line = line.strip()
             if line[:1] == '#' or line == '':
                 continue
             if line[:3] in top_cit_ref:
-                pmid = pmid[4:].split(maxsplit=1)[0]
+                pmid = line[4:].split(maxsplit=1)[0]
                 if pmid.isdigit():
                     pmids.append(pmid)
             elif line.isdigit():
@@ -81,7 +81,7 @@ def read_top_pmids(pmidcite_txt, topset=None):
     pmids = set()
     if topset is None:
         topset = {'TOP',}
-    with open(pmidcite_txt) as ifstrm:
+    with open(pmidcite_txt, encoding='utf8') as ifstrm:
         for line in ifstrm:
             if line[:3] in topset:
                 flds = line.split()
@@ -91,23 +91,23 @@ def read_top_pmids(pmidcite_txt, topset=None):
 
 def wr_pmids(fout_txt, pmids, mode='w', log=stdout):
     """Write PMIDs into a text file, one PMID per line"""
-    with open(fout_txt, mode) as prt:
+    with open(fout_txt, mode, encoding='utf8') as prt:
         for pmid in pmids:
-            prt.write('{PMID}\n'.format(PMID=pmid))
+            prt.write(f'{pmid}\n')
         if log:
-            log.write('{N:6,} WROTE: {FOUT}\n'.format(N=len(pmids), FOUT=fout_txt))
+            log.write(f'{len(pmids):6,} WROTE: {fout_txt}\n')
 
 def mk_outname_pmids(fin):
     """Given input file, return output file for PMIDs"""
     outdir, outname = split(fin)
     basename, ext = splitext(outname)
-    return join(outdir, '{BASE}_pmids{EXT}'.format(BASE=basename, EXT=ext))
+    return join(outdir, f'{basename}_pmids{ext}')
 
 def mk_outname_icite(fin):
     """Given input file, return output file for PMIDs"""
     outdir, outname = split(fin)
     basename, ext = splitext(outname)
-    return join(outdir, '{BASE}_icite{EXT}'.format(BASE=basename, EXT=ext))
+    return join(outdir, f'{basename}_icite{ext}')
 
 def get_outfile(outfile, append_outfile, force_write):
     """Given arguments, return outfile"""
