@@ -1,0 +1,6 @@
+# TimeTracker project configuration file
+
+project = "pmidcite"
+
+[csv]
+filename = "~/timetrackers/timetracker_pmidcite_$USER$.csv"

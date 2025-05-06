@@ -1,4 +1,5 @@
 #
+.timetracker/start_*.txt
 .eutilsrc
 /icite
 /notebooks/icite
