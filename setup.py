@@ -33,8 +33,6 @@ PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
 def get_long_description():
     """Return the contents of the README.md as a string"""
     dir_cur = abspath(dirname(__file__))
-    # python3
-    #with open(join(dir_cur, 'README.md'), encoding='utf-8') as ifstrm:
     # python3 or python2
     with open(join(dir_cur, 'README.md'), 'rb') as ifstrm:
         return ifstrm.read().decode("UTF-8")

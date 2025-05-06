@@ -67,6 +67,9 @@ class NIHiCiteCli:
             '-v', '--verbose', action='store_true', default=False,
             help='Load and print a descriptive list of citations and references for each paper.')
         parser.add_argument(
+            '-l', '--long-format', action='store_true', default=False,
+            help='Print a multi-line description for each paper.')
+        parser.add_argument(
             '-c', '--load_citations', action='store_true', default=False,
             help='Load and print of papers and clinical studies that cited the requested paper.')
         parser.add_argument(
@@ -125,7 +128,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = self._get_args(argparser)
-        ## print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
+        print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self._run(args, argparser)
 
     def _run(self, args, argparser):
@@ -239,6 +242,7 @@ class NIHiCiteCli:
         """Print papers, including citation counts"""
         dct = get_outfile(args.outfile, args.append_outfile, args.force_write)
         if dct['outfile'] is None and not args.O:
+            #print('FFFFFFFFFFFFFFFFFFFFFFFFF')
             dnldr.prt_papers(pmid2icitepaper, prt=stdout)
         else:
             if args.verbose:

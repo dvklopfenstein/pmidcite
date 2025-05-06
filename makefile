@@ -86,8 +86,9 @@ upload:
 # -----------------------------------------------------------------------------
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install --upgrade setuptools wheel twine
-	$(PYTHON) -m pip install --upgrade distutils
+	$(PYTHON) -m pip install --upgrade setuptools
+	$(PYTHON) -m pip install --upgrade wheel
+	$(PYTHON) -m pip install --upgrade twine
 
 clean_build:
 	rm -rf dist build 

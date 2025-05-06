@@ -59,9 +59,11 @@ class NIHiCiteDownloaderBase:
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if self.details_cites_refs:
+                ## print('DVK self.details_cites_refs ------------------------')
                 paper.prt_summary(prt, sortby_cites='nih_group', sortby_refs='nih_group')
                 prt.write('\n')
             else:
+                ## print('DVK prt_top ----------------------------------------')
                 self.prt_top(paper, prt)
         else:
             prt.write(f'No iCite results found: {pmid} {name if name is not None else ""}\n\n')
