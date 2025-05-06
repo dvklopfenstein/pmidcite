@@ -56,7 +56,7 @@ cnt:
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p src/pmidcite/__init__.py setup.py CHANGELOG.md
+	vim -p pyproject.toml src/pmidcite/__init__.py setup.py CHANGELOG.md
 
 vim_md:
 	vim -p README.md docs/index.md

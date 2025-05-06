@@ -1,5 +1,18 @@
+[project]
+name = "pmidcite"
+version = "0.0.49"
+dynamic = [
+    "readme",
+    "description",
+    "authors",
+    "classifiers",
+    "scripts",
+    "dependencies",
+]
+license = "AGPL-3.0-or-later"
+
 [project.urls]
-Homepage = https://github.com/dvklopfenstein/pmidcite
+Homepage = "https://github.com/dvklopfenstein/pmidcite"
 
 [build-system]
 requires = ["setuptools >= 46.3.0"]
