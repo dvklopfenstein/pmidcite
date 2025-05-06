@@ -24,6 +24,18 @@ class NIHiCiteEntry:
               '{A:2}|{author1:16}|{title}'
              )
 
+    pat_multiline = (
+        '{pmid:8} PMID\n'
+        '{year:4} Year published\n'
+        '{aart_animal} Annotated with MeSH terms for: Human, Mouse, molecular/cellular\n'
+        '{num_cites_all:>5} Number of total citations\n'
+        '{clin:>4} Number of clinical papers which cited this paper\n'
+        '{references:>4} Number of references\n'
+        '{A:2} Number of authors\n'
+        '{author1:16} First author\n'
+        'TITLE: {title}'
+    )
+
     citekeys = {'cited_by_clin', 'cited_by'}
     refkey = {'references',}
     associated_pmid_keys = citekeys.union(refkey)
@@ -168,6 +180,10 @@ class NIHiCiteEntry:
     def str_md(self):
         """Return one-line string describing NIH iCite entry"""
         return self._str(self.pat_md)
+
+    def str_multiline(self):
+        """Return multiline-line string describing NIH iCite entry"""
+        return self._str(self.pat_multiline)
 
     def __str__(self):
         """Return one-line string describing NIH iCite entry"""

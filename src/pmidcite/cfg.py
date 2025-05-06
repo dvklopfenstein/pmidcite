@@ -34,9 +34,9 @@ class Cfg(object):
         'pmidcite' : {
             # NIH Group divisions
             'group1_min': '2.1',
-            'group2_min': '15.7',
-            'group3_min': '83.9',
-            'group4_min': '97.5',
+            'group2_min': '30.0',
+            'group3_min': '60.0',
+            'group4_min': '94.0',
 
             # Entrez utilities
             'email': 'name@university.edu',

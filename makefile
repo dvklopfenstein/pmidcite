@@ -56,7 +56,7 @@ cnt:
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p src/pmidcite/__init__.py setup.py CHANGELOG.md
+	vim -p pyproject.toml src/pmidcite/__init__.py setup.py CHANGELOG.md
 
 vim_md:
 	vim -p README.md docs/index.md
@@ -79,14 +79,16 @@ build:
 # https://pypi.org/manage/account/token/
 # python3 -m pip install --upgrade pmidcite
 upload:
-	twine upload dist/* --verbose
+	#twine upload dist/* --verbose
+	twine upload dist/* --repository pmidcite --verbose
 
 
 # -----------------------------------------------------------------------------
 upgrade:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install --upgrade setuptools wheel twine
-	$(PYTHON) -m pip install --upgrade distutils
+	$(PYTHON) -m pip install --upgrade setuptools
+	$(PYTHON) -m pip install --upgrade wheel
+	$(PYTHON) -m pip install --upgrade twine
 
 clean_build:
 	rm -rf dist build 

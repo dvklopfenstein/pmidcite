@@ -33,8 +33,6 @@ PACKAGE_DIRS = {p:join('src', *p.split('.')) for p in PACKAGES}
 def get_long_description():
     """Return the contents of the README.md as a string"""
     dir_cur = abspath(dirname(__file__))
-    # python3
-    #with open(join(dir_cur, 'README.md'), encoding='utf-8') as ifstrm:
     # python3 or python2
     with open(join(dir_cur, 'README.md'), 'rb') as ifstrm:
         return ifstrm.read().decode("UTF-8")
@@ -46,7 +44,7 @@ CONSOLE_SCRIPTS = [
 
 setup(
     name=NAME,
-    version='0.0.48',
+    version='0.0.49',
     author='DV Klopfenstein, PhD',
     author_email='dvklopfenstein@protonmail.com',
     packages=PACKAGES,
@@ -61,7 +59,6 @@ setup(
         'Environment :: Console',
         'Intended Audience :: Science/Research',
         'Development Status :: 4 - Beta',
-        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],

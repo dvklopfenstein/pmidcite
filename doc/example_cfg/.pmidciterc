@@ -17,9 +17,9 @@
 # the most recent papers first, the highest rated papers next, and
 # the lowest-rated papers at the end of the list of papers and citation data.
 group1_min = 2.1
-group2_min = 15.7
-group3_min = 83.9
-group4_min = 97.5
+group2_min = 30.0
+group3_min = 60.0
+group4_min = 94.0
 
 # --------------------------------------------------------------------------------
 # NCBI E-Utils needs: email, apikey, and tool to download PubMed records.

@@ -184,10 +184,10 @@ class EntrezUtilities(object):
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
         ## print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
         if 'webenv' in rsp:
-            if self.log is not None:
-                ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
-                self.log.write(f'epost webenv: {rsp["webenv"]}\n')
-                self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{len(str_ids)}]={id_str}\n")
+            #if self.log is not None:
+            #    ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
+            #    self.log.write(f'epost webenv: {rsp["webenv"]}\n')
+            #    self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{len(str_ids)}]={id_str}\n")
             ret['webenv'] = rsp['webenv']
             webenv = rsp['webenv']
             num_ids = len(ids)
