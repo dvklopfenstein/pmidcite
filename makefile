@@ -70,8 +70,9 @@ build:
 	# python3 -m pip install -U pip
 	# python3 -m pip install --user --upgrade setuptools wheel
 	make clean_build
-	$(PYTHON) setup.py sdist
-	$(PYTHON) setup.py bdist_wheel --universal
+	##$(PYTHON) setup.py sdist
+	##$(PYTHON) setup.py bdist_wheel
+	$(PYTHON) -m build
 	ls -lh dist
 	twine check dist/*
 
