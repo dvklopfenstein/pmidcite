@@ -1,3 +1,6 @@
+[project.urls]
+Homepage = https://github.com/dvklopfenstein/pmidcite
+
 [build-system]
 requires = ["setuptools >= 46.3.0"]
 build-backend = "setuptools.build_meta"
