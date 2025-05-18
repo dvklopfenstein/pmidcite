@@ -5,23 +5,23 @@ install:
 
 py:
 	find src/bin -name \*.py
-	find src/pmidcite -name \*.py
+	find pmidcite -name \*.py
 	find src/tests -name \*.py | grep -v icite
 	
 e:
-	find src/pmidcite/eutils -name \*.py
+	find pmidcite/eutils -name \*.py
 
 t:
 	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
 
 p:
-	find src/bin src/pmidcite -name \*.py
+	find src/bin pmidcite -name \*.py
 
 d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
 cli:
-	find src/pmidcite/cli -name \*.py
+	find pmidcite/cli -name \*.py
 
 diff0:
 	git diff --compact-summary
@@ -56,19 +56,13 @@ cnt:
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p pyproject.toml src/pmidcite/__init__.py setup.py CHANGELOG.md
+	vim -p pyproject.toml pmidcite/__init__.py CHANGELOG.md
 
 vim_md:
 	vim -p README.md docs/index.md
 
 
 # -----------------------------------------------------------------------------
-upgrade:
-	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install --upgrade setuptools
-	$(PYTHON) -m pip install --upgrade wheel
-	$(PYTHON) -m pip install --upgrade twine
-
 clean_build:
 	rm -rf dist build 
 

@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* **Release 2025-05-06 v0.0.50** Removed setup.py
 * **Release 2025-05-06 v0.0.49** Add pyproject.toml
 * [**Release 2024-02-05 v0.0.48**](#release-2024-06-20-v0048) Update apikey; add get_dict(); update README.md
 * [**Release 2023-11-19 v0.0.47**](#release-2023-11-19-v0047) GNU AGPLv3; Add function to summarize a set of papers
