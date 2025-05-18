@@ -61,28 +61,6 @@ vim_ver:
 vim_md:
 	vim -p README.md docs/index.md
 
-# 2) Create wheel - Check PyPi packages are up-to-date: make upgrade
-# https://packaging.python.org/guides/distributing-packages-using-setuptools/#packaging-your-project
-# universal wheels are pure Python
-#   Needs wheel package to run bdist_wheel: pip3 install wheel
-.PHONY: build
-build:
-	# python3 -m pip install -U pip
-	# python3 -m pip install --user --upgrade setuptools wheel
-	make clean_build
-	##$(PYTHON) setup.py sdist
-	##$(PYTHON) setup.py bdist_wheel
-	$(PYTHON) -m build
-	ls -lh dist
-	twine check dist/*
-
-# 3) Upload wheel to https://pypi.org
-# https://pypi.org/manage/account/token/
-# python3 -m pip install --upgrade pmidcite
-upload:
-	#twine upload dist/* --verbose
-	twine upload dist/* --repository pmidcite --verbose
-
 
 # -----------------------------------------------------------------------------
 upgrade:
