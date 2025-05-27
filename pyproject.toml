@@ -19,12 +19,18 @@ dependencies = [
 
 # https://pypi.org/classifiers
 classifiers=[
+  'Development Status :: 5 - Production/Stable',
+  'Topic :: Scientific/Engineering :: Information Analysis',
+  'Intended Audience :: Science/Research',
+  'Intended Audience :: Developers',
+  'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
   'Programming Language :: Python',
   'Environment :: Console',
-  'Intended Audience :: Science/Research',
-  'Development Status :: 5 - Production/Stable',
   'Programming Language :: Python :: 3',
-  'Topic :: Scientific/Engineering :: Information Analysis',
+  'Operating System :: POSIX :: Linux',
+  'Operating System :: POSIX',
+  'Operating System :: Unix',
+  'Operating System :: MacOS',
 ]
 
 # Needed for assignment expressions & the walrus operator
