@@ -5,8 +5,6 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights re
 __author__ = "DV Klopfenstein, PhD"
 
 ## from timeit import default_timer
-from collections import OrderedDict
-
 import traceback
 import requests
 
@@ -41,17 +39,25 @@ class NIHiCiteAPI:
     #           https://icite.od.nih.gov/api
     url_base = 'https://icite.od.nih.gov/api/pubs'
 
-    flds_yes_no = {'is_research_article', 'is_clinical', 'provisional'}
-    yes_no = {'Yes':True, 'No':False}
-
     def __init__(self, **kws):
         self.kws = {k:v for k, v in kws.items() if k in self.opt_keys}
         self.msgs = []
 
     def dnld_nihdict(self, pmid):
         """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
-        rsp_json = self._send_request(f'{self.url_base}/{pmid}')
-        return self._adjust_jsondct(rsp_json) if rsp_json else None
+        # pylint: disable=line-too-long
+        ##req_nihocc = f'{self.url_base}?{pmid}'  # v0.0.50 WAS https://icite.od.nih.gov/api/pubs?33031632
+        req_nihocc = f'{self.url_base}/{pmid}'    # v0.0.51 NOW https://icite.od.nih.gov/api/pubs/33031632
+        rsp_json = self._send_request(req_nihocc)
+        ##print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA {rsp_json}')
+        ##print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA rsp_json["data"][{len(rsp_json["data"])}] = {rsp_json["data"]}')
+        ##return self._adjust_json_entry(rsp_json) if rsp_json else None
+        if rsp_json:
+            assert 'data' in rsp_json, rsp_json
+            if (data := rsp_json['data']) and len(data) == 1:
+                return self._adjust_json_entry(data[0])
+            raise RuntimeError("EXPCETED 'data' in json returned for a single PMID")
+        return None
 
     def dnld_nihdicts(self, pmids):
         """Download a list of NIH citation data for given PMIDs"""
@@ -76,7 +82,8 @@ class NIHiCiteAPI:
         """Download NIH citation data using a request using their API"""
         ## tic = default_timer()
         pmids_str = ','.join(str(p) for p in pmids)
-        req_nihocc = f'{self.url_base}?pmids={pmids_str}'
+        # pylint: disable=line-too-long
+        req_nihocc = f'{self.url_base}?pmids={pmids_str}' # https://icite.od.nih.gov/api/pubs?pmids=33031632
         ## tic = prt_hms(tic, "Create request")
         # Note: rsp_json['data'] returned from NIH not in same order as requested
         rsp_json = self._send_request(req_nihocc)
@@ -84,11 +91,11 @@ class NIHiCiteAPI:
         if rsp_json is not None:
             # Adjust the jsons downloaded for NIH citation data
             nih_dicts = []
-            s_adjust_jsondct = self._adjust_jsondct
+            s_adjust_json_entry = self._adjust_json_entry
             pmids_downloaded = set()
             for nih_json_dct in rsp_json['data']:
                 pmids_downloaded.add(nih_json_dct['pmid'])
-                nih_dicts.append(s_adjust_jsondct(nih_json_dct))
+                nih_dicts.append(s_adjust_json_entry(nih_json_dct))
             ## tic = prt_hms(tic, "Adjust reponse")
             # Report PMIDs that did not have NIH citation data downloaded
             pmids_missing = set(pmids).difference(pmids_downloaded)
@@ -114,9 +121,9 @@ class NIHiCiteAPI:
             return None
         # TODO: Consider explicitly re-raising using
         # 'raise RuntimeError(f'**ERROR DOWNLOADING {cmd}\n{error}') from error'
-        except:
+        except Exception as exc:
             traceback.print_exc()
-            raise RuntimeError(f'**ERROR DOWNLOADING {cmd}')
+            raise RuntimeError(f'**ERROR DOWNLOADING {cmd}') from exc
 
     def _prt_errmsg(self, errmsg):
         """Print the error and add the error to the list of API messages"""
@@ -126,47 +133,70 @@ class NIHiCiteAPI:
     @staticmethod
     def _err_msg(rsp):
         """Get error message if an NIH iCite request failed"""
-        ## print('1 RRRRRRRRRRRRRRRRRRRRRR', dir(rsp))
-        ## print('2 RRRRRRRRRRRRRRRRRRRRRR', rsp.status_code)
-        ## print('3 RRRRRRRRRRRRRRRRRRRRRR', rsp.reason)
-        ## print('4 RRRRRRRRRRRRRRRRRRRRRR', rsp.content)
-        ## print('5 RRRRRRRRRRRRRRRRRRRRRR', rsp.text)
-        ## #print('3 RRRRRRRRRRRRRRRRRRRRRR', rsp.json())
-        ## print('6 RRRRRRRRRRRRRRRRRRRRRR', rsp.url)
-        ## if rsp.json() is not None:
-        ##     txt =' '.join('{K}({V})'.format(K=k, V=v) for k, v in sorted(rsp.json().items()))
-        return f'{rsp.status_code} {rsp.reason} URL[{len(rsp.url)}]: {rsp.url}'
+        ##print('1 ERR dir        ', dir(rsp))
+        ##print('2 ERR status_code', rsp.status_code)
+        ##print('3 ERR reason     ', rsp.reason)
+        ##print('4 ERR content    ', rsp.content)
+        ##print('5 ERR text       ', rsp.text)
+        ##print('6 ERR cmd        ', rsp.url)
+        txt = 'NO JSON DATA'
+        if rsp.json() is not None:
+            txt =' '.join(f'{k}({v})' for k, v in sorted(rsp.json().items()))
+        return f'{rsp.status_code} {rsp.reason} URL[{len(rsp.url)}]: {rsp.url}\n  {txt}'
 
-    def _adjust_jsondct(self, json_dct):
-        """Adjust values in the json dict"""
-        dct = {}
-        if json_dct['title'] is not None:
-            title = json_dct['title'].strip()
-            if '"' in title:
-                title = title.replace('"', "'")
-            if "\n" in title:
-                title = title.replace('\n', " ")
-            dct['title'] = title
-        if json_dct['authors'] is not None:
-            authors = json_dct['authors']
-            if authors == '':
-                dct['authors'] = []
+    def _adjust_json_entry(self, entry_dct):
+        """Adjust values in the json dict['data']; This fnc has side effects on entry_dct"""
+        dct = entry_dct
+        ##self._prt_dct(entry_dct, "ENTRY")
+        if (title := entry_dct['title']) is not None:
+            self._adjust_title(dct, title.strip())
+        if (authors := entry_dct['authors']) is not None:
+            if (typ := type(authors)) is list:
+                # List of dicts w/keys: firstName lastName & fullName
+                dct['authors'] = authors
             else:
-                dct['authors'] = json_dct['authors'].split(', ')
-        yes_no = self.yes_no
-        dct['is_research_article'] = yes_no[json_dct['is_research_article']]
-        dct['is_clinical'] = yes_no[json_dct['is_clinical']]
-        dct['provisional'] = yes_no[json_dct['provisional']]
-        lst = []
-        lists = {'authors', 'cited_by_clin', 'cited_by', 'references'}
-        for key, val in json_dct.items():
-            if key in dct:
-                lst.append((key, dct[key]))
-            elif key in lists:
-                lst.append((key, [] if val is None else val))
-            else:
-                lst.append((key, val))
-        return OrderedDict(lst)
+                ####self._adjust_author_str(dct, authors, typ)
+                raise TypeError('Authors data downloaded from NIH iCite '
+                                f'have unknown type({typ}): {authors}')
+        ####dct['is_research_article'] = entry_dct['is_research_article']
+        ####dct['is_clinical'] = entry_dct['is_clinical']
+        ####dct['provisional'] = entry_dct['provisional']
+        ####lst = []
+        ####lists = {'authors', 'cited_by_clin', 'cited_by', 'references'}
+        ####for key, val in entry_dct.items():
+        ####    if key in dct:
+        ####        lst.append((key, dct[key]))
+        ####    elif key in lists:
+        ####        lst.append((key, [] if val is None else val))
+        ####    else:
+        ####        lst.append((key, val))
+        ####return OrderedDict(lst)
+        return dct
+
+    @staticmethod
+    def _prt_dct(dct, prefix):
+        for key, val in dct.items():
+            print(f'{prefix} {key:10} {val}')  # In _prt_dct
+
+    @staticmethod
+    def _adjust_title(dct, title):
+        if '"' in title:
+            title = title.replace('"', "'")
+        if "\n" in title:
+            title = title.replace('\n', " ")
+        dct['title'] = title
+
+    ####@staticmethod
+    ####def _adjust_author_str(dct, authors, typ):
+    ####    """Handle older format (str) of author field"""
+    ####    if typ is str:
+    ####        if authors == '':
+    ####            dct['authors'] = []
+    ####        else:
+    ####            dct['authors'] = authors.split(', ')
+    ####    else:
+    ####        raise TypeError('Authors data downloaded from NIH iCite '
+    ####                        f'have unknown type({typ}): {authors}')
 
     @staticmethod
     def prt_dct(dct, prt):

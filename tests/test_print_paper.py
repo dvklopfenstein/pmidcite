@@ -31,7 +31,7 @@ def test_print_paper():
     hms = str_hms(tic)
     paper0 = pmid2paper0[pmid]
     paper0.prt_summary()
-    print('\nHMS {HMS}: All citation files downloaded from NIH and saved on disk'.format(HMS=hms))
+    print(f'\nHMS {hms}: All citation files downloaded from NIH and saved on disk')
     assert pmid in pmid2paper0
     f2mtime_dnld = obj.get_f2mtime(min_files=50)
     sleep(1)
@@ -53,9 +53,12 @@ def test_print_paper():
     prt_hms(tic, 'All citation files downloaded from NIH and not saved on disk')
     assert pmid in pmid2paper2
     paper1 = pmid2paper2[pmid]
-    assert len(paper0.cited_by) == len(paper1.cited_by)
-    assert len(paper0.cited_by_clin) == len(paper1.cited_by_clin)
-    assert len(paper0.references) == len(paper1.references)
+    if paper0.cited_by is not None:
+        assert len(paper0.cited_by) == len(paper1.cited_by)
+    if paper0.cited_by_clin is not None:
+        assert len(paper0.cited_by_clin) == len(paper1.cited_by_clin)
+    if paper0.references is not None:
+        assert len(paper0.references) == len(paper1.references)
 
     # Clean iCite files
     obj.rm_icitefiles()

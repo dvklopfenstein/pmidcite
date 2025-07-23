@@ -30,6 +30,7 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
 
     def get_icite(self, pmid):
         """Load or download NIH iCite data for requested PMID"""
+        ##print(f'DOWNLOADER-ONLY: {pmid}')
         nih_dict = self.api.dnld_nihdict(pmid)
         if nih_dict:
             return NIHiCiteEntry.from_jsondct(

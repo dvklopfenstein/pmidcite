@@ -5,23 +5,23 @@ install:
 
 py:
 	find src/bin -name \*.py
-	find src/pmidcite -name \*.py
-	find src/tests -name \*.py | grep -v icite
+	find pmidcite -name \*.py
+	find tests -name \*.py | grep -v icite
 	
 e:
-	find src/pmidcite/eutils -name \*.py
+	find pmidcite/eutils -name \*.py
 
 t:
-	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
+	find tests -regextype posix-extended -regex ".*[a-z]+.py"
 
 p:
-	find src/bin src/pmidcite -name \*.py
+	find src/bin pmidcite -name \*.py
 
 d:
 	find src -regextype posix-extended -regex "[a-z./]*" -type d
 
 cli:
-	find src/pmidcite/cli -name \*.py
+	find pmidcite/cli -name \*.py
 
 diff0:
 	git diff --compact-summary
@@ -39,7 +39,7 @@ pylint:
 pytest:
 	make clobber_tmp
 	python3 --version
-	coverage run -m pytest -v src/tests --log-file=pytest.log
+	coverage run -m pytest -v tests --log-file=pytest.log
 
 ver:
 	git describe --tags --dirty --always
@@ -49,26 +49,20 @@ chk:
 	chk_setup_dirs
 
 cnt:
-	find ./icite -name \*.py | wc -l
-	find ./src/tests/icite -name \*.py | wc -l
+	find icite -name \*.py | wc -l
+	find tests/icite -name \*.py | wc -l
 
 
 # -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
-	vim -p pyproject.toml src/pmidcite/__init__.py setup.py CHANGELOG.md
+	vim -p pyproject.toml pmidcite/__init__.py CHANGELOG.md
 
 vim_md:
 	vim -p README.md docs/index.md
 
 
 # -----------------------------------------------------------------------------
-upgrade:
-	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install --upgrade setuptools
-	$(PYTHON) -m pip install --upgrade wheel
-	$(PYTHON) -m pip install --upgrade twine
-
 clean_build:
 	rm -rf dist build 
 
@@ -90,18 +84,18 @@ clean:
 	rm -f pubmed_*.txt
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
-	rm -f src/tests/icite/*.py
+	rm -f tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
 	rm -f notebooks/p*.py
 	rm -rf icite
 	rm -rf notebooks/icite
-	rm -rf src/tests/icite
+	rm -rf tests/icite
 	make clobber_tmp
 	make clean_build
 
 clobber_tmp:
-	rm -rf ./icite
-	rm -rf ./src/tests/icite
+	rm -rf icite
+	rm -rf tests/icite
 
 clobber:
 	make -f makefile clobber_tmp clean_build pyc

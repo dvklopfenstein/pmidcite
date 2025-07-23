@@ -45,6 +45,7 @@ class NIHiCitePaper:
         # cited_by contains all cited_by_clin papers
         self.cited_by = self._init_pmids('cited_by')
         self.cited_by_clin = self._init_pmids('cited_by_clin')
+        self.cited_by_all = self._init_pmids('all_citing_pmids')
         self.references = self._init_pmids('references')
 
     def get_icite(self):
@@ -102,10 +103,12 @@ class NIHiCitePaper:
             return icites
         if sortby in self.sortby_dct:
             sortby = self.sortby_dct[sortby]
-        return sorted(icites, key=sortby)
+        return sorted(icites, key=sortby) if icites is not None else None
 
     def _prt_list(self, icites, desc, prt, sortby=None):
         """Print list of NIH iCites in summary format"""
+        if icites is None:
+            return
         if sortby is not None:
             icites = self.get_sorted(icites, sortby)
         if self.pmid2note:
@@ -122,9 +125,12 @@ class NIHiCitePaper:
     def _init_pmids(self, name):
         """Load citation/reference PMIDs, if the 'top' paper has NIH iCite data"""
         if self.icite is None:
-            return []
-        s_pmid2icite = self.pmid2icite
-        return set(s_pmid2icite[pmid] for pmid in self.icite.dct[name] if pmid in s_pmid2icite)
+            return None
+        ##print(f'FOR PMID({self.pmid}), INIT {name} PMIDs')
+        if (pmids := self.icite.dct[name]) is not None:
+            s_pmid2icite = self.pmid2icite
+            return set(s_pmid2icite[pmid] for pmid in pmids if pmid in s_pmid2icite)
+        return None
 
     def __str__(self):
         """Get the line containing data downloaded from NIH iCite for only the featured paper"""

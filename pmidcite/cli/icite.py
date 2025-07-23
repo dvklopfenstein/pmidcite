@@ -128,7 +128,7 @@ class NIHiCiteCli:
         """Run iCite/PubMed using command-line interface"""
         argparser = self.get_argparser()
         args = self._get_args(argparser)
-        print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
+        ##print('ICITE ARGS ../pmidcite/src/pmidcite/cli/icite.py', args)
         self._run(args, argparser)
 
     def _run(self, args, argparser):

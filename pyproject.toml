@@ -6,12 +6,24 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pmidcite"
 description="Turbocharge a PubMed literature search using citation data from the NIH"
-version = "0.0.49"
+version = "0.0.51"
 license = "AGPL-3.0-or-later"
 authors = [
   {name = 'DV Klopfenstein, PhD', email = 'dvklopfenstein@protonmail.com'},
 ]
 readme = {file="README.md", content-type="text/markdown"}
+
+keywords = [
+  "library",
+  "pubmed",             #   320
+  "ncbi",               #   225
+  "command-line-tool",  # 7,622
+  "literature-mining",  #    48
+  "citations",          #   276
+  "Citation-network",   #    59
+  "google-search",      #   379
+  "google-scholar",     #   153
+]
 
 dependencies = [
   "requests",
@@ -19,12 +31,18 @@ dependencies = [
 
 # https://pypi.org/classifiers
 classifiers=[
+  'Development Status :: 5 - Production/Stable',
+  'Topic :: Scientific/Engineering :: Information Analysis',
+  'Topic :: Scientific/Engineering :: Bio-Informatics',
+  'Intended Audience :: Science/Research',
+  'Intended Audience :: Developers',
   'Programming Language :: Python',
   'Environment :: Console',
-  'Intended Audience :: Science/Research',
-  'Development Status :: 4 - Beta',
   'Programming Language :: Python :: 3',
-  'Topic :: Scientific/Engineering :: Information Analysis',
+  'Operating System :: POSIX :: Linux',
+  'Operating System :: POSIX',
+  'Operating System :: Unix',
+  'Operating System :: MacOS',
 ]
 
 # Needed for assignment expressions & the walrus operator

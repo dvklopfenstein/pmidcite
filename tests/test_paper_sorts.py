@@ -18,7 +18,8 @@ def test_paper_sort():
 
     # iCite files are downloaded with the first call
     paper = obj.get_paper(pmid, do_prt=False)  # NIHiCitePaper
-    all_cites = paper.cited_by.union(paper.cited_by_clin)
+    #all_cites = paper.cited_by.union(paper.cited_by_clin)
+    all_cites = paper.cited_by_all
 
     print('\nDEFAULT SORT')
     for nih_entry in sorted(all_cites):

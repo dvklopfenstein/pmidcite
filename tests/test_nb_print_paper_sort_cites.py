@@ -45,7 +45,8 @@ def test_print_paper_all_refs_cites():
     paper = pmid2paper[pmid]
 
     # set of NIHiCiteEntry
-    all_cites = paper.cited_by.union(paper.cited_by_clin)
+    # all_cites = paper.cited_by.union(paper.cited_by_clin)
+    all_cites = paper.cited_by_all
     ## print('AAAAAAAAAAAAAAAAAAAAAAAAA paper.cited_by', paper.cited_by)
     ## print('AAAAAAAAAAAAAAAAAAAAAAAAA paper.cited_by_clin', paper.cited_by_clin)
     ## print('AAAAAAAAAAAAAAAAAAAAAAAAA all_cites', all_cites)
@@ -65,6 +66,7 @@ def test_print_paper_all_refs_cites():
     # The 999 value makes the newest papers appear next to the papers having the highest NIH percentiles so the new papers are highlighted.
 
     # In[5]:
+    print(all_cites)
     for nih_entry in sorted(all_cites, key=lambda o: o.get_dict()['nih_perc'], reverse=True):
         print(nih_entry)
 

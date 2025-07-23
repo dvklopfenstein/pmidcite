@@ -5,12 +5,13 @@ __copyright__ = "Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights re
 __author__ = "DV Klopfenstein, PhD"
 
 import sys
+import os
+import os.path as op
 from pmidcite.pubmedqueryicite import PubMedQueryToICite
 
 
 def main():
     """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
-    # pylint: disable=bad-whitespace
     queries = [
         # Output filenames               PubMed query
         # -----------------              -----------------------------------
@@ -33,7 +34,14 @@ def main():
     #
     obj = PubMedQueryToICite(force_dnld=True)
     dnld_idx = obj.get_index(sys.argv, queries)
-    obj.run(queries, dnld_idx)
+
+    nts_fout_query = obj.get_nts_g_list(queries)
+    if dnld_idx == [-1]:
+        qry = nts_fout_query[-1]
+        cmd = f'grep TOP {op.relpath(qry.fullname)} | sort -k6'
+        os.system(cmd)
+        print(f'QRY: {qry.pubmed_query}')
+        print(f'CMD: {cmd}')
 
 
 if __name__ == '__main__':
