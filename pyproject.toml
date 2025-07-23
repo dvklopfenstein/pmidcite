@@ -13,6 +13,18 @@ authors = [
 ]
 readme = {file="README.md", content-type="text/markdown"}
 
+keywords = [
+  "library",
+  "pubmed",             #   320
+  "ncbi",               #   225
+  "command-line-tool",  # 7,622
+  "literature-mining",  #    48
+  "citations",          #   276
+  "Citation-network",   #    59
+  "google-search",      #   379
+  "google-scholar",     #   153
+]
+
 dependencies = [
   "requests",
 ]
@@ -21,6 +33,7 @@ dependencies = [
 classifiers=[
   'Development Status :: 5 - Production/Stable',
   'Topic :: Scientific/Engineering :: Information Analysis',
+  'Topic :: Scientific/Engineering :: Bio-Informatics',
   'Intended Audience :: Science/Research',
   'Intended Audience :: Developers',
   'Programming Language :: Python',
