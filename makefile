@@ -6,13 +6,13 @@ install:
 py:
 	find src/bin -name \*.py
 	find pmidcite -name \*.py
-	find src/tests -name \*.py | grep -v icite
+	find tests -name \*.py | grep -v icite
 	
 e:
 	find pmidcite/eutils -name \*.py
 
 t:
-	find src/tests -regextype posix-extended -regex ".*[a-z]+.py"
+	find tests -regextype posix-extended -regex ".*[a-z]+.py"
 
 p:
 	find src/bin pmidcite -name \*.py
@@ -39,7 +39,7 @@ pylint:
 pytest:
 	make clobber_tmp
 	python3 --version
-	coverage run -m pytest -v src/tests --log-file=pytest.log
+	coverage run -m pytest -v tests --log-file=pytest.log
 
 ver:
 	git describe --tags --dirty --always
@@ -49,8 +49,8 @@ chk:
 	chk_setup_dirs
 
 cnt:
-	find ./icite -name \*.py | wc -l
-	find ./src/tests/icite -name \*.py | wc -l
+	find icite -name \*.py | wc -l
+	find tests/icite -name \*.py | wc -l
 
 
 # -----------------------------------------------------------------------------
@@ -84,18 +84,18 @@ clean:
 	rm -f pubmed_*.txt
 	rm -f test_eutils.cfg
 	rm -f test_icite.cfg
-	rm -f src/tests/icite/*.py
+	rm -f tests/icite/*.py
 	rm -f notebooks/pubmed_*.txt
 	rm -f notebooks/p*.py
 	rm -rf icite
 	rm -rf notebooks/icite
-	rm -rf src/tests/icite
+	rm -rf tests/icite
 	make clobber_tmp
 	make clean_build
 
 clobber_tmp:
-	rm -rf ./icite
-	rm -rf ./src/tests/icite
+	rm -rf icite
+	rm -rf tests/icite
 
 clobber:
 	make -f makefile clobber_tmp clean_build pyc
