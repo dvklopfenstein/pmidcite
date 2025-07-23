@@ -20,7 +20,7 @@ from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
 DIR_TEST = dirname(abspath(__file__))
 DIR_TESTDATA = join(DIR_TEST, "data")
 DIR_ICITE = abspath(join(DIR_TEST, "./icite"))
-DIR_REPO = abspath(join(DIR_TEST, "../.."))
+DIR_REPO = abspath(join(DIR_TEST, ".."))
 DL = environ.get('DLCYG')
 
 def get_dnld_files(glob_pattern):
@@ -40,22 +40,23 @@ def dir_icite_clobber(prt=stdout):
     cmd = 'rm -rf {ICITE}; mkdir {ICITE}'.format(ICITE=DIR_ICITE)
     system(cmd)
     if prt:
-        prt.write("{}\n".format(cmd))
+        prt.write(f"{cmd}\n")
 
 def dir_icite_wc_l(prt=stdout):
     """Print count of p{PMID}.py files in dir ./src/tests/icite"""
+    # pylint: disable=consider-using-f-string
     cmd = r'find {DIR} -name \*.py | wc -l'.format(DIR=DIR_ICITE)
     system(cmd)
     if prt:
-        prt.write("{}\n".format(cmd))
+        prt.write(f"{cmd}\n")
 
 def mk_dir(dir_name, rmdir=False):
     """Get the directory where data downloaded from NIH-OCC are stored"""
     if rmdir:
-        system('rm -rf {DIR}'.format(DIR=dir_name))
+        system(f'rm -rf {dir_name}')
     if not exists(dir_name):
         mkdir(dir_name)
-        print('**CREATED DIR: {D}'.format(D=relpath(dir_name)))
+        print(f'**CREATED DIR: {relpath(dir_name)}')
     return dir_name
 
 
@@ -69,7 +70,7 @@ class ICiteTester:
     def rm_icitefiles(self):
         """Remove downloaded NIH-OCC iCite files"""
         if list(glob(self.icite_files)):
-            system('rm {PY}'.format(PY=self.icite_files))
+            system(f'rm {self.icite_files}')
         assert not list(glob(self.icite_files)), 'BAD INITIAL CLEAN UP'
 
     def get_paper(self, pmid, force_download=False, do_prt=True):
@@ -87,8 +88,7 @@ class ICiteTester:
         """Get mofification times of globbed files"""
         f2mtime = {fin:getmtime(fin) for fin in glob(self.icite_files)}
         assert len(f2mtime) >= min_files, \
-            'iCite FILES NOT DOWNLOADED len(f2mtime)={} < min_files({})'.format(
-                len(f2mtime), min_files)
+            f'iCite FILES NOT DOWNLOADED {len(f2mtime)=} < min_files({min_files})'
         return f2mtime
 
 

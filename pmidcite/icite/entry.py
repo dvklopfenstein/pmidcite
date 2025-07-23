@@ -83,17 +83,33 @@ class NIHiCiteEntry:
     def from_jsondct(cls, icite_dct, nih_group_num):
         """Construct NIHiCiteEntry from jsondct downloaded from NIH using Entrez utils"""
         cls_dct = icite_dct
-        nih_perc = icite_dct['nih_percentile']
         cls_dct['nih_group'] = nih_group_num  # 0 - 5
-        # pylint: disable=line-too-long
-        cls_dct['num_auth'] = len(icite_dct['authors'])
-        cls_dct['num_clin'] = len(icite_dct['cited_by_clin'])
-        cls_dct['num_cite'] = len(icite_dct['cited_by'])
-        num_cites_all = len(set(cls_dct['cited_by_clin']).union(cls_dct['cited_by']))
+        cls_dct['num_auth'] = len(lst) if (lst := icite_dct['authors']) else 0
+        cit_clin = icite_dct['cited_by_clin']
+        cited_by = icite_dct['cited_by']
+        cls_dct['num_clin'] = len(cit_clin) if cit_clin else 0
+        cls_dct['num_cite'] = len(cited_by) if cited_by else 0
+
+        ##num_cites_all = len(set(cls_dct['cited_by_clin']).union(cls_dct['cited_by']))
+        all_citing_pmids = cls._get_cites_all(cit_clin, cited_by)
+        cls_dct['all_citing_pmids'] = all_citing_pmids
+        num_cites_all = len(all_citing_pmids) if all_citing_pmids is not None else 0
         cls_dct['num_cites_all'] = num_cites_all
+
+        nih_perc = icite_dct['nih_percentile']
         cls_dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
         cls_dct['num_refs'] = len(icite_dct['references'])
         return cls(icite_dct['pmid'], cls_dct)
+
+    @classmethod
+    def _get_cites_all(cls, cit_clin, cited_by):
+        if cit_clin is not None and cited_by is not None:
+            return set(cit_clin).union(cited_by)
+        if cit_clin is None and cited_by is not None:
+            return cited_by
+        if cit_clin is not None and cited_by is None:
+            return cit_clin
+        return None
 
     def get(self, attrname):
         """Get the value of attrname. Use this rather than the deprecated dct data member"""
@@ -109,13 +125,11 @@ class NIHiCiteEntry:
         """Get the list of authors from NIH's iCite for this paper"""
         return self.dct.get('authors')
 
-    def get_au1_lastname(self):
-        """Get the last name of the first author"""
-        aus = self.dct['authors']
-        if aus:
-            flds = aus[0].split()
-            return flds[-1]
-        return None
+    ####def get_au1_lastname(self):
+    ####    """Get the last name of the first author"""
+    ####    if (aus := self.dct['authors']):
+    ####        return aus[0]['fullName']
+    ####    return None
 
     def get_year(self):
         """Get the publication year"""
@@ -205,7 +219,7 @@ class NIHiCiteEntry:
             clin=dct['num_clin'],
             references=dct['num_refs'],
             A=dct['num_auth'],
-            author1=dct['authors'][0] if dct['authors'] else '',
+            author1=dct['authors'][0]['lastName'] if dct['authors'] else '',
             title=dct['title'],
         )
 

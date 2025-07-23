@@ -16,18 +16,20 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
     """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 
     def __init__(self, dir_download, force_download, details_cites_refs=None, nih_grouper=None):
-        super(NIHiCiteDownloader, self).__init__(details_cites_refs, nih_grouper)
+        # https://stackoverflow.com/questions/10482953/python-extending-with-using-super-python-3-vs-python-2
+        ##super(NIHiCiteDownloader, self).__init__(details_cites_refs, nih_grouper)
+        NIHiCiteDownloaderBase.__init__(self, details_cites_refs, nih_grouper)
         self.dnld_force = force_download
         self.dir_dnld = dir_download  # Recommended dir_icite_py: ./icite
         self.loader = NIHiCiteLoader(self.nihgrouper, dir_download, self.details_cites_refs)
         if not exists(dir_download):
-            raise RuntimeError('**FATAL: NO DIRECTORY: {DIR}'.format(DIR=dir_download))
+            raise RuntimeError(f'**FATAL: NO DIRECTORY: {dir_download}')
 
     def get_icites(self, pmids):
         """Download NIH iCite data for requested PMIDs"""
         # Python module filenames
         s_dir_dnld = self.dir_dnld
-        pmid2py = {p:join(s_dir_dnld, 'p{PMID}.py'.format(PMID=p)) for p in pmids}
+        pmid2py = {pmid:join(s_dir_dnld, f'p{pmid}.py') for pmid in pmids}
         if self.dnld_force:
             pmid2nihentry = {o.pmid: o for o in self._dnld_icites(pmid2py)}
             return [pmid2nihentry[pmid] for pmid in pmids if pmid in pmid2nihentry]
@@ -59,9 +61,11 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
 
     def get_icite(self, pmid):
         """Load or download NIH iCite data for requested PMID"""
-        file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=pmid))
+        ##print(f'DOWNLOADER: {pmid}')
+        file_pmid = join(self.dir_dnld, f'p{pmid}.py')
         if self.dnld_force or not exists(file_pmid):
             nih_dict = self.api.dnld_nihdict(pmid)
+            ##print(f'nih_dict: {nih_dict}')
             if nih_dict:
                 self._wrpy(file_pmid, nih_dict)
                 return NIHiCiteEntry.from_jsondct(
@@ -74,14 +78,14 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
         """Get PMIDs that have not yet been downloaded"""
         pmids_missing = set()
         for pmid_cur in pmids_all:
-            file_pmid = join(self.dir_dnld, 'p{PMID}.py'.format(PMID=pmid_cur))
+            file_pmid = join(self.dir_dnld, f'p{pmid_cur}.py')
             if not exists(file_pmid):
                 pmids_missing.add(pmid_cur)
         return pmids_missing
 
     def _wrpy(self, fout_py, dct, log=None):
         """Write NIH iCite to a Python module"""
-        with open(fout_py, 'w') as prt:
+        with open(fout_py, 'w', encoding='utf-8') as prt:
             self.api.prt_dct(dct, prt)
             # Setting prt to sys.stdout -> WROTE: ./icite/p10802651.py
             if log:
@@ -95,7 +99,7 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
         for idx, pmid in enumerate(pmids, 1):
             nihentries_loaded.append(s_load_icite(pmid2py[pmid]))
             if idx%1000 == 0:
-                print('NIH citation data loaded: {N:,} of {M:,}'.format(N=idx, M=num_exist))
+                print(f'NIH citation data loaded: {idx:,} of {num_exist:,}')
         ## nihentries_all.extend([s_load_icite(pmid2py[p]) for p in pmids_pyexist1])
         return nihentries_loaded
 
