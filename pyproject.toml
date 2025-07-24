@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pmidcite"
 description="Turbocharge a PubMed literature search using citation data from the NIH"
-version = "0.1.0"
+version = "0.1.1"
 license = "AGPL-3.0-or-later"
 authors = [
   {name = 'DV Klopfenstein, PhD', email = 'dvklopfenstein@protonmail.com'},
@@ -36,6 +36,7 @@ classifiers=[
   'Topic :: Scientific/Engineering :: Bio-Informatics',
   'Intended Audience :: Science/Research',
   'Intended Audience :: Developers',
+  'Intended Audience :: Information Technology',
   'Programming Language :: Python',
   'Environment :: Console',
   'Programming Language :: Python :: 3',

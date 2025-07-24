@@ -8,16 +8,17 @@
 Turbocharge a [**PubMed**](https://pubmed.ncbi.nlm.nih.gov) literature search with the command, `icite`, rather than clicking and clicking and clicking on [**Google Scholar**](/doc/images/README_twitter.md) "*Cited by N*" links.
 
 This open-source project is part of [**a peer-reviewed**](https://pubmed.ncbi.nlm.nih.gov/33031632) [**commentary**](https://onlinelibrary.wiley.com/doi/10.1002/jrsm.1456) that was invited by the editors of [***Research Synthesis Methods***](https://onlinelibrary.wiley.com/journal/17592887).
-Please [**Cite**](#how-to-cite) if you use *pmidcite* in your research or literature search.    
+Please [**Cite**](#how-to-cite) and star on GitHub
+if you use *pmidcite* in your research or literature search.    
 
 Contact: dvklopfenstein@protonmail.com     
 
 # PubMed and NIH Citation data
 PubMed contains peer-reviewed research papers
-in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.
+in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.    
 [**Citation data**](https://icite.od.nih.gov) is downloaded
-each time `icite` is run
-from the [**National Institutes of Health (NIH)**](https://www.nih.gov/) and includes:
+from the [**National Institutes of Health (NIH)**](https://www.nih.gov/)
+each time `icite` is run and includes:
 * Citation counts of all papers and clinical papers
 * Performance of a paper among its peer papers
 * Existence of MeSH terms for the human, animal, and molecular/cellular categories

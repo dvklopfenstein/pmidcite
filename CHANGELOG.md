@@ -54,7 +54,7 @@
 
 ### Unreleased
 
-### release 2025-07-23 v0.1.0
+### release 2025-07-23 v0.1.1
 * UPDATE for new NIH iCite format:
   * authors is now a dict w/keys firstName lastName & fullName rather than a str
   * These fields have True/False values rather than 'Yes' and 'No'
