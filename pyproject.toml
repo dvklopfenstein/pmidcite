@@ -60,8 +60,8 @@ requires-python = '>=3.9'
 
 [project.urls]
 "Homepage" = "https://github.com/dvklopfenstein/pmidcite"
-"Changelog" = "https://github.com/dvklopfenstein/pmidcite/blob/main/CHANGELOG.rst"
-"Documentation" = "https://dvklopfenstein.readthedocs.io"
+"Changelog" = "https://github.com/dvklopfenstein/pmidcite/blob/main/CHANGELOG.md"
+#"Documentation" = "https://dvklopfenstein.readthedocs.io"
 "Code" = "https://github.com/dvklopfenstein/pmidcite"
 "Issue tracker" = "https://github.com/dvklopfenstein/pmidcite/issues"
 
