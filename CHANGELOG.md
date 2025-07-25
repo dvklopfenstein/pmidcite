@@ -66,6 +66,7 @@
     Now the existing command to find one or more PMIDs must be used to find a single PMID:
         NOW: https://icite.od.nih.gov/api/pubs/33031632
 * UPDATE CITATION.cff
+* ADD `--version`` option to pmidcite's `icite` command
 
 ### release 2024-06-20 v0.0.48
 * ADD function, get_dict(), to get a dict containing data member values from the NIHiCiteEntry

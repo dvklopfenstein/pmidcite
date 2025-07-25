@@ -45,7 +45,10 @@ class NIHiCiteCli:
         # - PMIDs ----------------------------------------------------------------------------
         parser.add_argument(
             '-h', '--help', action='store_true',
-            help='print this help message and exit (also --help)')
+            help='Print this help message and exit (also --help)')
+        parser.add_argument(
+            '--version', action='store_true',
+            help="Print pmidcite's`icite` version number and exit")
         parser.add_argument(
             '--cite', action='store_true',
             help='publication citation for the pmidcite project')
@@ -194,6 +197,11 @@ class NIHiCiteCli:
     def _get_args(self, argparser):
         """Get args"""
         args = argparser.parse_args()
+        if args.version:
+            # pylint: disable=import-outside-toplevel
+            import pmidcite
+            print(f'icite {pmidcite.__version__}')
+            sys_exit()
         self.cfg.set_dir_icite_py(args.dir_icite_py)
         self.cfg.set_dir_icite(args.dir_icite)
         # append_outfile:
