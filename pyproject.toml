@@ -11,6 +11,9 @@ license = "AGPL-3.0-or-later"
 authors = [
   {name = 'DV Klopfenstein, PhD', email = 'dvklopfenstein@protonmail.com'},
 ]
+maintainers = [
+  {name = 'DV Klopfenstein, PhD', email = 'dvklopfenstein@protonmail.com'},
+]
 readme = {file="README.md", content-type="text/markdown"}
 
 keywords = [
@@ -37,9 +40,15 @@ classifiers=[
   'Intended Audience :: Science/Research',
   'Intended Audience :: Developers',
   'Intended Audience :: Information Technology',
-  'Programming Language :: Python',
   'Environment :: Console',
+  'Programming Language :: Python',
   'Programming Language :: Python :: 3',
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3 :: Only",
   'Operating System :: POSIX :: Linux',
   'Operating System :: POSIX',
   'Operating System :: Unix',
@@ -47,10 +56,14 @@ classifiers=[
 ]
 
 # Needed for assignment expressions & the walrus operator
-requires-python = '>=3.8'
+requires-python = '>=3.9'
 
 [project.urls]
-Homepage = "https://github.com/dvklopfenstein/pmidcite"
+"Homepage" = "https://github.com/dvklopfenstein/pmidcite"
+"Changelog" = "https://github.com/dvklopfenstein/pmidcite/blob/main/CHANGELOG.rst"
+"Documentation" = "https://dvklopfenstein.readthedocs.io"
+"Code" = "https://github.com/dvklopfenstein/pmidcite"
+"Issue tracker" = "https://github.com/dvklopfenstein/pmidcite/issues"
 
 [project.scripts]
 icite   = "pmidcite.scripts.icite:main"
