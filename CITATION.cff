@@ -38,7 +38,6 @@ preferred-citation:
     given-names: "Will"
   doi: "10.1002/jrsm.1456"
   journal: "Research Synthesis Methods"
-  publisher: "Wiley"
   month: 3
   start: 126 # First page number
   end: 135 # Last page number
@@ -46,9 +45,6 @@ preferred-citation:
   issue: 2
   volume: 12
   year: 2021
-  pmid:33031632
-  eprint:33031632
-  eprinttype:pubmed
   keywords: 
     - CitedBy
     - PubMed

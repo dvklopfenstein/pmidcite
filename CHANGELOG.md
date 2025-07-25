@@ -7,7 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
-* [**Release 2025-07-03 v0.0.51**](#release-2025-07-03-v0051) Updated for new NIH iCite format for authors, and the True/False fields
+* [**Release 2025-07-24 v0.1.2**](#release-2025-07-24-v012) Updated for new NIH iCite format for authors, and the True/False fields
 * **Release 2025-05-06 v0.0.50** Removed setup.py
 * **Release 2025-05-06 v0.0.49** Add pyproject.toml
 * [**Release 2024-02-05 v0.0.48**](#release-2024-06-20-v0048) Update apikey; add get_dict(); update README.md
@@ -54,16 +54,19 @@
 
 ### Unreleased
 
-### release 2025-07-03 v0.0.51
+### release 2025-07-24 v0.1.2
 * UPDATE for new NIH iCite format:
   * authors is now a dict w/keys firstName lastName & fullName rather than a str
   * These fields have True/False values rather than 'Yes' and 'No'
     * is_research_article
     * is_clinical
     * provisional
-  * API Update to match NIH's new format to download iCite data for a single PMID:
-    * NOW: https://icite.od.nih.gov/api/pubs/33031632
-    * WAS: https://icite.od.nih.gov/api/pubs?33031632
+  * The command to get data for a single PMID is gone and was:    
+        WAS: https://icite.od.nih.gov/api/pubs?33031632 (This request format is now gone)
+    Now the existing command to find one or more PMIDs must be used to find a single PMID:
+        NOW: https://icite.od.nih.gov/api/pubs/33031632
+* UPDATE CITATION.cff
+* ADD `--version`` option to pmidcite's `icite` command
 
 ### release 2024-06-20 v0.0.48
 * ADD function, get_dict(), to get a dict containing data member values from the NIHiCiteEntry
