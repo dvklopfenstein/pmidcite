@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2025-07-28 v0.1.3**](#release-2025-07-28-v013) Added install instructions for bioconda
 * [**Release 2025-07-24 v0.1.2**](#release-2025-07-24-v012) Updated for new NIH iCite format for authors, and the True/False fields
 * **Release 2025-05-06 v0.0.50** Removed setup.py
 * **Release 2025-05-06 v0.0.49** Add pyproject.toml
@@ -53,6 +54,9 @@
 ## Details
 
 ### Unreleased
+
+### release 2025-07-28 v0.1.3
+* ADD install instructions for bioconda
 
 ### release 2025-07-24 v0.1.2
 * UPDATE for new NIH iCite format:
