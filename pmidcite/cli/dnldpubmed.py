@@ -39,7 +39,7 @@ class DnldPubMed:
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
-            help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
+            help=f'Write PubMed entry into directory (default={dir_pubmed_txt})')
         ## parser.add_argument(
         ##     '-c', '--wordcloud_filename',
         ##     help='Output filename (i.e. pmids.png) for a word cloud plot for the given PMIDs')
@@ -51,7 +51,7 @@ class DnldPubMed:
         args = argparser.parse_args()
         # 1) Get PMIDs
         pmids = self._get_pmids(args, argparser)
-        print('{N} PMIDs'.format(N=len(pmids)))
+        print(f'{len(pmids)} PMIDs')
         # 2) Download PubMed entries.
         if pmids:
             self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)

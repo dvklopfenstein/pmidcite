@@ -41,7 +41,7 @@ class ESearch(EntrezUtilities):
 
 
     def __init__(self, email, apikey, tool, prt=sys.stdout):
-        super(ESearch, self).__init__(email, apikey, tool, prt)
+        super().__init__(email, apikey, tool, prt)
         self.queryids = QueryIDs(email, apikey, tool, prt)
 
     def dnld_query_pmids(self, query, database, num_ids_p_epost=10):
@@ -89,13 +89,14 @@ class ESearch(EntrezUtilities):
                     ntd = pmid2nt[pmid]
                     if ntd.download:
                         ## print('NNNNNNNNNNNNNNN', ntd)
-                        with open(ntd.file_pubmed, 'w') as prt:
+                        with open(ntd.file_pubmed, 'w', encoding='utf-8') as prt:
                             prt.write(rsp_txt)
+                            # pylint: disable=consider-using-f-string
                             print('  {WROTE}: {TXT}'.format(
                                 WROTE='WROTE' if not ntd.file_exists else 'UPDATED',
                                 TXT=ntd.file_pubmed))
                     else:
-                        print('**NOTE: NOT DOWNLOADING: {PMID}'.format(PMID=pmid))
+                        print(f'**NOTE: NOT DOWNLOADING: {pmid}')
         return pmid2nt
 
     #### @staticmethod
@@ -120,51 +121,50 @@ class ESearch(EntrezUtilities):
                 database, query, WebEnv=webenv, retstart=querykey_cur*retmax, retmax=retmax)
             idlist.extend(rsp_i['idlist'])
             # self._prt_rsp(rsp_i, querykey_cur)
-        print('{N} of {C} {DB} IDs FOR QUERY({Q})'.format(
-            N=len(idlist), DB=database, C=rsp_0['count'], Q=query))
+        print(f'{len(idlist)} of {rsp_0["count"]} {database} IDs FOR QUERY({query})')
         ## print(len(set(idlist)))
         return idlist
 
-    #### def query(self, database, query, **esearch):
-    ####     """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
-    ####     kws_exp = self.exp_params.difference(
-    ###         {'db', 'term', 'rettype', 'usehistory', 'retmode'})
-    ####     kws_act = {k:v for k, v in esearch.items() if k in kws_exp}
-    ####     # Returns:
-    ####     #    count
-    ####     #    retmax
-    ####     #    retstart
-    ####     #    querykey
-    ####     #    webenv
-    ####     #    idlist
-    ####     #    translationset
-    ####     #    translationstack
-    ####     #    querytranslation
-    ####     dct = self.run_eutilscmd(
-    ####         'esearch',
-    ####         db=database,
-    ####         term=query,
-    ####         rettype='uilist',
-    ####         # retmax=esearch.get('retmax', 10),
-    ####         usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
-    ####         retmode='json',
-    ####         **kws_act)
-    ####     if dct is not None and 'idlist' in dct and dct['idlist']:
-    ####         if database in {'pubmed',}:
-    ####             dct['idlist'] = [int(n) for n in dct['idlist']]
-    ####         for fldname in {'count', 'retmax'}:
-    ####             dct[fldname] = int(dct[fldname])
-    ####         return dct
-    ####     return None
+    #def query(self, database, query, **esearch):
+    #    """Text query finds database UIDs for later use in ESummary, EFetch or ELink"""
+    #    kws_exp = self.exp_params.difference(
+    #       {'db', 'term', 'rettype', 'usehistory', 'retmode'})
+    #    kws_act = {k:v for k, v in esearch.items() if k in kws_exp}
+    #    # Returns:
+    #    #    count
+    #    #    retmax
+    #    #    retstart
+    #    #    querykey
+    #    #    webenv
+    #    #    idlist
+    #    #    translationset
+    #    #    translationstack
+    #    #    querytranslation
+    #    dct = self.run_eutilscmd(
+    #        'esearch',
+    #        db=database,
+    #        term=query,
+    #        rettype='uilist',
+    #        # retmax=esearch.get('retmax', 10),
+    #        usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
+    #        retmode='json',
+    #        **kws_act)
+    #    if dct is not None and 'idlist' in dct and dct['idlist']:
+    #        if database in {'pubmed',}:
+    #            dct['idlist'] = [int(n) for n in dct['idlist']]
+    #        for fldname in {'count', 'retmax'}:
+    #            dct[fldname] = int(dct[fldname])
+    #        return dct
+    #    return None
 
     @staticmethod
     def _prt_rsp(rsp_dct, idx):
         """Print key-value pairs in a response dict"""
         for key, val in rsp_dct.items():
             if key == 'idlist':
-                print('{I} FFFFFFFFFFFF {K:20} {V}'.format(I=idx, K=key, V=len(val)))
+                print(f'{idx} FFFFFFFFFFFF {key:20} {len(val)}')
             elif key not in 'translationstack':
-                print('{I} FFFFFFFFFFFF {K:20} {V}'.format(I=idx, K=key, V=val))
+                print(f'{idx} FFFFFFFFFFFF {key:20} {val}')
 
     @staticmethod
     def get_pmid_nt_list(ids, database, force_download, dir_pubmed, pmid2name=None):
@@ -174,7 +174,7 @@ class ESearch(EntrezUtilities):
         for id_val in ids:
             name = pmid2name[id_val] if pmid2name and id_val in pmid2name else id_val
             # Get filename, pubmed_PMID.txt
-            file_db = os.path.join(dir_pubmed, '{DB}_{ID}.txt'.format(DB=database, ID=name))
+            file_db = os.path.join(dir_pubmed, f'{database}_{name}.txt')
             file_exists = os.path.exists(file_db)
             download = not file_exists or force_download
             ntd = ntobj(
@@ -184,7 +184,7 @@ class ESearch(EntrezUtilities):
                 download=download)
             nts.append(ntd)
             if not download:
-                print('**NOTE: EXISTS: {TXT}'.format(TXT=file_db))
+                print(f'**NOTE: EXISTS: {file_db}')
         return nts
 
 

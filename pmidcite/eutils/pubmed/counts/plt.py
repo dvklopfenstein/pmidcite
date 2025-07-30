@@ -7,6 +7,7 @@ import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
 
+# pylint: disable=wrong-import-position
 from pmidcite.eutils.pubmed.counts.data import DataMgr
 
 
@@ -69,7 +70,7 @@ class PubMedPlot:
                     handletextpad=.2, columnspacing=1.0, labelspacing=.2)
         # Save figure
         plt.savefig(fout_png, bbox_inches='tight', pad_inches=0, dpi=dpi)
-        print('  WROTE: {PNG}'.format(PNG=fout_png))
+        print(f'  WROTE: {fout_png}')
 
     @staticmethod
     def _text_on_bars(axes):
@@ -81,6 +82,7 @@ class PubMedPlot:
         # XY-COORD [(23514495,  3505412)] (11.5, 1.8)
         axes.text(22956376*.62, 11.5, 'MEDLINE', fontsize=9, color='white', ha='center', **dct_txt)
         axes.text(22956376*.86, 11.5, 'database', fontsize=9, color='white', ha='center', **dct_txt)
+        # pylint: disable=line-too-long
         axes.text(22956376 + 558119 + 3505412*.32, 11.5, '(db)', fontsize=9, color='white', ha='center', **dct_txt)
         # bar text: PMC
         # XY-COORD [(23378342,  136153)] (9.5, 1.8)
@@ -120,18 +122,17 @@ class PubMedPlot:
         #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
         #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
         pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
-        print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
+        print(f'  {pmc_notmedline:10,} of {a2n["pmc_all"]:10,} PMC (not MEDLINE)')
         print(pmc_notmedline - a2n['pmnml_A_pmc1'])
-        print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
-            N=a2n['all_ml0_pmc0'], M=a2n['all']))
+        print(f'  {a2n["all_ml0_pmc0"]:10,} of {a2n["all"]:10,} PubMed(not MEDLINE, PMC)')
+        # pylint: disable=consider-using-f-string
         print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
             T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
             A=a2n['ml1_pmc1'],
             B=a2n['all_ml0_pmc0']))
         total = a2n['all']
         au_all = a2n['au_all']
-        print('  {N:10,} of {M:10,} {P:3.5f}% author ms'.format(
-            N=au_all, M=total, P=100.0*au_all/total))
+        print(f'  {au_all:10,} of {total:10,} {100.0*au_all/total:3.5f}% author ms')
         print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
             T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
             A=a2n['ml1_pmc1'],
@@ -144,8 +145,7 @@ class PubMedPlot:
         plt.arrow(4200000, ymax, -4200000, 0, **self.arrow_p)
         plt.arrow(27600000, ymax, xend-27600000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['PubMed']
-        txt = '~{N:4.1f} million (M) citations indexed by PubMed'.format(
-            N=round(ntd.count/1000000.0, 1))
+        txt = f'~{round(ntd.count/1000000.0, 1):4.1f} million (M) citations indexed by PubMed'
         plt.annotate(txt, (4400000, ymax-.5), fontweight='bold')
 
     def _add_bounding_lines_medline(self, xend, yval):
@@ -155,7 +155,7 @@ class PubMedPlot:
         plt.arrow(4200000, yval-1, -4200000, 0, **self.arrow_p)
         plt.arrow(16000000, yval-1, xend-16000000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['MEDLINE_n_inprocess']
-        txt = '~{N:4.1f}M ({P:4.1f}%) MEDLINE'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
+        txt = f'~{round(ntd.count/1000000.0, 1):4.1f}M ({ntd.perc:4.1f}%) MEDLINE'
         plt.annotate(txt, (4400000, yval-1.5))
 
     def _add_bounding_lines_pmc(self, yval):
@@ -175,13 +175,13 @@ class PubMedPlot:
         plt.arrow(pmc_x0-9500000, yval-1, 9500000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval-1, -1300000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['PMC']
-        txt = '~{N:5.1f}M ({P:3.1f}%) PMC'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
+        txt = f'~{round(ntd.count/1000000.0, 1):5.1f}M ({ntd.perc:3.1f}%) PMC'
         plt.annotate(txt, (4400000, yval-1.5))
         # PMC Only
         plt.arrow(a2n['medline_n_inprocess']-11000000, yval-3, 11000000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+1300000, yval-3, -1300000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['PMC_only']
-        txt = '~{N:5.1f}M (  {P:3.1f}%) PMC only'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
+        txt = f'~{round(ntd.count/1000000.0, 1):5.1f}M (  {ntd.perc:3.1f}%) PMC only'
         plt.annotate(txt, (4400000, yval-3.5))
 
     def _add_bounding_lines_other(self, other_sz, yval, xmax):
@@ -191,7 +191,7 @@ class PubMedPlot:
         plt.arrow(xval-14200000, yval-1, 14200000, 0, **self.arrow_p)
         plt.arrow(xmax+600000, yval-1, -600000, 0, **self.arrow_p)
         ntd = self.dataobj.pltdata_pubmed['other']
-        txt = '~{N:5.1f}M ({P:5.1f}%) Other'.format(N=round(ntd.count/1000000.0, 1), P=ntd.perc)
+        txt = f'~{round(ntd.count/1000000.0, 1):5.1f}M ({ntd.perc:5.1f}%) Other'
         plt.annotate(txt, (4400000, yval-1.5))
 
     def _add_bounding_lines_pmc_100(self, yval):
@@ -215,9 +215,9 @@ class PubMedPlot:
         plt.arrow(pmc_x0+900000, yval-3.3, -900000, 0, **self.arrow_p)
         plt.arrow(pmc_x1-900000, yval-3.3, 900000, 0, **self.arrow_p)
         plt.arrow(pmc_xn+700000, yval-3.3, -700000, 0, **self.arrow_p)
-        txt_ml1 = '{P:2.0f}%'.format(P=round(100.0*pmc_ml1/pmc_all))
+        txt_ml1 = f'{round(100.0*pmc_ml1/pmc_all):2.0f}%'
         plt.annotate(txt_ml1, (pmc_x0+pmc_ml1/2.0, yval-3.3), ha='center', va='center', fontsize=8)
-        txt_ml0 = '{P:2.0f}%'.format(P=round(100.0*(pmc_all-pmc_ml1)/pmc_all))
+        txt_ml0 = f'{round(100.0*(pmc_all-pmc_ml1)/pmc_all):2.0f}%'
         plt.annotate(txt_ml0, (pmc_x1 + pmc_ml0/2.0, yval-3.3), ha='center', va='center', fontsize=8)
         # PMC
         plt.arrow(pmc_x0+1600000, yval-5, -1600000, 0, **self.arrow_p)

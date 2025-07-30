@@ -32,7 +32,6 @@ class DataMgr:
 
     def _init_plot_data_pubmed(self):
         """Get data for the PubMed contents plot"""
-        # pylint: disable=bad-whitespace
         name_data = []
         a2n = self.a2n
         #
@@ -93,7 +92,6 @@ class DataMgr:
         par = {'edgecolor': 'black', 'linewidth':0.0, 'alpha':1.0}
         xvals = self.get_pubmed_xvals()
         a2n = self.pltdata_pubmed
-        # pylint: disable=bad-whitespace
         # pylint: disable=line-too-long
         return [
             # All PubMed

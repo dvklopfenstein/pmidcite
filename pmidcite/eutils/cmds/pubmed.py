@@ -22,7 +22,7 @@ class PubMed(EntrezUtilities):
     pat = 'PMIDs/epost={P} PMIDs/efetch={F} querykey({Q} of {Qmax}) start({S})'
 
     def __init__(self, email, apikey, tool, prt=sys.stdout):
-        super(PubMed, self).__init__(email, apikey, tool, prt)
+        super().__init__(email, apikey, tool, prt)
         self.esearch = ESearch(email, apikey, tool, prt)
 
     def dnld_query_pmids(self, query, num_ids_p_epost=10):

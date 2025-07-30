@@ -2,12 +2,12 @@
 
 # To check whether a journal is indexed in MEDLINE and stored in PMC,
 # search the NLM Catalog:
-# 
+#
 #     https://www.ncbi.nlm.nih.gov/nlmcatalog
-# 
-# PMC also maintains a journals list, which is dynamic list, 
+#
+# PMC also maintains a journals list, which is dynamic list,
 # that provides journal participation level information:
-# 
+#
 #     https://www.ncbi.nlm.nih.gov/pmc/journals/
 #
 # Lidia Hutcherson
@@ -153,7 +153,7 @@ class PubMedDnld(EntrezUtilities):
     ])
 
     def __init__(self, email, apikey, tool):
-        super(PubMedDnld, self).__init__(email, apikey, tool)
+        super().__init__(email, apikey, tool)
         self.date = str(datetime.datetime.now().date()).replace('-', '_')
 
     def get_content_counts(self, file_py, force_dnld):
@@ -168,11 +168,12 @@ class PubMedDnld(EntrezUtilities):
     @staticmethod
     def load_count_data(fin_py):
         """Load NIH iCite information from Python modules"""
+        # pylint: disable=import-outside-toplevel
         import importlib
         spec = importlib.util.spec_from_file_location("module.name", fin_py)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        print('  READ: {PY}'.format(PY=fin_py))
+        print(f'  READ: {fin_py}')
         return mod.CNTS, mod.DATE
 
     def dnld_content_counts(self):
@@ -180,7 +181,7 @@ class PubMedDnld(EntrezUtilities):
         name2cnt = {}
         for name, query in self.name2query.items():
             cnt = self.dnld_count(query)
-            print('  Downloaded {N:12,} {A:20} {Q}'.format(N=cnt, A=name, Q=query))
+            print(f'  Downloaded {cnt:12,} {name:20} {query}')
             name2cnt[name] = cnt
         # 2019/01/04 PubMed Query returns 30,500,360 results: all [sb]
         # 2019/01/04 PubMed Query returns  3,499,063 results: medline[sb] AND pubmed pmc[sb]
@@ -211,28 +212,28 @@ class PubMedDnld(EntrezUtilities):
 
     def wrpy_count_data(self, fout_py, name2cnt):
         """Write PubMed count data into a Python module"""
-        with open(fout_py, 'w') as prt:
+        with open(fout_py, 'w', encoding='utf-8') as prt:
             prt.write('"""Downloaded PubMed count data"""\n\n')
-            prt.write("DATE = '{DATE}'\n\n".format(DATE=self.date))
+            prt.write(f"DATE = '{self.date}'\n\n")
             prt.write('# pylint: disable=line-too-long\n')
             self.prt_content_counts(name2cnt, prt)
             prt.write('\n')
             self.prt_content_cntdct(name2cnt, prt)
-            print('  WROTE: {PY}'.format(PY=fout_py))
+            print(f'  WROTE: {fout_py}')
 
     def prt_content_counts(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         for name, query in self.name2query.items():
             if name in name2cnt:
                 cnt = name2cnt[name]
-                prt.write('# {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
+                prt.write(f'# {cnt:10,} {name:20} {query}\n')
 
     def prt_content_cntdct(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         prt.write('CNTS = {\n')
         for name in self.name2query:
             cnt = name2cnt[name]
-            prt.write('    "{NAME}": {N},\n'.format(N=cnt, NAME=name))
+            prt.write(f'    "{name}": {cnt},\n')
         prt.write('}\n')
 
     @staticmethod
@@ -263,7 +264,9 @@ class PubMedDnld(EntrezUtilities):
         #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
         #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
         pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
-        print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
+        # pylint: disable=consider-using-f-string
+        print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(
+            M=a2n['pmc_all'], N=pmc_notmedline))
         print(pmc_notmedline - a2n['pmnml_A_pmc1'])
         print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
             N=a2n['all_ml0_pmc0'], M=a2n['all']))
@@ -273,7 +276,7 @@ class PubMedDnld(EntrezUtilities):
             B=a2n['all_ml0_pmc0']))
         total = a2n['all']
         au_all = a2n['au_all']
-        print('  {N:10,} of {M:10,} {P:3.5f}% author ms'.format(N=au_all, M=total, P=100.0*au_all/total))
+        print(f'  {au_all:10,} of {total:10,} {100.0*au_all/total:3.5f}% author ms')
         print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
             T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
             A=a2n['ml1_pmc1'],
