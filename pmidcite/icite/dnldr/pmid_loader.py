@@ -37,9 +37,7 @@ class NIHiCiteLoader:
             num_icites = len(icites)
             num_pmids = len(pmids)
             if num_icites != num_pmids:
-                prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
-                    N=num_icites,
-                    P=num_pmids))
+                prt.write(f'{num_icites:5,} of {num_pmids:5,} PMIDs have iCite entries\n')
         return icites
 
     def load_icite_mods_all(self, pmids_top):

@@ -8,8 +8,9 @@ import sys
 import collections as cx
 import re
 from datetime import datetime
-from subprocess import Popen
-from subprocess import PIPE
+import subprocess
+##from subprocess import Popen
+##from subprocess import PIPE
 from argparse import ArgumentParser
 
 
@@ -71,8 +72,8 @@ class RptDatesTop:
         if not os.path.exists(icite_file):
             return []
         nts = []
-        nto = cx.namedtuple('Nt', 'day dateobj lnum line filename')
-        with open(icite_file) as ifstrm:
+        nto = cx.namedtuple('NtDateAdded', 'day dateobj lnum line filename')
+        with open(icite_file, encoding='utf-8') as ifstrm:
             s_weekdays = self.weekdays
             s_get_date = self._get_date
             for lnum, line in enumerate(ifstrm, 1):
@@ -85,18 +86,20 @@ class RptDatesTop:
                             lnum=lnum,
                             line=line,
                             filename=icite_file)
-                        print(ntd)
+                        #print(ntd)
                         nts.append(ntd)
             if prt:
-                prt.write('{N:6} TOP papers READ: {FIN}'.format(N=len(nts), FIN=icite_file))
+                prt.write(f'{len(nts):6} TOP papers READ: {icite_file}')
         return nts
 
     def _get_date(self, lnum, filename):
         """Get the date the line was changed"""
-        popenargs = ['git', 'blame', '-L', '{LNUM},+1'.format(LNUM=lnum), filename]
-        ## print(' '.join(popenargs))
-        blame, _ = Popen(popenargs, stdout=PIPE).communicate() # _ err
-        blame = blame.decode("utf-8")
+        popenargs = ['git', 'blame', '-L', f'{lnum},+1', filename]
+        # fields[4]: args, returncode, stdout, stderr
+        ntd = subprocess.run(popenargs, encoding='utf-8', capture_output=True, check=False)
+        if ntd.stderr != '':
+            return None
+        blame = ntd.stdout
         mtch = self.datecmp.search(blame)
         if mtch:
             numbers = [int(n) for n in mtch.groups()]

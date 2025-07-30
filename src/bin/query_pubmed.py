@@ -4,7 +4,7 @@
 __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
 __author__ = "DV Klopfenstein, PhD"
 
-from pmidcite.cli.querypubmed import QueryPubMed  # get_argparser
+from pmidcite.cli.dnldpubmed import QueryPubMed
 
 
 def main():

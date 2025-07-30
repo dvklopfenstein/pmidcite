@@ -45,18 +45,18 @@ def test_cli_icite():
 
     # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/src/tests/./icite/29129787.txt
     # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/src/tests/./icite/29628312.txt
-    system('icite 29129787 29628312 -O -H -v --dir_icite {}'.format(DIR_ICITE))
+    system(f'icite 29129787 29628312 -O -H -v --dir_icite {DIR_ICITE}')
 
     # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29129787.txt
     # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29628312.txt
-    system('icite 29129787 29628312 -O -H -v --dir_icite {}'.format(DIR_REPO))
+    system(f'icite 29129787 29628312 -O -H -v --dir_icite {DIR_REPO}')
 
     assert filecmp.cmp(join(DIR_REPO, '29129787.txt'), join(DIR_ICITE, '29129787.txt'))
     assert filecmp.cmp(join(DIR_REPO, '29628312.txt'), join(DIR_ICITE, '29628312.txt'))
 
     # icite 29129787 29628312 -O -H
     # WROTE: /cygdrive/c/Users/note2/Data/git/pmidcite/29129787.txt
-    system('icite 29129787 -O -H --dir_icite {}'.format(DIR_REPO))
+    system(f'icite 29129787 -O -H --dir_icite {DIR_REPO}')
     assert not filecmp.cmp(join(DIR_REPO, '29129787.txt'), join(DIR_ICITE, '29129787.txt'))
     print('**PASSED')
 
@@ -67,7 +67,7 @@ def _get_args_dflt(obj, argparser):
     print(args)
     for argname in dir(args):
         if argname[:1] != '_':
-            print('{:15} {}'.format(argname, getattr(args, argname)))
+            print(f'{argname:15} {getattr(args, argname)}')
     return args
 
 def _wr_args():
@@ -77,12 +77,12 @@ def _wr_args():
     argparser = obj.get_argparser()
     args = _get_args_dflt(obj, argparser)
     print(args)
-    with open(fout_py, 'w') as prt:
+    with open(fout_py, 'w', encoding='utf-8') as prt:
         prt.write('"""Default icite arguments"""\n\n')
         prt.write('from argparse import Namespace\n\n')
         prt.write('# pylint: disable=line-too-long\n')
-        prt.write('ARGS = {}\n'.format(args))
-        print('  WROTE: {ARGS}\n'.format(ARGS=fout_py))
+        prt.write(f'ARGS = {args}\n')
+        print(f'  WROTE: {fout_py}\n')
 
 
 
