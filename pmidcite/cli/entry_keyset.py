@@ -8,13 +8,13 @@ from pmidcite.icite.entry import NIHiCiteEntry
 
 def get_cites_refs_g_args(args):
     """Optionally download and print citations and/or references of a specified papers"""
-    return get_details_cites_refs(
+    return _get_details_cites_refs(
         args.verbose,
         args.load_citations,
         args.load_references,
         args.no_references)
 
-def get_details_cites_refs(verbose, load_citations, load_references, no_references):
+def _get_details_cites_refs(verbose, load_citations, load_references, no_references):
     """Optionally download and print citations and/or references of a specified papers"""
     # If verbose, download and print all citations and references
     if verbose:
