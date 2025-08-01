@@ -11,7 +11,7 @@ from timeit import default_timer
 
 def prt_hms(tic, msg, prt=stdout):
     """Print elapsed time including Hours, Minutes, and seconds with a user message."""
-    prt.write("HMS {HMS}: {MSG}\n".format(HMS=str_hms(tic), MSG=msg))
+    prt.write(f"HMS {str_hms(tic)}: {msg}\n")
     return default_timer()
 
 def str_hms(tic):

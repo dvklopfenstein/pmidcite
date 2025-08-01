@@ -81,7 +81,8 @@ class ESearch(EntrezUtilities):
         pmid2nt = {nt.PMID:nt for nt in pmid_nt_list}
         for desc, start, pmids_exp, querykey_cur in efetch_idxs:
             rsp_txt = self._run_efetch(
-                database, start, querykey_cur, pmids_exp, desc, **efetch_params)
+                ##database, start, querykey_cur, pmids_exp, desc, **efetch_params)
+                database, start, querykey_cur, desc, **efetch_params)
             if rsp_txt is not None:
                 assert len(pmids_exp) == 1
                 pmid = pmids_exp[0]

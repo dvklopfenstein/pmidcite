@@ -9,7 +9,7 @@ import argparse
 from pmidcite.cfg import get_cfgparser
 
 ## from pmidcite.eutils.cmds.pubmed import PubMed
-from pmidcite.cli.entry_keyset import get_details_cites_refs
+from pmidcite.cli.entry_keyset import get_cites_refs_g_args
 ## from pmidcite.cli.utils import get_mode_force
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import mk_outname_icite
@@ -72,11 +72,7 @@ class ReadPmids:
     def _wr_icite_pmids(self, outfile, pmids, args):
         """Write an iCite report for the provided PMIDs"""
         grouperobj = NihGrouper(args.min1, args.min2, args.min3, args.min4)
-        details_cites_refs = get_details_cites_refs(
-            args.verbose,
-            args.load_citations,
-            args.load_references,
-            args.no_references)
+        details_cites_refs = get_cites_refs_g_args(args)
         dnldr = get_downloader(
             grouperobj,
             args.force_download,

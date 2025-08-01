@@ -12,7 +12,7 @@ from pmidcite.citation import CITATION
 from pmidcite.cfgini import prt_rcfile
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
-from pmidcite.cli.entry_keyset import get_details_cites_refs
+from pmidcite.cli.entry_keyset import get_cites_refs_g_args
 from pmidcite.icite.nih_grouper import get_nihgrouper
 from pmidcite.icite.downloader import get_downloader
 from pmidcite.icite.prt_hdrkey import prt_keys
@@ -182,11 +182,7 @@ class NIHiCiteCli:
     @staticmethod
     def _get_downloader(args):
         """Get the downloader"""
-        details_cites_refs = get_details_cites_refs(
-            args.verbose,
-            args.load_citations,
-            args.load_references,
-            args.no_references)
+        details_cites_refs = get_cites_refs_g_args(args)
         groupobj = get_nihgrouper(args.min1, args.min2, args.min3, args.min4)
         return get_downloader(
             groupobj,
