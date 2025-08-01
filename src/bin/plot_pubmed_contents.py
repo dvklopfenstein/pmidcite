@@ -26,14 +26,14 @@ def main(dnld=False):
     name2cnt, date = obj.get_content_counts(fout_py, dnld)
     # fout_png = fpat_png.format(DATE=date)
     obj.prt_content_counts(name2cnt)
-    print('    # {DATE}'.format(DATE=date))
+    print(f'    # {date}')
 
     # Plot PubMed content
     plt = PubMedPlot(name2cnt)
     for fout_png in fout_pngs:
         plt.plt_content_counts(fout_png, dpi=800)
     for name, ntd in plt.dataobj.pltdata_pubmed.items():
-        print(' {N:10,} {P:5.1f}% {NAME}'.format(NAME=name, N=ntd.count, P=ntd.perc))
+        print(f' {ntd.count:10,} {ntd.perc:5.1f}% {name}')
 
 
 if __name__ == '__main__':

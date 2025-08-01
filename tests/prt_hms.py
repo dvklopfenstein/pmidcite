@@ -16,7 +16,7 @@ def prt_hms(tic, msg, prt=stdout):
 
 def str_hms(tic):
     """Get string of elapsed time including Hours, Minutes, and seconds with a user message."""
-    return str(timedelta(seconds=(default_timer()-tic)))
+    return str(timedelta(seconds=default_timer()-tic))
 
 
 # Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved.

@@ -73,6 +73,7 @@ pyc:
 
 clean:
 	make pyc
+	rm -f *.log
 	rm -f notebooks/pubmed_20050301.txt
 	rm -f pubmed_20050301.txt
 	rm -f 29129787.txt
@@ -92,6 +93,7 @@ clean:
 	rm -rf tests/icite
 	make clobber_tmp
 	make clean_build
+	make pyc
 
 clobber_tmp:
 	rm -rf icite

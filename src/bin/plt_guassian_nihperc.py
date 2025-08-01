@@ -53,7 +53,7 @@ def main():
     for fout_img in fout_imgs:
         fig.tight_layout()
         plt.savefig(fout_img, dpi=800)
-        print('WROTE: {IMG}'.format(IMG=fout_img))
+        print(f'WROTE: {fout_img}')
 
 
 if __name__ == '__main__':

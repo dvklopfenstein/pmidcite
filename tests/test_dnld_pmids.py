@@ -16,7 +16,7 @@ from tests.icite import DIR_REPO
 
 def main():
     """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
-    # pylint: disable=bad-whitespace,line-too-long
+    # pylint: disable=line-too-long
     queries = [
         # Output filenames         PubMed query
         # -----------------       -----------------------------------
@@ -37,7 +37,7 @@ def main():
     # To run the second to last query:
     #   $ src/bin/dnld_pmids.py -2
     #
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
     obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
     obj.cfg.set_dir_pmids(DIR_REPO)
@@ -47,14 +47,14 @@ def main():
     assert exists(filename)
     print('**PASSED: DIR=repo\n')
 
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
     obj.cfg.set_dir_pmids(None)
     obj.cfg.set_dir_icite(None)
     obj.run(queries, dnld_idx)
     print('**PASSED: DIR=None\n')
 
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
     obj.cfg.set_dir_pmids('.')
     obj.cfg.set_dir_icite('.')

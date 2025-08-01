@@ -38,6 +38,8 @@ jobs:
         pip install --upgrade build
         pip install --upgrade setuptools[core]
         pip install --upgrade pylint
+        pip install --upgrade matplotlib
+        pip install --upgrade scipy
     - name: Analyzing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
