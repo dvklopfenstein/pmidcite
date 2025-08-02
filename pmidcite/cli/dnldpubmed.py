@@ -35,7 +35,7 @@ class DnldPubMed:
         ##     '-f', '--force_write', action='store_true',
         ##     help='if an existing outfile file exists, overwrite it.')
         parser.add_argument(
-            '-D', '--force_download', action='store_true',
+            '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,

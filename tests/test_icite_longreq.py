@@ -5,6 +5,7 @@
 def test_icite_longreq():
     """TBD: Test long request to https://icite.od.nih.gov/api/pubs"""
     pmid = 17717599
+    assert pmid
     ## die
 
 
