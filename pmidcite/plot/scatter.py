@@ -3,9 +3,8 @@
 __copyright__ = "Copyright (C) 2013-present, Authored by Daniel Zerbino. All rights reserved."
 __copyright__ = "Copyright (C) 2020-present, Adapted by DV Klopfenstein, PhD. All rights reserved."
 
-from itertools import chain
+##from itertools import chain
 import sys
-from collections import Counter
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -35,7 +34,8 @@ class AsciiScatter:
                 xydata.append((int(lst[0]), int(lst[1])))
         return xydata
 
-    def _asciify_2d(self, array_2d, max_val):
+    ##def _asciify_2d(self, array_2d, max_val):
+    def _asciify_2d(self, array_2d):
         chrs_2d = []
         letter2cnt = {}
         scale = self.scale
@@ -56,10 +56,13 @@ class AsciiScatter:
         return span_x*multiplier
 
     def _asciifyarray(self, array_2d, width, **kws):
-        min_x, max_x, min_y, max_y, span_x = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y', 'span_x']]
-        max_val = max(chain(*array_2d))
+        # pylint: disable=line-too-long
+        ##min_x, max_x, min_y, max_y, span_x = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y', 'span_x']]
+        min_x, max_x, min_y, max_y = [kws[k] for k in ['min_x', 'max_x', 'min_y', 'max_y']]
+        ##max_val = max(chain(*array_2d))
         print("".join("-" for i in range(width + 2)) + " " + str(max_y))
-        dct = self._asciify_2d(array_2d, max_val)
+        ##dct = self._asciify_2d(array_2d, max_val)
+        dct = self._asciify_2d(array_2d)
         for chrs_1d in dct['chrs_2d']:
             print('|' + ''.join(chrs_1d) + "|")
         print("".join("-" for i in range(width + 2)) + " " + str(min_y))
@@ -70,11 +73,12 @@ class AsciiScatter:
         """Print the counts and the letter that represents it"""
         for letter, cnt in sorted(letter2cnt.items(), key=lambda t: t[1]):
             if cnt != 0 and letter != str(cnt):
-                prt.write('{A} {N}'.format(A=letter, N=cnt))
+                prt.write(f'{letter} {cnt}')
 
     def _get_xy_scaled(self, xydata, width, **kws):
         """Scale XY values to fit in ASCII width"""
-        min_x, max_y, span_x, span_x, span_y = [kws[k] for k in ['min_x', 'max_y', 'span_x', 'span_x', 'span_y']]
+        # pylint: disable=line-too-long
+        min_x, max_y, span_x, span_y = [kws[k] for k in ['min_x', 'max_y', 'span_x', 'span_y']]
         array = [[0]*width for i in range(width//3)]
         for xval, yval in sorted(xydata, key=lambda t: t[0]):
             pos_x = int(round((width - 1) * (xval - min_x) / span_x))

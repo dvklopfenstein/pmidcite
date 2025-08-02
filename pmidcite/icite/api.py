@@ -119,7 +119,7 @@ class NIHiCiteAPI:
         except requests.exceptions.ConnectionError as errobj:
             self._prt_errmsg(f'**ERROR: ConnectionError = {str(errobj)}\n')
             return None
-        # TODO: Consider explicitly re-raising using
+        # TBD: Consider explicitly re-raising using
         # 'raise RuntimeError(f'**ERROR DOWNLOADING {cmd}\n{error}') from error'
         except Exception as exc:
             traceback.print_exc()

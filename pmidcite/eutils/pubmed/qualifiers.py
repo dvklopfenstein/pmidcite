@@ -8,6 +8,7 @@
 
 from collections import namedtuple
 
+# pylint: disable=line-too-long
 NtQbin = namedtuple('NtQbin', 'SH QA QE MS')
 NTS = [
   NtQbin._make(['abnormalities', 'AB', 'ABNORM', 'Used with organs for congenital defects producing changes in the morphology of the organ. It is used also for abnormalities in animals.']),

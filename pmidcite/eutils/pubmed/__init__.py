@@ -124,7 +124,7 @@ __author__ = 'DV Klopfenstein, PhD'
 
 # :%s#\(.*\)\zs\ze-e#\=repeat(' ',58-len(submatch(1)))
 # Note: This assumes that -e is the last of line. But you can capture it otherwise if it is not suitable to your case.
-# 
+#
 # Explanation:
 #   * %s#\(.*\) - captures the line before the -e.
 #   * \zs\ze    - starts and stops the match here.

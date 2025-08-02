@@ -45,7 +45,7 @@ class NihGrouper:
     def get_group(self, nih_percentile):
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
         # No NIH percentile yet assigned. This paper should be checked out.
-        ##print('DVK SSSSSSSSSS', str(self))
+        ##print(f'SSSSSSSSSS {str(self)}')
         if nih_percentile is None or nih_percentile == -1:
             return 5
         #  2.1% -3 SD: Very low citation rate
@@ -69,16 +69,16 @@ class NihGrouper:
         parser.add_argument(
             ##'-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
             '-1', metavar='group1_min', dest='min1', type=float, default=self.min1,
-            help='Minimum NIH percentile to be placed in group 1 (default: {D})'.format(D=self.min1))
+            help=f'Minimum NIH percentile to be placed in group 1 (default: {self.min1})')
         parser.add_argument(
             '-2', metavar='group2_min', dest='min2', type=float, default=self.min2,
-            help='Minimum NIH percentile to be placed in group 2 (default: {D})'.format(D=self.min2))
+            help=f'Minimum NIH percentile to be placed in group 2 (default: {self.min2})')
         parser.add_argument(
             '-3', metavar='group3_min', dest='min3', type=float, default=self.min3,
-            help='Minimum NIH percentile to be placed in group 3 (default: {D})'.format(D=self.min3))
+            help=f'Minimum NIH percentile to be placed in group 3 (default: {self.min3})')
         parser.add_argument(
             '-4', metavar='group4_min', dest='min4', type=float, default=self.min4,
-            help='Minimum NIH percentile to be placed in group 4 (default: {D})'.format(D=self.min4))
+            help=f'Minimum NIH percentile to be placed in group 4 (default: {self.min4})')
         # --print-NIH-dividers => prt_nihgrpr=True
         #                      => prt_nihgrpr=False
         parser.add_argument(
@@ -91,8 +91,11 @@ class NihGrouper:
 
     def __str__(self):
         """Print NIH percentiles which divide pmidcite groups"""
-        return 'Group min percentiles: 1({}) 2({}) 3({}) 4({})'.format(
-            self.min1, self.min2, self.min3, self.min4)
+        return ('Group min percentiles: '
+                f'1({self.min1}) '
+                f'2({self.min2}) '
+                f'3({self.min3}) '
+                f'4({self.min4})')
 
 
 # Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.

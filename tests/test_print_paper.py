@@ -20,9 +20,7 @@ def test_print_paper():
     pmid = 22882545
 
     # Clean iCite files
-
-    obj = ICiteTester()
-    obj.rm_icitefiles()
+    obj = _get_icite_tester()
 
     # iCite files are downloaded with the first call
     dnldr = NIHiCiteDownloader(obj.dir_icite, force_download=False, details_cites_refs='all')
@@ -63,8 +61,38 @@ def test_print_paper():
     # Clean iCite files
     obj.rm_icitefiles()
 
+def test_paper_sort():
+    """Test various sorts of papers"""
+    pmid = 22882545
+
+    # Clean iCite files
+    obj = _get_icite_tester()
+
+    paper = obj.get_paper(pmid, do_prt=False)  # NIHiCitePaper
+    #all_cites = paper.cited_by.union(paper.cited_by_clin)
+    all_cites = paper.cited_by_all
+
+    print('\nDEFAULT SORT')
+    for nih_entry in sorted(all_cites):
+        print(nih_entry)
+
+    print('\nSORT BY NIH PERCENTILE')
+    for nih_entry in sorted(all_cites, key=lambda o: o.get_dict()['nih_perc'], reverse=True):
+        print(nih_entry)
+
+    nih_entry = paper.pmid2icite[pmid]   # NIHiCiteEntry
+
+    # Clean iCite files
+    obj.rm_icitefiles()
+
+def _get_icite_tester():
+    obj = ICiteTester()
+    obj.rm_icitefiles()
+    return obj
+
 
 if __name__ == '__main__':
     test_print_paper()
+    test_paper_sort()
 
 # Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

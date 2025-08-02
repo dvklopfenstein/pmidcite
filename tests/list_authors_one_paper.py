@@ -5,6 +5,7 @@
 from pmidcite.icite.downloader import get_downloader
 
 def test_list_authors_one_paper():
+    """Test notebook code: List the authors of a paper"""
 
     dnldr = get_downloader()
 

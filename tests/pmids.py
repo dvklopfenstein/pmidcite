@@ -1,6 +1,7 @@
 """PMIDs for use in tests"""
 
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long,too-many-lines
+
 
 PMIDS = [
     10203816,

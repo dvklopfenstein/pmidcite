@@ -4,20 +4,22 @@ __author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved."
 
 
-class Author(object):
-  """Hold list of Authors."""
+class Author:
+    """Hold list of Authors."""
 
-  # pylint: disable=invalid-name
-  def __init__(self, full_author_name):
-    self.fau = full_author_name
-    self.au = None
-    self.ads = []
+    def __init__(self, full_author_name, aut=None, ads=None):
+        self.fau = full_author_name
+        self.aut = aut
+        self.ads = [] if ads is None else ads
 
-  def __str__(self):
-    lst = ["\nFAU: {AU}".format(AU=self.fau), "AU:  {AU}".format(AU=self.au)]
-    for affil in self.ads:
-      lst.append("AD:  {AD}".format(AD=affil))
-    return "\n".join(lst)
+    def __str__(self):
+        lst = [f"\nFAU: {self.fau}", f"AU:  {self.aut}"]
+        for affil in self.ads:
+            lst.append(f"AD:  {affil}")
+        return "\n".join(lst)
+
+    def __eq__(self, lhs):
+        return self.fau == lhs.fau and self.aut == lhs.aut and self.ads == lhs.ads
 
 
 # Copyright (C) 2019-present DV Klopfenstein, PhD.  All rights reserved.

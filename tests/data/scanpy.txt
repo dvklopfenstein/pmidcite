@@ -1,0 +1,34 @@
+QUERY: scanpy
+TOP 38454967 R. .AM..  -1 i 2023     0  0  13 au[03](Wubin Ding) PyComplexHeatmap: a Python package to visualize multimodal genomics data.
+TOP 38415934 R. HAM..  -1 i 2024     0  0  43 au[14](Benjamin M Laitman) High-Resolution Profiling of Human Vocal Fold Cellular Landscapes With Single-Nuclei RNA Sequencing.
+TOP 38099262 R. .AM..  -1 i 2023     0  0  25 au[03](Mehrshad Sadria) Adversarial training improves model interpretability in single-cell RNA-seq analysis.
+TOP 37952198 R. .....  -1 i 2023     0  0  27 au[02](Kristian K Ullrich) oggmap: a Python package to extract gene ages per orthogroup and link them with single-cell RNA data.
+TOP 37886712 R. .AM..  -1 i 2023     0  0  23 au[03](David L Gibbs) Single-cell gene set scoring with nearest neighbor graph smoothed data (gssnng).
+TOP 37738898 R. HAM..  -1 i 2023     4  0  47 au[05](Lihong Peng) STGNNks: Identifying cell types in spatial transcriptomics data based on graph neural network, denoising auto-encoder, and k-sums clustering.
+TOP 37620910 R. H.M..  -1 i 2023     2  0  66 au[10](Huahua Zhong) Peripheral immune landscape for hypercytokinemia in myasthenic crisis utilizing single-cell transcriptomics.
+TOP 37354697 R. HA...  -1 i 2023     0  0  47 au[12](Kuangyang Yang) Identification of Andrographolide as a novel FABP4 inhibitor for osteoarthritis treatment.
+TOP 37191796 R. H.M..  -1 i 2023     1  0  12 au[04](April Sagan) Linking Expression of Cell-Surface Receptors with Transcription Factors by Computational Analysis of Paired Single-Cell Proteomes and Transcriptomes.
+TOP 37180117 R. H.M..  -1 i 2023     0  0  37 au[05](Mark Dedden) Manual cell selection in single cell transcriptomics using scSELpy supports the analysis of immune cell subsets.
+TOP 37150778 R. .....  -1 i 2023     2  0  49 au[04](Yijia Li) CosTaL: an accurate and scalable graph-based clustering algorithm for high-dimensional single-cell data analysis.
+TOP 36938729 R. H.M..  -1 i 2023     0  0  45 au[06](Lianhong Zou) ScRNA-seq revealed targeting regulator of G protein signaling 1 to mediate regulatory T cells in Hepatocellular carcinoma.
+TOP 36403512 RP HAM..  -1 i 2023     5  0   6 au[17](Kuangyang Yang) Astragaloside IV as a novel CXCR4 antagonist alleviates osteoarthritis in the knee of monosodium iodoacetate-induced rats.
+TOP 36394263 RP .....  -1 i 2023    14  0  14 au[04](Louis Faure) scFates: a scalable python package for advanced pseudotime and bifurcation analysis from single-cell data.
+TOP 36221095 RP H.M..  46 2 2022     7  0  38 au[09](Zhuomao Mo) Single-cell transcriptomics reveals the role of Macrophage-Naïve CD4 + T cell interaction in the immunosuppressive microenvironment of primary liver carcinoma.
+TOP 35941549 RP HAM..  60 3 2022    11  0  18 au[03](M E Nelson) SMaSH: a scalable, general marker gene identification framework for single-cell RNA-sequencing.
+TOP 35715568 RP ..M..  50 2 2022     7  0  43 au[05](Bang Tran) scCAN: single-cell clustering using autoencoder and network fusion.
+TOP 35657614 RP .AM..  13 1 2022     1  0  25 au[07](Brian S Iskra) Development and characterization of a mass cytometry panel for detecting the effect of acute doxorubicin exposure on murine cardiac nonmyocytes.
+TOP 35440536 RP .....  95 4 2022    52  0  54 au[03](Matthew P Mulè) Normalizing and denoising protein expression data from droplet-based single cell profiling.
+TOP 35440087 RP .A...  56 2 2022    12  0  26 au[04](Oren Ben-Kiki) Metacell-2: a divide-and-conquer metacell algorithm for scalable scRNA-seq analysis.
+TOP 35426898 RP ..M..   0 0 2022     0  0   6 au[04](Dongyuan Song) scSampler: fast diversity-preserving subsampling of large-scale single-cell transcriptomic data.
+TOP 34991457 RP .....  52 2 2022     5  0  14 au[03](Huijian Feng) scDIOR: single cell RNA-seq data IO software.
+TOP 34912541 R. .....   6 1 2021     1  0  22 au[06](Krishna Choudhary) scNetViz: from single cells to networks using Cytoscape.
+TOP 34847879 R. .....  18 1 2021     5  0  56 au[03](Leonardo Morelli) Nested Stochastic Block Models applied to the analysis of single cell data.
+TOP 34471111 R. H.M..  86 3 2021    44  0  34 au[06](Anna Danese) EpiScanpy: integrated single-cell epigenomic analysis.
+TOP 34458864 R. H.M..   6 1 2021     1  0   9 au[02](Matthew N Bernstein) Annotating cell types in human single-cell RNA-seq data with CellO.
+TOP 34289014 R. .....   9 1 2021     3  0  10 au[02](Xiunan Fang) FlowGrid enables fast clustering of very large single-cell RNA-seq data.
+TOP 33974001 R. HAM..  44 2 2021    13  0  57 au[03](Jon E T Jakobsson) scConnect: a method for exploratory analysis of cell-cell communication based on single-cell RNA-sequencing data.
+TOP 33835452 R. HAM..  90 3 2021    47  0  87 au[07](Shaked Slovin) Single-Cell RNA Sequencing Analysis: A Step-by-Step Overview.
+TOP 33563285 R. .AM..  70 3 2021    15  0  47 au[06](Qixin Chen) Identification of monocyte-associated genes as predictive biomarkers of heart failure after acute myocardial infarction.
+TOP 32632608 R. ..M..   6 1 2020     3  0  18 au[05](Jiaqi Li) Comparison of Scanpy-based algorithms to remove the batch effect from single-cell RNA-seq data.
+TOP 32614448 R. ....c  87 3 2020    79  2  15 au[07](Gregor Sturm) Scirpy: a Scanpy extension for analyzing single-cell T-cell receptor-sequencing data.
+TOP 29409532 R. ....c 100 4 2018  2532  9  31 au[03](F Alexander Wolf) SCANPY: large-scale single-cell gene expression data analysis.

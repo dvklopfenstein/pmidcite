@@ -40,11 +40,11 @@ class QueryPubMed:
             '-p', '--pubmed', action='store_true',
             help='Download PubMed entry containing title, abstract, authors, journal, MeSH, etc.')
         parser.add_argument(
-            '-D', '--force_download', action='store_true',
+            '-f', '--force_download', action='store_true',
             help='Download PMID iCite information to a Python file, over-writing if necessary.')
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
-            help='Write PubMed entry into directory (default={D})'.format(D=dir_pubmed_txt))
+            help=f'Write PubMed entry into directory (default={dir_pubmed_txt})')
         ## parser.add_argument(
         ##     '-c', '--wordcloud_filename',
         ##     help='Output filename (i.e. pmids.png) for a word cloud plot for the given PMIDs')

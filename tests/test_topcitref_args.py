@@ -11,7 +11,6 @@ ADJ = TopCitRef().adjust_args
 
 def test_topcitref_args():
     """Test paper label args: TOP CIT CLI REF and aliases ALL CITS"""
-    # pylint: disable=bad-whitespace
 
     #     Arguments               Expected paper labels
     #    ----------------------  -------------------------------

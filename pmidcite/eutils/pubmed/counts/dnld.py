@@ -2,12 +2,12 @@
 
 # To check whether a journal is indexed in MEDLINE and stored in PMC,
 # search the NLM Catalog:
-# 
+#
 #     https://www.ncbi.nlm.nih.gov/nlmcatalog
-# 
-# PMC also maintains a journals list, which is dynamic list, 
+#
+# PMC also maintains a journals list, which is dynamic list,
 # that provides journal participation level information:
-# 
+#
 #     https://www.ncbi.nlm.nih.gov/pmc/journals/
 #
 # Lidia Hutcherson
@@ -26,6 +26,7 @@ import sys
 import datetime
 import collections as cx
 from pmidcite.eutils.cmds.base import EntrezUtilities
+from pmidcite.eutils.pubmed.counts.prt import chk_content_counts
 
 
 # pylint: disable=line-too-long
@@ -153,7 +154,7 @@ class PubMedDnld(EntrezUtilities):
     ])
 
     def __init__(self, email, apikey, tool):
-        super(PubMedDnld, self).__init__(email, apikey, tool)
+        super().__init__(email, apikey, tool)
         self.date = str(datetime.datetime.now().date()).replace('-', '_')
 
     def get_content_counts(self, file_py, force_dnld):
@@ -161,18 +162,19 @@ class PubMedDnld(EntrezUtilities):
         if not os.path.exists(file_py) or force_dnld:
             name2cnt = self.dnld_content_counts()
             self.wrpy_count_data(file_py, name2cnt)
-            self.chk_content_counts(name2cnt)
+            chk_content_counts(name2cnt)
             return name2cnt, self.date
         return self.load_count_data(file_py)
 
     @staticmethod
     def load_count_data(fin_py):
         """Load NIH iCite information from Python modules"""
+        # pylint: disable=import-outside-toplevel
         import importlib
         spec = importlib.util.spec_from_file_location("module.name", fin_py)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        print('  READ: {PY}'.format(PY=fin_py))
+        print(f'  READ: {fin_py}')
         return mod.CNTS, mod.DATE
 
     def dnld_content_counts(self):
@@ -180,7 +182,7 @@ class PubMedDnld(EntrezUtilities):
         name2cnt = {}
         for name, query in self.name2query.items():
             cnt = self.dnld_count(query)
-            print('  Downloaded {N:12,} {A:20} {Q}'.format(N=cnt, A=name, Q=query))
+            print(f'  Downloaded {cnt:12,} {name:20} {query}')
             name2cnt[name] = cnt
         # 2019/01/04 PubMed Query returns 30,500,360 results: all [sb]
         # 2019/01/04 PubMed Query returns  3,499,063 results: medline[sb] AND pubmed pmc[sb]
@@ -211,73 +213,77 @@ class PubMedDnld(EntrezUtilities):
 
     def wrpy_count_data(self, fout_py, name2cnt):
         """Write PubMed count data into a Python module"""
-        with open(fout_py, 'w') as prt:
+        with open(fout_py, 'w', encoding='utf-8') as prt:
             prt.write('"""Downloaded PubMed count data"""\n\n')
-            prt.write("DATE = '{DATE}'\n\n".format(DATE=self.date))
+            prt.write(f"DATE = '{self.date}'\n\n")
             prt.write('# pylint: disable=line-too-long\n')
             self.prt_content_counts(name2cnt, prt)
             prt.write('\n')
             self.prt_content_cntdct(name2cnt, prt)
-            print('  WROTE: {PY}'.format(PY=fout_py))
+            print(f'  WROTE: {fout_py}')
 
     def prt_content_counts(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         for name, query in self.name2query.items():
             if name in name2cnt:
                 cnt = name2cnt[name]
-                prt.write('# {N:10,} {NAME:20} {Q}\n'.format(N=cnt, NAME=name, Q=query))
+                prt.write(f'# {cnt:10,} {name:20} {query}\n')
 
     def prt_content_cntdct(self, name2cnt, prt=sys.stdout):
         """Print the content typename and the count of that type"""
         prt.write('CNTS = {\n')
         for name in self.name2query:
             cnt = name2cnt[name]
-            prt.write('    "{NAME}": {N},\n'.format(N=cnt, NAME=name))
+            prt.write(f'    "{name}": {cnt},\n')
         prt.write('}\n')
 
-    @staticmethod
-    def chk_content_counts(a2n):
-        """Check the content typename and the count of that type"""
-        assert a2n['nihms_pub0'] + a2n['nihms_pub1'] == a2n['nihms']
-        assert a2n['pmcsd_pmc0'] + a2n['pmcsd_pmc1'] == a2n['pmcsd']
-        assert a2n['medline_pmc0'] + a2n['medline_pmc1'] == a2n['medline_all']
-        #    557,390 inprocess_A_all      inprocess[sb]
-        #    422,103 inprocess_A_pmc0     inprocess[sb] NOT pubmed pmc[sb]
-        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
-        #    557,390 inprocess_ml0        inprocess[sb] NOT medline[sb]
-        #          0 inprocess_ml1        inprocess[sb] AND medline[sb]
-        assert a2n['inprocess_A_all'] == a2n['inprocess_A_pmc0'] + a2n['inprocess_A_pmc1']
-        # 30,514,237 all          all [sb]
-        #  1,818,474 all_ml0_pmc0 all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]
-        # 28,695,763 ml1_pmc1     inprocess[sb] OR medline[sb] OR pubmed pmc[sb]
-        assert a2n['all'] == a2n['all_ml0_pmc0'] + a2n['ml1_pmc1']
-        #  3,116,339 pmnml_A              pubmednotmedline[sb]
-        #  3,116,339 pmnml_B              pubmednotmedline[sb] NOT medline[sb]
-        #  3,116,339 pmnml_C_ip0          pubmednotmedline[sb] NOT inprocess[sb]
-        #          0 pmnml_0_ip1          pubmednotmedline[sb] AND inprocess[sb]
-        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
-        #  1,504,065 pmnml_A_pmc0         pubmednotmedline[sb] NOT pubmed pmc[sb]
-        assert a2n['pmnml_A'] == a2n['pmnml_A_pmc1'] + a2n['pmnml_A_pmc0']
-        #  5,323,939 pmc_all              pubmed pmc[sb]
-        #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
-        #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
-        #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
-        pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
-        print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(M=a2n['pmc_all'], N=pmc_notmedline))
-        print(pmc_notmedline - a2n['pmnml_A_pmc1'])
-        print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
-            N=a2n['all_ml0_pmc0'], M=a2n['all']))
-        print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
-            T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
-            A=a2n['ml1_pmc1'],
-            B=a2n['all_ml0_pmc0']))
-        total = a2n['all']
-        au_all = a2n['au_all']
-        print('  {N:10,} of {M:10,} {P:3.5f}% author ms'.format(N=au_all, M=total, P=100.0*au_all/total))
-        print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
-            T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
-            A=a2n['ml1_pmc1'],
-            B=a2n['all_ml0_pmc0']))
+    ####@staticmethod
+    ####def chk_content_counts(a2n):
+    ####    """Check the content typename and the count of that type"""
+    ####    assert a2n['nihms_pub0'] + a2n['nihms_pub1'] == a2n['nihms']
+    ####    assert a2n['pmcsd_pmc0'] + a2n['pmcsd_pmc1'] == a2n['pmcsd']
+    ####    assert a2n['medline_pmc0'] + a2n['medline_pmc1'] == a2n['medline_all']
+    ####    #    557,390 inprocess_A_all      inprocess[sb]
+    ####    #    422,103 inprocess_A_pmc0     inprocess[sb] NOT pubmed pmc[sb]
+    ####    #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+    ####    #    557,390 inprocess_ml0        inprocess[sb] NOT medline[sb]
+    ####    #          0 inprocess_ml1        inprocess[sb] AND medline[sb]
+    ####    assert a2n['inprocess_A_all'] == a2n['inprocess_A_pmc0'] + a2n['inprocess_A_pmc1']
+    ####    # 30,514,237 all          all [sb]
+    ####    #  1,818,474 all_ml0_pmc0 all [sb] NOT inprocess[sb] NOT medline[sb] NOT pubmed pmc[sb]
+    ####    # 28,695,763 ml1_pmc1     inprocess[sb] OR medline[sb] OR pubmed pmc[sb]
+    ####    assert a2n['all'] == a2n['all_ml0_pmc0'] + a2n['ml1_pmc1']
+    ####    #  3,116,339 pmnml_A              pubmednotmedline[sb]
+    ####    #  3,116,339 pmnml_B              pubmednotmedline[sb] NOT medline[sb]
+    ####    #  3,116,339 pmnml_C_ip0          pubmednotmedline[sb] NOT inprocess[sb]
+    ####    #          0 pmnml_0_ip1          pubmednotmedline[sb] AND inprocess[sb]
+    ####    #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+    ####    #  1,504,065 pmnml_A_pmc0         pubmednotmedline[sb] NOT pubmed pmc[sb]
+    ####    assert a2n['pmnml_A'] == a2n['pmnml_A_pmc1'] + a2n['pmnml_A_pmc0']
+    ####    #  5,323,939 pmc_all              pubmed pmc[sb]
+    ####    #    135,287 inprocess_A_pmc1     inprocess[sb] AND pubmed pmc[sb]
+    ####    #  3,503,057 medline_pmc1         medline[sb] AND pubmed pmc[sb]
+    ####    #  1,612,274 pmnml_A_pmc1         pubmednotmedline[sb] AND pubmed pmc[sb]
+    ####    pmc_notmedline = a2n['pmc_all'] - a2n['medline_pmc1'] - a2n['inprocess_A_pmc1']
+    ####    # pylint: disable=consider-using-f-string
+    ####    print('  {N:10,} of {M:10,} PMC (not MEDLINE)'.format(
+    ####        M=a2n['pmc_all'], N=pmc_notmedline))
+    ####    print(pmc_notmedline - a2n['pmnml_A_pmc1'])
+    ####    print('  {N:10,} of {M:10,} PubMed(not MEDLINE, PMC)'.format(
+    ####        N=a2n['all_ml0_pmc0'], M=a2n['all']))
+
+    ####    prt_a2n(a2n)
+    ####    ####print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
+    ####    ####    T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
+    ####    ####    A=a2n['ml1_pmc1'],
+    ####    ####    B=a2n['all_ml0_pmc0']))
+    ####    ####total = a2n['all']
+    ####    ####au_all = a2n['au_all']
+    ####    ####print(f'  {au_all:10,} of {total:10,} {100.0*au_all/total:3.5f}% author ms')
+    ####    ####print('  {T:10,} = {A:10,} (MEDLINE OR PMC) + {B:10,} (not MEDLINE OR PMC)'.format(
+    ####    ####    T=a2n['ml1_pmc1'] + a2n['all_ml0_pmc0'],
+    ####    ####    A=a2n['ml1_pmc1'],
+    ####    ####    B=a2n['all_ml0_pmc0']))
 
     def dnld_count(self, query):
         """Searches an NCBI database for a user search term, returns NCBI IDs."""
