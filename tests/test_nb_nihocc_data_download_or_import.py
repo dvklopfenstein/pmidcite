@@ -30,7 +30,7 @@ def test_nihocc_data_download_or_import():
 
     # ## 2) Load the NIH Downloader
     # The NIH downloader will use the API to download data from NIH
-    # if it is not stored locally or 
+    # if it is not stored locally or
     # if the user has requested to always download and over-write the older citation file,
     # allowing new citations to be seen.
     #
