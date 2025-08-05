@@ -7,6 +7,7 @@ import argparse
 
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cfg import Cfg
+from pmidcite.cli.common import add_args
 from pmidcite.cli.utils import get_pmids
 
 
@@ -27,15 +28,7 @@ class DnldPubMed(BasePubMed):
         """Argument parser for Python wrapper of NIH's iCite given PubMed IDs"""
         parser = argparse.ArgumentParser(description="Run NIH's iCite given PubMed IDs")
         dir_pubmed_txt = self.cfgdct['pmidcite']['dir_pubmed_txt']
-        parser.add_argument(
-            'pmids', metavar='PMID', type=int, nargs='*',
-            help='PubMed IDs (PMIDs)')
-        parser.add_argument(
-            '-i', '--infile', nargs='*',
-            help='Read PMIDs from a file containing one PMID per line.')
-        parser.add_argument(
-            '-f', '--force_download', action='store_true',
-            help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        add_args(parser, ['pmids', 'infile', 'force_download'])
         parser.add_argument(
             '--dir_pubmed_txt', default=dir_pubmed_txt,
             help=f'Write PubMed entry into directory (default={dir_pubmed_txt})')

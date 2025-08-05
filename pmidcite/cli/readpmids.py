@@ -10,6 +10,7 @@ from pmidcite.cfg import get_cfgparser
 
 ## from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.cli.entry_keyset import get_cites_refs_g_args
+from pmidcite.cli.common import add_args
 ## from pmidcite.cli.utils import get_mode_force
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import mk_outname_icite
@@ -34,12 +35,7 @@ class ReadPmids:
             'infile', nargs='*',
             help='Read PMIDs from a pmidcite output file.')
         self.cfg.get_nihgrouper().add_arguments(parser)
-        parser.add_argument(
-            '-f', '--force_write', action='store_true',
-            help='if an existing outfile file exists, overwrite it.')
-        parser.add_argument(
-            '-D', '--force_download', action='store_true',
-            help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        add_args(parser, ['force_write', 'force_download'])
         parser.add_argument(
             '-o', '--outfile',
             help='Write current citation report to an ASCII text file.')

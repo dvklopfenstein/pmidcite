@@ -10,6 +10,7 @@ from argparse import ArgumentParser
 from pmidcite.eutils.cmds.pubmed import PubMed
 from pmidcite.citation import CITATION
 from pmidcite.cfgini import prt_rcfile
+from pmidcite.cli.common import add_args
 from pmidcite.cli.utils import get_outfile
 from pmidcite.cli.utils import get_pmids
 from pmidcite.cli.entry_keyset import get_cites_refs_g_args
@@ -52,12 +53,7 @@ class NIHiCiteCli:
         parser.add_argument(
             '--cite', action='store_true',
             help='publication citation for the pmidcite project')
-        parser.add_argument(
-            'pmids', metavar='PMID', type=int, nargs='*',
-            help='PubMed IDs (PMIDs)')
-        parser.add_argument(
-            '-i', '--infile', nargs='*',
-            help='Read PMIDs from a file containing one PMID per line.')
+        add_args(parser, ['pmids', 'infile'])
         # - help -----------------------------------------------------------------------------
         parser.add_argument(
             '-H', '--print_header', action='store_true',
@@ -92,12 +88,7 @@ class NIHiCiteCli:
         parser.add_argument(
             '-O', action='store_true',
             help="Write each PMIDs' iCite report with citations/references to <dir_icite>/PMID.txt")
-        parser.add_argument(
-            '-f', '--force_write', action='store_true',
-            help='if an existing outfile file exists, overwrite it.')
-        parser.add_argument(
-            '-D', '--force_download', action='store_true',
-            help='Download PMID iCite information to a Python file, over-writing if necessary.')
+        add_args(parser, ['force_write', 'force_download'])
         # - abstracts -------------------------------------------------------------------------
         parser.add_argument(
             '-p', '--pubmed', action='store_true',
