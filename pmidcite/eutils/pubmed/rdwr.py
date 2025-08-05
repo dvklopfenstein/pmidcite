@@ -37,7 +37,6 @@ class PubMedRdWr:
         'OT',  # Other Term
     ]
 
-    # pylint: disable=bad-continuation
     _lendate2fmt = { # PMID date formats: "2017 Mar 02"
          4 : "%Y",
          8 : "%Y %b",
@@ -154,10 +153,10 @@ class PubMedRdWr:
         if key0 == -1:
             ##print(f'**WARNING Local ID (LID): {fld} KEY({key0}) {line}')
             return
-        assert line[-1] == ']', '**FATAL LID: {} {}'.format(fld, line)
+        assert line[-1] == ']', f'**FATAL LID: {fld} {line}'
         key = line[key0 + 1:-1]
         val = line[:key0].strip()
-        assert key not in fld2objs, '**FATAL LID: {} {} {}'.format(key, val, fld2objs)
+        assert key not in fld2objs, f'**FATAL LID: {key} {val} {fld2objs}'
         fld2objs[fld][key] = val
 
     def read_pmid2obj_g_fins(self, fins_pubmed, prt=sys.stdout):
@@ -177,19 +176,19 @@ class PubMedRdWr:
         # Field list: https://www.nlm.nih.gov/bsd/mms/medlineelements.html
         if os.path.exists(fin_text):
             if prt:
-                prt.write("  READING: {PUBMED}\n".format(PUBMED=fin_text))
-            with open(fin_text) as ifstrm:
+                prt.write(f"  READING: {fin_text}\n")
+            with open(fin_text, encoding='utf-8') as ifstrm:
                 pmid2fldlines = ProcessLines(flds).process_rawlines(ifstrm)
                 pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
                 if prt:
-                    prt.write("  READ  {:>7,} PubMed records {} for fields({})\n".format(
-                    len(pmid2fld2objs), fin_text, " ".join(flds)))
+                    prt.write(f"  READ  {len(pmid2fld2objs):>7,} "
+                              f"PubMed records {fin_text} for fields({' '.join(flds)})\n")
                 if pmid2fld2objs:
                     if dochk:
                         self._chk(pmid2fld2objs)
                 return pmid2fld2objs
         else:
-            print("  READ  -- 0 -- PubMed record {}".format(fin_text))
+            print(f"  READ  -- 0 -- PubMed record {fin_text}")
             return {}
 
     def get_pmid2info_g_textblock(self, textblock, flds=None, dochk=False, prt=sys.stdout):
@@ -201,13 +200,13 @@ class PubMedRdWr:
             pmid2fldlines = ProcessLines(flds).process_rawlines(textblock.split('\n'))
             pmid2fld2objs = self._get_fldobjs_all(pmid2fldlines)
             if prt:
-                prt.write("  PROCESSED  {P:>7,} PubMed records for fields({Fs})\n".format(
-                    P=len(pmid2fld2objs), Fs=" ".join(flds)))
+                prt.write(f"  PROCESSED  {len(pmid2fld2objs):>7,} "
+                          f"PubMed records for fields({' '.join(flds)})\n")
             if pmid2fld2objs:
                 if dochk:
                     self._chk(pmid2fld2objs)
             return pmid2fld2objs
-        print("  **WARNING: BAD TEXT: {TXT}".format(TXT=textblock))
+        print(f"  **WARNING: BAD TEXT: {textblock}")
         return {}
 
     def _chk(self, pmid2flds):
@@ -220,19 +219,19 @@ class PubMedRdWr:
 
     def wrpy_pmid2flds(self, fout_py, pmid2info, flds=None, pydoc=None):
         """Write PMID info into Python module."""
-        import PyBiocode.Utils.dnld as DL
         if flds is None:
             flds = self.flds
         if pydoc is None:
-            pydoc = "PMIDs associated with genes in clusters: {FLDS}".format(FLDS=" ".join(flds))
+            pydoc = f"PMIDs associated with genes in clusters: {' '.join(flds)}"
         num_pmids = len(pmid2info)
-        with open(fout_py, 'w') as prt:
-            prt.write('"""{DESC}"""\n\n'.format(DESC=pydoc))
-            prt.write("# {COPYRIGHT}\n\n".format(COPYRIGHT=DL.get_copyright()))
+        with open(fout_py, 'w', encoding='utf-8') as prt:
+            prt.write(f'"""{pydoc}"""\n\n')
+            today = datetime.date.today()
+            cp_right = self._get_copyright(today.year)
+            prt.write(f"# {cp_right}\n\n")
             prt.write("import datetime\n\n")
-            prt.write('downloaded = "{DATE}" # {N} items\n\n'.format(
-                N=num_pmids, DATE=DL.get_date()))
-            prt.write('num_items = {N}\n\n'.format(N=num_pmids))
+            prt.write(f'downloaded = "{today}" # {num_pmids} items\n\n')
+            prt.write(f'num_items = {num_pmids}\n\n')
             prt.write('pmid2info = {\n')
             #### addquot = lambda valstr: ''.join(["'", valstr, "'"])
             for pmid, fld2val_all in self._wrpy_get_sorted(pmid2info, flds):
@@ -240,27 +239,30 @@ class PubMedRdWr:
                 if fld2val_cur:
                     self._wrpy_pmid(prt, pmid, flds, fld2val_cur)
             prt.write("}\n\n") # End of pmid2info
-            prt.write("# {COPYRIGHT}\n\n".format(COPYRIGHT=DL.get_copyright()))
-            sys.stdout.write("  WROTE: {}\n".format(fout_py))
+            prt.write(f"# {cp_right}\n\n")
+            sys.stdout.write(f"  WROTE: {fout_py}\n")
+
+    @staticmethod
+    def _get_copyright(year):
+        return f"Copyright (C) {year} DV Klopfenstein, PhD. All rights reserved"
 
     def _wrpy_pmid(self, prt, pmid, flds, fld2val):
         """Write a PMID entry."""
-        prt.write("  {PMID:>8} : {{\n".format(PMID=pmid))
+        prt.write(f"  {pmid:>8} : {{\n")
         for fld_key in flds:
             fld_val = fld2val.get(fld_key, None)
             if fld_val is not None:
-                #### prt.write("    {KEY} : ".format(KEY=addquot(fld_key)))
-                prt.write("    {KEY} : ".format(KEY=''.join(["'", fld_key, "'"])))
+                #### prt.write(f"    {addquot(fld_key)} : ")
+                prt.write(f"""    {''.join(["'", fld_key, "'"])} : """)
                 # Field: Date
                 if fld_key in self.dates:
-                    prt.write("{VAL}, # {C}\n".format(
-                        VAL=repr(fld_val), C=fld_val.strftime("%Y %b %d")))
+                    prt.write(f"{repr(fld_val)}, # {fld_val.strftime('%Y %b %d')}\n")
                 # Field: TI, Abstract, etc.
-                elif fld_key in self.join_these.keys():
+                elif fld_key in self.join_these:
                     self._wrpyfld_joined(prt, fld_val, pmid)
                 # Field: list
                 else:
-                    prt.write("{VAL},\n".format(VAL=fld_val))
+                    prt.write(f"{fld_val},\n")
         prt.write("  },\n") # End of dictionary for one PMID
 
     @staticmethod
@@ -286,14 +288,14 @@ class PubMedRdWr:
         #VAL_str = ''.join(['"', fld_val, '"'])
         if "'" in fld_val or '"' in fld_val:
             if '"""' not in fld_val:
-                prt.write("{VAL},\n".format(VAL=''.join(['"""', fld_val, ' """'])))
+                prt.write(f'''{''.join(['"""', fld_val, ' """'])},\n''')
             elif "'''" not in fld_val:
-                prt.write("{VAL},\n".format(VAL=''.join(["'''", fld_val, " '''"])))
+                prt.write(f"""{''.join(["'''", fld_val, " '''"])},\n""")
             else:
-                raise Exception("QUOTE PROBLEM PMID({}): {}".format(pmid, fld_val))
+                raise RuntimeError(f"QUOTE PROBLEM PMID({pmid}): {fld_val}")
         else:
-            #### prt.write("{VAL},\n".format(VAL=addquot(fld_val)))
-            prt.write("{VAL},\n".format(VAL=''.join(["'", fld_val, "'"])))
+            #### prt.write(f"{addquot(fld_val)},\n")
+            prt.write(f"""{''.join(["'", fld_val, "'"])},\n""")
 
     date_patterns = [
         (r'(\d{4} \S{3} \d{1,2})\s*-', '%Y %b %d'),
@@ -302,23 +304,13 @@ class PubMedRdWr:
         (r'(\d{4} \w{3}) - \w{3}\b', '%Y %b'),
     ]
 
-    # pylint: disable=too-many-statements
     def _init_date(self, fld2objs, fld, str_date, pmid):
         """Convert string date to datetime object."""
         # Compensate for fmts: 1993-1994, 2001 Jul 16-31, 2002 Sep 1-15, 2012 Sep-Oct
         # TBD: Use Python Template instead of multiple replace statements?
         # https://docs.python.org/3/library/string.html#template-strings
-        # pylint: disable=bad-whitespace, too-many-branches
-        str_date = str_date.replace("Autumn", "Oct")
-        str_date = str_date.replace("Fall",   "Oct")
-        str_date = str_date.replace("Winter", "Jan")
-        str_date = str_date.replace("Spring", "Apr")
-        str_date = str_date.replace("Summer", "Jun")
-        str_date = str_date.replace("1st Quart", "Jan")
-        str_date = str_date.replace("Apr.", "Apr")
-        str_date = str_date.replace("November", "Nov")
-        str_date = str_date.replace("December", "Dec")
-        str_date = str_date.replace("/", "-")
+        # pylint: disable=too-many-branches
+        str_date = self._normalize_month(str_date)
         if "-" in str_date:
             # "2014 Jan-Feb" -> "2014 Feb"
             if len(str_date) == 12:
@@ -344,7 +336,7 @@ class PubMedRdWr:
                         if dateobj:
                             fld2objs[fld] = dateobj
                         else:
-                            raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
+                            raise RuntimeError(f"UNRECOGNIZED FORMAT({str_date})")
 
                         #### mtch = match(r'(\d{4} \S{3} \d{1,2})\s*-', str_date)
                         #### if mtch:
@@ -358,34 +350,43 @@ class PubMedRdWr:
                         ####     fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %m")
                         #### raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
         elif "/" in str_date:
-            mtch = match(r'(\d{4} \w{3})/', str_date)
-            if mtch:
+            if (mtch := match(r'(\d{4} \w{3})/', str_date)):
                 fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%Y %b")
-            raise Exception("UNRECOGNIZED FORMAT({})".format(str_date))
-        else:
-            # Apr 2017
-            mtch = match(r'(\w{3} \d{4})', str_date)
-            if mtch:
-                fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%b %Y")
+            raise RuntimeError(f"UNRECOGNIZED FORMAT({str_date})")
+        # Apr 2017
+        elif (mtch := match(r'(\w{3} \d{4})', str_date)):
+            fld2objs[fld] = datetime.datetime.strptime(mtch.group(1), "%b %Y")
         #print locale.getlocale()
         # fld2objs[fld] = datetime object
         date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
             ## print("STRING DATE({})".format(str_date))
-            mtch = search(r'(\d{4}) \d+th (\S+)', str_date) # "2016 20th Oct"
-            if mtch:
-                str_date = "{YEAR} {Mon}".format(YEAR=mtch.group(1), Mon=mtch.group(2))
+            if (mtch := search(r'(\d{4}) \d+th (\S+)', str_date)):  # "2016 20th Oct"
+                str_date = f"{mtch.group(1)} {mtch.group(2)}"
                 date_str = self._lendate2fmt.get(len(str_date), None)
         if date_str is None:
-            raise Exception("BAD FORMAT ({})".format(str_date))
+            raise RuntimeError(f"BAD FORMAT ({str_date})")
         fld2objs[fld] = datetime.datetime.strptime(str_date, date_str)
+
+    @staticmethod
+    def _normalize_month(str_date):
+        str_date = str_date.replace("Autumn", "Oct")
+        str_date = str_date.replace("Fall",   "Oct")
+        str_date = str_date.replace("Winter", "Jan")
+        str_date = str_date.replace("Spring", "Apr")
+        str_date = str_date.replace("Summer", "Jun")
+        str_date = str_date.replace("1st Quart", "Jan")
+        str_date = str_date.replace("Apr.", "Apr")
+        str_date = str_date.replace("November", "Nov")
+        str_date = str_date.replace("December", "Dec")
+        str_date = str_date.replace("/", "-")
+        return str_date
 
     @staticmethod
     def _matched(patterns, date_str):
         """Return True if any of the date-string matched any patterns"""
         for pattern, datefmt in patterns:
-            mtch = match(pattern, date_str)
-            if mtch:
+            if (mtch := match(pattern, date_str)):
                 return datetime.datetime.strptime(mtch.group(1), datefmt)
         return None
 
@@ -454,4 +455,4 @@ class ProcessLines:
                     self.fldvals[-1][1].append(line_body)
 
 
-  # Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

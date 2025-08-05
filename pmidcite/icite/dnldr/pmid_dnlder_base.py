@@ -194,7 +194,7 @@ class NIHiCiteDownloaderBase:
             raise RuntimeError(msg.format(V=details_cites_refs))
         return set(details_cites_refs).intersection(NIHiCiteEntry.associated_pmid_keys)
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def wr_papers(self, fout_txt, pmid2icitepaper, force_overwrite=False, mode='w', query=None):
         """Run iCite for user-provided PMIDs and write to a file"""
         if not pmid2icitepaper:

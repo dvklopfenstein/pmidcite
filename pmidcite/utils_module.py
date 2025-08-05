@@ -22,17 +22,18 @@ def import_var(modulestr, varname, log=sys.stdout, rpterr=True):
 
 def _rpt_err(mod, varname, modulestr):
     if mod is None:
-        raise Exception("MODULE({M}) NOT IMPORTED".format(M=modulestr))
-    raise Exception("VAR({V}) NOT FOUND IN MOD({M})".format(V=varname, M=modulestr))
+        raise RuntimeError(f"MODULE({modulestr}) NOT IMPORTED")
+    raise RuntimeError(f"VAR({varname}) NOT FOUND IN MOD({modulestr})")
 
 def import_mod(modulestr, log=None):
     """Import Python module"""
     if log is not None:
-        log.write("  IMPORT {MOD}\n".format(MOD=modulestr))
+        log.write(f"  IMPORT {modulestr}\n")
     if pkgutil.find_loader(modulestr) is not None:
+    #if pkgutil.find_spec(modulestr) is not None:
         return importlib.import_module(modulestr)
     if log is not None:
-        log.write("  None   {MOD}\n".format(MOD=modulestr))
+        log.write(f"  None   {modulestr}\n")
     return None
 
 def load_modpy(fin_py):
@@ -43,7 +44,7 @@ def load_modpy(fin_py):
         spec.loader.exec_module(mod)
         return mod
     except RuntimeError as inst:
-        print('**ERROR: UNABLE TO READ: {PY}\nMSG: {M}'.format(PY=fin_py, M=str(inst)))
+        print(f'**ERROR: UNABLE TO READ: {fin_py}\nMSG: {str(inst)}')
         return None
 
 
