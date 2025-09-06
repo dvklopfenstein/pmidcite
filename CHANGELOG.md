@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2025-09-06 v0.1.4**](#release-2025-09-06-v014) Updated for new NIH iCite format which may no longer have fields: cited_by_clin cited_by references provisional
 * [**Release 2025-07-28 v0.1.3**](#release-2025-07-28-v013) Added install instructions for bioconda
 * [**Release 2025-07-24 v0.1.2**](#release-2025-07-24-v012) Updated for new NIH iCite format for authors, and the True/False fields
 * **Release 2025-05-06 v0.0.50** Removed setup.py
@@ -54,6 +55,8 @@
 ## Details
 
 ### Unreleased
+
+### release 2025-09-06 v0.1.4
 * UPDATE for new NIH iCite format:
   * NIH-OPA data for new papers may not have the fields:
   * "nih_percentile" is either None or a float between 0.0 and 100.0 (not -1, as in the past)
@@ -239,7 +242,7 @@ Changes for [Issue #5](https://github.com/dvklopfenstein/pmidcite/issues/5):
 ### Release 2021-07-16 v0.0.8
 * Made grouping of papers customizable by the researcher
 * Added image showing how to read the output of icite
-![Starting usage](doc/images/pmidcite0.png)
+![Starting usage](docs/images/pmidcite0.png)
 
 ### Release 2020-12-03 v0.0.5
 * The 1st citation count in icite line contains any clinical citations
