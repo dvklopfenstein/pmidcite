@@ -1,7 +1,7 @@
 """Given a PubMed ID (PMID), download a list of publications which cite and reference it"""
 # https://icite.od.nih.gov/api
 
-__copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved."
+__copyright__ = "Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved"
 __author__ = "DV Klopfenstein, PhD"
 
 from pmidcite.icite.dnldr.pmid_dnlder_base import NIHiCiteDownloaderBase
@@ -23,9 +23,10 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
         """Download a list of NIH citation data for PMIDs"""
         nihdicts = self.api.dnld_nihdicts(pmids)
         if nihdicts:
+            ##self._prt(nihdicts)
             s_get_group = self.nihgrouper.get_group
-            # pylint: disable=line-too-long
-            return [NIHiCiteEntry.from_jsondct(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
+            s_from_jsondct = NIHiCiteEntry.from_jsondct
+            return [s_from_jsondct(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
         return []
 
     def get_icite(self, pmid):
@@ -38,5 +39,13 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
                 self.nihgrouper.get_group(nih_dict['nih_percentile']))
         return None
 
+    @staticmethod
+    def _prt(nihdicts):
+        print('FFFFFFF', len(nihdicts))
+        for dct in nihdicts:
+            print(f"\n{'-'*80}")
+            for key, val in dct.items():
+                print(f'{key:27} {val}')
 
-# Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.
+
+# Copyright (C) 2019, DV Klopfenstein, PhD. All rights reserved

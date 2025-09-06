@@ -62,8 +62,9 @@ class NIHiCiteLoader:
             mod = module_from_spec(spec)
             spec.loader.exec_module(mod)
             ## print('LLLLLLLLLLLLL load_icite', file_pmid)
-            # pylint: disable=line-too-long
-            return NIHiCiteEntry.from_jsondct(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
+            s_get_group = self.nih_grouper.get_group
+            s_from_jsondct = NIHiCiteEntry.from_jsondct
+            return s_from_jsondct(mod.ICITE, s_get_group(mod.ICITE.get('nih_percentile')))
         return None
 
     def load_pmid(self, pmid):
