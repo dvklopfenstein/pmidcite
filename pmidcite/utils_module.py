@@ -4,9 +4,7 @@ __copyright__ = "Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights re
 __author__ = "DV Klopfenstein, PhD"
 
 import sys
-import pkgutil
 import importlib
-import importlib.util
 
 
 def import_var(modulestr, varname, log=sys.stdout, rpterr=True):
@@ -29,8 +27,7 @@ def import_mod(modulestr, log=None):
     """Import Python module"""
     if log is not None:
         log.write(f"  IMPORT {modulestr}\n")
-    if pkgutil.find_loader(modulestr) is not None:
-    #if pkgutil.find_spec(modulestr) is not None:
+    if importlib.util.find_spec(modulestr) is not None:
         return importlib.import_module(modulestr)
     if log is not None:
         log.write(f"  None   {modulestr}\n")

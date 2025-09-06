@@ -111,14 +111,14 @@ class ESearch(EntrezUtilities):
     def esearch_ids(self, database, query, **return_params):
         """Get IDs using ESearch"""
         # Run query to find matching IDs. Get webenv for ID list
-        rsp_0 = self.queryids.query(database, query, **return_params)
+        rsp_0 = self.queryids.get_ids_esearch(database, query, **return_params)
         idlist = list(rsp_0['idlist'])
         webenv = rsp_0['webenv']
         retmax = rsp_0['retmax']
         #self._prt_rsp(rsp_0, 0)
         num_iter = self._get_num_iterations(rsp_0['count'], rsp_0['retmax'])
         for querykey_cur in range(1, num_iter):
-            rsp_i = self.queryids.query(
+            rsp_i = self.queryids.get_ids_esearch(
                 database, query, WebEnv=webenv, retstart=querykey_cur*retmax, retmax=retmax)
             idlist.extend(rsp_i['idlist'])
             # self._prt_rsp(rsp_i, querykey_cur)
