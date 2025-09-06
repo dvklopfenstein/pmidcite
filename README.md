@@ -173,8 +173,14 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 
 
 ## Installation
-### To install from [**PyPI**](https://pypi.org/project/pmidcite/)
-```$ pip install pmidcite```
+### To install from [**PyPI**](https://pypi.org/project/pmidcite/):
+```
+$ pip install -U pmidcite
+
+# Or:
+
+$ pip install --upgrade pmidcite
+```
 
 ### To install using [Bioconda](https://bioconda.github.io/)
 ```$ conda install -c bioconda pmidcite```
