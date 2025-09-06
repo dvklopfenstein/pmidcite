@@ -54,6 +54,19 @@
 ## Details
 
 ### Unreleased
+* UPDATE for new NIH iCite format:
+  * NIH-OPA data for new papers may not have the fields:
+  * "nih_percentile" is either None or a float between 0.0 and 100.0 (not -1, as in the past)
+       This affects:
+         * self.api.dnld_nihdicts(pmids) -> pmid_dnlder.py
+         * self.api.dnld_nihdicts(pmids) -> pmid_dnlder_only.py
+         * self.api.dnld_nihdicts(pmids) -> pmid_loader.py
+  * Other fields which may no longer be present in json dct downloaded from the NIH iCite api:
+    * "cited_by_clin"
+    * "cited_by"
+    * "references"
+    * "provisional"
+
 
 ### release 2025-07-28 v0.1.3
 * ADD install instructions for bioconda

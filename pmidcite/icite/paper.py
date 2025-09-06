@@ -127,7 +127,7 @@ class NIHiCitePaper:
         if self.icite is None:
             return None
         ##print(f'FOR PMID({self.pmid}), INIT {name} PMIDs')
-        if (pmids := self.icite.dct[name]) is not None:
+        if (pmids := self.icite.dct.get(name)) is not None:
             s_pmid2icite = self.pmid2icite
             return set(s_pmid2icite[pmid] for pmid in pmids if pmid in s_pmid2icite)
         return None
