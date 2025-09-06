@@ -58,7 +58,7 @@
 
 ### release 2025-09-06 v0.1.4
 * UPDATE for new NIH iCite format:
-  * NIH-OPA data for new papers may not have the fields:
+  * NIH-OPA data for new papers may now not have the fields:
   * "nih_percentile" is either None or a float between 0.0 and 100.0 (not -1, as in the past)
        This affects:
          * self.api.dnld_nihdicts(pmids) -> pmid_dnlder.py
