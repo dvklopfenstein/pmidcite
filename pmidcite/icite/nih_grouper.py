@@ -1,9 +1,10 @@
 """Groups papers using the NIH percentile"""
 
-__copyright__ = "Copyright (C) 2021-present, DV Klopfenstein, PhD. All rights reserved."
+__copyright__ = "Copyright (C) 2021, DV Klopfenstein, PhD. All rights reserved."
 __author__ = "DV Klopfenstein, PhD"
 
 from collections import namedtuple
+
 
 def get_nihgrouper(min1, min2, min3, min4):
     """Get NihGrouper, given NIH percentile dividers"""
@@ -32,10 +33,6 @@ class NihGrouper:
         self.min4 = group4_min
         assert group1_min and group2_min and group3_min and group4_min, \
             f'DIVIDERS MUST BE FLOATs: {str(self)}'
-        #print(f'group1_min: {group1_min}')
-        #print(f'group2_min: {group2_min}')
-        #print(f'group3_min: {group3_min}')
-        #print(f'group4_min: {group4_min}')
 
     def str_group(self, nih_percentile):
         """Get chr representing group number"""
@@ -46,7 +43,8 @@ class NihGrouper:
         """Assign group numbers to the NIH percentile values using the 68-95-99.7 rule"""
         # No NIH percentile yet assigned. This paper should be checked out.
         ##print(f'SSSSSSSSSS {str(self)}')
-        if nih_percentile is None or nih_percentile == -1:
+        ##if nih_percentile is None or nih_percentile == -1:
+        if nih_percentile is None:
             return 5
         #  2.1% -3 SD: Very low citation rate
         if nih_percentile < self.min1:  # default: 2.1
@@ -65,9 +63,7 @@ class NihGrouper:
 
     def add_arguments(self, parser):
         """Add NIH grouper arguments to the parser"""
-        # pylint: disable=line-too-long
         parser.add_argument(
-            ##'-1', metavar='group1_min', dest='min1', default=self.min1, type=float,
             '-1', metavar='group1_min', dest='min1', type=float, default=self.min1,
             help=f'Minimum NIH percentile to be placed in group 1 (default: {self.min1})')
         parser.add_argument(
@@ -98,4 +94,4 @@ class NihGrouper:
                 f'4({self.min4})')
 
 
-# Copyright (C) 2021-present DV Klopfenstein, PhD. All rights reserved.
+# Copyright (C) 2021, DV Klopfenstein, PhD. All rights reserved.
