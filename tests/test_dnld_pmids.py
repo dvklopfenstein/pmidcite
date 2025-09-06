@@ -39,11 +39,13 @@ def main():
     #
     system(f'rm -f {filename}')
     assert not exists(filename)
-    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    obj = PubMedQueryToICite(force_dnld=True)
     obj.cfg.set_dir_pmids(DIR_REPO)
     obj.cfg.set_dir_icite(DIR_REPO)
     dnld_idx = obj.get_index(sys.argv, queries)
-    obj.run(queries, dnld_idx)
+    assert dnld_idx == [-1]
+    fout, query = queries[dnld_idx[0]]
+    obj.run_one(fout, query)
     assert exists(filename)
     print('**PASSED: DIR=repo\n')
 
@@ -51,14 +53,14 @@ def main():
     assert not exists(filename)
     obj.cfg.set_dir_pmids(None)
     obj.cfg.set_dir_icite(None)
-    obj.run(queries, dnld_idx)
+    obj.run_one(fout, query)
     print('**PASSED: DIR=None\n')
 
     system(f'rm -f {filename}')
     assert not exists(filename)
     obj.cfg.set_dir_pmids('.')
     obj.cfg.set_dir_icite('.')
-    obj.run(queries, dnld_idx)
+    obj.run_one(fout, query)
     print("**PASSED: DIR='.'\n")
 
 
