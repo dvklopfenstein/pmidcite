@@ -196,10 +196,10 @@ $ cd ./pmidcite
 $ pip install .
 ```
 
-## Setup
+# Setup
 Save your literature search in a GitHub repo.
 
-### 1. Add a [pmidcite init file](doc/example_cfg/.pmidciterc)
+## 1. Add a [pmidcite init file](doc/example_cfg/.pmidciterc)
 Add a .pmidciterc init file to a non-git managed directory, such as home (~)
 ```
 $ icite --generate-rcfile | tee ~/.pmidciterc
@@ -217,7 +217,7 @@ Do not version manage the `.pmidciterc` using a tool such as GitHub because it
 contains your personal email and your private NCBI API key.
 
 
-### 2. NCBI E-Utils API key
+## 2. NCBI E-Utils API key
 To download PubMed abstracts and PubMed search results using NCBI's E-Utils,
 get an NCBI API key using these instructions:    
 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities
