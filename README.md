@@ -33,7 +33,7 @@ provides much more than just citation counts, including:
 * [**Quickstart**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#quickstart)
 * [**How to cite**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#how-to-cite)
 * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
-* [**Jupyter notebooks using the *pmidcite* Python library**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#jupyter-notebook-examples)
+* [**Jupyter notebooks**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#jupyter-notebook-examples)
 * [**Contributing**](#contributing)
 * [**References**](#references)
 
@@ -172,6 +172,7 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content such as books and articles published before the 1960s
 
 # Jupyter notebook examples
+Jupyter notebook examples showing how to use the *pmidcite* Python library
 * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
 * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
 * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
