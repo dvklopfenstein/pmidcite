@@ -37,9 +37,7 @@ class NIHiCiteLoader:
             num_icites = len(icites)
             num_pmids = len(pmids)
             if num_icites != num_pmids:
-                prt.write('{N:5,} of {P:5,} PMIDs have iCite entries\n'.format(
-                    N=num_icites,
-                    P=num_pmids))
+                prt.write(f'{num_icites:5,} of {num_pmids:5,} PMIDs have iCite entries\n')
         return icites
 
     def load_icite_mods_all(self, pmids_top):
@@ -64,8 +62,9 @@ class NIHiCiteLoader:
             mod = module_from_spec(spec)
             spec.loader.exec_module(mod)
             ## print('LLLLLLLLLLLLL load_icite', file_pmid)
-            # pylint: disable=line-too-long
-            return NIHiCiteEntry.from_jsondct(mod.ICITE, self.nih_grouper.get_group(mod.ICITE['nih_percentile']))
+            s_get_group = self.nih_grouper.get_group
+            s_from_jsondct = NIHiCiteEntry.from_jsondct
+            return s_from_jsondct(mod.ICITE, s_get_group(mod.ICITE.get('nih_percentile')))
         return None
 
     def load_pmid(self, pmid):

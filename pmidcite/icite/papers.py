@@ -34,10 +34,10 @@ class NIHiCitePapers:
             firstlast = self.get_firstlast(author)
             if idx < prt_top_n or seen != '':
             ## if True:
-                print('{S:>6} {N:3} {FL:6} {AU}'.format(FL=firstlast, S=seen, N=cnt, AU=author))
-        print('{A} authors (appeared N times, M people): {LST}'.format(
-            A=len(self.author2cnt),
-            LST=sorted(Counter(self.author2cnt.values()).items())))
+                print(f'{seen:>6} {cnt:3} {firstlast:6} {author}')
+        # pylint: disable=consider-using-f-string
+        lst = sorted(Counter(self.author2cnt.values()).items())
+        print(f'{len(self.author2cnt)} authors (appeared N times, M people): {lst}')
 
     def get_firstlast(self, author):
         """Get a string describing First and Last author affiliation"""
@@ -45,11 +45,11 @@ class NIHiCitePapers:
             return ''
         firstlast = self.au2firstlast[author]
         # First author counts
-        ret = 'F{N}'.format(N=len(firstlast['F'])) if 'F' in firstlast else '..'
+        ret = f"F{len(firstlast['F']) if 'F' in firstlast else '..'}"
         # Second author counts
-        ret += 'f{N}'.format(N=len(firstlast['f'])) if 'f' in firstlast else '..'
+        ret += f"f{len(firstlast['f']) if 'f' in firstlast else '..'}"
         # Last author counts
-        ret += 'L{N}'.format(N=len(firstlast['L'])) if 'L' in firstlast else '..'
+        ret += f"L{len(firstlast['L']) if 'L' in firstlast else '..'}"
         return ret
 
     def _init_au2firstlast(self, authors):

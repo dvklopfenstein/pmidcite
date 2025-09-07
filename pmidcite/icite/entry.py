@@ -85,8 +85,8 @@ class NIHiCiteEntry:
         cls_dct = icite_dct
         cls_dct['nih_group'] = nih_group_num  # 0 - 5
         cls_dct['num_auth'] = len(lst) if (lst := icite_dct['authors']) else 0
-        cit_clin = icite_dct['cited_by_clin']
-        cited_by = icite_dct['cited_by']
+        cit_clin = icite_dct.get('cited_by_clin')
+        cited_by = icite_dct.get('cited_by')
         cls_dct['num_clin'] = len(cit_clin) if cit_clin else 0
         cls_dct['num_cite'] = len(cited_by) if cited_by else 0
 
@@ -96,9 +96,10 @@ class NIHiCiteEntry:
         num_cites_all = len(all_citing_pmids) if all_citing_pmids is not None else 0
         cls_dct['num_cites_all'] = num_cites_all
 
-        nih_perc = icite_dct['nih_percentile']
+        nih_perc = icite_dct.get('nih_percentile')
         cls_dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
-        cls_dct['num_refs'] = len(icite_dct['references'])
+        refs = icite_dct.get('references')
+        cls_dct['num_refs'] = len(refs) if refs is not None else 0
         return cls(icite_dct['pmid'], cls_dct)
 
     @classmethod
@@ -236,8 +237,8 @@ class NIHiCiteEntry:
         """Get succinct ASCII art for concise info display"""
         lst = []
         dct = self.dct
-        lst.append('R' if dct['is_research_article'] else '.')
-        lst.append('P' if dct['provisional'] else '.')
+        lst.append('R' if dct.get('is_research_article') else '.')
+        lst.append('P' if dct.get('provisional') else '.')
         return ''.join(lst)
 
     def get_aart_translation(self):
@@ -252,7 +253,7 @@ class NIHiCiteEntry:
         lst.append('A' if dct['animal'] != 0.0 else '.')
         lst.append('M' if dct['molecular_cellular'] != 0.0 else '.')
         lst.append('C' if dct['is_clinical'] else '.')
-        lst.append('c' if dct['cited_by_clin'] else '.')
+        lst.append('c' if dct.get('cited_by_clin') else '.')
         return ''.join(lst)
 
     def prt_dct(self, prt=stdout):

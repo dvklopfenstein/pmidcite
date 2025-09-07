@@ -37,5 +37,5 @@ bibtex:
   year = {2021}
 }
 """
- 
+
 # Copyright (C) 2019-present DV Klopfenstein, PhD. All rights reserved.

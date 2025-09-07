@@ -22,13 +22,9 @@ class SummarizePapers:
         years = self.get_years()
         year_min = min(years)
         year_max = max(years)
-        return '{NIHP} {Ys:3} years:{Y0:4}-{Y1:4} {N:5} papers {NAME}'.format(
-            NIHP=self._str_group_percs(grp2nts),
-            Ys=year_max-year_min,
-            Y0=year_min,
-            Y1=year_max,
-            N=self.num_papers_all,
-            NAME=self.name)
+        return (f'{self._str_group_percs(grp2nts)} '
+                f'{year_max-year_min:3} years:{year_min:4}-{year_max:4} '
+                f'{self.num_papers_all:5} papers {self.name}')
 
     def get_years(self):
         """Get the years of all publications"""
@@ -38,13 +34,18 @@ class SummarizePapers:
         """Get precentages of papers in each group"""
         lst = []
         for grp in ['i', '4', '3', '2', '1', '0']:
-            num_papers_grp = len(grp2nts[grp]) if grp2nts else 0
-            abc = '{G}={P}'.format(
-                G=grp,
-                P='{:05.1f}%'.format(
-                    num_papers_grp/self.num_papers_all*100) if num_papers_grp != 0 else "......")
+            ##num_papers_grp = len(grp2nts[grp]) if grp2nts else 0
+            # pylint: disable=line-too-long
+            ##perc = f'{num_papers_grp/self.num_papers_all*100:05.1f}%' if num_papers_grp != 0 else "......"
+            abc = f'{grp}={self._get_perc_str(grp2nts, grp)}'
             lst.append(abc)
         return ' '.join(lst)
+
+    def _get_perc_str(self, grp2nts, grp):
+        if grp2nts:
+            ##num_papers_grp = len(grp2nts[grp]) if grp2nts else 0
+            return f'{len(grp2nts[grp])/self.num_papers_all*100:05.1f}%'
+        return "......"
 
     def _get_stats_grpr(self):
         """Get summary information for list of papers"""
@@ -70,7 +71,7 @@ class SummarizePapers:
         nts = []
         nto = namedtuple('iciteline', (
             'line pmid aart nih_perc nih_group year num_cite_all num_cite num_clin num_refs'))
-        with open(filename) as ifstrm:
+        with open(filename, encoding='utf-8') as ifstrm:
             for line in ifstrm:
                 if line[:3] in top_cit_ref:
                     flds = line.split(maxsplit=10)

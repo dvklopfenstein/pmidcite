@@ -96,9 +96,11 @@ class EntrezUtilities(object):
                     nts.append([desc, start, pmids_exp, querykey_cur])
         return nts
 
-    def _run_efetch(self, database, start, querykey, pmids_exp, desc, **params):
+    ##def _run_efetch(self, database, start, querykey, pmids_exp, desc, **params):
+    def _run_efetch(self, database, start, querykey, desc, **params):
         """Get text from EFetch response"""
-        rsp_dct = self.run_req('efetch', retstart=start, query_key=querykey, db=database, **params)
+        rsp_dct = self.run_req('efetch', retstart=start,
+                  query_key=querykey, db=database, **params)
         if rsp_dct is None:
             print(f'\n{desc}\n**ERROR: DATA is None')
             return None
@@ -127,45 +129,6 @@ class EntrezUtilities(object):
         p1_err = msg.find('</ERROR>')
         return msg[:p1_err]
 
-    #### def pubmed_query_fetch(self, query):
-    ####     """Given a PubMed query, return results as  text"""
-    ####     rsp_qry = self.find_ids_with_esearch('pubmed', query, retmax=500)
-    ####     if rsp_qry is None:
-    ####         return {'TEXT':None, 'RSP_QUERY': rsp_qry, 'RSP_POST':None}
-    ####     rsp_post = self.epost('pubmed', rsp_qry['idlist'], num_ids_p_epost=10)
-    ####     txt = self.run_eutilscmd(
-    ####         'efetch',
-    ####         db='pubmed',
-    ####         retstart=0,
-    ####         retmax=500,          # max: 10,000
-    ####         rettype='medline',
-    ####         retmode='text',
-    ####         webenv=rsp_post['webenv'],
-    ####         query_key=rsp_post['querykey'])
-    ####     return {'TEXT':txt, 'RSP_QUERY': rsp_qry, 'RSP_POST':rsp_post}
-
-    #### def find_ids_with_esearch(self, database, query, retmax, **esearch):
-    ####     """Searches an NCBI database for a user search term, returns NCBI IDs."""
-    ####     dct = self.run_eutilscmd(
-    ####         'esearch',
-    ####         db=database,
-    ####         term=query,
-    ####         retmax=retmax,
-    ####         usehistory="y", # NCBI prefers we use history(QueryKey, WebEnv) for next acess
-    ####         retmode='json',
-    ####         **esearch)
-
-    ####     if dct is not None and 'idlist' in dct and dct['idlist']:
-    ####         # KEYS: count retmax retstart querykey webenv idlist
-    ####         #       translationset translationstack querytranslation warninglist
-    ####         dct['idlist'] = [int(n) for n in dct['idlist']]
-    ####         dct['count'] = int(dct['count'])
-    ####         # Note: If the maximum number of PMIDs are found, won't get the ones after
-    ####         assert len(dct['idlist']) < retmax, 'EntrezUtilities: PMIDS({N}) > retmax({M})'.format(
-    ####             M=len(dct['idlist']), N=dct['count'])
-    ####         return dct
-    ####     return None
-
     def epost(self, database, ids, num_ids_p_epost=10):
         """Posts to NCBI WebServer of any number of UIDs."""
         # Load the first 1...(step-1) UIDs to entrez-utils using epost. Get WebEnv to finish post
@@ -182,27 +145,27 @@ class EntrezUtilities(object):
         id_str = ','.join(str_ids[:num_ids_p_epost])
         # epost produces WebEnv value ($web1) and QueryKey value ($key1)
         rsp = self.run_eutilscmd('epost', db=database, id=id_str)
-        ## print(f'FFFFFFFFFFFFFFFFFFFFFFFFF EPOST RSP:', rsp)
+        ## print(f'EPOST RSP:', rsp)
         if 'webenv' in rsp:
             #if self.log is not None:
             #    ## self.log.write('FIRST EPOST RESULT: {}\n'.format(rsp))
-            #    self.log.write(f'epost webenv: {rsp["webenv"]}\n')
-            #    self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{len(str_ids)}]={id_str}\n")
             ret['webenv'] = rsp['webenv']
             webenv = rsp['webenv']
             num_ids = len(ids)
             # Load the remainder of the UIDs using epost
             for idx in range(num_ids_p_epost, num_ids, num_ids_p_epost):
-                end_pt = idx+num_ids_p_epost
-                if num_ids < end_pt:
-                    end_pt = num_ids
+                end_pt = min(end_pt, num_ids)
+                ####end_pt = idx+num_ids_p_epost
+                ####if num_ids < end_pt:
+                ####    end_pt = num_ids
                 #print(f'{num_ids:3} {idx:3} {end_pt:3}')
                 id_str = ','.join(str_ids[idx:end_pt])
                 rsp = self.run_eutilscmd('epost', db=database, id=id_str, webenv=webenv)
                 ret['qkey2ids'].append(ids[idx:idx+num_ids_p_epost])
                 webenv = rsp['webenv']
                 if self.log is not None:
-                    self.log.write(f"epost querykey({rsp['querykey']:>6}) ids[{end_pt-idx}]={id_str}\n")
+                    self.log.write(f"epost querykey({rsp['querykey']:>6}) "
+                                   "ids[{end_pt-idx}]={id_str}\n")
         elif 'error' in rsp:
             raise RuntimeError(f'**ERROR EPost: {rsp["error"]}\nRESPONSE:\n{rsp}')
         else:
@@ -311,6 +274,7 @@ class EntrezUtilities(object):
             print(f'\n**FATAL: CGI: {cgi}\n')
             print(errobj)
             traceback.print_exc()
+        return None
 
     def _run_req(self, cgi, prt):  # params=None, post=None, ecitmatch=False):
         """Get a response from running a Entrez Utilities command"""
@@ -354,6 +318,7 @@ class EntrezUtilities(object):
                 # Treat everything else as a transient error and try again after a
                 # brief delay.
                 time.sleep(self.sleep_between_tries)
+        return None
 
 
     def _construct_params(self, params):

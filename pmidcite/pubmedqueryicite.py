@@ -14,6 +14,8 @@ from pmidcite.icite.downloader import get_downloader
 class PubMedQueryToICite:
     """Run PubMed user query and download PMIDs. Run iCite on PMIDs. Write text file."""
 
+    nto = namedtuple('Nt', 'filename fullname pubmed_query')
+
     def __init__(self, force_dnld, verbose=True, pmid2note=None):
         self.force_dnld = force_dnld
         self.verbose = verbose
@@ -59,10 +61,9 @@ class PubMedQueryToICite:
             if pmid not in pmid2paper_all:
                 pmid2paper_all[pmid] = paper
 
-    def run_one(self, fout_query, dnld_idx):
-        """Query PubMed for PMIDs. Download iCite, given PMIDs"""
-        nts = self.get_nts_g_list(fout_query)
-        ntd = nts[dnld_idx]
+    def run_one(self, fout_txt, query):
+        """Query PubMed for PMIDs. Download NIH iCite data entries for each PMID from NIH api"""
+        ntd = self.nto._make([fout_txt, self.cfg.get_fullname_icite(fout_txt), query])
         return self.querypubmed_runicite(ntd.filename, ntd.pubmed_query)
 
     def querypubmed_runicite(self, filename, query, details_cites_refs=None):
@@ -112,12 +113,13 @@ class PubMedQueryToICite:
         #     Nt(filename='Astrocytes.txt',
         #        fullname='./log/icite/Astrocytes.txt',
         #        pubmed_query='("astrocytes"[Title]) AND (review[Filter])')
-        nto = namedtuple('Nt', 'filename fullname pubmed_query')
-        return [nto._make([fname, self.cfg.get_fullname_icite(fname), qry]) for fname, qry in lst]
+        nto_make = self.nto._make
+        get_fullname_icite = self.cfg.get_fullname_icite
+        return [nto_make([fname, get_fullname_icite(fname), qry]) for fname, qry in lst]
 
     @staticmethod
     def get_index(argv, queries=None):
-        """Get the index of the pubmed query to run"""
+        """Get the index of the pubmed query to run (the last one by default)"""
         # If no argument was provided, run the last query in the list
         if len(argv) == 1:
             return [-1]

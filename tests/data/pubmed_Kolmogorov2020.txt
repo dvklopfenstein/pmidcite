@@ -1,0 +1,116 @@
+
+PMID- 33020656
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20210125
+LR  - 20210211
+IS  - 1548-7105 (Electronic)
+IS  - 1548-7091 (Linking)
+VI  - 17
+IP  - 11
+DP  - 2020 Nov
+TI  - metaFlye: scalable long-read metagenome assembly using repeat graphs.
+PG  - 1103-1110
+LID - 10.1038/s41592-020-00971-x [doi]
+AB  - Long-read sequencing technologies have substantially improved the assemblies of 
+      many isolate bacterial genomes as compared to fragmented short-read assemblies. 
+      However, assembling complex metagenomic datasets remains difficult even for 
+      state-of-the-art long-read assemblers. Here we present metaFlye, which addresses 
+      important long-read metagenomic assembly challenges, such as uneven bacterial 
+      composition and intra-species heterogeneity. First, we benchmarked metaFlye using 
+      simulated and mock bacterial communities and show that it consistently produces 
+      assemblies with better completeness and contiguity than state-of-the-art 
+      long-read assemblers. Second, we performed long-read sequencing of the sheep 
+      microbiome and applied metaFlye to reconstruct 63 complete or nearly complete 
+      bacterial genomes within single contigs. Finally, we show that long-read assembly 
+      of human microbiomes enables the discovery of full-length biosynthetic gene 
+      clusters that encode biomedically important natural products.
+FAU - Kolmogorov, Mikhail
+AU  - Kolmogorov M
+AUID- ORCID: 0000-0002-5489-9045
+AD  - Department of Computer Science and Engineering, University of California, San 
+      Diego, CA, USA.
+FAU - Bickhart, Derek M
+AU  - Bickhart DM
+AD  - Cell Wall Biology and Utilization Laboratory, Dairy Forage Research Center, USDA, 
+      Madison, WI, USA.
+FAU - Behsaz, Bahar
+AU  - Behsaz B
+AD  - Graduate Program in Bioinformatics and System Biology, University of California, 
+      San Diego, CA, USA.
+FAU - Gurevich, Alexey
+AU  - Gurevich A
+AD  - Center for Algorithmic Biotechnology, St. Petersburg State University, St. 
+      Petersburg, Russia.
+FAU - Rayko, Mikhail
+AU  - Rayko M
+AUID- ORCID: 0000-0002-3737-1521
+AD  - Center for Algorithmic Biotechnology, St. Petersburg State University, St. 
+      Petersburg, Russia.
+FAU - Shin, Sung Bong
+AU  - Shin SB
+AD  - USDA-ARS US Meat Animal Research Center, Clay Center, NE, USA.
+FAU - Kuhn, Kristen
+AU  - Kuhn K
+AD  - USDA-ARS US Meat Animal Research Center, Clay Center, NE, USA.
+FAU - Yuan, Jeffrey
+AU  - Yuan J
+AUID- ORCID: 0000-0003-3855-1994
+AD  - Graduate Program in Bioinformatics and System Biology, University of California, 
+      San Diego, CA, USA.
+FAU - Polevikov, Evgeny
+AU  - Polevikov E
+AD  - Center for Algorithmic Biotechnology, St. Petersburg State University, St. 
+      Petersburg, Russia.
+AD  - Bioinformatics Institute, St. Petersburg, Russia.
+FAU - Smith, Timothy P L
+AU  - Smith TPL
+AUID- ORCID: 0000-0003-1611-6828
+AD  - USDA-ARS US Meat Animal Research Center, Clay Center, NE, USA.
+FAU - Pevzner, Pavel A
+AU  - Pevzner PA
+AUID- ORCID: 0000-0002-0418-165X
+AD  - Department of Computer Science and Engineering, University of California, San 
+      Diego, CA, USA. ppevzner@ucsd.edu.
+AD  - Center for Microbiome Innovation, University of California, San Diego, CA, USA. 
+      ppevzner@ucsd.edu.
+LA  - eng
+GR  - P41 GM103484/GM/NIGMS NIH HHS/United States
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PT  - Research Support, U.S. Gov't, Non-P.H.S.
+DEP - 20201005
+PL  - United States
+TA  - Nat Methods
+JT  - Nature methods
+JID - 101215604
+SB  - IM
+MH  - Algorithms
+MH  - Animals
+MH  - Benchmarking
+MH  - Gastrointestinal Microbiome/genetics
+MH  - Genome, Bacterial/*genetics
+MH  - Genome, Human/*genetics
+MH  - Humans
+MH  - Metagenome/*genetics
+MH  - Metagenomics/*methods
+MH  - Microbiota/*genetics
+MH  - Sequence Analysis, DNA/methods
+MH  - Sheep
+MH  - Software
+MH  - Species Specificity
+EDAT- 2020/10/07 06:00
+MHDA- 2021/01/26 06:00
+CRDT- 2020/10/06 05:32
+PHST- 2020/07/16 00:00 [received]
+PHST- 2020/09/07 00:00 [accepted]
+PHST- 2020/08/22 00:00 [revised]
+PHST- 2020/10/07 06:00 [pubmed]
+PHST- 2021/01/26 06:00 [medline]
+PHST- 2020/10/06 05:32 [entrez]
+AID - 10.1038/s41592-020-00971-x [pii]
+AID - 10.1038/s41592-020-00971-x [doi]
+PST - ppublish
+SO  - Nat Methods. 2020 Nov;17(11):1103-1110. doi: 10.1038/s41592-020-00971-x. Epub 
+      2020 Oct 5.

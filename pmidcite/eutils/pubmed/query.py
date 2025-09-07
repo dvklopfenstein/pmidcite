@@ -63,13 +63,13 @@ class PubMedQuery:
             if pubmed_txt is not None:
                 self.wr_text(file_txt, pubmed_txt)
                 return self.get_pmid2dct_g_txt(pubmed_txt, prt)
-            print('**WARNING: NO RESULTS FOUND FOR: {Q}'.format(Q=query))
+            print(f'**WARNING: NO RESULTS FOUND FOR: {query}')
             return {}
-        raise RuntimeError('UNKNOWN PubMed DATA: {KWS}'.format(KWS=str(kws)))
+        raise RuntimeError(f'UNKNOWN PubMed DATA: {str(kws)}')
 
     def dnld_text_g_query(self, query):
         """Get PubMed text, given a PubMed query"""
-        ## print('QUERY: {Q}'.format(Q=query))
+        ## print(f'QUERY: {query}')
         pmids = self.pubmed.dnld_query_pmids(query)
         if not pmids:
             return None
@@ -85,9 +85,9 @@ class PubMedQuery:
     @staticmethod
     def wr_text(fout_txt, pubmed_txt):
         """Write PubMed record text into a file"""
-        with open(fout_txt, 'w') as prt:
+        with open(fout_txt, 'w', encoding='utf-8') as prt:
             prt.write(pubmed_txt)
-            print('  WROTE: {TXT}'.format(TXT=fout_txt))
+            print(f'  WROTE: {fout_txt}')
 
     def _get_pmiddct(self, fin_txt):
         """Read PubMed text summary. Return PubMed dict, which contains PMID"""

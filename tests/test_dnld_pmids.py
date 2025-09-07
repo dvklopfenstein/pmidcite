@@ -16,7 +16,7 @@ from tests.icite import DIR_REPO
 
 def main():
     """Download PMIDs returned for a PubMed query. Write an iCite report for each PMID"""
-    # pylint: disable=bad-whitespace,line-too-long
+    # pylint: disable=line-too-long
     queries = [
         # Output filenames         PubMed query
         # -----------------       -----------------------------------
@@ -37,28 +37,30 @@ def main():
     # To run the second to last query:
     #   $ src/bin/dnld_pmids.py -2
     #
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
-    obj = PubMedQueryToICite(force_dnld=True, prt_icitepy=None)
+    obj = PubMedQueryToICite(force_dnld=True)
     obj.cfg.set_dir_pmids(DIR_REPO)
     obj.cfg.set_dir_icite(DIR_REPO)
     dnld_idx = obj.get_index(sys.argv, queries)
-    obj.run(queries, dnld_idx)
+    assert dnld_idx == [-1]
+    fout, query = queries[dnld_idx[0]]
+    obj.run_one(fout, query)
     assert exists(filename)
     print('**PASSED: DIR=repo\n')
 
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
     obj.cfg.set_dir_pmids(None)
     obj.cfg.set_dir_icite(None)
-    obj.run(queries, dnld_idx)
+    obj.run_one(fout, query)
     print('**PASSED: DIR=None\n')
 
-    system('rm -f {}'.format(filename))
+    system(f'rm -f {filename}')
     assert not exists(filename)
     obj.cfg.set_dir_pmids('.')
     obj.cfg.set_dir_icite('.')
-    obj.run(queries, dnld_idx)
+    obj.run_one(fout, query)
     print("**PASSED: DIR='.'\n")
 
 

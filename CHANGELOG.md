@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2025-09-06 v0.2.0**](#release-2025-09-06-v020) Updated for new NIH iCite format which may no longer have fields: cited_by_clin cited_by references provisional
 * [**Release 2025-07-28 v0.1.3**](#release-2025-07-28-v013) Added install instructions for bioconda
 * [**Release 2025-07-24 v0.1.2**](#release-2025-07-24-v012) Updated for new NIH iCite format for authors, and the True/False fields
 * **Release 2025-05-06 v0.0.50** Removed setup.py
@@ -55,11 +56,26 @@
 
 ### Unreleased
 
+### release 2025-09-06 v0.2.0
+* MAJOR UPDATE for new NIH iCite format, (which is not backwards compatible):
+  * NIH-OPA data for new papers may now not have the fields:
+  * "nih_percentile" is either None or a float between 0.0 and 100.0 (not -1, as in the past)
+       This affects:
+         * self.api.dnld_nihdicts(pmids) -> pmid_dnlder.py
+         * self.api.dnld_nihdicts(pmids) -> pmid_dnlder_only.py
+         * self.api.dnld_nihdicts(pmids) -> pmid_loader.py
+  * Other fields which may no longer be present in json dct downloaded from the NIH iCite api:
+    * "cited_by_clin"
+    * "cited_by"
+    * "references"
+    * "provisional"
+
+
 ### release 2025-07-28 v0.1.3
 * ADD install instructions for bioconda
 
 ### release 2025-07-24 v0.1.2
-* UPDATE for new NIH iCite format:
+* MAJOR UPDATE for new NIH iCite format, (which is not backwards compatible):
   * authors is now a dict w/keys firstName lastName & fullName rather than a str
   * These fields have True/False values rather than 'Yes' and 'No'
     * is_research_article
@@ -226,7 +242,7 @@ Changes for [Issue #5](https://github.com/dvklopfenstein/pmidcite/issues/5):
 ### Release 2021-07-16 v0.0.8
 * Made grouping of papers customizable by the researcher
 * Added image showing how to read the output of icite
-![Starting usage](doc/images/pmidcite0.png)
+![Starting usage](docs/images/pmidcite0.png)
 
 ### Release 2020-12-03 v0.0.5
 * The 1st citation count in icite line contains any clinical citations
