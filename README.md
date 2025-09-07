@@ -15,35 +15,33 @@ Contact: dvklopfenstein@protonmail.com
 
 # PubMed and NIH Citation data
 PubMed contains peer-reviewed research papers
-in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.    
-[**Citation data**](https://icite.od.nih.gov) is downloaded
+in biomedicine, biochemistry, chemistry, behavioral science, and other life sciences.
+
+Freely available [**Citation data**](https://icite.od.nih.gov)
 from the [**National Institutes of Health (NIH)**](https://www.nih.gov/)
-each time `icite` is run and includes:
-* Citation counts of all papers and clinical papers
-* Performance of a paper among its peer papers
-* Existence of MeSH terms for the human, animal, and molecular/cellular categories
+is freshly downloaded 
+when `icite` is run and
+provides much more than just citation counts, including:
+* Specifies citing clinical papers
+* Performance of the paper among its peers
+* Presence of MeSH terms for the human, animal, and molecular/cellular categories
 
 # Table of Contents
+* [**Installation**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#installation)
+* [**Quickstart**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#quickstart)
+* [**How to cite**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#how-to-cite)
+* [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
+* [**Jupyter notebooks using the *pmidcite* Python library**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#jupyter-notebook-examples)
+* [**Contributing**](#contributing)
+* [**References**](#references)
+
+# Quickstart
 * ***Quickstart on the*** [***command line***](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#command-line-interface-cli)
   * [**1) Download citation counts and data for a research paper**](https://github.com/dvklopfenstein/pmidcite#1-download-citation-counts-and-data-for-a-research-paper)
   * [**2) Forward citation search**](https://github.com/dvklopfenstein/pmidcite#2-forward-citation-search): following a paper's *Cited by* links or *Forward snowballing*
   * [**3) Backward citation search**](https://github.com/dvklopfenstein/pmidcite#3-backward-citation-search): following the links to a paper's references or *Backward snowballing*
   * [**4) Summarize a group of citations**](https://github.com/dvklopfenstein/pmidcite#4-summarize-a-group-of-citations)
   * [**5) Download citations for all papers returned from a PubMed search**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#5-download-citations-for-all-papers-returned-from-a-pubmed-search)
-* ***Examples in Jupyter notebooks using the *pmidcite* Python library***
-  * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
-  * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
-  * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
-  * [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
-  * [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
-* ***Installation & citation***:
-  * [**Installation**](#installation)
-  * [**Setup**](#setup)
-  * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
-    * [**What is in PubMed?**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#what-is-in-pubmed--take-a-quick-tour)
-  * [**How to Cite *pmidcite***](#how-to-cite)
-  * [**Contributing**](#contributing)
-* [***References***](#references)
 
 ## 1) Download citation counts and data for a research paper
 ```$ icite -H 26032263```    
@@ -171,9 +169,15 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * **PubMed Central (PMC)**: an open-access database for full-text papers that are free of cost
 * Additional content such as books and articles published before the 1960s
 
+# Jupyter notebook examples
+* [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
+* [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
+* [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
+* [**4) Sort NIH iCite entries**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_sort_cites.ipynb)
+* [**5) Query PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/query_pubmed.ipynb)
 
-## Installation
-### To install from [**PyPI**](https://pypi.org/project/pmidcite/):
+# Installation
+## To install from [**PyPI**](https://pypi.org/project/pmidcite/):
 ```
 $ pip install -U pmidcite
 
@@ -182,10 +186,10 @@ $ pip install -U pmidcite
 $ pip install --upgrade pmidcite
 ```
 
-### To install using [Bioconda](https://bioconda.github.io/)
+## To install using [Bioconda](https://bioconda.github.io/)
 ```$ conda install -c bioconda pmidcite```
 
-### To install locally
+## To install locally
 ```
 $ git clone https://github.com/dvklopfenstein/pmidcite.git
 $ cd ./pmidcite
