@@ -8,6 +8,9 @@
   * **Controversy re: [Accurate structure prediction of biomolecular interactions with AlphaFold 3](https://www.nature.com/articles/s41586-024-07487-w)
 * [Who is running pmid2cite.com?](#who-created-pmid2citecom)
 
+<p align="center">
+<img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/Search_Features_GS_v_PubMed.png" alt="Google Scholar vs PubMed" width="600"/>
+</p>
 
 ## Comments regarding Google Scholar
 ### Unknown algorithm operating on an unspecified corpus of the most important storehouse of knowledge
