@@ -2,6 +2,8 @@
 
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
+[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/pmidcite/README.html)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/pmidcite/badges/version.svg)](https://anaconda.org/bioconda/pmidcite)
 
 <p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby.png" alt="pmidcite summary" width="500"/></p>
 
