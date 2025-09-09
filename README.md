@@ -1,10 +1,11 @@
 # PubMed ID (PMID) Cite
 
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
-[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/pmidcite/README.html)
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
+[![Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/pmidcite/README.html)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/pmidcite/badges/version.svg)](https://anaconda.org/bioconda/pmidcite)
-[![python-versions](https://img.shields.io/pypi/pyversions/pmidcite)](https://pypi.python.org/pypi/pmidcite)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fdvklopfenstein%2Fpmidcite%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 <p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby.png" alt="pmidcite summary" width="500"/></p>
 
