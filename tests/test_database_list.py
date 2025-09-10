@@ -7,7 +7,7 @@ from pmidcite.eutils.cmds.base import EntrezUtilities
 #pylint: disable=line-too-long
 def test_database_list():
     """Test retreiving the names of the Entrez databases"""
-    cfg = Cfg()
+    cfg = Cfg(check=False)
     eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
     dbs = eutils.get_database_list()
     assert len(dbs) > 30

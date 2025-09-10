@@ -28,7 +28,7 @@ def test_selfcite():
         30682153, # TOP 30682153 ..M..  4 1 2019     1  0   1 au[06](Géraldine Dessilly) CORRECTION
     ]
 
-    cfg = Cfg()
+    cfg = Cfg(check=False)
     groupobj = cfg.get_nihgrouper()
     dnldr = get_downloader(groupobj)
 

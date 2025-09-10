@@ -24,7 +24,7 @@ def test_cfg_desecriptive():
     assert not exists(file_cfg)
 
     # Test that non-existing configuration file can not be read by Cfg
-    obj = Cfg(prt_fullname=False)
+    obj = Cfg(check=False, prt_fullname=False)
     obj.set_cfg(file_cfg)
     assert not obj.rd_rc()
 
@@ -73,7 +73,7 @@ def test_cfg_icite():
 
     # Remove test configuration file and test that it can no longer be read by Cfg
     system(f'rm -f {file_cfg}')
-    obj = Cfg(prt_fullname=False)
+    obj = Cfg(check=False, prt_fullname=False)
     obj.set_cfg(file_cfg)
     assert not obj.rd_rc()
 
@@ -103,7 +103,7 @@ def test_cfg_eutils():
     """Test writing and reading the configuration file"""
     # NIH iCite configuration file
     file_cfg = join(DIR_REPO, 'test_eutils.cfg')
-    obj = Cfg()
+    obj = Cfg(check=False)
     obj.set_cfg(file_cfg)
 
     # Write configuration file
