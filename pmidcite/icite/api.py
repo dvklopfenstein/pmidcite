@@ -61,9 +61,11 @@ class NIHiCiteAPI:
             raise RuntimeError("EXPCETED 'data' in json returned for a single PMID")
         return None
 
-    def dnld_nihdicts(self, pmids):
+    def dnld_nihdicts(self, pmids, max_pmids=200):
         """Download a list of NIH citation data for given PMIDs"""
-        return self._dnld_gtmax(pmids) if len(pmids) > 1000 else self._dnld_ltmax(pmids)
+        return self._dnld_gtmax(pmids, max_pmids) \
+                if len(pmids) > max_pmids else \
+                self._dnld_ltmax(pmids)
 
     # NIH documentation says the max pmids is now 200:
     #     https://support.icite.nih.gov/hc/en-us/articles/9513563045787-Bulk-Data-and-API
@@ -101,8 +103,9 @@ class NIHiCiteAPI:
             s_adjust_json_entry = self._adjust_json_entry
             pmids_downloaded = set()
             for nih_json_dct in rsp_json['data']:
-                pmids_downloaded.add(nih_json_dct['_id'])
-                nih_dicts.append(s_adjust_json_entry(nih_json_dct))
+                nih_dicts_adj = s_adjust_json_entry(nih_json_dct)
+                pmids_downloaded.add(nih_dicts_adj['_id'])
+                nih_dicts.append(nih_dicts_adj)
             ## tic = prt_hms(tic, "Adjust reponse")
             # Report PMIDs that did not have NIH citation data downloaded
             if (pmids_missing := set(pmids).difference(pmids_downloaded)):
