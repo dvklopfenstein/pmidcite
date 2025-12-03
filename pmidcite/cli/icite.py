@@ -210,7 +210,7 @@ class NIHiCiteCli:
         # Write the report with citations and references for each PMID into its own file
         if args.O:
             self._wr_papers(pmid2icitepaper_cur, dnldr, args.print_header)
-        # Write the succinct report each PMID to the screen
+        # Write a succinct report for each PMID to the screen
         else:
             self.run_icite_wr(pmid2icitepaper_cur, args, dnldr)
 
