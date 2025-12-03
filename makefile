@@ -39,7 +39,7 @@ pylint:
 pytest:
 	make clobber_tmp
 	python3 --version
-	coverage run -m pytest -v tests --log-file=pytest.log
+	coverage run -m pytest -v -r y --log-file=pytest.log --full-trace tests
 
 ver:
 	git describe --tags --dirty --always
