@@ -98,10 +98,11 @@ class NIHiCiteDownloaderBase:
 
     def get_pmid2paper(self, pmids_top, pmid2note=None):
         """Get one NIHiCitePaper object for each user-specified PMID"""
+        ##print(f'DB PPPPPPPPPPPPPPPP {self.details_cites_refs}')
         if not self.details_cites_refs:
             return self._geticitepapers_wo_assc(pmids_top, pmid2note)
-        #print('PPPPPPPPPPPPPPPPPPP', pmids_top)
-        #print('PPPPPPPPPPPPPPPPPPP', pmid2note)
+        ##print('DB PPPPPPPPPPPPPPPPPPP', pmids_top)
+        ##print('DB PPPPPPPPPPPPPPPPPPP', pmid2note)
         return self._geticitepapers_w_assc(pmids_top, pmid2note)
         #### s_geticitepaper = self._geticitepaper
         #### papers = [s_geticitepaper(p, '', pmid2note) for p in pmids_top]
@@ -122,10 +123,10 @@ class NIHiCiteDownloaderBase:
         """Get one NIHiCitePaper object for each user-specified PMID w/cites and/or refs"""
         nihentries_top = self.get_icites(pmids_top)
         s_get_cites_refs = self.details_cites_refs
-        #print('AAAAAAAAAAAAAAAAAAAA', nihentries_top)
+        ##print('DB AAAAAAAAAAAAAAAAAAAA', nihentries_top)
         top_n_assocs = [(e.pmid, e.get_assc_pmids(s_get_cites_refs)) for e in nihentries_top]
         # PMIDs that are associated with the top PMIDs (cited_by_clin, cited_by, references)
-        #print('AAAAAAAAAAAAAAAAAAAA', top_n_assocs)
+        ##print('DB BBBBBBBBBBBBBBBBBBBB', top_n_assocs)
         #if not top_n_assocs:
         #    return {}
         pmids_assoc = set.union(*list(zip(*top_n_assocs))[1])
