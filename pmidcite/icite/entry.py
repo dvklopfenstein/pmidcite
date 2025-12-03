@@ -215,7 +215,7 @@ class NIHiCiteEntry:
         nih_perc = dct['nih_perc']
         return pat.format(
             pmid=self.pmid,
-            year=dct['year'],
+            year=dct.get('year', '????'),
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
             nih_group=str(nih_group) if nih_group != 5 else 'i',
@@ -226,7 +226,7 @@ class NIHiCiteEntry:
             A=dct['num_auth'],
             ##author1=aus[0]['lastName'] if (aus := dct.get('authors')) else '',
             author1=self._get_au1lastname(),
-            title=dct['title'],
+            title=dct.get('title', 'NO_TITLE'),
         )
 
     def _get_au1lastname(self):
