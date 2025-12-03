@@ -52,8 +52,8 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
         nihdicts = self.api.dnld_nihdicts(pmid2foutpy.keys())
         if nihdicts:
             s_wrpy = self._wrpy
-            for nih_dict in nihdicts:
-                s_wrpy(pmid2foutpy[nih_dict['pmid']], nih_dict)
+            for nihdict in nihdicts:
+                s_wrpy(pmid2foutpy[nihdict['_id']], nihdict)
             s_get_group = self.nihgrouper.get_group
             s_from_jsondct = NIHiCiteEntry.from_jsondct
             return [s_from_jsondct(d, s_get_group(d.get('nih_percentile'))) for d in nihdicts]
@@ -64,13 +64,13 @@ class NIHiCiteDownloader(NIHiCiteDownloaderBase):
         ##print(f'DOWNLOADER: {pmid}')
         file_pmid = join(self.dir_dnld, f'p{pmid}.py')
         if self.dnld_force or not exists(file_pmid):
-            nih_dict = self.api.dnld_nihdict(pmid)
-            ##print(f'nih_dict: {nih_dict}')
-            if nih_dict:
-                self._wrpy(file_pmid, nih_dict)
+            nihdict = self.api.dnld_nihdict(pmid)
+            ##print(f'nihdict: {nihdict}')
+            if nihdict:
+                self._wrpy(file_pmid, nihdict)
                 return NIHiCiteEntry.from_jsondct(
-                    nih_dict,
-                    self.nihgrouper.get_group(nih_dict.get('nih_percentile')))
+                    nihdict,
+                    self.nihgrouper.get_group(nihdict.get('nih_percentile')))
         return self.loader.load_icite(file_pmid)  # NIHiCiteEntry
 
     # -------------------------------------------------------------------------------------
