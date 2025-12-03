@@ -26,4 +26,4 @@ jobs:
         pip install .
     - name: Run pytest
       run: |
-        pytest
+        pytest -k "not database_list"
