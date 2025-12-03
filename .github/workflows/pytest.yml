@@ -23,6 +23,7 @@ jobs:
         pip install pylint
         pip install pytest
         pip install requests
+        pip install .
     - name: Run pytest
       run: |
         pytest
