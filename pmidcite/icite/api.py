@@ -78,11 +78,14 @@ class NIHiCiteAPI:
         pmid_list_all = pmids if isinstance(pmids, list) else list(pmids)
         num_total = len(pmids)
         # The NIH-OCC allows for a maximum of 1,000 PMIDs to be downloaded at once
-        for pmid_list_cur in split_list(pmid_list_all, max_limit):
+        sublists = split_list(pmid_list_all, max_limit)
+        num_sublists = len(sublists)
+        for idx, pmid_list_cur in enumerate(sublists, 1):
             nih_dicts_cur = self._dnld_ltmax(pmid_list_cur)
             if nih_dicts_cur:
                 nih_dicts_all.extend(nih_dicts_cur)
-            print(f'NIH citation data downloaded: {len(nih_dicts_all):,} of {num_total:,}')
+            print(f'Run {idx} of {num_sublists} - Total NIH citation data downloaded: '
+                  f'{len(nih_dicts_all):,} of {num_total:,}')
         return nih_dicts_all
 
     def _dnld_ltmax(self, pmids):
