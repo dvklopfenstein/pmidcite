@@ -25,6 +25,7 @@ class NIHiCiteDownloaderBase:
         # Default:set()  Options:{'cited_by_clin', 'cited_by', 'references'}
         self.details_cites_refs = self._init_details_cites_refs(details_cites_refs)
         self.nihgrouper = nih_grouper if nih_grouper is not None else NihGrouper()
+        ##print(f'DB {self.details_cites_refs=}')
 
     def get_icites(self, pmids):
         """Citation data should be downloaded or loaded by derived classes"""
@@ -59,11 +60,11 @@ class NIHiCiteDownloaderBase:
         """Print one paper, including citation counts, cite_by and references list"""
         if paper is not None:
             if self.details_cites_refs:
-                ## print('DVK self.details_cites_refs ------------------------')
+                ## print('self.details_cites_refs ------------------------')
                 paper.prt_summary(prt, sortby_cites='nih_group', sortby_refs='nih_group')
                 prt.write('\n')
             else:
-                ## print('DVK prt_top ----------------------------------------')
+                ## print('prt_top ----------------------------------------')
                 self.prt_top(paper, prt)
         else:
             prt.write(f'No iCite results found: {pmid} {name if name is not None else ""}\n\n')
