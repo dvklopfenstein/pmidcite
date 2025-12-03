@@ -230,7 +230,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 # Contributing
-See the [**contributing guide**](/docs/CONTRIBUTING.md) for detailed instructions on how to get started contributing to the **pmidcite** project.
+See the [**contributing guide**](CONTRIBUTING.md) for detailed instructions on how to get started contributing to the **pmidcite** project.
 
 # Contact
 email: dvklopfenstein@protonmail.com    
