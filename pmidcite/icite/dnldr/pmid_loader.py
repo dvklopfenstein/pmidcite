@@ -43,7 +43,7 @@ class NIHiCiteLoader:
     def load_icite_mods_all(self, pmids_top):
         """Load NIHiCiteEntry for the citations and references of PMIDs in pmids_top"""
         icites_top = self.load_icites(pmids_top)                             # [NIHiCiteEntry]
-        pmids_top = set(o.dct['pmid'] for o in icites_top)
+        pmids_top = set(o.dct['_id'] for o in icites_top)
         pmids_linked = self._get_pmids_linked(icites_top)                    # [NIHiCiteEntry]
         icites_linked = self.load_icites(pmids_linked.difference(pmids_top)) # [NIHiCiteEntry]
         ## print('LLLLLLLLLL NIHiCiteLoader load_icite_mods_all icites_top', icites_top)
