@@ -45,12 +45,14 @@ class NIHiCiteAPI:
 
     def dnld_nihdict(self, pmid):
         """Download NIH citation data for one researcher-spedified PMID. Return a corrected json"""
-        # pylint: disable=line-too-long
-        ##req_nihocc = f'{self.url_base}?{pmid}'  # v0.0.50 WAS https://icite.od.nih.gov/api/pubs?33031632
-        req_nihocc = f'{self.url_base}/{pmid}'    # v0.0.51 NOW https://icite.od.nih.gov/api/pubs/33031632
+        # The NIH-OCC changed their database format:
+        #     v0.0.50 WAS https://icite.od.nih.gov/api/pubs?33031632
+        #     v0.0.51 NOW https://icite.od.nih.gov/api/pubs/33031632
+        ##req_nihocc = f'{self.url_base}?{pmid}'
+        req_nihocc = f'{self.url_base}/{pmid}'
         rsp_json = self._send_request(req_nihocc)
-        ##print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA {rsp_json}')
-        ##print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA rsp_json["data"][{len(rsp_json["data"])}] = {rsp_json["data"]}')
+        ##print(f'AAAAAAAAAAAAAAAAA {rsp_json}')
+        ##print(f'AAAAAAAAAAAAAAAAA rsp_json["data"][{len(rsp_json["data"])}] = {rsp_json["data"]}')
         ##return self._adjust_json_entry(rsp_json) if rsp_json else None
         if rsp_json:
             assert 'data' in rsp_json, rsp_json
@@ -59,31 +61,41 @@ class NIHiCiteAPI:
             raise RuntimeError("EXPCETED 'data' in json returned for a single PMID")
         return None
 
-    def dnld_nihdicts(self, pmids):
+    def dnld_nihdicts(self, pmids, max_pmids=200):
         """Download a list of NIH citation data for given PMIDs"""
-        return self._dnld_gtmax(pmids) if len(pmids) > 1000 else self._dnld_ltmax(pmids)
+        return self._dnld_gtmax(pmids, max_pmids) \
+                if len(pmids) > max_pmids else \
+                self._dnld_ltmax(pmids)
 
-    def _dnld_gtmax(self, pmids):
+    # NIH documentation says the max pmids is now 200:
+    #     https://support.icite.nih.gov/hc/en-us/articles/9513563045787-Bulk-Data-and-API
+    # Too many pmids shows up with this error:
+    # 413 Request Entity Too Large URL[4539]: https://icite.od.nih.gov/api/pubs?pmids=29095435, ...
+    #      def _dnld_gtmax(self, pmids, max_limit=1000):
+    def _dnld_gtmax(self, pmids, max_limit=200):
         """Run iCite on given PubMed IDs"""
         nih_dicts_all = []
-        max_limit = 1000
         pmid_list_all = pmids if isinstance(pmids, list) else list(pmids)
         num_total = len(pmids)
         # The NIH-OCC allows for a maximum of 1,000 PMIDs to be downloaded at once
-        for pmid_list_cur in split_list(pmid_list_all, max_limit):
+        sublists = split_list(pmid_list_all, max_limit)
+        num_sublists = len(sublists)
+        for idx, pmid_list_cur in enumerate(sublists, 1):
             nih_dicts_cur = self._dnld_ltmax(pmid_list_cur)
             if nih_dicts_cur:
                 nih_dicts_all.extend(nih_dicts_cur)
-            # pylint: disable=line-too-long
-            print(f'NIH citation data downloaded: {len(nih_dicts_all):,} of {num_total:,}')
+            print(f'Run {idx} of {num_sublists} - Total NIH citation data downloaded: '
+                  f'{len(nih_dicts_all):,} of {num_total:,}')
         return nih_dicts_all
 
     def _dnld_ltmax(self, pmids):
         """Download NIH citation data using a request using their API"""
         ## tic = default_timer()
         pmids_str = ','.join(str(p) for p in pmids)
-        # pylint: disable=line-too-long
-        req_nihocc = f'{self.url_base}?pmids={pmids_str}' # https://icite.od.nih.gov/api/pubs?pmids=33031632
+
+        # https://icite.od.nih.gov/api/pubs?pmids=33031632
+        req_nihocc = f'{self.url_base}?pmids={pmids_str}'
+
         ## tic = prt_hms(tic, "Create request")
         # Note: rsp_json['data'] returned from NIH not in same order as requested
         rsp_json = self._send_request(req_nihocc)
@@ -94,17 +106,17 @@ class NIHiCiteAPI:
             s_adjust_json_entry = self._adjust_json_entry
             pmids_downloaded = set()
             for nih_json_dct in rsp_json['data']:
-                pmids_downloaded.add(nih_json_dct['pmid'])
-                nih_dicts.append(s_adjust_json_entry(nih_json_dct))
+                nih_dicts_adj = s_adjust_json_entry(nih_json_dct)
+                pmids_downloaded.add(nih_dicts_adj['_id'])
+                nih_dicts.append(nih_dicts_adj)
             ## tic = prt_hms(tic, "Adjust reponse")
             # Report PMIDs that did not have NIH citation data downloaded
-            pmids_missing = set(pmids).difference(pmids_downloaded)
-            # pylint: disable=line-too-long
-            if pmids_missing:
-                print(f"**WARNING: {len(pmids_str):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_str}")
+            if (pmids_missing := set(pmids).difference(pmids_downloaded)):
+                print(f"**WARNING: {len(pmids_missing):,} "
+                      f"NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_missing}")
             return nih_dicts
-        # pylint: disable=line-too-long
-        print(f"**WARNING: {len(pmids_str):,} NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_str}")
+        print(f"**WARNING: {len(pmids_str):,} "
+              f"NIH CITATION DATA NOT DOWNLOADED FOR PMIDs: {pmids_str}")
         return None
 
 
@@ -144,13 +156,14 @@ class NIHiCiteAPI:
             txt =' '.join(f'{k}({v})' for k, v in sorted(rsp.json().items()))
         return f'{rsp.status_code} {rsp.reason} URL[{len(rsp.url)}]: {rsp.url}\n  {txt}'
 
-    def _adjust_json_entry(self, entry_dct):
-        """Adjust values in the json dict['data']; This fnc has side effects on entry_dct"""
-        dct = entry_dct
-        ##self._prt_dct(entry_dct, "ENTRY")
-        if (title := entry_dct['title']) is not None:
+    def _adjust_json_entry(self, nih_json_dct):
+        """Adjust values in the json dict['data']; This fnc has side effects on nih_json_dct"""
+        dct = nih_json_dct
+        dct['_id'] = int(nih_json_dct['_id'])
+        ##self._prt_dct(nih_json_dct, "ENTRY")
+        if (title := nih_json_dct.get('title')) is not None:
             self._adjust_title(dct, title.strip())
-        if (authors := entry_dct['authors']) is not None:
+        if (authors := nih_json_dct.get('authors')) is not None:
             if (typ := type(authors)) is list:
                 # List of dicts w/keys: firstName lastName & fullName
                 dct['authors'] = authors
@@ -158,12 +171,12 @@ class NIHiCiteAPI:
                 ####self._adjust_author_str(dct, authors, typ)
                 raise TypeError('Authors data downloaded from NIH iCite '
                                 f'have unknown type({typ}): {authors}')
-        ####dct['is_research_article'] = entry_dct['is_research_article']
-        ####dct['is_clinical'] = entry_dct['is_clinical']
-        ####dct['provisional'] = entry_dct['provisional']
+        ####dct['is_research_article'] = nih_json_dct['is_research_article']
+        ####dct['is_clinical'] = nih_json_dct['is_clinical']
+        ####dct['provisional'] = nih_json_dct['provisional']
         ####lst = []
         ####lists = {'authors', 'cited_by_clin', 'cited_by', 'references'}
-        ####for key, val in entry_dct.items():
+        ####for key, val in nih_json_dct.items():
         ####    if key in dct:
         ####        lst.append((key, dct[key]))
         ####    elif key in lists:

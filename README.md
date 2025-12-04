@@ -1,9 +1,11 @@
 # PubMed ID (PMID) Cite
 
 [![Latest PyPI version](https://img.shields.io/pypi/v/pmidcite.svg)](https://pypi.org/project/pmidcite/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
-[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/pmidcite/README.html)
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172712.svg)](https://doi.org/10.5281/zenodo.5172712)
+[![Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/pmidcite/README.html)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/pmidcite/badges/version.svg)](https://anaconda.org/bioconda/pmidcite)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fdvklopfenstein%2Fpmidcite%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 <p align="center"><img src="https://github.com/dvklopfenstein/pmidcite/raw/main/docs/images/pmidcite_citedby.png" alt="pmidcite summary" width="500"/></p>
 
@@ -33,7 +35,7 @@ provides much more than just citation counts, including:
 * [**Quickstart**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#quickstart)
 * [**How to cite**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#how-to-cite)
 * [**Google Scholar vs. PubMed**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#pubmed-vs-google-scholar)
-* [**Jupyter notebooks using the *pmidcite* Python library**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#jupyter-notebook-examples)
+* [**Jupyter notebooks**](https://github.com/dvklopfenstein/pmidcite/blob/main/README.md#jupyter-notebook-examples)
 * [**Contributing**](#contributing)
 * [**References**](#references)
 
@@ -172,6 +174,7 @@ PubMed is a search interface and toolset used to access over 30.5 million articl
 * Additional content such as books and articles published before the 1960s
 
 # Jupyter notebook examples
+Jupyter notebook examples showing how to use the *pmidcite* Python library
 * [**1) Download NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_always.ipynb)
 * [**2) Download missing or load existing NIH-OCC citation data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/NIHOCC_data_download_or_import.ipynb)
 * [**3) Print a paper's citation and reference data**](https://github.com/dvklopfenstein/pmidcite/blob/main/notebooks/print_paper_all_refs_cites.ipynb)
@@ -227,7 +230,7 @@ https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilitie
 Set the `apikey` value in the config file: `~/.pmidciterc`
 
 # Contributing
-See the [**contributing guide**](/docs/CONTRIBUTING.md) for detailed instructions on how to get started contributing to the **pmidcite** project.
+See the [**contributing guide**](CONTRIBUTING.md) for detailed instructions on how to get started contributing to the **pmidcite** project.
 
 # Contact
 email: dvklopfenstein@protonmail.com    

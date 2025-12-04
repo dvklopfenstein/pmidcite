@@ -16,6 +16,7 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
 
     def get_icites(self, pmids):
         """Download NIH iCite data for requested PMIDs"""
+        ##print(f'DB DLLLLLLLLLLLLLLLL {len(pmids)} PMIDs')
         pmid2nihentry = {o.pmid: o for o in self._dnld_icites(pmids)}
         return [pmid2nihentry[pmid] for pmid in pmids if pmid in pmid2nihentry]
 
@@ -23,10 +24,11 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
         """Download a list of NIH citation data for PMIDs"""
         nihdicts = self.api.dnld_nihdicts(pmids)
         if nihdicts:
+            ##print(f'DB NNNNNNNNNNNNNNNNNN {len(nihdicts)}')
             ##self._prt(nihdicts)
             s_get_group = self.nihgrouper.get_group
             s_from_jsondct = NIHiCiteEntry.from_jsondct
-            return [s_from_jsondct(d, s_get_group(d['nih_percentile'])) for d in nihdicts]
+            return [s_from_jsondct(d, s_get_group(d.get('nih_percentile'))) for d in nihdicts]
         return []
 
     def get_icite(self, pmid):
@@ -36,7 +38,7 @@ class NIHiCiteDownloaderOnly(NIHiCiteDownloaderBase):
         if nih_dict:
             return NIHiCiteEntry.from_jsondct(
                 nih_dict,
-                self.nihgrouper.get_group(nih_dict['nih_percentile']))
+                self.nihgrouper.get_group(nih_dict.get('nih_percentile')))
         return None
 
     @staticmethod

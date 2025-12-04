@@ -20,7 +20,7 @@ def sortby_nih_group(obj):
     return [-1*dct['nih_group'], -1*dct['year'], -1*dct['nih_perc'],
             -1*dct['citation_count'] + -1*dct['num_clin'],
             -1*dct['num_refs'],
-            -1*dct['pmid']]
+            -1*obj.idnum]
 
 
 # pylint: disable=too-many-instance-attributes

@@ -255,25 +255,26 @@ class EntrezUtilities(object):
             # print('PPPPPPPPPPPPPPPPPP src/pmidcite/eutils/cmds/base.py run_req', rsp)
             return rsp
         except json.decoder.JSONDecodeError as errobj:
+            traceback.print_exc()
             print(f'\n**FATAL: CGI: {cgi}')
             print(f'**FATAL: JSONDecodeError = {str(errobj)}\n')
-            traceback.print_exc()
         except urllib.error.HTTPError as errobj:
+            traceback.print_exc()
             print(f'\n**FATAL: CGI: {cgi}')
             print(f'**FATAL: {str(errobj)}\n')
-            traceback.print_exc()
+            raise RuntimeError(str(errobj)) from errobj
         except urllib.error.ContentTooShortError as errobj:
+            traceback.print_exc()
             print(f'\n**FATAL: CGI: {cgi}')
             print(f'**FATAL: ContentTooShortError = {str(errobj.reason)}\n')
-            traceback.print_exc()
         except urllib.error.URLError as errobj:
+            traceback.print_exc()
             print(f'\n**FATAL: CGI: {cgi}')
             print(f'**FATAL: URLError = {str(errobj.reason)}\n')
-            traceback.print_exc()
         except RuntimeError as errobj:
+            traceback.print_exc()
             print(f'\n**FATAL: CGI: {cgi}\n')
             print(errobj)
-            traceback.print_exc()
         return None
 
     def _run_req(self, cgi, prt):  # params=None, post=None, ecitmatch=False):

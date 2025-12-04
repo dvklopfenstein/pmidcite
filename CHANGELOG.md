@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2025-12-01 v0.3.0**](#release-2025-12-01-v030) Updated for new NIH iCite format which may no longer supply keys such as `author`
 * [**Release 2025-09-06 v0.2.0**](#release-2025-09-06-v020) Updated for new NIH iCite format which may no longer have fields: cited_by_clin cited_by references provisional
 * [**Release 2025-07-28 v0.1.3**](#release-2025-07-28-v013) Added install instructions for bioconda
 * [**Release 2025-07-24 v0.1.2**](#release-2025-07-24-v012) Updated for new NIH iCite format for authors, and the True/False fields
@@ -55,6 +56,19 @@
 ## Details
 
 ### Unreleased
+
+### release 2025-12-01 v0.3.0
+* MAJOR UPDATE due to changes in NIH iCite format, (which is not backwards compatible):
+  * NIH-OPA data for new papers may now not have the fields:
+    * `authors`
+    * `nih_percentile`
+    * `pmid`
+* MAJOR UPDATE due to changes in NIH iCite api:
+  * NIH documentation says the max pmids is now 200:
+    https://support.icite.nih.gov/hc/en-us/articles/9513563045787-Bulk-Data-and-API
+    So reduced the number of PMIDs downloaded in a batch of a huge download from 1000 to 200 to remove error:
+      413 Request Entity Too Large URL[4539]: https://icite.od.nih.gov/api/pubs?pmids=29095435, ...
+* CHANGED to report missing pmids if no information exists in the NIH-iCite database
 
 ### release 2025-09-06 v0.2.0
 * MAJOR UPDATE for new NIH iCite format, (which is not backwards compatible):

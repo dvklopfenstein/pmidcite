@@ -22,7 +22,7 @@ def test_speed_dnld_load():
     num = 5000
     force_wr = True
     ## pmids = PMIDS[:num]
-    pmids = PMIDS
+    pmids = PMIDS  # Note: There are almost 90k PMIDs in this list
     system('rm -rf {ICITE}; mkdir {ICITE}'.format(ICITE=DIR_ICITE))
 
     with open(fout_log, 'w', encoding='utf-8') as log:

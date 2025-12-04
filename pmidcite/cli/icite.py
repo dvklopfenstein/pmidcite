@@ -141,8 +141,9 @@ class NIHiCiteCli:
             if len(pmids) > 10:
                 print(f'PROCESSING {len(pmids):,} PMIDs')
             dnldr = self._get_downloader(args)
+            ##print(f'DB WWWWWWWWWWWWWWWWWWWWWWWWWWW PMIDS({pmids})')
             pmid2icitepaper = dnldr.get_pmid2paper(pmids, None)
-            ## print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
+            ##print('DB XXXXXXXXXXXXXXXXXXXXXXXXXXX pmid2icitepaper', pmid2icitepaper)
             self.run_icite(pmid2icitepaper, dnldr, args, argparser)
             if args.pubmed:
                 self.pubmed.dnld_wr1_per_pmid(pmids, args.force_download, args.dir_pubmed_txt)
@@ -201,6 +202,7 @@ class NIHiCiteCli:
 
     def run_icite(self, pmid2icitepaper_all, dnldr, args, argparser):
         """Run iCite/PubMed"""
+        ##print(f'DB ARGS: {args}')
         pmid2icitepaper_cur = self.run_icite_pre(pmid2icitepaper_all, args, argparser)
         if not pmid2icitepaper_cur:
             dnldr.prt_api_msgs()
@@ -208,7 +210,7 @@ class NIHiCiteCli:
         # Write the report with citations and references for each PMID into its own file
         if args.O:
             self._wr_papers(pmid2icitepaper_cur, dnldr, args.print_header)
-        # Write the succinct report each PMID to the screen
+        # Write a succinct report for each PMID to the screen
         else:
             self.run_icite_wr(pmid2icitepaper_cur, args, dnldr)
 

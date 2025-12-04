@@ -10,12 +10,13 @@ from sys import stdout
 class NIHiCiteEntry:
     """Holds NIH iCite data for one PubMed ID (PMID)"""
 
-    fields = ['pmid', 'aart_type', 'aart_animal', 'nih_perc', 'nih_group', 'year',
-              'num_cites_all', 'clin', 'references',
-              'A', 'author1', 'title']
+    ###fields = ['pmid', 'aart_type', 'aart_animal', 'nih_perc', 'nih_group', 'year',
+    ###          'num_cites_all', 'clin', 'references',
+    ###          'A', 'author1', 'title']
 
     pat_pre = ('{pmid:8} {aart_type:2} {aart_animal:5} '
-               '{nih_perc:>3} {nih_group} {year:4} {num_cites_all:>5} {clin:>2} {references:>3} '
+               '{nih_perc:>3} {nih_group} {year:4} '
+               '{num_cites_all:>5} {clin:>2} {references:>3} '
               )
     pat_str = pat_pre + 'au[{A:02}]({author1}) {title}'
 
@@ -68,9 +69,11 @@ class NIHiCiteEntry:
         author1='authors',
         title='title')
 
-    def __init__(self, pmid=None, dct=None):
+    def __init__(self, pmid=None, dct_cleaned=None):
         self.pmid = pmid
-        self.dct = dct
+        # NIH field, _id, which is assumed to always be present
+        self.idnum = pmid if pmid is not None else dct_cleaned['_id']
+        self.dct = dct_cleaned
 
     def get_dict(self):
         """Gets a dict containing all member data.
@@ -80,13 +83,14 @@ class NIHiCiteEntry:
         return self.dct
 
     @classmethod
-    def from_jsondct(cls, icite_dct, nih_group_num):
+    def from_jsondct(cls, nihdict, nih_group_num):
         """Construct NIHiCiteEntry from jsondct downloaded from NIH using Entrez utils"""
-        cls_dct = icite_dct
+        cls_dct = nihdict
+        cls_dct['_id'] = int(nihdict['_id'])
         cls_dct['nih_group'] = nih_group_num  # 0 - 5
-        cls_dct['num_auth'] = len(lst) if (lst := icite_dct['authors']) else 0
-        cit_clin = icite_dct.get('cited_by_clin')
-        cited_by = icite_dct.get('cited_by')
+        cls_dct['num_auth'] = len(lst) if (lst := nihdict.get('authors')) else 0
+        cit_clin = nihdict.get('cited_by_clin')
+        cited_by = nihdict.get('cited_by')
         cls_dct['num_clin'] = len(cit_clin) if cit_clin else 0
         cls_dct['num_cite'] = len(cited_by) if cited_by else 0
 
@@ -96,11 +100,11 @@ class NIHiCiteEntry:
         num_cites_all = len(all_citing_pmids) if all_citing_pmids is not None else 0
         cls_dct['num_cites_all'] = num_cites_all
 
-        nih_perc = icite_dct.get('nih_percentile')
+        nih_perc = nihdict.get('nih_percentile')
         cls_dct['nih_perc'] = round(nih_perc) if nih_perc is not None else 110 + num_cites_all
-        refs = icite_dct.get('references')
+        refs = nihdict.get('references')
         cls_dct['num_refs'] = len(refs) if refs is not None else 0
-        return cls(icite_dct['pmid'], cls_dct)
+        return cls(nihdict.get('pmid'), cls_dct)
 
     @classmethod
     def _get_cites_all(cls, cit_clin, cited_by):
@@ -124,7 +128,7 @@ class NIHiCiteEntry:
 
     def get_authors(self):
         """Get the list of authors from NIH's iCite for this paper"""
-        return self.dct.get('authors')
+        return aus if (aus := self.dct.get('authors')) else []
 
     ####def get_au1_lastname(self):
     ####    """Get the last name of the first author"""
@@ -211,7 +215,7 @@ class NIHiCiteEntry:
         nih_perc = dct['nih_perc']
         return pat.format(
             pmid=self.pmid,
-            year=dct['year'],
+            year=dct.get('year', '????'),
             aart_type=self.get_aart_type(),
             aart_animal=self.get_aart_translation(),
             nih_group=str(nih_group) if nih_group != 5 else 'i',
@@ -220,9 +224,21 @@ class NIHiCiteEntry:
             clin=dct['num_clin'],
             references=dct['num_refs'],
             A=dct['num_auth'],
-            author1=dct['authors'][0]['lastName'] if dct['authors'] else '',
-            title=dct['title'],
+            ##author1=aus[0]['lastName'] if (aus := dct.get('authors')) else '',
+            author1=self._get_au1lastname(),
+            title=dct.get('title', 'NO_TITLE'),
         )
+
+    def _get_au1lastname(self):
+        """Possible known NIH-iCite keys for an author: fullName firstName lastName"""
+        if not (aus := self.dct.get('authors')):
+            return ''
+        if (lname := aus[0].get('lastName')):
+            return lname
+        if (fname := aus[0].get('firstName')):
+            return fname
+        return ''
+
 
     def get_assc_pmids(self, keys):
         """Get PMIDs associated with the given NIH iCite data"""

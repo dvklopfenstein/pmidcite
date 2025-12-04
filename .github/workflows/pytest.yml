@@ -1,0 +1,29 @@
+# https://stackoverflow.com/questions/74673048/github-actions-setup-python-stopped-working
+name: Pytest
+
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade build
+        pip install pylint
+        pip install pytest
+        pip install requests
+        pip install .
+    - name: Run pytest
+      run: |
+        pytest -k "not database_list"

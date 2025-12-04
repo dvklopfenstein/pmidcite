@@ -7,9 +7,9 @@ from pmidcite.eutils.cmds.base import EntrezUtilities
 #pylint: disable=line-too-long
 def test_database_list():
     """Test retreiving the names of the Entrez databases"""
-    cfg = Cfg()
+    cfg = Cfg(check=False)
     eutils = EntrezUtilities(cfg.get_email(), cfg.get_apikey(), cfg.get_tool())
-    dbs = eutils.get_database_list()
+    dbs = sorted(eutils.get_database_list())
     assert len(dbs) > 30
 
     _run_one_db('pubmed', eutils)
@@ -27,6 +27,7 @@ def _prt_einfo_db(dbs):
 
 def _run_einfo_db(dbs, eutils):
     """Print summary for each database"""
+    errs = []
     # idx         count database        last_update      menu_name                build                 description
     # ----------- ----- --------------- ---------------- ------------------------ --------------------- -----------
     #  0)    36,792,283 pubmed          2024/02/03 00:01 PubMed                   Build-2024.02.03.00.01 PubMed bibliographic record
@@ -75,23 +76,33 @@ def _run_einfo_db(dbs, eutils):
     print('Idx Num. of Items Database        Last update      Menu name                Build                  Description')
     print('--  ------------- --------------- ---------------- ------------------------ ---------------------- -----------')
     for idx, database in enumerate(dbs):
-        rsp = eutils.run_eutilscmd('einfo', db=database, retmode='json')
-        assert rsp, f'NO RESPONSE: {rsp}'
-        assert 'einforesult' in rsp, f'NO EINFORESULT IN RESPONSE: {rsp}'
-        assert 'dbinfo' in rsp['einforesult'], f'NO DBINFO IN EINFORESULT RESPONSE: {rsp}'
-        dbinfo = rsp['einforesult']['dbinfo']
-        assert len(dbinfo) == 1, dbinfo
-        dbinfo = dbinfo[0]
-        assert dbinfo.keys() == dbkeys, set(dbinfo.keys()).difference(dbkeys)
-        dbinfo['count'] = int(dbinfo['count'])
-        print(f'{idx:2}) '
-              f'{dbinfo["count"]:13,} '
-              f'{database:15} '
-              f'{dbinfo["lastupdate"]} '
-              f'{dbinfo["menuname"]:24} '
-              f'{dbinfo["dbbuild"]:22} '
-              f'{dbinfo["description"]} '
-        )
+        try:
+            rsp = eutils.run_eutilscmd('einfo', db=database, retmode='json')
+        except RuntimeError as errobj:
+            msg = (f'**FATAL: {str(errobj)}\n'
+                   f'**FATAL: UNSUCCESSFUL GET FROM NCBI E-Utils `einfo` for database({database})\n')
+            print(msg)
+            errs.append(msg)
+            rsp = None
+
+        if rsp:
+            assert 'einforesult' in rsp, f'NO EINFORESULT IN RESPONSE: {rsp}'
+            assert 'dbinfo' in rsp['einforesult'], f'NO DBINFO IN EINFORESULT RESPONSE: {rsp}'
+            dbinfo = rsp['einforesult']['dbinfo']
+            assert len(dbinfo) == 1, dbinfo
+            dbinfo = dbinfo[0]
+            assert dbinfo.keys() == dbkeys, set(dbinfo.keys()).difference(dbkeys)
+            dbinfo['count'] = int(dbinfo['count'])
+            print(f'{idx:2}) '
+                  f'{dbinfo["count"]:13,} '
+                  f'{database:15} '
+                  f'{dbinfo["lastupdate"]} '
+                  f'{dbinfo["menuname"]:24} '
+                  f'{dbinfo["dbbuild"]:22} '
+                  f'{dbinfo["description"]} '
+            )
+    assert len(errs) <= 0, f'{len(errs)} ERRORS FOUND:\n' + '\n'.join(errs)
+
 
 def _run_one_db(database, eutils):
     """Get details for only one database"""

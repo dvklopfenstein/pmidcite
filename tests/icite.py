@@ -10,7 +10,6 @@ from os import environ
 from os.path import join
 from os.path import dirname
 from os.path import abspath
-from os.path import relpath
 from os.path import exists
 from os.path import getmtime
 from glob import glob
@@ -22,6 +21,7 @@ DIR_TESTDATA = join(DIR_TEST, "data")
 DIR_ICITE = abspath(join(DIR_TEST, "./icite"))
 DIR_REPO = abspath(join(DIR_TEST, ".."))
 DL = environ.get('DLCYG')
+
 
 def get_dnld_files(glob_pattern):
     """Get the filenames of downloaded files matching the researcher's glob pattern"""
@@ -56,7 +56,7 @@ def mk_dir(dir_name, rmdir=False):
         system(f'rm -rf {dir_name}')
     if not exists(dir_name):
         mkdir(dir_name)
-        print(f'**CREATED DIR: {relpath(dir_name)}')
+        print(f'**CREATED DIR: {abspath(dir_name)}')
     return dir_name
 
 
@@ -90,7 +90,6 @@ class ICiteTester:
         assert len(f2mtime) >= min_files, \
             f'iCite FILES NOT DOWNLOADED {len(f2mtime)=} < min_files({min_files})'
         return f2mtime
-
 
 
 # Copyright (C) 2019-present, DV Klopfenstein, PhD. All rights reserved.

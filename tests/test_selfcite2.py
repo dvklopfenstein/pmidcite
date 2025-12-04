@@ -8,7 +8,7 @@ def test_selfcite():
     """Test getting all authors for a bunch of papers"""
     pmid = 33031639
 
-    cfg = Cfg()
+    cfg = Cfg(check=False)
     groupobj = cfg.get_nihgrouper()
     dnldr = get_downloader(groupobj)
 
