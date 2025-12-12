@@ -1,0 +1,5 @@
+echo 'PUBSCONF BEFORE:' $PUBSCONF
+export PUBSCONF=`pwd`/.pubs/.pubsrc
+echo 'PUBSCONF AFTER: ' $PUBSCONF
+
+echo 'PMIDCITECONF:' $PMIDCITECONF

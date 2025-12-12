@@ -54,6 +54,11 @@ cnt:
 
 
 # -----------------------------------------------------------------------------
+#  JOSS
+bib:
+	pubs export $(pubs list --citekeys-only tags:cite) | tee paper.bib
+
+# -----------------------------------------------------------------------------
 # 1) Increase the version number:
 vim_ver:
 	vim -p pyproject.toml pmidcite/__init__.py CHANGELOG.md
