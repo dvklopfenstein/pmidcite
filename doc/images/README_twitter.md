@@ -30,11 +30,17 @@ https://twitter.com/Chronotope/status/1527287628256620544
 ## Who created pmid2cite.com?
 **What are the doing with your data?**    
 
-https://www.pmid2cite.com/ looks useful for non-CLI (Command Line Interface) researchers,
-but it is unclear who created it.
+Previously, in the not-too-distant past, the following website _appeared_ to be useful for non-CLI (Command Line Interface) researchers:
+pmid2cite.com (DO NOT GO THERE).
+It was **always** unclear who created it.
 
-There is no "About Us" or "Our Team" section.
-And when you click on the [privacy policy](https://www.iubenda.com/privacy-policy/87688178), this appears:
+And it is now a gambling site.
+So I do not even know...
+Do not click on it.
+
+<!--- (https://www.iubenda.com/privacy-policy/87688178) -->
+There _was_ no "About Us" or "Our Team" section.
+And when you in _clicked_ on the privacy policy in the past, this appeared:
 
 ![pmid2cite.com](pmid2cite_com.png)
 
