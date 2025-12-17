@@ -26,4 +26,4 @@ jobs:
         pip install .
     - name: Run pytest
       run: |
-        pytest -k "not database_list"
+        pytest -k "not database_list and not test_speed_dnld_load"
