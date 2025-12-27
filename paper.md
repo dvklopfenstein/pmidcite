@@ -23,8 +23,38 @@ archive_doi: 10.5281/zenodo.5172713
 ---
 
 # Summary
-Viewing citation counts for a paper in the PubMed database is a common task when performing a literature search. <!--
+Viewing citation counts for a paper is a common task when performing a literature search. <!--
 -->
+While Google Scholar and PubMed are the two most popular free academic search tools in biology and chemistry,
+Google Scholar is the most popular starting point in large part due to
+providing researchers with the ability to quickly view a list of citing papers
+and their citation counts through each paper's "CitedBy" link,
+a feature which PubMed lacks. <!--
+-->
+However, researchers using Google Scholar as their principal system for literature searches may be unaware
+of research which enumerates five critical features for scientific literature tools. <!--
+-->
+Using this list to perform a comparison between Google Scholar and PubMed,
+I found stark differences which overwhelmingly favored PubMed, 
+except for PubMed's lack of functionality similar
+that provided by Google Scholar's"CitedBy" link. <!--
+-->
+Here I present a method which augments searches using PubMed
+functionality in PubMed similar to that offered by Google Scholar's "CitedBy" link in PubMed
+with 
+pmidcite, a CLI designed to facilitate a literature search
+for papers reposited into PubMed
+
+using a paper or set of papers that are reposited into PubMed,
+a resource which is aimed to help scientists perform work that
+improves health for both individuals and people all over the world.
+PubMed contains millions and millions of citations
+from the biomedicine and health fields,
+and related disciplines such as
+life sciences, behavioral sciances, chemical, sciences, and bioengineering. <!--
+-->
+
+
 A scientist traces the evolution of a research question by
 performing forward and backward snowballing and 
 carrying out database searches. <!--
@@ -37,15 +67,8 @@ Backward snowballing uses lists of references rather than citations.[@Wohlin_201
 -->
 Database searches add new papers to a literature search using free-text entered by the researcher into a search bar. <!--
 -->
-Here I present pmidcite, a CLI designed to facilitate a literature search
-using a paper or set of papers that are reposited into PubMed,
-a resource which is aimed to help scientists perform work that
-improves health for both individuals and people all over the world.
-PubMed contains millions and millions of citations
-from the biomedicine and health fields,
-and related disciplines such as
-life sciences, behavioral sciances, chemical, sciences, and bioengineering. <!--
--->
+
+
 PubMed was developed and is maintained by
 the National Center for Biotechnology Information (NCBI), at
 the U.S. National Library of Medicine (NLM),
