@@ -23,58 +23,69 @@ archive_doi: 10.5281/zenodo.5172713
 ---
 
 # Summary
-Viewing citation counts for a paper is a common task when performing a literature search. <!--
+<!-- Viewing citation counts for a paper is a common task when performing a literature search. -->
+Google Scholar and PubMed are the most popular free search engines
+for literature searches in the fields of biomedicine and health. <!--
 -->
-While Google Scholar and PubMed are the two most popular free academic search tools in biology and chemistry,
-Google Scholar is the most popular starting point in large part due to
-providing researchers with the ability to quickly view a list of citing papers
-and their citation counts through each paper's "CitedBy" link,
-a feature which PubMed lacks. <!--
+With Google Scholar being the most common starting point when performing a literature search---in
+large part due to their "Cited by N" link found next to every paper summary. <!--
+which appears in the summary for each paper returned from a search query
+where "N" is the number of citing papers. 
+The "Cited by" link contains the number of papers and articles citing a single paper.
+Clicking on the "Cited by" link provides researchers with the ability to quickly view a list of citing papers
+and those papers' citation counts.
 -->
-However, researchers using Google Scholar as their principal system for literature searches may be unaware
-of research which enumerates five critical features for scientific literature tools. <!--
+For all of PubMed's easy-to-use and powerful literature search features,
+it lacks the "Cited by N" link,
+making Google Scholar the extremely tempting first choice. <!--
 -->
-Using this list to perform a comparison between Google Scholar and PubMed,
-I found stark differences which overwhelmingly favored PubMed, 
-except for PubMed's lack of functionality similar
-that provided by Google Scholar's"CitedBy" link. <!--
+However, scientists using Google Scholar as their primary system for literature searches may be unacquainted
+with research that details five key criteria for scientific literature tools. <!--
 -->
-Here I present a method which augments searches using PubMed
-functionality in PubMed similar to that offered by Google Scholar's "CitedBy" link in PubMed
-with 
-pmidcite, a CLI designed to facilitate a literature search
-for papers reposited into PubMed
+Using this list to compare Google Scholar and PubMed,
+I found profound differences which overwhelmingly favored PubMed;
+except for PubMed's lack of "Cited by N" feature.  <!--
+-->
+Here I present a method which augments PubMed searches
+with functionality similar to
+that offered by Google Scholar's "Cited by N" link. <!--
+-->
+The pmidcite method is
+designed to improve upon the Google Scholar experience
+when working from the command-line or
+when scripting
+while doing a literature search for papers reposited into PubMed.
 
-using a paper or set of papers that are reposited into PubMed,
+<!-- using a paper or set of papers that are reposited into PubMed,
 a resource which is aimed to help scientists perform work that
 improves health for both individuals and people all over the world.
 PubMed contains millions and millions of citations
 from the biomedicine and health fields,
 and related disciplines such as
-life sciences, behavioral sciances, chemical, sciences, and bioengineering. <!--
+life sciences, behavioral sciances, chemical, sciences, and bioengineering. 
 -->
 
 
-A scientist traces the evolution of a research question by
+<!-- A scientist traces the evolution of a research question by
 performing forward and backward snowballing and 
-carrying out database searches. <!--
+carrying out database searches. 
 -->
-Forward snowballing begins with studying the citation list of a chosen paper to find additional papers of interest.
+<!-- Forward snowballing begins with studying the citation list of a chosen paper to find additional papers of interest.
 The researcher then selects papers from the citation list for further review by
 investigating the citation lists of all the newly selected papers,
 thus building a larger and larger snowball of information from which to synthesize knowledge.
-Backward snowballing uses lists of references rather than citations.[@Wohlin_2014] <!--
+Backward snowballing uses lists of references rather than citations.[@Wohlin_2014] 
 -->
-Database searches add new papers to a literature search using free-text entered by the researcher into a search bar. <!--
+<!-- Database searches add new papers to a literature search using free-text entered by the researcher into a search bar. 
 -->
 
 
-PubMed was developed and is maintained by
+<!-- PubMed was developed and is maintained by
 the National Center for Biotechnology Information (NCBI), at
 the U.S. National Library of Medicine (NLM),
-located at the National Institutes of Health (NIH).[@sayers2025database] <!--
+located at the National Institutes of Health (NIH).[@sayers2025database] 
 -->
-Citation counts and other data is downloaded by pmidcite from the NIH Open Citation Collection.[@Hutchins_2019]    
+<!-- Citation counts and other data is downloaded by pmidcite from the NIH Open Citation Collection.[@Hutchins_2019]    -->
 
 
 # Statement of need
