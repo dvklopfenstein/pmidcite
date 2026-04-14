@@ -24,3 +24,12 @@ def init_dnldr(force_dnld):
     dnldr = NIHiCiteDownloader(DIR_ICITE, force_dnld)
     tic = prt_hms(tic, "Initialize NIH citation downloader")
     return dnldr
+
+def cat(fname):
+    """Write the contents of a file to the screen if it exists"""
+    if op.exists(fname):
+        with open(fname, encoding='utf8') as ifstrm:
+            for lnum, line in enumerate(ifstrm, 1):
+                print(fname, lnum, line, end='')
+    else:
+        print('NO', fname)

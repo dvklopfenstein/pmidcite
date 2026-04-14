@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test downloading a paper, paper + refs, paper + cites, paper + all"""
 
-from os import system
+import os
 from sys import stdout
 from glob import glob
 from pmidcite.icite.pmid_dnlder import NIHiCiteDownloader
@@ -16,6 +16,7 @@ def test_dnld_cites_refs():
     """Test downloading a paper, paper + refs, paper + cites, paper + all"""
 
     pmid = 20640201
+    os.makedirs(DIR_ICITE, exist_ok=True)
     dnldr_top = NIHiCiteDownloader(DIR_ICITE, FORCE_DNLD)
     _run("TEST(plain)", dnldr_top, pmid)
 
@@ -45,11 +46,12 @@ def _compare(test_name, pmid, entry_lst, desc):
 
 def _run(test_name, dnldr, pmid):
     """Download PMIDs"""
-    system(f'rm -f {dnldr.dir_dnld}/p*.py')
+    globstr = f'{dnldr.dir_dnld}/p*.py'
+    for fname in glob(globstr):
+        os.remove(fname)
     pmid2icitepaper = dnldr.get_pmid2paper({pmid}, pmid2note=None)
 
     # Get filenames (p{PMID}.py) downloaded from NIH's citation database
-    globstr = f'{dnldr.dir_dnld}/p*.py'
     pmids_dnlded = glob(globstr)
     print(f'{len(pmids_dnlded)} NIH icites downloaded')
     ## print('{N} pmid2icitepaper for PMID({P}); {O} assc PMIDs'.format(

@@ -7,6 +7,7 @@
 ## Summary
 
 * [**Unreleased**](#unreleased)
+* [**Release 2026-04-14 v0.3.2**]dir key err fixed; Replaced removing files/dirs using system
 * [**Release 2025-12-15 v0.3.1**]Removed links to cite which went roguer (Gambling) than it was before (creepy use of your data). 
 * [**Release 2025-12-01 v0.3.0**](#release-2025-12-01-v030) Updated for new NIH iCite format which may no longer supply keys such as `author`
 * [**Release 2025-09-06 v0.2.0**](#release-2025-09-06-v020) Updated for new NIH iCite format which may no longer have fields: cited_by_clin cited_by references provisional
