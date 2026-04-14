@@ -16,11 +16,12 @@ authors:
 affiliations:
   - name: Department of Microbiology and Immunology, Drexel University College of Medicine, Philadelphia, PA, United States
     index: 1
-date: 12 December 2025
+date:  5 January 2026
 bibliography: paper.bib
 repository: https://github.com/dvklopfenstein/pmidcite
 archive_doi: 10.5281/zenodo.5172713
 ---
+<!-- https://github.com/openjournals/joss-reviews -->
 
 # Summary
 <!-- Viewing citation counts for a paper is a common task when performing a literature search. -->
@@ -28,7 +29,8 @@ Google Scholar and PubMed are the most popular free search engines
 for literature searches in the fields of biomedicine and health. <!--
 -->
 With Google Scholar being the most common starting point when performing a literature search---in
-large part due to their "Cited by N" link found next to every paper summary. <!--
+large part due to their "Cited by N" link found next to every paper summary,
+where "N" is the number of citations. <!--
 which appears in the summary for each paper returned from a search query
 where "N" is the number of citing papers. 
 The "Cited by" link contains the number of papers and articles citing a single paper.
@@ -37,13 +39,13 @@ and those papers' citation counts.
 -->
 For all of PubMed's easy-to-use and powerful literature search features,
 it lacks the "Cited by N" link,
-making Google Scholar the extremely tempting first choice. <!--
+resulting in Google Scholar the tempting first choice. <!--
 -->
 However, scientists using Google Scholar as their primary system for literature searches may be unacquainted
 with research that details five key criteria for scientific literature tools. <!--
 -->
 Using this list to compare Google Scholar and PubMed,
-I found profound differences which overwhelmingly favored PubMed;
+I found profound differences which tremendously favored PubMed;
 except for PubMed's lack of "Cited by N" feature.  <!--
 -->
 Here I present a method which augments PubMed searches
@@ -89,6 +91,36 @@ located at the National Institutes of Health (NIH).[@sayers2025database]
 
 
 # Statement of need
+The development of pmidcite was driven by the need to rapidly sift through
+hundreds or thousands of papers in a literature search by following both
+citations, also known as forward snowballing, or
+references (backward snowballing) from the command line.
+<!-- -->
+While Google Scholar (GS) is primarily accessible through a 
+graphical user interface (GUI),
+there are application programming interfaces (APIs)
+available written by users.[@cholewiak2021]
+However, GS blocks the download of citations 
+without issuing any warnings that the results have been truncated.
+
+Additionally, GS, lacks five of the six crucial elements
+as defined by Boeker et al
+necessary for the creation of solid scientific evidence 
+useing high quality systematic and exploratory literature searches.
+
+Almost immediately after Gehanno et al wrote a paper
+concluding that GS alone could be used for systematic reviews,
+which was based on exclusively using look-up searches 
+rather the typical exploratory or the more rigorous systematic searches,
+Giustini and Boulos slapped back with a paper titled,
+"Google Scholar is not enough to be used alone for systematic reviews"
+
+<!-- A scientist traces the evolution of a research question by 
+trace the evolution of a research question
+performing forward and backward snowballing and 
+carrying out database searches. 
+-->
+
 <!--
 The development of pmidcite was driven by the need to generate large-scale datasets of drug-like peptide SMILES strings for pretraining transformer-based models to predict membrane permeation from chemical structure [@feller2025peptide]. Built on the core concepts from the CycloPs [@duffy2011cyclops] method for FASTA-to-SMILES conversion, pmidcite has evolved into a stand-alone resource to support peptide-focused machine learning pipelines and peptide design workflows. While several bioinformatics toolkits exist for chemical representation and cheminformatics workflows [@ChemAxon; @o2011open; @landrum2013rdkit; @OEChem; @cock2009biopython];, many face limitations such as proprietary licensing and lack in ability to interpret or encode noncanonical amino acids (NCAAs). These constraints limit high-throughput application of sequence generation and conversion, especially for drug-like peptides containing diverse stereochemistries. In, addition, there are several python tools that focus on structure generation and cyclization [@tien2013peptidebuilder; @yang2025cyclicpeptide], however, these are not able to incorporate all necessary modifications. I used pmidcite to build a dataset of 10M peptides with NCAAs, backbone modifications, and cyclizations for pretraining a chemical language model [@feller2025peptide]. To support the community, have made pmidcite available as an open source package on PyPI, offering both command-line tools and Python functions for seamless integration into larger workflows.
 -->
