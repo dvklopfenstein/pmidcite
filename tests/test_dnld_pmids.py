@@ -5,9 +5,8 @@ __copyright__ = "Copyright (C) 2020-present, DV Klopfenstein, PhD. All rights re
 __author__ = "DV Klopfenstein, PhD"
 
 import sys
-from os import system
-from os.path import join
-from os.path import exists
+import os.path as op
+from pathlib import Path
 
 from pmidcite.pubmedqueryicite import PubMedQueryToICite
 
@@ -22,7 +21,7 @@ def main():
         # -----------------       -----------------------------------
         ('SMILES_review.txt',     'Simplified molecular-input line-entry system AND (review[Filter])'),
     ]
-    filename = join(DIR_REPO, queries[-1][0])
+    filename = op.join(DIR_REPO, queries[-1][0])
 
     # By default, only the last entry in the list is run.
     # This allows you to build a history of searches,
@@ -37,8 +36,8 @@ def main():
     # To run the second to last query:
     #   $ src/bin/dnld_pmids.py -2
     #
-    system(f'rm -f {filename}')
-    assert not exists(filename)
+    Path(filename).unlink(missing_ok=True)
+    assert not op.exists(filename)
     obj = PubMedQueryToICite(force_dnld=True)
     obj.cfg.set_dir_pmids(DIR_REPO)
     obj.cfg.set_dir_icite(DIR_REPO)
@@ -46,18 +45,18 @@ def main():
     assert dnld_idx == [-1]
     fout, query = queries[dnld_idx[0]]
     obj.run_one(fout, query)
-    assert exists(filename)
+    assert op.exists(filename)
     print('**PASSED: DIR=repo\n')
 
-    system(f'rm -f {filename}')
-    assert not exists(filename)
+    Path(filename).unlink(missing_ok=True)
+    assert not op.exists(filename)
     obj.cfg.set_dir_pmids(None)
     obj.cfg.set_dir_icite(None)
     obj.run_one(fout, query)
     print('**PASSED: DIR=None\n')
 
-    system(f'rm -f {filename}')
-    assert not exists(filename)
+    Path(filename).unlink(missing_ok=True)
+    assert not op.exists(filename)
     obj.cfg.set_dir_pmids('.')
     obj.cfg.set_dir_icite('.')
     obj.run_one(fout, query)

@@ -4,10 +4,10 @@ __author__ = 'DV Klopfenstein, PhD'
 __copyright__ = "Copyright (C) 2016-present DV Klopfenstein, PhD. All rights reserved."
 __license__ = "AGPL-3.0"
 
-from os import system
-from os import getcwd
-from os.path import exists
 import sys
+import os
+import os.path as op
+from pathlib import Path
 from pmidcite.eutils.cmds.base import EntrezUtilities
 from pmidcite.eutils.cmds.esearch import ESearch
 
@@ -31,8 +31,7 @@ class PubMed(EntrezUtilities):
 
     def _dnld_wr_all(self, fout_pubmed, efetch_idxs, efetch_params):
         """Download and write all PMIDs PubMed text entries into one file"""
-        if exists(fout_pubmed):
-            system(f'rm {fout_pubmed}')
+        Path(fout_pubmed).unlink(missing_ok=True)
         if not efetch_idxs:
             return
         for desc, start, pmids_exp, querykey in efetch_idxs:
@@ -50,7 +49,7 @@ class PubMed(EntrezUtilities):
 
     def dnld_wr1_per_pmid(self, pmids, force_download, dir_pubmed_txt, pmid2name=None):
         """Download and write one PubMed text file entry per PMID"""
-        if not exists(dir_pubmed_txt):
+        if not op.exists(dir_pubmed_txt):
             dir_pubmed_txt = self._err_exists(dir_pubmed_txt)
         pmid_nt_list = self.get_pmid_nt_list(pmids, force_download, dir_pubmed_txt, pmid2name)
         efetch_idxs, efetch_params = self.epost_ids(pmids, 'pubmed', 10, 1, **self.medline_text)
@@ -59,8 +58,8 @@ class PubMed(EntrezUtilities):
     @staticmethod
     def _err_exists(dir_pubmed_txt):
         """Print warning message if dir not exist, return current working directory"""
-        cwd = getcwd()
-        print(f'**WARNING: DIR({dir_pubmed_txt}) NOT EXIST RETURNING CWD({getcwd()})')
+        cwd = os.getcwd()
+        print(f'**WARNING: DIR({dir_pubmed_txt}) NOT EXIST RETURNING CWD({cwd})')
         return cwd
 
     def dnld_texts(self, efetch_idxs, efetch_params):
