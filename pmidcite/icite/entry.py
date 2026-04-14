@@ -268,7 +268,7 @@ class NIHiCiteEntry:
         lst.append('H' if dct['human'] != 0.0 else '.')
         lst.append('A' if dct['animal'] != 0.0 else '.')
         lst.append('M' if dct['molecular_cellular'] != 0.0 else '.')
-        lst.append('C' if dct['is_clinical'] else '.')
+        lst.append('C' if dct.get('is_clinical') else '.')
         lst.append('c' if dct.get('cited_by_clin') else '.')
         return ''.join(lst)
 
